@@ -13,7 +13,7 @@ static long distinct;
 static uint32_t hash(const char *s, size_t n) {
   uint32_t h = 2166136261u;
   for (size_t i = 0; i < n; i++) h = (h ^ (unsigned char)s[i]) * 16777619u;
-  return h;
+  return h ^ (h >> 15) ^ (h >> 7); /* FNV-1a low bits are weak: fold the high bits in */
 }
 
 int main(int argc, char **argv) {
