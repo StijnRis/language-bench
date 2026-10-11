@@ -152,6 +152,8 @@ jobs:
           remaining=$(echo "$status" | jq .remaining)
           round=${{ inputs.round || 1 }}
           max=$(jq .maxChainedRounds lb.config.json)
+          # publish the new data (workflow_run chains are depth-limited, so dispatch explicitly)
+          gh workflow run deploy.yml
           if [ "$remaining" -gt 0 ] && [ "$round" -lt "$max" ]; then
             echo "starting round $((round + 1))"
             gh workflow run bench.yml -f round=$((round + 1))
