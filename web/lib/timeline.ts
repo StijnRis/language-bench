@@ -1,14 +1,14 @@
 import type { TSeries } from "@/components/Timeline";
-import { benchId, defaultVariant, toCell, type Model } from "./model";
+import { benchId, defaultVariant, toCell, versionsOf, type Model } from "./model";
 import type { LoadedLanguage } from "@lb/core/discover";
 
 function points(m: Model, l: LoadedLanguage, variant: string, problem: string) {
-  return l.spec.versions.flatMap((v) => {
-    const b = m.byId.get(benchId({ language: l.spec.id, version: v.version, variant, problem }));
-    const rel = l.releases[v.version];
+  return versionsOf(m, l).flatMap((version) => {
+    const b = m.byId.get(benchId({ language: l.spec.id, version, variant, problem }));
+    const rel = l.releases[version];
     if (!b || !rel) return [];
     const c = toCell(m, b);
-    return [{ date: rel.date, version: v.version, index: c.index, seconds: c.seconds, sessions: c.sessions, highlights: rel.highlights }];
+    return [{ date: rel.date, version, index: c.index, seconds: c.seconds, sessions: c.sessions, highlights: rel.highlights }];
   }).sort((a, b) => a.date.localeCompare(b.date));
 }
 

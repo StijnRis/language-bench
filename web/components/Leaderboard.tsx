@@ -36,11 +36,11 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
       }
       if (metric === "time" && pick.length) {
         value = gm(pick.map((c) => c.index));
-        if (pick.length === 1) { low = pick[0]!.indexLow; high = pick[0]!.indexHigh; sub = `${seconds(pick[0]!.seconds)} on reference machine`; }
+        if (pick.length === 1) { low = pick[0]!.indexLow; high = pick[0]!.indexHigh; sub = `${seconds(pick[0]!.seconds)} on the average machine`; }
         else sub = `geometric mean over ${pick.length} problems`;
       } else if (metric === "memory" && pick.length) {
         value = gm(pick.map((c) => c.memoryMB || 1));
-        sub = pick.length === 1 ? "peak resident memory" : `geometric mean over ${pick.length} problems`;
+        sub = pick.length === 1 ? "average memory" : `geometric mean over ${pick.length} problems`;
       } else if (metric === "overhead" && startup) {
         value = startup.seconds;
         sub = `binary size ${bytes(startup.binarySize)}`;
@@ -53,7 +53,7 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
 
   const max = Math.max(...rows.map((r) => r.value), 1e-9);
   const fmt = (v: number) => (metric === "time" ? idx(v) : metric === "memory" ? mb(v) : seconds(v));
-  const label = metric === "time" ? "Speed index (C = 1.0×, lower is faster)" : metric === "memory" ? "Peak memory (lower is better)" : "Start-up time";
+  const label = metric === "time" ? "Speed index (C = 1.0×, lower is faster)" : metric === "memory" ? "Average memory (mean peak RSS per run, lower is better)" : "Start-up time";
 
   return (
     <div>
@@ -65,7 +65,7 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
           </select>
         </label>
         <span role="group" aria-label="Metric">
-          {([["time", "Wall-clock time"], ["memory", "Peak memory"], ["overhead", "Start-up overhead"]] as const).map(([k, t]) => (
+          {([["time", "Wall-clock time"], ["memory", "Average memory"], ["overhead", "Start-up overhead"]] as const).map(([k, t]) => (
             <button key={k} className="chip" aria-pressed={metric === k} onClick={() => setMetric(k)} style={{ marginRight: 6 }}>{t}</button>
           ))}
         </span>

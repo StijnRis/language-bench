@@ -9,23 +9,10 @@
   "toolVersionCmd": "rustc --version",
   "versions": [
     {
-      "version": "1.80",
-      "latest": false
-    },
-    {
-      "version": "1.85",
-      "latest": false
-    },
-    {
-      "version": "1.90",
-      "latest": false
-    },
-    {
       "version": "1.99",
       "latest": true
     }
   ],
-  "releaseFeed": "https://github.com/rust-lang/rust/blob/master/RELEASES.md",
   "variants": [
     {
       "id": "rustc-O3",
@@ -49,5 +36,11 @@
       "build": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {src}/main.rs",
       "run": "{bin}"
     }
-  ]
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "rust-lang/rust",
+    "pattern": "^(1\\.\\d+)\\.0$",
+    "url": "https://github.com/rust-lang/rust/blob/master/RELEASES.md"
+  }
 }

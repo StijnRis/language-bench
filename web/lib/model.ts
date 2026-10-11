@@ -56,10 +56,17 @@ export function getModel(): Model {
   const root = findRepoRoot();
   const languages = loadLanguages(root);
   const problems = loadProblems(root);
-  const analysis = analyze(loadData(root), 1000);
+  const data = loadData(root);
+  const analysis = analyze(data.sessions, data.languages, 1000);
   const byId = new Map(analysis.benchmarks.map((b) => [benchId(b), b]));
   cached = { root, languages, problems, analysis, byId, hasData: analysis.benchmarks.length > 0 };
   return cached;
+}
+
+/** Versions with data (or tracked), newest release first. */
+export function versionsOf(m: Model, l: LoadedLanguage): string[] {
+  const set = new Set([...l.spec.versions.map((v) => v.version), ...m.analysis.benchmarks.filter((b) => b.language === l.spec.id).map((b) => b.version)]);
+  return [...set].sort((a, b) => (l.releases[b]?.date ?? "").localeCompare(l.releases[a]?.date ?? ""));
 }
 
 export const latestVersion = (l: LoadedLanguage) => l.spec.versions.find((v) => v.latest)!.version;

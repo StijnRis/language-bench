@@ -9,23 +9,10 @@
   "toolVersionCmd": "node --version",
   "versions": [
     {
-      "version": "20",
-      "latest": false
-    },
-    {
-      "version": "22",
-      "latest": false
-    },
-    {
-      "version": "24",
-      "latest": false
-    },
-    {
       "version": "26",
       "latest": true
     }
   ],
-  "releaseFeed": "https://nodejs.org/en/about/previous-releases",
   "variants": [
     {
       "id": "node-default",
@@ -40,5 +27,10 @@
       "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
       "run": "node --max-semi-space-size=64 {src}/main.js"
     }
-  ]
+  ],
+  "versionSource": {
+    "kind": "node-dist",
+    "pattern": "^v(\\d+)\\.0\\.0$",
+    "url": "https://nodejs.org/en/about/previous-releases"
+  }
 }

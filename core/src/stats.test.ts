@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { aggregateSessions, geoMean, mad, median, mulberry32, summarizeReps } from "./stats";
+import { aggregateSessions, fitHardware, geoMean, mad, median, mulberry32, summarizeReps } from "./stats";
 import { analyze } from "./analysis";
-import type { LanguageData } from "./schema";
+import { planSessions, type Candidate, type Counts } from "./plan";
+import type { Config, LanguageData, Session } from "./schema";
 
 describe("basic stats", () => {
   it("median/mad", () => {
@@ -17,74 +18,102 @@ describe("basic stats", () => {
   });
 });
 
-/** Synthetic world: a benchmark takes `trueRatio` x the anchor on every machine. Machines differ in speed. */
-function synth(sessions: number, trueRatio: number, seed = 1) {
+/** True benchmark times (average machine) and per-session machine factors. */
+function world(nBench: number, nSess: number, seed = 3) {
   const rnd = mulberry32(seed);
-  const noise = (sd: number) => 1 + (rnd() - 0.5) * 2 * sd;
-  const out = [];
-  for (let i = 0; i < sessions; i++) {
-    const hw = 0.6 + rnd() * 1.2; // machine slowness factor 0.6..1.8
-    const anchor = Array.from({ length: 30 }, () => 0.5 * hw * noise(0.02));
-    const reps = Array.from({ length: 30 }, () => 0.5 * trueRatio * hw * noise(0.02));
-    out.push({ reps, anchorReps: anchor });
-  }
-  return out;
+  const truth = Array.from({ length: nBench }, () => Math.exp(Math.log(0.05) + rnd() * 6));
+  const hw = Array.from({ length: nSess }, () => 0.6 + rnd() * 1.2);
+  const gm = Math.exp(hw.reduce((a, x) => a + Math.log(x), 0) / nSess);
+  return { truth, hw: hw.map((x) => x / gm), rnd };
 }
 
+describe("fitHardware", () => {
+  it("recovers machine factors from benchmarks shared between sessions", () => {
+    const { truth, hw, rnd } = world(12, 5);
+    const obs = [];
+    for (let s = 0; s < 5; s++)
+      for (let b = 0; b < 12; b++)
+        if ((b + s) % 3 !== 0) obs.push({ bench: `b${b}`, session: `s${s}`, y: Math.log(truth[b]! * hw[s]! * (1 + (rnd() - 0.5) * 0.02)) });
+    const fit = fitHardware(obs);
+    for (let s = 0; s < 5; s++) expect(Math.exp(fit.h.get(`s${s}`)!)).toBeCloseTo(hw[s]!, 1);
+    expect(new Set(fit.component.values()).size).toBe(1);
+  });
+  it("keeps unconnected groups apart", () => {
+    const fit = fitHardware([
+      { bench: "a", session: "s1", y: 0 },
+      { bench: "b", session: "s2", y: 1 },
+    ]);
+    expect(new Set(fit.component.values()).size).toBe(2);
+  });
+});
+
 describe("aggregateSessions", () => {
-  it("recovers the true ratio despite very different hardware", () => {
-    const agg = aggregateSessions(synth(12, 3.0), "t");
-    expect(agg.score).toBeGreaterThan(2.95);
-    expect(agg.score).toBeLessThan(3.05);
-    expect(agg.ciLow).toBeLessThanOrEqual(agg.score);
-    expect(agg.ciHigh).toBeGreaterThanOrEqual(agg.score);
-    expect(agg.icc).toBeLessThan(0.5);
+  it("is deterministic and brackets the score", () => {
+    const samples = [0, 0.2, -0.1].map((f) => ({ reps: Array.from({ length: 20 }, (_, i) => Math.exp(f) * (1 + i * 0.001)), logFactor: f }));
+    const a = aggregateSessions(samples, "x");
+    expect(a.score).toBeCloseTo(1.01, 1);
+    expect(a.ciLow).toBeLessThanOrEqual(a.score);
+    expect(a.ciHigh).toBeGreaterThanOrEqual(a.score);
+    expect(a.rawSpread).toBeGreaterThan(a.adjustedSpread);
+    expect(aggregateSessions(samples, "x").ciLow).toBe(a.ciLow);
   });
-  it("raw (un-normalised) values would be far off, proving normalisation matters", () => {
-    const s = synth(12, 3.0);
-    const raw = s.map((x) => median(x.reps));
-    expect(Math.max(...raw) / Math.min(...raw)).toBeGreaterThan(1.5);
+});
+
+const cfg: Config = {
+  targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, sessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
+  trackedVersionsPerLanguage: 1, maxAttempts: 3, sessionTimeBudgetMinutes: 60, repetitions: { min: 5, max: 10 },
+  budgetSecondsScale: 1, warmupRuns: 1, maxChainedRounds: 10,
+};
+const cands: Candidate[] = Array.from({ length: 30 }, (_, i) => ({ key: `k${i}`, language: "c", version: "1", variant: "v", problem: `p${i}` }));
+
+describe("planSessions", () => {
+  it("never repeats a benchmark in a session and picks the least measured first", () => {
+    const counts = new Map<string, Counts>(cands.slice(0, 20).map((c, i) => [c.key, { ok: i < 10 ? 2 : 1, failed: 0 }]));
+    const plan = planSessions(cands, counts, cfg, "seed");
+    for (const s of plan.sessions) {
+      expect(new Set(s.map((p) => p.key)).size).toBe(s.length);
+      expect(s.length).toBeLessThanOrEqual(10);
+      // fresh picks are the never-measured ones first
+      expect(s.filter((p) => p.reason === "new").length).toBeGreaterThan(0);
+    }
+    const fresh = plan.sessions.flatMap((s) => s.filter((p) => p.reason !== "overlap").map((p) => p.key));
+    expect(new Set(fresh).size).toBe(fresh.length); // disjoint between parallel sessions
+    expect(plan.sessions[0]!.some((p) => p.reason === "overlap")).toBe(true);
   });
-  it("is deterministic", () => {
-    expect(aggregateSessions(synth(5, 2), "x").ciLow).toBe(aggregateSessions(synth(5, 2), "x").ciLow);
+  it("plans nothing when every benchmark is sufficient", () => {
+    const counts = new Map<string, Counts>(cands.map((c) => [c.key, { ok: 3, failed: 0 }]));
+    expect(planSessions(cands, counts, cfg, "s").sessions).toHaveLength(0);
+  });
+  it("gives up on repeatedly failing benchmarks", () => {
+    const counts = new Map<string, Counts>(cands.map((c) => [c.key, { ok: 3, failed: 0 }]));
+    counts.set("k0", { ok: 0, failed: 3 });
+    expect(planSessions(cands, counts, cfg, "s").remaining).toBe(0);
   });
 });
 
 describe("analyze", () => {
-  it("builds benchmarks from data files", () => {
-    const hf = (t: number) => ({ times: [t, t, t], memory: [1e6, 1e6, 1e6], exitCodes: [0, 0, 0] });
-    const data: LanguageData = {
-      schemaVersion: 1,
-      language: "c",
-      sessions: {
-        s1: {
-          date: "2026-01-01T00:00:00Z",
-          repoCommit: "abc",
-          image: "gcc:14",
-          hyperfineVersion: "1.19.0",
-          hardware: { cpuModel: "X", cores: 4, ramBytes: 1, arch: "x86_64" },
-          kernel: "6",
-          anchorSpec: "a",
-          anchors: [{ at: "start", hyperfine: hf(1) }],
-        },
-      },
-      measurements: [
-        {
-          sessionId: "s1",
-          version: "14",
-          toolVersion: "gcc 14",
-          variant: "o3",
-          problem: "nbody",
-          runCommand: "x",
-          sourceHash: "h",
-          correct: true,
-          hyperfine: hf(2),
-        },
-      ],
-    };
-    const a = analyze([data], 50);
-    expect(a.benchmarks).toHaveLength(1);
-    expect(a.benchmarks[0]!.agg.score).toBeCloseTo(2);
-    expect(a.benchmarks[0]!.refSeconds).toBeCloseTo(2);
+  it("builds hardware-corrected benchmarks from sessions and measurements", () => {
+    const hf = (t: number) => ({ schema_version: 2, results: [{ measurements: [1, 2, 3].map(() => ({ time_wall_clock: { value: t }, memory_peak_resident: { value: 1e6 }, exit_code: 0 })) }] });
+    const mkSession = (id: string): Session => ({
+      id, startedAt: "2026-01-01T00:00:00Z", finishedAt: "2026-01-01T01:00:00Z", durationSeconds: 3600, repoCommit: "abc", trigger: {}, runner: {},
+      host: { cpu: { model: "X", cores: 4 } }, tooling: {}, containers: {}, config: {}, plan: [], order: [], skipped: [],
+    });
+    const m = (sessionId: string, problem: string, t: number): LanguageData["measurements"][number] => ({
+      sessionId, language: "c", version: "1", toolVersion: "gcc", variant: "v", variantSpec: {}, problem, args: [], containerImage: "gcc:1",
+      sourceFile: "main.c", sourceHash: "h", runCommand: "x", status: "ok", correct: true, startedAt: "", finishedAt: "", hyperfine: hf(t),
+    });
+    // machine B is exactly 2x slower than A; benchmark "shared" ran on both
+    const a = analyze(
+      { A: mkSession("A"), B: mkSession("B") },
+      [{ schemaVersion: 2, language: "c", measurements: [m("A", "shared", 1), m("B", "shared", 2), m("A", "onlyA", 4), m("B", "onlyB", 6)] }],
+      50,
+    );
+    const by = (p: string) => a.benchmarks.find((b) => b.problem === p)!;
+    expect(a.machineFactors.get("B")! / a.machineFactors.get("A")!).toBeCloseTo(2, 5);
+    // on the average machine (sqrt(2) slower than A): shared = 1*sqrt2, onlyA = 4*sqrt2, onlyB = 3*sqrt2
+    expect(by("shared").refSeconds).toBeCloseTo(Math.SQRT2, 3);
+    expect(by("onlyA").refSeconds).toBeCloseTo(4 * Math.SQRT2, 3);
+    expect(by("onlyB").refSeconds).toBeCloseTo(3 * Math.SQRT2, 3);
+    expect(by("shared").linked).toBe(true);
   });
 });

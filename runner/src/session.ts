@@ -1,32 +1,52 @@
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import {
+  benchmarkKey,
   hashSeed,
   mulberry32,
+  type Candidate,
+  type Config,
+  type Counts,
   type Language,
   type LanguageData,
   type Measurement,
-  type Problem,
+  type PlannedBenchmark,
   type Session,
+  type SessionsFile,
   type Variant,
 } from "@lb/core";
-import { loadLanguages, loadProblems, readSource, type LoadedLanguage, type LoadedProblem } from "@lb/core/discover";
+import {
+  dataDir,
+  loadConfig,
+  loadData,
+  loadLanguages,
+  loadProblems,
+  readSource,
+  type LoadedLanguage,
+  type LoadedProblem,
+} from "@lb/core/discover";
 import prettier from "prettier";
-import { ANCHOR, CACHE, ROOT, WORK } from "./config";
+import { CACHE, HYPERFINE_VERSION, ROOT, WORK } from "./config";
 import { Container } from "./docker";
 import { runHyperfine } from "./hyperfine";
 
 const log = (...a: unknown[]) => console.error(...a);
+const sha = (s: string | Buffer) => crypto.createHash("sha256").update(s).digest("hex");
+
+/* ------------------------------------------------------------------ tasks */
 
 export interface Task {
+  language: Language;
+  version: string;
   variant: Variant;
   problem: LoadedProblem;
-  /** resolved commands as stored in the data file */
   buildCommand?: string;
   runCommand: string;
+  args: string[];
   bin: string;
+  sourceFile: string;
   sourceHash: string;
 }
 
@@ -36,14 +56,20 @@ export function findLanguage(id: string): LoadedLanguage {
   return l;
 }
 
-/** Generate (deterministically) the input files of all problems that need one. */
-export function prepareInputs(problems: LoadedProblem[], workDir: string): void {
+export interface InputInfo {
+  sha256: string;
+  bytes: number;
+}
+
+/** Generate (deterministically) the input files of the given problems. */
+export function prepareInputs(problems: LoadedProblem[], workDir: string): Map<string, InputInfo> {
+  const infos = new Map<string, InputInfo>();
   for (const p of problems) {
     const inp = p.spec.input;
     if (!inp) continue;
     const gen = path.join(p.dir, inp.generator);
-    const hash = crypto.createHash("sha256").update(fs.readFileSync(gen)).digest("hex").slice(0, 12);
-    const cached = path.join(CACHE, "inputs", `${p.spec.id}-${hash}`, inp.file);
+    const genHash = sha(fs.readFileSync(gen)).slice(0, 12);
+    const cached = path.join(CACHE, "inputs", `${p.spec.id}-${genHash}`, inp.file);
     if (!fs.existsSync(cached)) {
       fs.mkdirSync(path.dirname(cached), { recursive: true });
       log(`[input] generating ${p.spec.id}/${inp.file}`);
@@ -52,11 +78,13 @@ export function prepareInputs(problems: LoadedProblem[], workDir: string): void 
     const target = path.join(workDir, "inputs", inp.file);
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.copyFileSync(cached, target);
+    const buf = fs.readFileSync(cached);
+    infos.set(p.spec.id, { sha256: sha(buf), bytes: buf.length });
   }
+  return infos;
 }
 
-const sub = (tpl: string, vars: Record<string, string>) =>
-  tpl.replace(/\{(\w+)\}/g, (m, k) => vars[k] ?? m);
+const sub = (tpl: string, vars: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (m, k) => vars[k] ?? m);
 
 export function planTasks(
   lang: Language,
@@ -71,49 +99,57 @@ export function planTasks(
     for (const problem of problems) {
       if (filter.problem && problem.spec.id !== filter.problem) continue;
       const src = readSource(ROOT, lang, problem.spec.id);
-      if (src === undefined) continue; // this language has no implementation of that problem (yet)
+      if (src === undefined) continue; // no implementation of that problem in this language (yet)
       const vars = {
         src: `/repo/languages/${lang.id}/impl/${problem.spec.id}`,
-        bin: `/work/bin/${variant.id}-${problem.spec.id}`,
+        bin: `/work/bin/${lang.id}-${version}-${variant.id}-${problem.spec.id}`,
       };
       const input = problem.spec.input ? `/work/inputs/${problem.spec.input.file}` : "";
       const args = problem.spec.args.map((a) => a.replace("{input}", input));
       tasks.push({
+        language: lang,
+        version,
         variant,
         problem,
         buildCommand: variant.build ? sub(variant.build, vars) : undefined,
         runCommand: [sub(variant.run, vars), ...args].join(" "),
+        args,
         bin: vars.bin,
-        sourceHash: crypto.createHash("sha256").update(src).digest("hex").slice(0, 16),
+        sourceFile: `languages/${lang.id}/impl/${problem.spec.id}/${lang.sourceFile}`,
+        sourceHash: sha(src).slice(0, 16),
       });
     }
   }
   return tasks;
 }
 
-export function imageFor(lang: Language, version: string) {
-  return lang.image.replace("{version}", version);
-}
+export const imageFor = (lang: Language, version: string) => lang.image.replace("{version}", version);
 
 export interface BuildResult {
   ok: boolean;
   binarySize?: number;
+  seconds?: number;
+  output?: string;
   message?: string;
 }
 
 export function build(c: Container, t: Task): BuildResult {
   c.exec("mkdir -p /work/bin");
   if (!t.buildCommand) return { ok: true };
+  const t0 = performance.now();
   const r = c.exec(t.buildCommand, { timeoutMs: 15 * 60_000 });
-  if (r.code !== 0) return { ok: false, message: `build failed:\n${r.stderr || r.stdout}` };
+  const seconds = (performance.now() - t0) / 1000;
+  const output = (r.stdout + r.stderr).slice(0, 4000);
+  if (r.code !== 0) return { ok: false, seconds, output, message: `build failed:\n${output}` };
   const size = c.exec(`stat -c %s ${t.bin}`);
-  return { ok: true, binarySize: size.code === 0 ? Number(size.stdout.trim()) : undefined };
+  return { ok: true, seconds, output, binarySize: size.code === 0 ? Number(size.stdout.trim()) : undefined };
 }
 
 export interface CheckResult {
   correct: boolean;
   message?: string;
   ms: number;
+  outputSha256?: string;
 }
 
 /** Run the program once and compare its stdout with problems/<id>/expected.txt */
@@ -121,24 +157,21 @@ export function check(c: Container, t: Task): CheckResult {
   const r = c.exec(t.runCommand, { timeoutMs: 20 * 60_000 });
   const norm = (s: string) => s.replace(/\r\n/g, "\n").trimEnd();
   if (r.code !== 0) return { correct: false, ms: r.ms, message: `exit code ${r.code}\n${r.stderr.slice(0, 2000)}` };
+  const outputSha256 = sha(norm(r.stdout));
   if (norm(r.stdout) !== norm(t.problem.expected)) {
     return {
       correct: false,
       ms: r.ms,
+      outputSha256,
       message: `output differs\n--- expected\n${norm(t.problem.expected).slice(0, 600)}\n--- got\n${norm(r.stdout).slice(0, 600)}`,
     };
   }
-  return { correct: true, ms: r.ms };
+  return { correct: true, ms: r.ms, outputSha256 };
 }
 
 /* ------------------------------------------------------------------ verify */
 
-export function verify(opts: {
-  language: string;
-  version?: string;
-  variant?: string;
-  problems?: string[];
-}): boolean {
+export function verify(opts: { language: string; version?: string; variant?: string; problems?: string[] }): boolean {
   const lang = findLanguage(opts.language);
   const version = opts.version ?? lang.spec.versions.find((v) => v.latest)!.version;
   const problems = loadProblems(ROOT).filter((p) => !opts.problems || opts.problems.includes(p.spec.id));
@@ -175,143 +208,308 @@ export function verify(opts: {
   return failed === 0;
 }
 
-/* ------------------------------------------------------------------- bench */
+/* ---------------------------------------------------------------- planning */
 
-function captureEnvironment(c: Container, image: string, anchors: Session["anchors"]): Session {
-  const sh = (cmd: string) => c.exec(cmd).stdout.trim();
-  const env = process.env;
-  const commit = env.GITHUB_SHA ?? execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
-  const hf = sh("hyperfine --version").replace("hyperfine", "").trim();
+/** All benchmarks that should be measured right now: newest tracked versions x variants x problems. */
+export function enumerateCandidates(): Candidate[] {
+  const problems = loadProblems(ROOT);
+  const out: Candidate[] = [];
+  for (const l of loadLanguages(ROOT))
+    for (const v of l.spec.versions)
+      for (const t of planTasks(l.spec, v.version, problems))
+        out.push({
+          key: benchmarkKey({ language: l.spec.id, version: v.version, variant: t.variant.id, problem: t.problem.spec.id }),
+          language: l.spec.id,
+          version: v.version,
+          variant: t.variant.id,
+          problem: t.problem.spec.id,
+        });
+  return out;
+}
+
+export function currentCounts(): Map<string, Counts> {
+  const counts = new Map<string, Counts>();
+  for (const d of loadData(ROOT).languages)
+    for (const m of d.measurements) {
+      const k = benchmarkKey(m);
+      const c = counts.get(k) ?? counts.set(k, { ok: 0, failed: 0 }).get(k)!;
+      if (m.status === "ok") c.ok++;
+      else c.failed++;
+    }
+  return counts;
+}
+
+export interface SessionPlan {
+  sessionId: string;
+  picks: PlannedBenchmark[];
+  config: Config;
+  trigger: Record<string, unknown>;
+}
+
+/* ----------------------------------------------------------------- session */
+
+const read = (c: Container, cmd: string) => c.exec(cmd).stdout.trim();
+
+function hostInfo(c: Container) {
+  const lscpuLocal = spawnSync("lscpu", { encoding: "utf8" });
+  const cpuinfo = read(c, "cat /proc/cpuinfo");
+  const first = cpuinfo.split(/\n\s*\n/)[0] ?? "";
+  const field = (k: string) => first.match(new RegExp(`^${k}\\s*:\\s*(.*)$`, "m"))?.[1]?.trim();
+  const mem = (k: string) => Number(read(c, `grep '^${k}:' /proc/meminfo | awk '{print $2}'`)) * 1024;
   return {
-    date: new Date().toISOString(),
-    actionsRunUrl:
-      env.GITHUB_RUN_ID && env.GITHUB_REPOSITORY
-        ? `${env.GITHUB_SERVER_URL ?? "https://github.com"}/${env.GITHUB_REPOSITORY}/actions/runs/${env.GITHUB_RUN_ID}`
-        : undefined,
-    repoCommit: commit,
-    image,
-    imageDigest: c.imageDigest(),
-    hyperfineVersion: hf,
-    hardware: {
-      cpuModel: sh("grep -m1 'model name' /proc/cpuinfo | cut -d: -f2") || sh("uname -m"),
-      cores: Number(sh("nproc")),
-      ramBytes: Number(sh("grep MemTotal /proc/meminfo | awk '{print $2}'")) * 1024,
-      arch: sh("uname -m"),
+    uname: read(c, "uname -a"),
+    kernel: read(c, "uname -r"),
+    arch: read(c, "uname -m"),
+    cpu: {
+      model: field("model name") ?? read(c, "uname -m"),
+      vendor: field("vendor_id"),
+      family: field("cpu family"),
+      modelNumber: field("model"),
+      stepping: field("stepping"),
+      microcode: field("microcode"),
+      cacheSize: field("cache size"),
+      mhzAtStart: field("cpu MHz"),
+      bogomips: field("bogomips"),
+      flags: field("flags"),
+      cores: Number(read(c, "nproc")),
+      logicalProcessors: (cpuinfo.match(/^processor\s*:/gm) ?? []).length,
+      lscpu: lscpuLocal.status === 0 ? lscpuLocal.stdout : undefined,
     },
-    kernel: sh("uname -r"),
-    osRelease: sh(". /etc/os-release && echo $PRETTY_NAME"),
-    glibc: sh("ldd --version 2>&1 | head -n1"),
-    anchorSpec: ANCHOR.spec,
-    anchors,
+    memory: { totalBytes: mem("MemTotal"), availableBytes: mem("MemAvailable"), swapTotalBytes: mem("SwapTotal") },
+    cgroup: {
+      cpuMax: read(c, "cat /sys/fs/cgroup/cpu.max 2>/dev/null"),
+      memoryMax: read(c, "cat /sys/fs/cgroup/memory.max 2>/dev/null"),
+    },
+    scalingGovernor: read(c, "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null"),
+    smt: read(c, "cat /sys/devices/system/cpu/smt/active 2>/dev/null"),
+    loadAvgStart: read(c, "cat /proc/loadavg"),
+    diskFree: read(c, "df -P /work | tail -n1"),
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
 
-export async function bench(opts: {
-  language: string;
-  version: string;
-  reps?: number; // override max runs (for dry runs)
-  problems?: string[];
-  variant?: string;
-  dryRun?: boolean;
-  /** write a fragment file (merged later by `lb merge`) instead of appending to data/<lang>.json */
-  out?: string;
-  sessionSuffix?: string;
-}): Promise<void> {
-  const lang = findLanguage(opts.language);
-  const image = imageFor(lang.spec, opts.version);
-  const problems = loadProblems(ROOT).filter((p) => !opts.problems || opts.problems.includes(p.spec.id));
-  const sessionId = `${new Date().toISOString().replace(/[:.]/g, "-")}-${lang.spec.id}-${opts.version}${opts.sessionSuffix ? "-" + opts.sessionSuffix : ""}`;
-  const workDir = path.join(WORK, sessionId);
+function runnerInfo() {
+  const e = process.env;
+  const pick = (...keys: string[]) => Object.fromEntries(keys.filter((k) => e[k] !== undefined).map((k) => [k, e[k]]));
+  return {
+    githubActions: e.GITHUB_ACTIONS === "true",
+    ...pick("RUNNER_NAME", "RUNNER_OS", "RUNNER_ARCH", "RUNNER_ENVIRONMENT", "ImageOS", "ImageVersion", "RUNNER_TRACKING_ID"),
+    hostOs: `${process.platform} ${process.arch}`,
+    hostNode: process.version,
+  };
+}
+
+function triggerInfo(extra: Record<string, unknown>) {
+  const e = process.env;
+  const base = e.GITHUB_SERVER_URL ?? "https://github.com";
+  return {
+    event: e.GITHUB_EVENT_NAME,
+    workflow: e.GITHUB_WORKFLOW,
+    job: e.GITHUB_JOB,
+    runId: e.GITHUB_RUN_ID,
+    runAttempt: e.GITHUB_RUN_ATTEMPT,
+    runNumber: e.GITHUB_RUN_NUMBER,
+    runUrl: e.GITHUB_RUN_ID && e.GITHUB_REPOSITORY ? `${base}/${e.GITHUB_REPOSITORY}/actions/runs/${e.GITHUB_RUN_ID}` : undefined,
+    repository: e.GITHUB_REPOSITORY,
+    ref: e.GITHUB_REF,
+    actor: e.GITHUB_ACTOR,
+    ...extra,
+  };
+}
+
+const gitCommit = () => process.env.GITHUB_SHA ?? execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, encoding: "utf8" }).trim();
+
+function hyperfineInfo() {
+  const arch = process.arch === "arm64" ? "aarch64" : "x86_64";
+  return {
+    hyperfineVersion: HYPERFINE_VERSION,
+    hyperfineBuild: `hyperfine-v${HYPERFINE_VERSION}-${arch}-unknown-linux-musl`,
+    hyperfineSource: `https://github.com/sharkdp/hyperfine/releases/tag/v${HYPERFINE_VERSION}`,
+  };
+}
+
+export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?: boolean }): Promise<void> {
+  const cfg = plan.config;
+  const startedAt = new Date();
+  const problems = loadProblems(ROOT);
+  const langs = new Map(loadLanguages(ROOT).map((l) => [l.spec.id, l]));
+  const workDir = path.join(WORK, plan.sessionId);
   fs.mkdirSync(workDir, { recursive: true });
-  prepareInputs(problems, workDir);
+  const inputs = prepareInputs(
+    problems.filter((p) => plan.picks.some((x) => x.problem === p.spec.id)),
+    workDir,
+  );
 
-  /* anchor container (on the same VM as the benchmark container) */
-  const anchorDir = path.join(WORK, `${sessionId}-anchor`);
-  const ac = Container.start(`lb-anchor-${process.pid}`, ANCHOR.image, anchorDir, log);
-  const bc = Container.start(`lb-bench-${process.pid}`, image, workDir, log);
-  try {
-    ac.exec("mkdir -p /work/anchor");
-    const ab = ac.exec(ANCHOR.build);
-    if (ab.code !== 0) throw new Error(`anchor build failed: ${ab.stderr}`);
-    const anchors: Session["anchors"] = [];
-    const measureAnchor = (at: "start" | "middle" | "end") => {
-      log(`[anchor] ${at}`);
-      const runs = opts.reps ? Math.min(opts.reps, ANCHOR.runs) : ANCHOR.runs;
-      anchors.push({ at, hyperfine: runHyperfine(ac, anchorDir, ANCHOR.run, runs, 2) });
-    };
-
-    const tasks = planTasks(lang.spec, opts.version, problems, { variant: opts.variant });
-    const rnd = mulberry32(hashSeed(sessionId));
-    for (let i = tasks.length - 1; i > 0; i--) {
-      const j = Math.floor(rnd() * (i + 1));
-      [tasks[i], tasks[j]] = [tasks[j]!, tasks[i]!];
+  // resolve picks into tasks
+  const tasks: { pick: PlannedBenchmark; task: Task; image: string }[] = [];
+  const skipped: Record<string, unknown>[] = [];
+  for (const pick of plan.picks) {
+    const lang = langs.get(pick.language);
+    const task = lang && planTasks(lang.spec, pick.version, problems, { variant: pick.variant, problem: pick.problem })[0];
+    if (!lang || !task) {
+      skipped.push({ key: pick.key, reason: "no longer configured" });
+      continue;
     }
+    tasks.push({ pick, task, image: imageFor(lang.spec, pick.version) });
+  }
+  const rnd = mulberry32(hashSeed(plan.sessionId));
+  for (let i = tasks.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    [tasks[i], tasks[j]] = [tasks[j]!, tasks[i]!];
+  }
 
-    const toolVersion = bc.exec(lang.spec.toolVersionCmd).stdout.trim();
-    const measurements: Measurement[] = [];
-    measureAnchor("start");
-    for (const [n, t] of tasks.entries()) {
-      if (n === Math.floor(tasks.length / 2)) measureAnchor("middle");
-      const label = `${lang.spec.id} ${opts.version} ${t.variant.id} ${t.problem.spec.id}`;
-      const b = build(bc, t);
-      if (!b.ok) {
-        log(`[skip] ${label}: ${b.message}`);
+  const containers = new Map<string, Container>();
+  const containerInfo: Record<string, unknown> = {};
+  const containerFor = (image: string, lang: Language) => {
+    let c = containers.get(image);
+    if (!c) {
+      c = Container.start(`lb-${process.pid}-${containers.size}`, image, workDir, log);
+      containers.set(image, c);
+      containerInfo[image] = {
+        image,
+        digest: c.imageDigest(),
+        osRelease: read(c, ". /etc/os-release 2>/dev/null && echo $PRETTY_NAME"),
+        kernel: read(c, "uname -r"),
+        glibc: read(c, "ldd --version 2>&1 | head -n1"),
+        toolVersion: read(c, lang.toolVersionCmd),
+        hyperfine: read(c, "hyperfine --version"),
+      };
+    }
+    return c;
+  };
+
+  const measurements: Measurement[] = [];
+  const executed: string[] = [];
+  const deadline = startedAt.getTime() + cfg.sessionTimeBudgetMinutes * 60_000;
+  let host: ReturnType<typeof hostInfo> | undefined;
+  try {
+    for (const { pick, task, image } of tasks) {
+      if (Date.now() > deadline) {
+        skipped.push({ key: pick.key, reason: "session time budget exhausted" });
         continue;
       }
-      const chk = check(bc, t);
-      if (!chk.correct) log(`[WRONG OUTPUT] ${label}: ${chk.message}`);
-      const budget = t.problem.spec.budgetSeconds;
-      const { min, max } = t.problem.spec.runs;
-      const maxRuns = opts.reps ? Math.min(opts.reps, max) : max;
-      const est = Math.max(chk.ms / 1000, 1e-3);
-      const runs = Math.max(opts.reps ? Math.min(opts.reps, min) : min, Math.min(maxRuns, Math.floor(budget / est)));
-      log(`[bench] ${label}: ~${est.toFixed(2)}s/run -> ${runs} runs`);
-      const hf = runHyperfine(bc, workDir, t.runCommand, runs);
-      measurements.push({
-        sessionId,
-        version: opts.version,
-        toolVersion,
-        variant: t.variant.id,
-        problem: t.problem.spec.id,
-        buildCommand: t.buildCommand,
-        runCommand: t.runCommand,
-        sourceHash: t.sourceHash,
-        correct: chk.correct,
-        binarySize: b.binarySize,
-        hyperfine: hf,
-      });
+      const c = containerFor(image, task.language);
+      host ??= hostInfo(c);
+      const label = `${pick.key} [${pick.reason}]`;
+      const base = {
+        sessionId: plan.sessionId,
+        language: pick.language,
+        version: pick.version,
+        toolVersion: (containerInfo[image] as any).toolVersion as string,
+        variant: pick.variant,
+        variantSpec: task.variant as unknown as Record<string, unknown>,
+        problem: pick.problem,
+        args: task.args,
+        containerImage: image,
+        sourceFile: task.sourceFile,
+        sourceHash: task.sourceHash,
+        inputSha256: inputs.get(pick.problem)?.sha256,
+        inputBytes: inputs.get(pick.problem)?.bytes,
+        buildCommand: task.buildCommand,
+        runCommand: task.runCommand,
+        loadAvgBefore: read(c, "cat /proc/loadavg"),
+      };
+      const started = new Date().toISOString();
+      executed.push(pick.key);
+      const fail = (error: string, extra: Partial<Measurement> = {}) => {
+        log(`[FAILED] ${label}: ${error.slice(0, 300)}`);
+        measurements.push({ ...base, status: "failed", error: error.slice(0, 4000), correct: false, startedAt: started, finishedAt: new Date().toISOString(), ...extra });
+      };
+      try {
+        const b = build(c, task);
+        if (!b.ok) {
+          fail(b.message ?? "build failed", { buildSeconds: b.seconds, buildOutput: b.output });
+          continue;
+        }
+        const chk = check(c, task);
+        if (chk.outputSha256 === undefined) {
+          fail(chk.message ?? "run failed", { buildSeconds: b.seconds, buildOutput: b.output, binarySize: b.binarySize });
+          continue;
+        }
+        if (!chk.correct) log(`[WRONG OUTPUT] ${label}: ${chk.message}`);
+        const { min, max } = task.problem.spec.runs;
+        const hi = Math.min(max, cfg.repetitions.max);
+        const lo = Math.max(cfg.repetitions.min, Math.min(min, cfg.repetitions.max));
+        const est = Math.max(chk.ms / 1000, 1e-3);
+        const runs = Math.max(lo, Math.min(hi, Math.floor((task.problem.spec.budgetSeconds * cfg.budgetSecondsScale) / est)));
+        log(`[bench] ${label}: ~${est.toFixed(2)}s/run -> ${runs} runs`);
+        const hf = runHyperfine(c, workDir, task.runCommand, runs, cfg.warmupRuns);
+        measurements.push({
+          ...base,
+          buildSeconds: b.seconds,
+          buildOutput: b.output,
+          binarySize: b.binarySize,
+          status: "ok",
+          correct: chk.correct,
+          outputSha256: chk.outputSha256,
+          startedAt: started,
+          finishedAt: new Date().toISOString(),
+          loadAvgAfter: read(c, "cat /proc/loadavg"),
+          hyperfineArgs: hf.args,
+          warmupRuns: cfg.warmupRuns,
+          hyperfine: hf.json,
+        });
+      } catch (e) {
+        fail(String(e));
+      }
     }
-    measureAnchor("end");
-
-    const session = captureEnvironment(bc, image, anchors);
-    session.order = tasks.map((t) => `${t.variant.id}/${t.problem.spec.id}`);
-    if (opts.dryRun) {
-      log(`[dry-run] ${measurements.length} measurements, not writing data`);
-      return;
-    }
-    if (opts.out) {
-      fs.mkdirSync(path.dirname(path.resolve(opts.out)), { recursive: true });
-      fs.writeFileSync(opts.out, JSON.stringify({ language: lang.spec.id, sessionId, session, measurements }));
-      log(`[done] wrote fragment ${opts.out} (${measurements.length} measurements)`);
-      return;
-    }
-    await appendData(lang.spec.id, sessionId, session, measurements);
-    log(`[done] wrote ${measurements.length} measurements to data/${lang.spec.id}.json (session ${sessionId})`);
   } finally {
-    ac.stop();
-    bc.stop();
+    const hostFinal = host;
+    const finishedAt = new Date();
+    const loadAvgEnd = containers.size ? read([...containers.values()][0]!, "cat /proc/loadavg") : undefined;
+    for (const c of containers.values()) c.stop();
+    if (hostFinal) {
+      const session: Session = {
+        id: plan.sessionId,
+        startedAt: startedAt.toISOString(),
+        finishedAt: finishedAt.toISOString(),
+        durationSeconds: (finishedAt.getTime() - startedAt.getTime()) / 1000,
+        repoCommit: gitCommit(),
+        trigger: triggerInfo(plan.trigger),
+        runner: runnerInfo(),
+        host: { ...hostFinal, loadAvgEnd } as Session["host"],
+        tooling: {
+          ...hyperfineInfo(),
+          docker: spawnSync("docker", ["version", "--format", "{{json .}}"], { encoding: "utf8" }).stdout.trim(),
+          node: process.version,
+        },
+        containers: containerInfo,
+        config: cfg as unknown as Record<string, unknown>,
+        plan: plan.picks as unknown as Record<string, unknown>[],
+        order: executed,
+        skipped,
+      };
+      fs.mkdirSync(path.dirname(path.resolve(opts.out)), { recursive: true });
+      fs.writeFileSync(opts.out, JSON.stringify({ session, measurements }));
+      log(`[done] session ${plan.sessionId}: ${measurements.filter((m) => m.status === "ok").length} ok, ${measurements.filter((m) => m.status === "failed").length} failed, ${skipped.length} skipped -> ${opts.out}`);
+    }
   }
 }
 
-export async function appendData(language: string, sessionId: string, session: Session, ms: Measurement[]) {
-  const file = path.join(ROOT, "data", `${language}.json`);
-  const data: LanguageData = fs.existsSync(file)
-    ? JSON.parse(fs.readFileSync(file, "utf8"))
-    : { schemaVersion: 1, language, sessions: {}, measurements: [] };
-  if (data.sessions[sessionId]) throw new Error(`session ${sessionId} already recorded`);
-  data.sessions[sessionId] = session; // append-only: existing entries are never touched
-  data.measurements.push(...ms);
+/* ------------------------------------------------------------------- merge */
+
+async function writeJson(file: string, data: unknown) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
   const cfg = (await prettier.resolveConfig(file)) ?? {};
   fs.writeFileSync(file, await prettier.format(JSON.stringify(data), { ...cfg, parser: "json" }));
 }
+
+/** Append one session fragment: sessions.json gets the session, data/<language>.json the measurements. */
+export async function mergeFragment(frag: { session: Session; measurements: Measurement[] }) {
+  const dir = dataDir(ROOT);
+  const sFile = path.join(dir, "sessions.json");
+  const sessions: SessionsFile = fs.existsSync(sFile) ? JSON.parse(fs.readFileSync(sFile, "utf8")) : { schemaVersion: 2, sessions: {} };
+  if (sessions.sessions[frag.session.id]) throw new Error(`session ${frag.session.id} already recorded`);
+  sessions.sessions[frag.session.id] = frag.session; // append-only
+  await writeJson(sFile, sessions);
+  const byLang = new Map<string, Measurement[]>();
+  for (const m of frag.measurements) (byLang.get(m.language) ?? byLang.set(m.language, []).get(m.language)!).push(m);
+  for (const [language, ms] of byLang) {
+    const file = path.join(dir, `${language}.json`);
+    const data: LanguageData = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : { schemaVersion: 2, language, measurements: [] };
+    data.measurements.push(...ms);
+    await writeJson(file, data);
+  }
+}
+
+export { loadConfig };

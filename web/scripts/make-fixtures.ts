@@ -1,14 +1,15 @@
 /**
- * DEV ONLY: writes synthetic data files to .work/fixtures so the site can be developed before real
- * CI sessions exist. Build with LB_DATA_DIR=.work/fixtures. Never committed, never published.
+ * DEV ONLY: writes synthetic data to .work/fixtures so the site can be developed before real CI
+ * sessions exist. Build with LB_DATA_DIR=.work/fixtures. Never committed, never published.
  */
 import fs from "node:fs";
 import path from "node:path";
-import { mulberry32, type LanguageData } from "@lb/core";
+import { mulberry32, type LanguageData, type Session } from "@lb/core";
 import { findRepoRoot, loadLanguages, loadProblems } from "@lb/core/discover";
 
 const root = findRepoRoot(import.meta.dirname);
 const out = path.join(root, ".work", "fixtures");
+fs.rmSync(out, { recursive: true, force: true });
 fs.mkdirSync(out, { recursive: true });
 
 const rnd = mulberry32(7);
@@ -18,7 +19,6 @@ const CPUS = [
   { model: "Intel(R) Xeon(R) Platinum 8370C CPU @ 2.80GHz", speed: 1.15 },
   { model: "AMD EPYC 9V74 80-Core Processor", speed: 0.8 },
 ];
-/** seconds on the reference machine, per language / problem (rough orders of magnitude) */
 const base: Record<string, Record<string, number>> = {
   c: { startup: 0.001, nbody: 0.1, "binary-trees": 0.15, "json-parse": 0.2, hashmap: 0.1, sort: 0.25, "string-ops": 0.08, "parallel-reduce": 0.12, "file-processing": 0.3 },
   rust: { startup: 0.001, nbody: 0.1, "binary-trees": 0.14, "json-parse": 0.18, hashmap: 0.14, sort: 0.1, "string-ops": 0.07, "parallel-reduce": 0.12, "file-processing": 0.35 },
@@ -26,40 +26,50 @@ const base: Record<string, Record<string, number>> = {
   node: { startup: 0.04, nbody: 0.14, "binary-trees": 0.4, "json-parse": 0.5, hashmap: 0.25, sort: 0.2, "string-ops": 0.5, "parallel-reduce": 0.2, "file-processing": 0.9 },
   python: { startup: 0.015, nbody: 3.2, "binary-trees": 2.5, "json-parse": 0.5, hashmap: 0.9, sort: 1.1, "string-ops": 0.5, "parallel-reduce": 2.6, "file-processing": 2.6 },
 };
-const ANCHOR = 0.11;
 
-const reps = (mean: number, sd: number, n: number) =>
-  Array.from({ length: n }, () => Math.round(mean * noise(sd) * 1e7) / 1e7);
+const hf = (t: number, mem: number, n: number) => ({
+  schema_version: 2,
+  results: [{ command: "fixture", measurements: Array.from({ length: n }, () => ({
+    time_wall_clock: { value: Math.round(t * noise(0.02) * 1e7) / 1e7, unit: "second" },
+    memory_peak_resident: { value: Math.round(mem * noise(0.03)), unit: "byte" }, exit_code: 0 })) }],
+});
 
-for (const l of loadLanguages(root)) {
-  const probs = loadProblems(root).filter((p) => fs.existsSync(path.join(l.dir, "impl", p.spec.id)));
-  const data: LanguageData = { schemaVersion: 1, language: l.spec.id, sessions: {}, measurements: [] };
-  l.spec.versions.forEach((v, vi) => {
-    const age = l.spec.versions.length - 1 - vi; // older = slower
-    for (let s = 0; s < 6; s++) {
-      const cpu = CPUS[s % CPUS.length]!;
-      const id = `fixture-${l.spec.id}-${v.version}-${s}`;
-      const date = new Date(Date.UTC(2026, 8, 1 + s * 4 + vi)).toISOString();
-      const mk = (t: number, n: number) => ({ times: reps(t, 0.02, n), memory: Array(n).fill(20e6), exitCodes: Array(n).fill(0) });
-      data.sessions[id] = {
-        date, repoCommit: "fixture", image: l.spec.image.replace("{version}", v.version), hyperfineVersion: "2.0.0",
-        hardware: { cpuModel: cpu.model, cores: 4, ramBytes: 16e9, arch: "x86_64" }, kernel: "6.8.0-fixture",
-        anchorSpec: "fixture",
-        anchors: (["start", "middle", "end"] as const).map((at) => ({ at, hyperfine: mk(ANCHOR * cpu.speed, 30) })),
-      };
-      for (const variant of l.spec.variants) {
-        for (const p of probs) {
-          const vf = variant.default ? 1 : 1.05 + (variant.id.length % 3) * 0.04;
-          const t = (base[l.spec.id]?.[p.spec.id] ?? 1) * (1 + age * 0.06) * vf * cpu.speed;
-          data.measurements.push({
-            sessionId: id, version: v.version, toolVersion: `${l.spec.name} ${v.version} (fixture)`, variant: variant.id,
-            problem: p.spec.id, buildCommand: variant.build, runCommand: variant.run, sourceHash: "fixture", correct: true,
-            hyperfine: { ...mk(t, 30), memory: Array(30).fill(Math.round(10e6 * (1 + rnd()))) },
-          });
-        }
-      }
-    }
+const langs = loadLanguages(root);
+const problems = loadProblems(root);
+const sessions: Record<string, Session> = {};
+const data = new Map<string, LanguageData>(langs.map((l) => [l.spec.id, { schemaVersion: 2, language: l.spec.id, measurements: [] }]));
+
+type B = { l: (typeof langs)[number]; version: string; variant: (typeof langs)[number]["spec"]["variants"][number]; p: (typeof problems)[number]; age: number };
+const all: B[] = [];
+for (const l of langs) {
+  const versions = Object.keys(l.releases).sort((a, b) => l.releases[a]!.date.localeCompare(l.releases[b]!.date));
+  versions.forEach((version, i) => {
+    for (const variant of l.spec.variants)
+      for (const p of problems) if (fs.existsSync(path.join(l.dir, "impl", p.spec.id))) all.push({ l, version, variant, p, age: versions.length - 1 - i });
   });
-  fs.writeFileSync(path.join(out, `${l.spec.id}.json`), JSON.stringify(data));
 }
+
+for (let s = 0; s < 8; s++) {
+  const cpu = CPUS[s % CPUS.length]!;
+  const speed = cpu.speed * noise(0.1);
+  const id = `fixture-session-${s}`;
+  const started = new Date(Date.UTC(2026, 8, 1 + s * 3)).toISOString();
+  sessions[id] = {
+    id, startedAt: started, finishedAt: started, durationSeconds: 3600, repoCommit: "fixture", trigger: {}, runner: {},
+    host: { cpu: { model: cpu.model, cores: 4 } }, tooling: { hyperfineVersion: "2.0.0" }, containers: {}, config: {}, plan: [], order: [], skipped: [],
+  };
+  // each session runs a random ~55% of all benchmarks, always including the first 30 (overlap)
+  all.forEach((b, i) => {
+    if (i >= 30 && rnd() > 0.55) return;
+    const t = (base[b.l.spec.id]?.[b.p.spec.id] ?? 1) * (1 + b.age * 0.06) * (b.variant.default ? 1 : 1.05 + (b.variant.id.length % 3) * 0.04) * speed;
+    data.get(b.l.spec.id)!.measurements.push({
+      sessionId: id, language: b.l.spec.id, version: b.version, toolVersion: `${b.l.spec.name} ${b.version} (fixture)`, variant: b.variant.id,
+      variantSpec: b.variant as never, problem: b.p.spec.id, args: [], containerImage: b.l.spec.image.replace("{version}", b.version), sourceFile: "fixture",
+      sourceHash: "fixture", runCommand: b.variant.run, buildCommand: b.variant.build, status: "ok", correct: true, startedAt: started, finishedAt: started,
+      hyperfine: hf(t, 10e6 * (1 + rnd()), 12),
+    });
+  });
+}
+fs.writeFileSync(path.join(out, "sessions.json"), JSON.stringify({ schemaVersion: 2, sessions }));
+for (const [l, d] of data) fs.writeFileSync(path.join(out, `${l}.json`), JSON.stringify(d));
 console.log("fixtures written to", out);

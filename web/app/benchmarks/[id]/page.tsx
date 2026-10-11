@@ -41,16 +41,18 @@ export default async function Benchmark({ params }: { params: Promise<{ id: stri
   const c = toCell(m, b);
   const ref = reference(m, b.problem);
   const src = sourceOf(m, b.language, b.problem);
-  const ratios = b.sessions.map((s) => s.ratio);
+  const factors = b.sessions.map((s) => s.machineFactor);
+  const adjusted = b.sessions.map((s) => s.adjustedMedian);
   const args = p.spec.args.join(" ");
   const firstSession = b.sessions[0]!;
-  const cmd = `pnpm lb bench ${b.language} ${b.version} --problems ${b.problem} --variant ${b.variant}`;
+  const nSessionsTotal = m.analysis.sessionCount;
+  const cmd = `pnpm lb verify ${b.language} --version ${b.version} --variant ${b.variant} --problems ${b.problem}`;
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: `${l.spec.name} ${b.version} ${p.spec.title} benchmark`, description: `Raw repetitions and statistics of ${b.sessions.length} benchmark sessions`, url: `${repoUrl}/blob/main/data/${b.language}.json` }} />
       <p className="small muted"><Link href={`/languages/${b.language}/`}>{l.spec.name}</Link> › <Link href={`/problems/${b.problem}/`}>{p.spec.title}</Link></p>
       <h1>{l.spec.name} {b.version} · {p.spec.title}</h1>
-      <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs C ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the reference machine, {mb(c.memoryMB)} peak memory.
+      <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs C ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the average machine, {mb(c.memoryMB)} average memory.
         {c.provisional && <> <span className="badge warn">provisional: fewer than 3 sessions</span></>} {c.correct ? <span className="badge good">output verified</span> : <span className="badge warn">output differs from expected!</span>}</p>
 
       <h2>How this number came about</h2>
@@ -65,32 +67,31 @@ export default async function Benchmark({ params }: { params: Promise<{ id: stri
           <dl className="kv" style={{ marginTop: 6 }}>
             {b.buildCommand && <><dt>build</dt><dd><code>{b.buildCommand}</code></dd></>}
             <dt>run</dt><dd><code>{b.runCommand}</code></dd>
-            <dt>measured with</dt><dd><code>hyperfine --runs N --warmup 1 --export-json …</code> (hyperfine {">="} 2.0 records wall-clock time and peak resident memory of every run)</dd>
+            <dt>measured with</dt><dd><code>hyperfine --runs N --warmup 1 --export-json …</code> (hyperfine {">="} 2.0 records wall-clock time, CPU time and peak resident memory of every run; the full export is stored in the data file)</dd>
             <dt>binary size</dt><dd>{bytes(b.binarySize)}</dd></dl></li>
         <li><strong>Many sessions, many repetitions.</strong> The benchmark was measured in {b.sessions.length} independent session{b.sessions.length === 1 ? "" : "s"} between {day(b.firstDate)} and {day(b.lastDate)}, on {b.cpuModels.length} CPU model{b.cpuModels.length === 1 ? "" : "s"}. Within a session the execution order of all benchmarks was randomised. Each dot below is one repetition; the black bar is the session median; orange dots are flagged outliers (kept in the data).</li>
       </ol>
       <StripPlot rows={b.sessions.map((s) => ({ label: `${day(s.date)} · ${s.cpuModel.replace(/\(R\)|\(TM\)|CPU|Processor/g, "").replace(/\s+/g, " ").trim().slice(0, 28)}`, sub: `${s.summary.n} reps · median ${seconds(s.summary.median)}`, reps: s.reps, median: s.summary.median, outliers: s.summary.outliers }))} />
       <div className="tablewrap" style={{ marginTop: 12 }}><table>
-        <thead><tr><th>Session</th><th>CPU</th><th className="num">Reps</th><th className="num">Median</th><th className="num">MAD</th><th className="num">Anchor median</th><th className="num">Ratio = median ÷ anchor</th><th>Memory</th><th>Source</th></tr></thead>
+        <thead><tr><th>Session</th><th>CPU</th><th className="num">Reps</th><th className="num">Median</th><th className="num">MAD</th><th className="num">Machine factor</th><th className="num">Median ÷ factor</th><th>Avg. memory</th><th>Source</th></tr></thead>
         <tbody>{b.sessions.map((s) => (<tr key={s.sessionId}>
           <td>{day(s.date)}</td><td className="small">{s.cpuModel} ({s.cores} cores)</td><td className="num">{s.summary.n}</td><td className="num">{seconds(s.summary.median)}</td><td className="num">{seconds(s.summary.mad)}</td>
-          <td className="num">{seconds(s.anchorMedian)}</td><td className="num">{s.ratio.toFixed(3)}</td><td>{mb(s.medianMemory / 1e6)}</td>
-          <td className="small">{s.actionsRunUrl ? <a href={s.actionsRunUrl}>Actions run</a> : "local"} · <a href={`${repoUrl}/blob/main/data/${b.language}.json`}>raw data</a> · <a href={`${repoUrl}/tree/${s.repoCommit}`}>commit</a></td></tr>))}</tbody></table></div>
+          <td className="num">{s.machineFactor.toFixed(3)}×</td><td className="num">{seconds(s.adjustedMedian)}</td><td>{mb(s.meanMemory / 1e6)}</td>
+          <td className="small">{s.runUrl ? <a href={s.runUrl}>Actions run</a> : "local"} · <a href={`${repoUrl}/blob/main/data/${b.language}.json`}>raw data</a> · <a href={`${repoUrl}/tree/${s.repoCommit}`}>commit</a></td></tr>))}</tbody></table></div>
       <ol className="steps" start={6} style={{ counterReset: "s 5", marginTop: 16 }}>
-        <li><strong>Cancelling out the hardware.</strong> In every session a fixed calibration program (the “anchor”) ran on the same VM. Dividing the benchmark median by the anchor median in the same session gives a hardware-independent ratio (column above): {ratios.map((x) => x.toFixed(3)).join(", ")}.</li>
-        <li><strong>Combining sessions.</strong> Sessions, not repetitions, are the independent samples. Score = geometric mean of the ratios = <strong>{b.agg.score.toFixed(3)}</strong> anchor units; the 95% interval {b.agg.ciLow.toFixed(3)}–{b.agg.ciHigh.toFixed(3)} comes from a cluster bootstrap that resamples sessions, then repetitions within each. (Geometric mean check: {geoMean(ratios).toFixed(3)}.)</li>
-        <li><strong>Back to seconds.</strong> Score × median anchor time over all sessions ({seconds(m.analysis.referenceAnchorSeconds)}) = <strong>{seconds(b.refSeconds)}</strong> on the “reference machine” ({seconds(b.refLow)}–{seconds(b.refHigh)}).</li>
-        <li><strong>Index vs C.</strong> {ref ? <>{idx(c.index)} = this score ÷ the score of {ref.language} {ref.version} {ref.variant} on the same problem ({ref.agg.score.toFixed(3)}); interval {idx(c.indexLow)}–{idx(c.indexHigh)}.</> : "No C reference available."}</li>
-        <li><strong>How much is hardware, how much noise?</strong> Ratios differ between sessions by a factor of {b.agg.betweenSpread.toFixed(3)} (geometric std. dev.); an estimated {(b.agg.icc * 100).toFixed(0)}% of the variance is between sessions (day, host, neighbours) rather than repetition noise. Median of the session ratios: {median(ratios).toFixed(3)}.</li>
-        <li><strong>Memory.</strong> Peak resident set size per repetition, median per session, then geometric mean over sessions: {mb(c.memoryMB)}.</li>
+        <li><strong>Cancelling out the hardware.</strong> Every session ran many different benchmarks, and benchmarks are repeated in later sessions. A benchmark measured on two machines shows how much faster one machine is than the other. From all {nSessionsTotal} sessions at once we fit <code>log(time) = benchmark + machine</code>; the “machine factor” column is how much slower (&gt;1) or faster (&lt;1) each session&apos;s machine is than the average machine: {factors.map((x) => x.toFixed(3)).join(", ")}. {b.linked ? "" : "This benchmark is not yet linked to the main group of sessions by shared benchmarks, so treat it as provisional."}</li>
+        <li><strong>Combining sessions.</strong> Sessions, not repetitions, are the independent samples. Each session&apos;s median divided by its machine factor ({adjusted.map((x) => seconds(x)).join(", ")}) is averaged geometrically: <strong>{seconds(b.refSeconds)}</strong> on the average machine. The 95% interval {seconds(b.refLow)}–{seconds(b.refHigh)} comes from a cluster bootstrap that resamples sessions, then repetitions within each.</li>
+        <li><strong>Index vs C.</strong> {ref ? <>{idx(c.index)} = this time ÷ the time of {ref.language} {ref.version} {ref.variant} on the same problem ({seconds(ref.refSeconds)}); interval {idx(c.indexLow)}–{idx(c.indexHigh)}.</> : "No C reference available."}</li>
+        <li><strong>How much was hardware?</strong> Raw session medians differ by a geometric factor of {b.agg.rawSpread.toFixed(3)}; after dividing out the machine factors they differ by {b.agg.adjustedSpread.toFixed(3)}. The overall model leaves {m.analysis.residualSpread.toFixed(3)}× of unexplained noise.</li>
+        <li><strong>Memory.</strong> Hyperfine records the peak resident set size of every repetition. We report the average over the repetitions of a session, then over sessions: {mb(c.memoryMB)}.</li>
       </ol>
 
       <h2>Environment per session</h2>
       <ul className="small">{b.sessions.map((s) => <li key={s.sessionId}><code>{s.sessionId}</code>: {s.cpuModel}, {s.cores} cores, image {s.imageDigest ?? "?"}</li>)}</ul>
 
       <h2>Reproduce it</h2>
-      <pre className="code"><code>git clone {repoUrl}.git && cd language-bench{"\n"}pnpm install{"\n"}{cmd} --dry-run</code></pre>
-      <p className="small muted">Needs Docker. The command builds the pinned image, builds and verifies the program, and runs hyperfine exactly like the CI does. The input args are <code>{args || "none"}</code>.</p>
+      <pre className="code"><code>git clone {repoUrl}.git && cd language-bench{"\n"}pnpm install{"\n"}{cmd}</code></pre>
+      <p className="small muted">Needs Docker. The command builds the program in the pinned image and checks its output; time it with hyperfine inside the same image as CI does. The input args are <code>{args || "none"}</code>.</p>
     </>
   );
 }

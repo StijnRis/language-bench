@@ -7,11 +7,15 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
+  ConfigSchema,
   LanguageDataSchema,
+  SessionsFileSchema,
   LanguageSchema,
   ProblemSchema,
   ReleasesSchema,
+  type Config,
   type Language,
+  type SessionsFile,
   type LanguageData,
   type Problem,
   type Releases,
@@ -80,14 +84,31 @@ export function loadProblems(root = findRepoRoot()): LoadedProblem[] {
   });
 }
 
-export function loadData(root = findRepoRoot()): LanguageData[] {
-  const dir = process.env.LB_DATA_DIR ? path.resolve(root, process.env.LB_DATA_DIR) : path.join(root, "data");
-  if (!fs.existsSync(dir)) return [];
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".json"))
-    .sort()
-    .map((f) => LanguageDataSchema.parse(readJson(path.join(dir, f))));
+export interface LoadedData {
+  sessions: SessionsFile["sessions"];
+  languages: LanguageData[];
+}
+
+export function dataDir(root = findRepoRoot()): string {
+  return process.env.LB_DATA_DIR ? path.resolve(root, process.env.LB_DATA_DIR) : path.join(root, "data");
+}
+
+export function loadData(root = findRepoRoot()): LoadedData {
+  const dir = dataDir(root);
+  const sessionsFile = path.join(dir, "sessions.json");
+  const sessions = fs.existsSync(sessionsFile) ? SessionsFileSchema.parse(readJson(sessionsFile)).sessions : {};
+  const languages = fs.existsSync(dir)
+    ? fs
+        .readdirSync(dir)
+        .filter((f) => f.endsWith(".json") && f !== "sessions.json")
+        .sort()
+        .map((f) => LanguageDataSchema.parse(readJson(path.join(dir, f))))
+    : [];
+  return { sessions, languages };
+}
+
+export function loadConfig(root = findRepoRoot()): Config {
+  return ConfigSchema.parse(readJson(path.join(root, "lb.config.json")));
 }
 
 /** Source code of one implementation (shown on the site, hashed into measurements). */

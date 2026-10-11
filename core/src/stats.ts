@@ -82,72 +82,147 @@ export function summarizeReps(xs: number[]): RepSummary {
   };
 }
 
-export interface SessionSample {
-  /** raw repetitions of the benchmark in this session */
-  reps: number[];
-  /** raw repetitions of the hardware anchor in this session (all anchor runs pooled) */
-  anchorReps: number[];
-}
-
 export function resample<T>(xs: T[], rnd: () => number): T[] {
   return xs.map(() => xs[Math.floor(rnd() * xs.length)]!);
 }
 
-/** Anchor-normalised ratio of one session: median(benchmark) / median(anchor) */
-export const sessionRatio = (s: SessionSample) => median(s.reps) / median(s.anchorReps);
+/* ------------------------------------------------------------------ */
+/* Hardware correction without a calibration program                   */
+/* ------------------------------------------------------------------ */
+
+export interface Obs {
+  bench: string;
+  session: string;
+  /** natural log of the session median of the benchmark */
+  y: number;
+}
+
+export interface HardwareFit {
+  /** log machine factor per session (mean 0 inside each connected component) */
+  h: Map<string, number>;
+  /** log "typical machine" time per benchmark */
+  mu: Map<string, number>;
+  /** connected component id per session; sessions of different components are not comparable */
+  component: Map<string, number>;
+  /** residual standard deviation of the model (log units) */
+  residualSd: number;
+  componentSizes: Map<number, number>;
+}
+
+/**
+ * Additive model  log(time[b,s]) = mu[b] + h[s] + noise.
+ * Sessions run many benchmarks and share benchmarks with other sessions; a benchmark measured in
+ * two sessions reveals the speed difference of the two machines. Fitted by alternating least
+ * squares. Within each connected component of the (benchmark, session) graph the mean of h is 0,
+ * i.e. times are expressed on the "average machine" of that component.
+ */
+export function fitHardware(obs: Obs[], iterations = 400): HardwareFit {
+  const parent = new Map<string, string>();
+  const find = (x: string): string => {
+    let r = x;
+    while ((parent.get(r) ?? r) !== r) r = parent.get(r)!;
+    parent.set(x, r);
+    return r;
+  };
+  const union = (a: string, b: string) => parent.set(find(a), find(b));
+  for (const o of obs) union(`s:${o.session}`, `b:${o.bench}`);
+
+  const compId = new Map<string, number>();
+  const compOf = new Map<string, number>();
+  for (const o of obs) {
+    const root = find(`s:${o.session}`);
+    if (!compId.has(root)) compId.set(root, compId.size);
+    compOf.set(o.session, compId.get(root)!);
+  }
+
+  const bySession = new Map<string, Obs[]>();
+  const byBench = new Map<string, Obs[]>();
+  for (const o of obs) {
+    (bySession.get(o.session) ?? bySession.set(o.session, []).get(o.session)!).push(o);
+    (byBench.get(o.bench) ?? byBench.set(o.bench, []).get(o.bench)!).push(o);
+  }
+  const h = new Map<string, number>([...bySession.keys()].map((s) => [s, 0]));
+  const mu = new Map<string, number>();
+
+  const updateMu = () => {
+    for (const [b, os] of byBench) mu.set(b, mean(os.map((o) => o.y - h.get(o.session)!)));
+  };
+  updateMu();
+  for (let it = 0; it < iterations; it++) {
+    let delta = 0;
+    for (const [s, os] of bySession) {
+      const v = mean(os.map((o) => o.y - mu.get(o.bench)!));
+      delta = Math.max(delta, Math.abs(v - h.get(s)!));
+      h.set(s, v);
+    }
+    // re-centre per component so the solution is unique
+    const sums = new Map<number, { sum: number; n: number }>();
+    for (const [s, v] of h) {
+      const c = compOf.get(s)!;
+      const e = sums.get(c) ?? sums.set(c, { sum: 0, n: 0 }).get(c)!;
+      e.sum += v;
+      e.n++;
+    }
+    for (const [s, v] of h) {
+      const e = sums.get(compOf.get(s)!)!;
+      h.set(s, v - e.sum / e.n);
+    }
+    updateMu();
+    if (delta < 1e-12) break;
+  }
+  const res = obs.map((o) => o.y - mu.get(o.bench)! - h.get(o.session)!);
+  const dof = Math.max(1, obs.length - byBench.size - bySession.size + compId.size);
+  const residualSd = Math.sqrt(res.reduce((a, r) => a + r * r, 0) / dof);
+  const componentSizes = new Map<number, number>();
+  for (const c of compOf.values()) componentSizes.set(c, (componentSizes.get(c) ?? 0) + 1);
+  return { h, mu, component: compOf, residualSd, componentSizes };
+}
+
+export interface SessionSample {
+  /** raw repetitions of the benchmark in this session (seconds) */
+  reps: number[];
+  /** natural log of this session's machine factor from {@link fitHardware} */
+  logFactor: number;
+}
 
 export interface Aggregate {
-  /** geometric mean over sessions of anchor-normalised ratios (dimensionless, "anchor units") */
+  /** seconds on the average machine: exp(mean over sessions of log(median / machine factor)) */
   score: number;
   ciLow: number;
   ciHigh: number;
   sessions: number;
-  /** geometric std-dev factor between the sessions' ratios (1 = identical) */
-  betweenSpread: number;
-  /** Share of the variance that is between sessions (0..1): "how much is hardware / day, not noise" */
-  icc: number;
+  /** geometric std-dev factor of the raw session medians (includes hardware differences) */
+  rawSpread: number;
+  /** geometric std-dev factor after dividing out the machine factors */
+  adjustedSpread: number;
   bootstrap: number[];
 }
 
 /**
- * Cluster bootstrap: the independent unit is the SESSION (one VM, one moment).
- * Each iteration resamples sessions with replacement, then resamples repetitions inside each
- * (benchmark and anchor), recomputes the ratio, and takes the geometric mean.
+ * Cluster bootstrap: the independent unit is the SESSION. Each iteration resamples sessions with
+ * replacement, then repetitions inside each, recomputes the hardware-corrected median and averages
+ * in log space. (Machine factors are treated as known; with many overlapping benchmarks their
+ * estimation error is small.)
  */
-export function aggregateSessions(
-  samples: SessionSample[],
-  seed: string,
-  iterations = 1000,
-): Aggregate {
-  const ratios = samples.map(sessionRatio);
-  const score = geoMean(ratios);
+export function aggregateSessions(samples: SessionSample[], seed: string, iterations = 1000): Aggregate {
+  const z = samples.map((s) => Math.log(median(s.reps)) - s.logFactor);
+  const raw = samples.map((s) => Math.log(median(s.reps)));
+  const score = Math.exp(mean(z));
   const rnd = mulberry32(hashSeed(seed));
   const boots: number[] = [];
   if (samples.length > 0) {
     for (let i = 0; i < iterations; i++) {
       const picked = resample(samples, rnd);
-      const rs = picked.map(
-        (s) => median(resample(s.reps, rnd)) / median(resample(s.anchorReps, rnd)),
-      );
-      boots.push(geoMean(rs));
+      boots.push(Math.exp(mean(picked.map((s) => Math.log(median(resample(s.reps, rnd))) - s.logFactor))));
     }
   }
-  const logs = ratios.map(Math.log);
-  const between = stddev(logs);
-  // Variance of a session's log-ratio attributable to repetition noise: sampling variance of a
-  // median (~ pi/2 * var/n) for the benchmark plus the same for the anchor it is divided by.
-  const medVar = (xs: number[]) =>
-    xs.length > 1 ? ((Math.PI / 2) * stddev(xs.map(Math.log)) ** 2) / xs.length : 0;
-  const within = mean(samples.map((s) => medVar(s.reps) + medVar(s.anchorReps)));
-  const betweenVar = Math.max(0, between ** 2 - within);
-  const icc = betweenVar + within > 0 ? betweenVar / (betweenVar + within) : 0;
   return {
     score,
     ciLow: boots.length ? quantile(boots, 0.025) : score,
     ciHigh: boots.length ? quantile(boots, 0.975) : score,
     sessions: samples.length,
-    betweenSpread: Math.exp(between),
-    icc,
+    rawSpread: Math.exp(stddev(raw)),
+    adjustedSpread: Math.exp(stddev(z)),
     bootstrap: boots,
   };
 }

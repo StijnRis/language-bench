@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
 import { idx } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { benchId, defaultVariant, getModel, latestVersion, toCell } from "@/lib/model";
+import { benchId, defaultVariant, getModel, latestVersion, toCell, versionsOf } from "@/lib/model";
 
 export function generateStaticParams() {
   return getModel().languages.map((l) => ({ id: l.spec.id }));
@@ -35,10 +35,10 @@ export default async function Language({ params }: { params: Promise<{ id: strin
       {!has ? <NoData /> : (
         <div className="tablewrap"><table>
           <thead><tr><th>Release</th>{scored.map((p) => <th key={p.spec.id} className="num"><Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></th>)}</tr></thead>
-          <tbody>{[...l.spec.versions].reverse().map((v) => (
-            <tr key={v.version}><td><strong>{v.version}</strong> <span className="muted small">{l.releases[v.version]?.date}</span></td>
+          <tbody>{versionsOf(m, l).map((version) => (
+            <tr key={version}><td><strong>{version}</strong> <span className="muted small">{l.releases[version]?.date}</span></td>
               {scored.map((p) => {
-                const b = m.byId.get(benchId({ language: id, version: v.version, variant: defaultVariant(l), problem: p.spec.id }));
+                const b = m.byId.get(benchId({ language: id, version, variant: defaultVariant(l), problem: p.spec.id }));
                 return <td key={p.spec.id} className="num">{b ? <Link href={`/benchmarks/${benchId(b)}/`}>{idx(toCell(m, b).index)}</Link> : "-"}</td>;
               })}</tr>))}</tbody></table></div>
       )}

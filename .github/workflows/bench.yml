@@ -1,32 +1,41 @@
 name: bench
 
-# Every run is one independent *session* per (language, version): a fresh GitHub-hosted VM,
-# a pinned official Docker image, a frozen hardware anchor, randomised order, >= 10 repetitions
-# (up to 30). Sessions on different days / different CPUs are combined by the statistics in core/.
+# Self-driving benchmark loop. Every run:
+#   1. looks for new language releases (updates languages/*/language.json),
+#   2. asks the planner (lb.config.json) which benchmarks still need data,
+#   3. runs one or more *sessions* (one VM each, many benchmarks per session),
+#   4. appends the raw results to data/ and
+#   5. if benchmarks are still below the target, starts itself again.
+# When every tracked benchmark has enough data the run ends after step 2 (cheap), until a
+# new release / configuration shows up. Everything tunable lives in lb.config.json.
 on:
   schedule:
-    # several times a week at varied hours so that sessions land on different days and hosts
-    - cron: "17 3 * * 1"
-    - cron: "41 14 * * 3"
-    - cron: "8 22 * * 5"
-    - cron: "33 9 * * 0"
+    - cron: "17 */6 * * *" # periodic check for new versions / configurations
   workflow_dispatch:
     inputs:
-      language:
-        description: "Only this language id (empty = all)"
+      round:
+        description: "Round number in a chain (set automatically)"
         required: false
+        default: "1"
       reps:
-        description: "Cap on repetitions (empty = full)"
+        description: "Override the repetition count (testing)"
         required: false
 
 permissions:
   contents: write
+  actions: write
+
+concurrency:
+  group: bench
+  cancel-in-progress: false
 
 jobs:
   plan:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.m.outputs.matrix }}
+      matrix: ${{ steps.plan.outputs.matrix }}
+      sessions: ${{ steps.plan.outputs.sessions }}
+      sha: ${{ steps.sha.outputs.sha }}
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -35,48 +44,76 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - id: m
+      - name: Look for new language releases
+        id: versions
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm -s lb discover-versions
+      - name: Commit new versions
         run: |
-          flags=""
-          if [ -n "${{ inputs.language }}" ]; then flags="--language ${{ inputs.language }}"; fi
-          echo "matrix=$(pnpm -s lb matrix $flags)" >> "$GITHUB_OUTPUT"
+          git config user.name "language-bench[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add languages
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore: track new language releases"
+          for i in 1 2 3; do git push && exit 0; git pull --rebase; done
+          exit 1
+      - id: sha
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Plan sessions
+        id: plan
+        run: pnpm -s lb plan --out plans
+      - uses: actions/upload-artifact@v4
+        if: steps.plan.outputs.sessions != '0'
+        with:
+          name: plans
+          path: plans/*.json
+          retention-days: 7
 
-  bench:
+  session:
     needs: plan
+    if: ${{ needs.plan.outputs.sessions != '0' }}
     runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
       fail-fast: false
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
-    name: bench ${{ matrix.language }} ${{ matrix.version }}
+    name: session ${{ matrix.session }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.plan.outputs.sha }}
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Run the benchmark session
+      - uses: actions/download-artifact@v4
+        with:
+          name: plans
+          path: plans
+      - name: Run the session (many benchmarks on this VM)
         run: |
           reps=""
           if [ -n "${{ inputs.reps }}" ]; then reps="--reps ${{ inputs.reps }}"; fi
-          pnpm -s lb bench ${{ matrix.language }} ${{ matrix.version }} $reps --out "$GITHUB_WORKSPACE/fragments/${{ matrix.language }}-${{ matrix.version }}.json"
+          pnpm -s lb session --plan "$GITHUB_WORKSPACE/plans/session-${{ matrix.session }}.json" --out "$GITHUB_WORKSPACE/fragments/session-${{ matrix.session }}.json" $reps
       - uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: fragment-${{ matrix.language }}-${{ matrix.version }}
+          name: fragment-${{ matrix.session }}
           path: fragments/*.json
+          if-no-files-found: ignore
           retention-days: 7
 
   merge:
-    needs: bench
-    if: ${{ !cancelled() && needs.bench.result != 'skipped' }}
+    needs: [plan, session]
+    if: ${{ !cancelled() && needs.plan.outputs.sessions != '0' }}
     runs-on: ubuntu-latest
-    concurrency:
-      group: bench-merge
-      cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
@@ -88,20 +125,36 @@ jobs:
           pattern: fragment-*
           path: fragments
           merge-multiple: true
-      - name: Append sessions to data/<language>.json (append-only)
+      - name: Append sessions to data/ (append-only)
         run: |
           pnpm -s lb merge fragments
           pnpm -s lb validate
-      - name: Commit and push (retry on race)
+      - name: Commit and push
         run: |
           git config user.name "language-bench[bot]"
           git config user.email "actions@users.noreply.github.com"
+          mkdir -p data
           git add data
-          git diff --cached --quiet && exit 0
-          git commit -m "data: benchmark sessions from run ${{ github.run_id }}"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "data: sessions from run ${{ github.run_id }}"
           for i in 1 2 3 4 5; do
             git push && exit 0
             git pull --rebase -X theirs || true
             sleep $((RANDOM % 10 + 5))
           done
           exit 1
+      - name: Continue while benchmarks are below the target
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status=$(pnpm -s lb status)
+          echo "$status"
+          remaining=$(echo "$status" | jq .remaining)
+          round=${{ inputs.round || 1 }}
+          max=$(jq .maxChainedRounds lb.config.json)
+          if [ "$remaining" -gt 0 ] && [ "$round" -lt "$max" ]; then
+            echo "starting round $((round + 1))"
+            gh workflow run bench.yml -f round=$((round + 1))
+          else
+            echo "chain ends (remaining=$remaining, round=$round/$max)"
+          fi

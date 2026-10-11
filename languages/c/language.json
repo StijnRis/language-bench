@@ -9,23 +9,10 @@
   "toolVersionCmd": "gcc --version | head -n1",
   "versions": [
     {
-      "version": "13",
-      "latest": false
-    },
-    {
-      "version": "14",
-      "latest": false
-    },
-    {
-      "version": "15",
-      "latest": false
-    },
-    {
       "version": "16",
       "latest": true
     }
   ],
-  "releaseFeed": "https://gcc.gnu.org/releases.html",
   "variants": [
     {
       "id": "gcc-O3-native",
@@ -49,5 +36,11 @@
       "build": "gcc -O2 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
       "run": "{bin}"
     }
-  ]
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "gcc-mirror/gcc",
+    "pattern": "^releases/gcc-(\\d+)\\.1\\.0$",
+    "url": "https://gcc.gnu.org/releases.html"
+  }
 }

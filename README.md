@@ -8,9 +8,10 @@ combined with documented statistics, and published as a static site.
 ## How it works
 
 - **Benchmark** = language version + build setting (compiler flags, runtime options) + problem.
-- **Session** = one CI job on one fresh VM; each runs ≥10 (up to 30) hyperfine repetitions in randomised order, plus a frozen *hardware anchor* program to cancel out machine speed.
-- **Data** is append-only: `data/<language>.json` holds all raw repetitions (time + peak RSS), environment of each session once, nothing derived.
-- **Statistics** (`core/src/stats.ts`): sessions are the independent samples; geometric mean of anchor-normalised ratios; cluster-bootstrap 95% CIs.
+- **Session** = one CI job on one fresh VM running *many* benchmarks (all languages) in randomised order, each with hyperfine repetitions. The planner picks the least-measured benchmarks and re-runs some already measured ones; those overlaps let the statistics separate machine speed from benchmark speed (`log time = benchmark + machine`).
+- **Data** is append-only: `data/sessions.json` (full environment of every session) and `data/<language>.json` (every measurement incl. the verbatim hyperfine export); nothing derived is stored.
+- **Statistics** (`core/src/stats.ts`): sessions are the independent samples; machine factors fitted from overlapping benchmarks; geometric mean over sessions; cluster-bootstrap 95% CIs.
+- **Automation**: `bench.yml` discovers new language releases, plans sessions from `lb.config.json` (target sessions per benchmark, session size, overlap, ...), runs them, commits the data and re-triggers itself until all tracked benchmarks have enough data.
 - **Site** (`web/`, Next.js static export) computes everything from the raw data at build time; every number links to its sessions, source, flags and CI run.
 
 ## Layout
@@ -32,9 +33,10 @@ Add a language by adding a `languages/<id>/` folder; add a problem by adding a `
 pnpm install
 pnpm test                                   # statistics tests
 pnpm lb verify python --version 3.14        # build + check outputs in Docker
-pnpm lb bench rust 1.99 --reps 5 --dry-run  # try a session locally (needs Docker)
+pnpm lb plan                                # what would run next (writes .work/plans)
+pnpm lb session --plan .work/plans/session-1.json --out .work/frag/s1.json --reps 3   # run a session locally (needs Docker)
 pnpm build                                  # static site -> web/out
 ```
 
-CI: `verify.yml` (changed implementations must print `expected.txt`), `bench.yml` (scheduled sessions, appends data), `deploy.yml` (GitHub Pages).
+CI: `verify.yml` (changed implementations must print `expected.txt`), `bench.yml` (self-continuing sessions, appends data), `deploy.yml` (GitHub Pages).
 Read the [methodology](web/app/methodology/page.tsx) for details and limits.

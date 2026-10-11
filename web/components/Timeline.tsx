@@ -35,7 +35,7 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
         </label>
         <span>
           <button className="chip" aria-pressed={metric === "index"} onClick={() => setMetric("index")} style={{ marginRight: 6 }}>Relative to C</button>
-          <button className="chip" aria-pressed={metric === "seconds"} onClick={() => setMetric("seconds")}>Seconds (reference machine)</button>
+          <button className="chip" aria-pressed={metric === "seconds"} onClick={() => setMetric("seconds")}>Seconds (average machine)</button>
         </span>
       </div>
       <div className="chartwrap card" style={{ position: "relative", padding: 8 }}>

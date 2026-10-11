@@ -9,27 +9,10 @@
   "toolVersionCmd": "go version",
   "versions": [
     {
-      "version": "1.23",
-      "latest": false
-    },
-    {
-      "version": "1.24",
-      "latest": false
-    },
-    {
-      "version": "1.25",
-      "latest": false
-    },
-    {
-      "version": "1.26",
-      "latest": false
-    },
-    {
       "version": "1.27",
       "latest": true
     }
   ],
-  "releaseFeed": "https://go.dev/doc/devel/release",
   "variants": [
     {
       "id": "go-default",
@@ -46,5 +29,11 @@
       "build": "GOAMD64=v3 go build -o {bin} {src}/main.go",
       "run": "{bin}"
     }
-  ]
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "golang/go",
+    "pattern": "^go(1\\.\\d+)\\.0$",
+    "url": "https://go.dev/doc/devel/release"
+  }
 }

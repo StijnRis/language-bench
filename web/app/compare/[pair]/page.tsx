@@ -42,7 +42,7 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
       <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster.</p>
       {!rows.length ? <NoData /> : (
         <div className="tablewrap"><table>
-          <thead><tr><th>Problem</th><th className="num"><span className="dot" style={{ background: colorOf(a.spec.id) }} />{a.spec.name}</th><th className="num"><span className="dot" style={{ background: colorOf(b.spec.id) }} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th><th>Verdict</th><th className="num">Memory</th></tr></thead>
+          <thead><tr><th>Problem</th><th className="num"><span className="dot" style={{ background: colorOf(a.spec.id) }} />{a.spec.name}</th><th className="num"><span className="dot" style={{ background: colorOf(b.spec.id) }} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th><th>Verdict</th><th className="num">Avg. memory</th></tr></thead>
           <tbody>{rows.map((r) => {
             const fasterA = r.ratio < 1;
             return (<tr key={r.p.spec.id}>
@@ -54,7 +54,7 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
               <td className="num small">{mb(r.ba.memoryBytes / 1e6)} / {mb(r.bb.memoryBytes / 1e6)}</td></tr>);
           })}</tbody></table></div>
       )}
-      <p className="small muted">Times are shown for the reference machine (see <Link href="/methodology/">methodology</Link>). “No clear difference” means the 95% interval of the ratio includes 1.0.</p>
+      <p className="small muted">Times are shown for the average machine (see <Link href="/methodology/">methodology</Link>). “No clear difference” means the 95% interval of the ratio includes 1.0.</p>
     </>
   );
 }
