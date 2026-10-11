@@ -1,14 +1,16 @@
 import { geoMean, median } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CodeBlock, JsonLd } from "@/components/Bits";
+import { CodeBlock, JsonLd, NoData } from "@/components/Bits";
 import StripPlot from "@/components/StripPlot";
 import { bytes, day, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { getModel, repoUrl, reference, sourceOf, toCell } from "@/lib/model";
 
 export function generateStaticParams() {
-  return [...getModel().byId.keys()].map((id) => ({ id }));
+  const ids = [...getModel().byId.keys()];
+  // output: export rejects an empty list; render a placeholder page until the first data exists
+  return (ids.length ? ids : ["none"]).map((id) => ({ id }));
 }
 
 function lookup(id: string) {
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 export default async function Benchmark({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const r = lookup(id);
+  if (!r && id === "none") return <NoData />;
   if (!r) notFound();
   const { m, b, l, p, v } = r;
   const c = toCell(m, b);
