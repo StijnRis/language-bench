@@ -40,9 +40,8 @@ export class Container {
     if (!fs.existsSync(bin)) {
       fs.mkdirSync(dir, { recursive: true });
       const url = `https://github.com/sharkdp/hyperfine/releases/download/v${HYPERFINE_VERSION}/hyperfine-v${HYPERFINE_VERSION}-${triple}.tar.gz`;
-      const tgz = path.join(dir, "hf.tar.gz");
-      execFileSync("curl", ["-fsSL", "-o", tgz, url]);
-      execFileSync("tar", ["-xzf", tgz, "-C", dir, "--strip-components=1"]);
+      execFileSync("curl", ["-fsSL", "-o", "hf.tar.gz", url], { cwd: dir });
+      execFileSync("tar", ["-xzf", "hf.tar.gz", "--strip-components=1"], { cwd: dir });
       fs.chmodSync(bin, 0o755);
     }
     execFileSync("docker", ["cp", bin, `${this.name}:/usr/local/bin/hyperfine`]);

@@ -5,7 +5,7 @@ import { z } from "zod";
 /* ------------------------------------------------------------------ */
 
 export const VariantSchema = z.object({
-  id: z.string().regex(/^[a-z0-9][a-z0-9._-]*$/),
+  id: z.string().regex(/^[A-Za-z0-9][A-Za-z0-9._-]*$/),
   name: z.string(),
   description: z.string().optional(),
   /** Optional build command. Placeholders: {src} {bin} {work} */

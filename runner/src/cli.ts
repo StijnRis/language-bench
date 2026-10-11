@@ -78,7 +78,7 @@ async function main() {
         problems: f.problems?.split(","),
         variant: f.variant,
         dryRun: f["dry-run"] === "true",
-        out: f.out,
+        out: f.out ? path.resolve(process.env.INIT_CWD ?? process.cwd(), f.out) : undefined,
         sessionSuffix: f.suffix,
       });
       break;
