@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
 
   uint64_t checksum = 0;
   for (uint32_t h = 0; h < CAP; h++)
-    if (keys[h]) checksum += (uint64_t)(keys[h] - 1) * vals[h];
+    if (keys[h]) checksum += ((uint64_t)keys[h] - 1) * (uint64_t)vals[h];
 
   uint64_t hits = 0;
   for (uint64_t i = 0; i < n; i++) {
