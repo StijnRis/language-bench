@@ -1,0 +1,21 @@
+{
+  "name": "language-bench",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Transparent, statistically grounded programming language speed benchmarks.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "test": "pnpm -r --if-present test",
+    "build": "pnpm --filter @lb/web build",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lb": "pnpm --filter @lb/runner exec tsx src/cli.ts"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
