@@ -116,7 +116,7 @@ export function sourceOf(m: Model, language: string, problem: string): string | 
   return l ? readSource(m.root, l.spec, problem) : undefined;
 }
 
-export const siteUrl = (process.env.SITE_URL ?? "https://stijnris.github.io/language-bench").replace(/\/$/, "");
+export const siteUrl = (process.env.SITE_URL || "https://stijnris.github.io/language-bench").replace(/\/$/, "");
 
 export const repoUrl = "https://github.com/StijnRis/language-bench";
 
