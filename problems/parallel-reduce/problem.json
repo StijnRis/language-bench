@@ -1,0 +1,22 @@
+{
+  "id": "parallel-reduce",
+  "title": "Parallel reduction",
+  "summary": "Count primes below 2,000,000 with 4 workers.",
+  "description": "Counts primes below 2,000,000 by trial division (odd divisors up to the square root). Numbers are dealt out to 4 workers in an interleaved pattern (worker t takes n where n mod 4 = t) and the partial counts are summed.",
+  "reveals": "Thread creation, scheduling and scaling on a 4-core runner.",
+  "caveat": "Thread count, scheduling and synchronisation matter. Python uses multiprocessing (processes) because of the GIL; Node uses worker_threads. GitHub-hosted runners have 4 vCPUs (public repos) which are hyper-threads.",
+  "tags": [
+    "cpu-bound",
+    "concurrency",
+    "math"
+  ],
+  "args": [
+    "2000000",
+    "4"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 90
+}

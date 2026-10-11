@@ -1,0 +1,53 @@
+{
+  "id": "rust",
+  "name": "Rust",
+  "highlight": "rust",
+  "website": "https://www.rust-lang.org/",
+  "description": "Rust compiled ahead-of-time by rustc (LLVM). Memory safety without a garbage collector.",
+  "sourceFile": "main.rs",
+  "image": "rust:{version}",
+  "toolVersionCmd": "rustc --version",
+  "versions": [
+    {
+      "version": "1.80",
+      "latest": false
+    },
+    {
+      "version": "1.85",
+      "latest": false
+    },
+    {
+      "version": "1.90",
+      "latest": false
+    },
+    {
+      "version": "1.99",
+      "latest": true
+    }
+  ],
+  "releaseFeed": "https://github.com/rust-lang/rust/blob/master/RELEASES.md",
+  "variants": [
+    {
+      "id": "rustc-O3",
+      "name": "rustc -C opt-level=3",
+      "description": "Equivalent to cargo build --release with the default codegen settings.",
+      "build": "rustc --edition 2021 -C opt-level=3 -o {bin} {src}/main.rs",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "rustc-O3-native",
+      "name": "rustc -C opt-level=3 -C target-cpu=native",
+      "description": "Optimised for the benchmark CPU.",
+      "build": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o {bin} {src}/main.rs",
+      "run": "{bin}"
+    },
+    {
+      "id": "rustc-O3-lto",
+      "name": "rustc -C opt-level=3 -C codegen-units=1 -C lto",
+      "description": "Single codegen unit with link-time optimisation.",
+      "build": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {src}/main.rs",
+      "run": "{bin}"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "id": "hashmap",
+  "title": "Hash map",
+  "summary": "One million inserts/updates and one million lookups in a hash map.",
+  "description": "Keys come from the MINSTD pseudo-random generator (x = x*48271 mod 2^31-1). Phase 1 counts occurrences of 1,000,000 keys drawn from 500,000 values; phase 2 looks up 1,000,000 further keys. Prints the number of distinct keys, a checksum and the number of hits.",
+  "reveals": "Insertion, lookup and hashing speed of the standard hash map.",
+  "caveat": "Key distribution and hash implementation dominate. Standard-library maps are used as they ship: Rust's default SipHash is deliberately DoS-resistant and slower; C has no standard map so a simple open-addressing table is hand-written.",
+  "tags": [
+    "memory-bound",
+    "data-structures"
+  ],
+  "args": [
+    "1000000"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 60
+}

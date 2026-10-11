@@ -1,0 +1,21 @@
+{
+  "id": "sort",
+  "title": "Sorting",
+  "summary": "Sort two million pseudo-random 32-bit integers.",
+  "description": "Generates 2,000,000 integers with MINSTD, sorts them ascending with the standard library sort and prints first, last, median and a position-weighted checksum.",
+  "reveals": "Comparison and memory-access efficiency of the default sort.",
+  "caveat": "Algorithm and stability differ (introsort, pdqsort, timsort, V8 typed-array sort). Node uses Int32Array.sort and Python list.sort on plain ints - the idiomatic fast path of each.",
+  "tags": [
+    "cpu-bound",
+    "memory-bound",
+    "data-structures"
+  ],
+  "args": [
+    "2000000"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 60
+}

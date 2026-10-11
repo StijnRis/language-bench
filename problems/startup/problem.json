@@ -1,0 +1,18 @@
+{
+  "id": "startup",
+  "title": "Startup",
+  "summary": "Time to start the runtime and print one line.",
+  "description": "The program prints `ok` and exits. This measures process start-up, runtime initialisation and (for managed runtimes) module loading - the fixed cost paid by every other benchmark.",
+  "reveals": "Binary start-up and runtime initialisation overhead.",
+  "caveat": "Dominated by dynamic linking, container filesystem and the OS; not a measure of throughput. Excluded from aggregate speed scores.",
+  "tags": [
+    "startup"
+  ],
+  "scored": false,
+  "args": [],
+  "runs": {
+    "min": 30,
+    "max": 100
+  },
+  "budgetSeconds": 30
+}

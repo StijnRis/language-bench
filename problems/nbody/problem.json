@@ -1,0 +1,21 @@
+{
+  "id": "nbody",
+  "title": "N-Body simulation",
+  "summary": "Advance the Jovian planets 1,000,000 steps with a symplectic integrator.",
+  "description": "Classic five-body gravitational simulation (Sun, Jupiter, Saturn, Uranus, Neptune) from the Computer Language Benchmarks Game. Each step computes pairwise forces and advances positions with a fixed time step of 0.01. The program prints the system energy before and after with 9 decimals.",
+  "reveals": "Scalar floating-point throughput, loop optimisation and (where the compiler can) auto-vectorisation.",
+  "caveat": "Result depends on iteration count, precision and compiler math flags. We forbid fast-math and FMA contraction so every language must produce the identical 9-digit energies.",
+  "tags": [
+    "cpu-bound",
+    "simd",
+    "math"
+  ],
+  "args": [
+    "1000000"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 90
+}

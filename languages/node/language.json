@@ -1,0 +1,44 @@
+{
+  "id": "node",
+  "name": "Node.js",
+  "highlight": "javascript",
+  "website": "https://nodejs.org/",
+  "description": "JavaScript on the V8 engine with a JIT compiler and a generational garbage collector.",
+  "sourceFile": "main.js",
+  "image": "node:{version}",
+  "toolVersionCmd": "node --version",
+  "versions": [
+    {
+      "version": "20",
+      "latest": false
+    },
+    {
+      "version": "22",
+      "latest": false
+    },
+    {
+      "version": "24",
+      "latest": false
+    },
+    {
+      "version": "26",
+      "latest": true
+    }
+  ],
+  "releaseFeed": "https://nodejs.org/en/about/previous-releases",
+  "variants": [
+    {
+      "id": "node-default",
+      "name": "node",
+      "description": "Default flags.",
+      "run": "node {src}/main.js",
+      "default": true
+    },
+    {
+      "id": "node-semi-space-64",
+      "name": "node --max-semi-space-size=64",
+      "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
+      "run": "node --max-semi-space-size=64 {src}/main.js"
+    }
+  ]
+}

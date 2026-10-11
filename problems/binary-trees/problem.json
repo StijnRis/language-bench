@@ -1,0 +1,21 @@
+{
+  "id": "binary-trees",
+  "title": "Binary Trees",
+  "summary": "Allocate and walk millions of short-lived binary trees (depth 14).",
+  "description": "Builds a stretch tree, a long-lived tree and many short-lived perfect binary trees of increasing depth, counting nodes with a recursive check. Output is the benchmarks-game report lines.",
+  "reveals": "Allocation rate, pointer chasing and garbage-collector behaviour.",
+  "caveat": "Tree size, object layout and allocation lifetimes matter. C and Rust use plain malloc/Box (no arena); GC languages use their default collector. Peak memory differs widely by design.",
+  "tags": [
+    "gc-heavy",
+    "memory-bound",
+    "data-structures"
+  ],
+  "args": [
+    "14"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 90
+}

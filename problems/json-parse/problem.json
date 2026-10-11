@@ -1,0 +1,26 @@
+{
+  "id": "json-parse",
+  "title": "JSON parsing",
+  "summary": "Parse a 19 MB JSON document and aggregate its fields.",
+  "description": "A deterministic generator writes about 19 MB of ASCII JSON (an array of records with ids, names, tags, nested metadata and integer metrics). The program reads the file, parses it, and prints: number of objects, sum of all integer numbers, total length of all string values, number of `true` values and number of `null` values.",
+  "reveals": "Parsing and string-processing throughput including allocation of the parsed tree.",
+  "caveat": "Parser library, input size, schema and validation all change the result. Go, Node and Python use their standard-library parsers into a generic tree. Rust and C have no JSON in their standard library, so they use a small hand-written recursive-descent parser that aggregates while parsing (no tree is built), which is less work than the others.",
+  "tags": [
+    "io-bound",
+    "memory-bound",
+    "serialization",
+    "strings"
+  ],
+  "args": [
+    "{input}"
+  ],
+  "input": {
+    "generator": "generate.mjs",
+    "file": "input.json"
+  },
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 90
+}

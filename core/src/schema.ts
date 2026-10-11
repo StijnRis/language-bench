@@ -111,6 +111,8 @@ export const SessionSchema = z.object({
   glibc: z.string().optional(),
   /** Description of the fixed anchor workload (identical in every session). */
   anchorSpec: z.string(),
+  /** Randomised execution order of "variant/problem" within the session. */
+  order: z.array(z.string()).optional(),
   /** Calibration runs of the anchor on this very VM (start / middle / end of the session). */
   anchors: z.array(z.object({ at: z.enum(["start", "middle", "end"]), hyperfine: HyperfineRawSchema })),
 });

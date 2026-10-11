@@ -1,0 +1,50 @@
+{
+  "id": "go",
+  "name": "Go",
+  "highlight": "go",
+  "website": "https://go.dev/",
+  "description": "Go compiled ahead-of-time by the gc toolchain, with a concurrent garbage collector and goroutines.",
+  "sourceFile": "main.go",
+  "image": "golang:{version}",
+  "toolVersionCmd": "go version",
+  "versions": [
+    {
+      "version": "1.23",
+      "latest": false
+    },
+    {
+      "version": "1.24",
+      "latest": false
+    },
+    {
+      "version": "1.25",
+      "latest": false
+    },
+    {
+      "version": "1.26",
+      "latest": false
+    },
+    {
+      "version": "1.27",
+      "latest": true
+    }
+  ],
+  "releaseFeed": "https://go.dev/doc/devel/release",
+  "variants": [
+    {
+      "id": "go-default",
+      "name": "go build",
+      "description": "Default toolchain settings (GOAMD64=v1).",
+      "build": "go build -o {bin} {src}/main.go",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "go-amd64-v3",
+      "name": "GOAMD64=v3 go build",
+      "description": "Allows AVX2/BMI/FMA instructions on x86-64.",
+      "build": "GOAMD64=v3 go build -o {bin} {src}/main.go",
+      "run": "{bin}"
+    }
+  ]
+}

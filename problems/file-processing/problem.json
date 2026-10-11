@@ -1,0 +1,25 @@
+{
+  "id": "file-processing",
+  "title": "File processing",
+  "summary": "Stream a 49 MB CSV and aggregate it.",
+  "description": "A deterministic generator writes a 49 MB CSV (`id,word,value`). The program reads the file line by line, sums the value column and counts word frequencies, then prints line count, sum, distinct words and the most frequent word (ties broken alphabetically).",
+  "reveals": "End-to-end I/O, buffering and per-line overhead.",
+  "caveat": "Results depend on page cache, filesystem, storage and buffering. The file is generated once before the measurements and sits in the page cache, so this is mostly a CPU/parse test, not disk speed.",
+  "tags": [
+    "io-bound",
+    "strings",
+    "data-structures"
+  ],
+  "args": [
+    "{input}"
+  ],
+  "input": {
+    "generator": "generate.mjs",
+    "file": "input.csv"
+  },
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 90
+}
