@@ -81,7 +81,7 @@ export function loadProblems(root = findRepoRoot()): LoadedProblem[] {
 }
 
 export function loadData(root = findRepoRoot()): LanguageData[] {
-  const dir = path.join(root, "data");
+  const dir = process.env.LB_DATA_DIR ? path.resolve(root, process.env.LB_DATA_DIR) : path.join(root, "data");
   if (!fs.existsSync(dir)) return [];
   return fs
     .readdirSync(dir)

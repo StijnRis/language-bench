@@ -1,0 +1,73 @@
+name: verify
+
+# Checks that every implementation still prints exactly problems/<id>/expected.txt.
+# On pull requests / pushes only the changed (language, problem) pairs are built and run.
+on:
+  pull_request:
+    paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
+  push:
+    branches: [main]
+    paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
+  schedule:
+    - cron: "23 4 * * 2" # weekly: every language version, every implementation
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.plan.outputs.changed }}
+      full: ${{ steps.plan.outputs.full }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - id: plan
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+          elif [ "${{ github.event_name }}" = "push" ]; then
+            base="${{ github.event.before }}"
+          else
+            base=""
+          fi
+          if [ -n "$base" ] && git cat-file -e "$base" 2>/dev/null; then
+            git diff --name-only "$base" HEAD | pnpm -s lb verify-matrix > changed.json
+          else
+            # scheduled / manual: everything, every version
+            pnpm -s lb matrix > changed.json
+          fi
+          echo "changed=$(cat changed.json)" >> "$GITHUB_OUTPUT"
+
+  verify:
+    needs: plan
+    if: ${{ fromJSON(needs.plan.outputs.changed).include[0] != null }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.changed) }}
+    name: verify ${{ matrix.language }} ${{ matrix.version }} ${{ matrix.problems }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Build and run implementations, compare with expected output
+        run: |
+          args="--language ${{ matrix.language }}"
+          if [ -n "${{ matrix.version }}" ]; then args="$args --version ${{ matrix.version }}"; fi
+          if [ -n "${{ matrix.problems }}" ]; then args="$args --problems ${{ matrix.problems }}"; fi
+          pnpm -s lb verify $args

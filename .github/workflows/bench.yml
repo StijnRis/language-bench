@@ -1,0 +1,107 @@
+name: bench
+
+# Every run is one independent *session* per (language, version): a fresh GitHub-hosted VM,
+# a pinned official Docker image, a frozen hardware anchor, randomised order, >= 10 repetitions
+# (up to 30). Sessions on different days / different CPUs are combined by the statistics in core/.
+on:
+  schedule:
+    # several times a week at varied hours so that sessions land on different days and hosts
+    - cron: "17 3 * * 1"
+    - cron: "41 14 * * 3"
+    - cron: "8 22 * * 5"
+    - cron: "33 9 * * 0"
+  workflow_dispatch:
+    inputs:
+      language:
+        description: "Only this language id (empty = all)"
+        required: false
+      reps:
+        description: "Cap on repetitions (empty = full)"
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.m.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - id: m
+        run: |
+          flags=""
+          if [ -n "${{ inputs.language }}" ]; then flags="--language ${{ inputs.language }}"; fi
+          echo "matrix=$(pnpm -s lb matrix $flags)" >> "$GITHUB_OUTPUT"
+
+  bench:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    name: bench ${{ matrix.language }} ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Run the benchmark session
+        run: |
+          reps=""
+          if [ -n "${{ inputs.reps }}" ]; then reps="--reps ${{ inputs.reps }}"; fi
+          pnpm -s lb bench ${{ matrix.language }} ${{ matrix.version }} $reps --out "$GITHUB_WORKSPACE/fragments/${{ matrix.language }}-${{ matrix.version }}.json"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fragment-${{ matrix.language }}-${{ matrix.version }}
+          path: fragments/*.json
+          retention-days: 7
+
+  merge:
+    needs: bench
+    if: ${{ !cancelled() && needs.bench.result != 'skipped' }}
+    runs-on: ubuntu-latest
+    concurrency:
+      group: bench-merge
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: fragment-*
+          path: fragments
+          merge-multiple: true
+      - name: Append sessions to data/<language>.json (append-only)
+        run: |
+          pnpm -s lb merge fragments
+          pnpm -s lb validate
+      - name: Commit and push (retry on race)
+        run: |
+          git config user.name "language-bench[bot]"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          git diff --cached --quiet && exit 0
+          git commit -m "data: benchmark sessions from run ${{ github.run_id }}"
+          for i in 1 2 3 4 5; do
+            git push && exit 0
+            git pull --rebase -X theirs || true
+            sleep $((RANDOM % 10 + 5))
+          done
+          exit 1
