@@ -48,12 +48,15 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
       }
       return { l, value, sub, low, high, sessions, provisional };
     });
-    return out.filter((r) => isFinite(r.value)).sort((a, b) => a.value - b.value);
+    const ranked = out.filter((r) => isFinite(r.value)).sort((a, b) => a.value - b.value);
+    // composite speed index: rescale so the best language is exactly 1.0x
+    if (metric === "time" && task === "all" && ranked.length) { const best = ranked[0]!.value; for (const r of ranked) r.value /= best; }
+    return ranked;
   }, [cells, languages, problems, task, metric, sel]);
 
   const max = Math.max(...rows.map((r) => r.value), 1e-9);
   const fmt = (v: number) => (metric === "time" ? idx(v) : metric === "memory" ? mb(v) : seconds(v));
-  const label = metric === "time" ? "Speed index (fastest per problem = 1.0×, lower is faster)" : metric === "memory" ? "Average memory (mean peak RSS per run, lower is better)" : "Start-up time";
+  const label = metric === "time" ? "Speed index (fastest language = 1.0×, lower is faster)" : metric === "memory" ? "Average memory (mean peak RSS per run, lower is better)" : "Start-up time";
 
   return (
     <div>
@@ -82,7 +85,7 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
       <div className="tablewrap">
         <table>
           <caption className="small muted" style={{ textAlign: "left", padding: "8px 12px" }}>{label}</caption>
-          <thead><tr><th>#</th><th>Language</th><th className="num">Value</th><th style={{ width: "30%" }}></th><th>Details</th></tr></thead>
+          <thead><tr><th>#</th><th>Language</th><th className="num">Value</th><th style={{ minWidth: 160, width: "40%" }}></th></tr></thead>
           <tbody>
             {rows.map((r, i) => (
               <tr key={r.l.id}>
@@ -90,10 +93,9 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
                 <td><span className="dot" style={{ background: colorOf(r.l.id) }} /><Link href={`/languages/${r.l.id}/`}>{r.l.name}</Link> <span className="muted small">{r.l.version}</span></td>
                 <td className="num"><strong>{fmt(r.value)}</strong>{isFinite(r.low) && r.sessions > 0 && <span className="muted small"> ({idx(r.low)}–{idx(r.high)})</span>}</td>
                 <td><div className="bar" style={{ width: `${Math.max(2, (r.value / max) * 100)}%`, background: colorOf(r.l.id) }} /></td>
-                <td className="small muted">{r.sub} · {r.sessions} session{r.sessions === 1 ? "" : "s"} {r.provisional && <span className="badge warn">provisional</span>}</td>
               </tr>
             ))}
-            {rows.length === 0 && <tr><td colSpan={5} className="empty">No measurements for this selection yet.</td></tr>}
+            {rows.length === 0 && <tr><td colSpan={4} className="empty">No measurements for this selection yet.</td></tr>}
           </tbody>
         </table>
       </div>

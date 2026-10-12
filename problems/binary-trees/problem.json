@@ -3,6 +3,7 @@
   "title": "Binary Trees",
   "summary": "Allocate and walk millions of short-lived binary trees (depth 14).",
   "description": "Builds a stretch tree, a long-lived tree and many short-lived perfect binary trees of increasing depth, counting nodes with a recursive check. Output is the benchmarks-game report lines.",
+  "pseudocode": "check(t) = 1 + check(t.left) + check(t.right)  (leaf = 1)\nmake(d)  = perfect binary tree of depth d\n\nprint \"stretch tree of depth maxDepth+1\", check(make(maxDepth+1))\nlongLived = make(maxDepth)\nfor depth = minDepth to maxDepth step 2:\n    iterations = 2^(maxDepth - depth + minDepth)\n    total = 0\n    repeat iterations times:\n        total += check(make(depth))      # short-lived, then garbage\n    print iterations, depth, total\nprint \"long lived tree\", check(longLived)",
   "reveals": "Allocation rate, pointer chasing and garbage-collector behaviour.",
   "caveat": "Tree size, object layout and allocation lifetimes matter. C and Rust use plain malloc/Box (no arena); GC languages use their default collector. Peak memory differs widely by design.",
   "tags": [

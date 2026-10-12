@@ -33,28 +33,48 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
     const ba = get(a), bb = get(b);
     if (!ba || !bb) return [];
     const r = indexVs(m.analysis, ba, bb); // >1: a slower than b
-    const significant = r.low > 1 || r.high < 1;
-    return [{ p, ba, bb, ratio: r.index, low: r.low, high: r.high, significant }];
+    return [{ p, ba, bb, ratio: r.index, low: r.low, high: r.high }];
   });
+  const geo = (xs: number[]) => Math.exp(xs.reduce((s, x) => s + Math.log(x), 0) / xs.length);
+  const overall = rows.length ? geo(rows.map((r) => r.ratio)) : 1;
+  const memRatio = rows.length ? geo(rows.map((r) => r.ba.memoryBytes / r.bb.memoryBytes)) : 1;
+  const winner = overall < 1 ? a : b;
+  const loser = overall < 1 ? b : a;
+  const factor = overall < 1 ? 1 / overall : overall;
+  const winsA = rows.filter((r) => r.ratio < 1).length;
+  const memWinner = memRatio < 1 ? a : b;
+  const memFactor = memRatio < 1 ? 1 / memRatio : memRatio;
+  const cell = (secs: number, bytes: number, timeBetter: boolean, memBetter: boolean) => (
+    <>
+      <span className={timeBetter ? "better" : undefined}>{seconds(secs)}</span>
+      {" / "}
+      <span className={memBetter ? "better" : undefined}>{mb(bytes / 1e6)}</span>
+    </>
+  );
   return (
     <>
       <h1>{a.spec.name} vs {b.spec.name}</h1>
-      <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster.</p>
       {!rows.length ? <NoData /> : (
-        <div className="tablewrap"><table>
-          <thead><tr><th>Problem</th><th className="num"><span className="dot" style={{ background: colorOf(a.spec.id) }} />{a.spec.name}</th><th className="num"><span className="dot" style={{ background: colorOf(b.spec.id) }} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th><th>Verdict</th><th className="num">Avg. memory</th></tr></thead>
-          <tbody>{rows.map((r) => {
-            const fasterA = r.ratio < 1;
-            return (<tr key={r.p.spec.id}>
-              <td><Link href={`/problems/${r.p.spec.id}/`}>{r.p.spec.title}</Link></td>
-              <td className="num"><Link href={`/benchmarks/${benchId(r.ba)}/`}>{seconds(r.ba.refSeconds)}</Link></td>
-              <td className="num"><Link href={`/benchmarks/${benchId(r.bb)}/`}>{seconds(r.bb.refSeconds)}</Link></td>
-              <td className="num">{idx(r.ratio)} <span className="muted small">({idx(r.low)}–{idx(r.high)})</span></td>
-              <td>{r.significant ? <span className="badge good">{fasterA ? a.spec.name : b.spec.name} faster</span> : <span className="badge">no clear difference</span>}</td>
-              <td className="num small">{mb(r.ba.memoryBytes / 1e6)} / {mb(r.bb.memoryBytes / 1e6)}</td></tr>);
-          })}</tbody></table></div>
+        <>
+          <div className="verdict-hero">
+            <div className="big"><span style={{ color: colorOf(winner.spec.id) }}>{winner.spec.name}</span> is {idx(factor)} faster</div>
+            <div className="sub">than {loser.spec.name} overall (geometric mean over {rows.length} problems). {a.spec.name} wins {winsA}, {b.spec.name} wins {rows.length - winsA}.
+              {" "}{memWinner.spec.name} uses {idx(memFactor)} less memory on average.</div>
+          </div>
+          <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster. Each cell shows time / memory; the better value is green.</p>
+          <div className="tablewrap"><table>
+            <thead><tr><th>Problem</th><th className="num"><span className="dot" style={{ background: colorOf(a.spec.id) }} />{a.spec.name}</th><th className="num"><span className="dot" style={{ background: colorOf(b.spec.id) }} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th></tr></thead>
+            <tbody>{rows.map((r) => {
+              const timeA = r.ratio < 1, memA = r.ba.memoryBytes < r.bb.memoryBytes;
+              return (<tr key={r.p.spec.id}>
+                <td><Link href={`/problems/${r.p.spec.id}/`}>{r.p.spec.title}</Link></td>
+                <td className="num"><Link href={`/benchmarks/${benchId(r.ba)}/`} className="plain">{cell(r.ba.refSeconds, r.ba.memoryBytes, timeA, memA)}</Link></td>
+                <td className="num"><Link href={`/benchmarks/${benchId(r.bb)}/`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, !timeA, !memA)}</Link></td>
+                <td className="num">{idx(r.ratio)} <span className="muted small">({idx(r.low)}–{idx(r.high)})</span></td></tr>);
+            })}</tbody></table></div>
+        </>
       )}
-      <p className="small muted">Times are shown for the average machine (see <Link href="/methodology/">methodology</Link>). “No clear difference” means the 95% interval of the ratio includes 1.0.</p>
+      <p className="small muted">Times are shown for the average machine (see <Link href="/methodology/">methodology</Link>). A ratio whose 95% interval includes 1.0 is not a clear difference.</p>
     </>
   );
 }

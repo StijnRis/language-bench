@@ -17,13 +17,23 @@ export default function Home() {
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "language-bench", description: metadata.description }} />
-      <h1>How fast is each programming language, really?</h1>
-      <p className="lead">
-        C, Rust, Go, Node.js and CPython measured on {m.problems.filter((p) => p.spec.scored).length} workloads. Each benchmark is re-run on
-        different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions
-        {m.analysis.cpuModels.length > 0 && <> across {m.analysis.cpuModels.length} CPU model{m.analysis.cpuModels.length === 1 ? "" : "s"}</>}.
-        Click through to see exactly how any number came about.
-      </p>
+      <section className="hero">
+        <div>
+          <h1>How fast is each programming language, really?</h1>
+          <p className="lead">
+            C, Rust, Go, Node.js and CPython measured on {m.problems.filter((p) => p.spec.scored).length} workloads. Each benchmark is re-run on
+            different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions
+            {m.analysis.cpuModels.length > 0 && <> across {m.analysis.cpuModels.length} CPU model{m.analysis.cpuModels.length === 1 ? "" : "s"}</>}.
+            Click through to see exactly how any number came about.
+          </p>
+        </div>
+        {m.hasData && (
+          <figure className="share">
+            <a href="share.png"><img src="share.png" alt="Bar chart: speed index of C, Rust, Go, Node.js and CPython" width={1200} height={630} /></a>
+            <figcaption className="small muted">Right-click to copy or save. Regenerated from the data on every deploy.</figcaption>
+          </figure>
+        )}
+      </section>
       {!m.hasData ? <NoData /> : (
         <Leaderboard
           cells={cells}

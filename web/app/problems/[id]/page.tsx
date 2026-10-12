@@ -34,6 +34,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
       <p><Tags tags={p.spec.tags} /></p>
       <h2>What is measured</h2>
       <p>{p.spec.description}</p>
+      {p.spec.pseudocode && (<><h2>Pseudocode</h2><pre className="pseudo"><code>{p.spec.pseudocode}</code></pre></>)}
       <p><strong>Reveals:</strong> {p.spec.reveals}</p>
       <p><strong>Caveat:</strong> {p.spec.caveat}</p>
       <h2>Results (newest release of each language)</h2>
@@ -45,7 +46,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
             return (<tr key={r.id}>
               <td><span className="dot" style={{ background: colorOf(r.language) }} /><Link href={`/benchmarks/${r.id}/`}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge" style={{ marginLeft: 6 }}>default</span>}</td>
               <td className="num"><strong>{idx(r.index)}</strong> <span className="muted small">({idx(r.indexLow)}–{idx(r.indexHigh)})</span></td>
-              <td style={{ width: 160 }}><div className="bar" style={{ width: `${Math.max(2, (r.index / max) * 100)}%`, background: colorOf(r.language) }} /></td>
+              <td style={{ minWidth: 160, width: "30%" }}><div className="bar" style={{ width: `${Math.max(2, (r.index / max) * 100)}%`, background: colorOf(r.language) }} /></td>
               <td className="num">{seconds(r.seconds)}</td><td className="num">{mb(r.memoryMB)}</td><td className="num">{bytes(r.binarySize)}</td>
               <td>{r.sessions} {r.provisional && <span className="badge warn">provisional</span>}</td></tr>);
           })}</tbody></table></div>
