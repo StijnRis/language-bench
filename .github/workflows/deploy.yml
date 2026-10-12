@@ -3,7 +3,7 @@ name: deploy
 on:
   push:
     branches: [main]
-    paths-ignore: ["methodology/**.md"]
+    paths-ignore: ["methodology/**.md", "docs/screenshot.png"]
   # pushes made with GITHUB_TOKEN do not trigger workflows, so redeploy when a bench run finishes
   workflow_run:
     workflows: [bench]

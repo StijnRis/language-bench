@@ -1,5 +1,9 @@
 # language-bench
 
+![Homepage screenshot](docs/screenshot.png)
+
+_Screenshot of the live site, refreshed automatically after every deploy by `.github/workflows/screenshot.yml`._
+
 Transparent speed and memory benchmarks of **C, Rust, Go, Node.js and CPython** on nine workloads
 (N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
 processing, start-up). Results are measured on GitHub Actions, repeated on different days and hardware,
