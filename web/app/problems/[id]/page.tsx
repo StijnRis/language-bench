@@ -39,7 +39,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
       <h2>Results (newest release of each language)</h2>
       {!shown.length ? <NoData /> : (
         <div className="tablewrap"><table>
-          <thead><tr><th>Language / build</th><th className="num">Index vs C</th><th></th><th className="num">Time (average machine)</th><th className="num">Avg. memory</th><th className="num">Binary</th><th>Sessions</th></tr></thead>
+          <thead><tr><th>Language / build</th><th className="num">Index vs fastest</th><th></th><th className="num">Time (average machine)</th><th className="num">Avg. memory</th><th className="num">Binary</th><th>Sessions</th></tr></thead>
           <tbody>{shown.map((r) => {
             const l = m.languages.find((x) => x.spec.id === r.language)!;
             return (<tr key={r.id}>

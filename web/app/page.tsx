@@ -45,7 +45,7 @@ export default function Home() {
       <h2>How to read these numbers</h2>
       <p className="muted">
         Times are normalised against a fixed calibration program run on every machine, so sessions on different hardware can be combined.
-        The index is relative to C (1.0×). Ranges are 95% confidence intervals across sessions. See the <Link href="/methodology/">methodology</Link>.
+        The index is relative to the fastest entry on each problem (1.0×). Ranges are 95% confidence intervals across sessions. See the <Link href="/methodology/">methodology</Link>.
       </p>
     </>
   );

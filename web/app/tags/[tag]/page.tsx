@@ -27,9 +27,9 @@ export default async function Tag({ params }: { params: Promise<{ tag: string }>
   return (
     <>
       <h1>“{tag}” workloads</h1>
-      <p className="lead">Composite speed (geometric mean of the index vs C) over the problems tagged <code>{tag}</code>: {problems.map((p, i) => <span key={p.spec.id}>{i > 0 && ", "}<Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></span>)}.</p>
+      <p className="lead">Composite speed (geometric mean of the index vs the fastest) over the problems tagged <code>{tag}</code>: {problems.map((p, i) => <span key={p.spec.id}>{i > 0 && ", "}<Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></span>)}.</p>
       {!rows.length ? <NoData /> : (
-        <div className="tablewrap"><table><thead><tr><th>#</th><th>Language</th><th className="num">Composite index (C = 1.0×)</th></tr></thead>
+        <div className="tablewrap"><table><thead><tr><th>#</th><th>Language</th><th className="num">Composite index (fastest = 1.0×)</th></tr></thead>
           <tbody>{rows.map((r, i) => <tr key={r.l.spec.id}><td>{i + 1}</td><td><span className="dot" style={{ background: colorOf(r.l.spec.id) }} />{r.l.spec.name} <span className="muted small">{latestVersion(r.l)}</span></td><td className="num"><strong>{idx(r.idx)}</strong></td></tr>)}</tbody></table></div>
       )}
       <p className="small muted">Combine several tags interactively on the <Link href="/">leaderboard</Link>.</p>

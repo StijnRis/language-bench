@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   if (!r) return {};
   const c = toCell(r.m, r.b);
   return meta(`${r.l.spec.name} ${r.b.version} ${r.p.spec.title} benchmark (${r.v.name})`,
-    `${r.l.spec.name} ${r.b.version} compiled/run with ${r.v.name}: ${idx(c.index)} the time of C on ${r.p.spec.title}, from ${c.sessions} independent sessions. Source, flags and raw repetitions included.`, `/benchmarks/${id}/`);
+    `${r.l.spec.name} ${r.b.version} compiled/run with ${r.v.name}: ${idx(c.index)} the time of the fastest implementation on ${r.p.spec.title}, from ${c.sessions} independent sessions. Source, flags and raw repetitions included.`, `/benchmarks/${id}/`);
 }
 
 export default async function Benchmark({ params }: { params: Promise<{ id: string }> }) {
@@ -52,7 +52,7 @@ export default async function Benchmark({ params }: { params: Promise<{ id: stri
       <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: `${l.spec.name} ${b.version} ${p.spec.title} benchmark`, description: `Raw repetitions and statistics of ${b.sessions.length} benchmark sessions`, url: `${repoUrl}/blob/main/data/${b.language}.json` }} />
       <p className="small muted"><Link href={`/languages/${b.language}/`}>{l.spec.name}</Link> › <Link href={`/problems/${b.problem}/`}>{p.spec.title}</Link></p>
       <h1>{l.spec.name} {b.version} · {p.spec.title}</h1>
-      <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs C ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the average machine, {mb(c.memoryMB)} average memory.
+      <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs the fastest ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the average machine, {mb(c.memoryMB)} average memory.
         {c.provisional && <> <span className="badge warn">provisional: fewer than 3 sessions</span></>} {c.correct ? <span className="badge good">output verified</span> : <span className="badge warn">output differs from expected!</span>}</p>
 
       <h2>How this number came about</h2>
@@ -81,7 +81,7 @@ export default async function Benchmark({ params }: { params: Promise<{ id: stri
       <ol className="steps" start={6} style={{ counterReset: "s 5", marginTop: 16 }}>
         <li><strong>Cancelling out the hardware.</strong> Every session ran many different benchmarks, and benchmarks are repeated in later sessions. A benchmark measured on two machines shows how much faster one machine is than the other. From all {nSessionsTotal} sessions at once we fit <code>log(time) = benchmark + machine</code>; the “machine factor” column is how much slower (&gt;1) or faster (&lt;1) each session&apos;s machine is than the average machine: {factors.map((x) => x.toFixed(3)).join(", ")}. {b.linked ? "" : "This benchmark is not yet linked to the main group of sessions by shared benchmarks, so treat it as provisional."}</li>
         <li><strong>Combining sessions.</strong> Sessions, not repetitions, are the independent samples. Each session&apos;s median divided by its machine factor ({adjusted.map((x) => seconds(x)).join(", ")}) is averaged geometrically: <strong>{seconds(b.refSeconds)}</strong> on the average machine. The 95% interval {seconds(b.refLow)}–{seconds(b.refHigh)} comes from a cluster bootstrap that resamples sessions, then repetitions within each.</li>
-        <li><strong>Index vs C.</strong> {ref ? <>{idx(c.index)} = this time ÷ the time of {ref.language} {ref.version} {ref.variant} on the same problem ({seconds(ref.refSeconds)}); interval {idx(c.indexLow)}–{idx(c.indexHigh)}.</> : "No C reference available."}</li>
+        <li><strong>Index vs fastest.</strong> {ref ? <>{idx(c.index)} = this time ÷ the time of the fastest entry on the same problem, {ref.language} {ref.version} {ref.variant} ({seconds(ref.refSeconds)}); interval {idx(c.indexLow)}–{idx(c.indexHigh)}.</> : "No reference available."}</li>
         <li><strong>How much was hardware?</strong> Raw session medians differ by a geometric factor of {b.agg.rawSpread.toFixed(3)}; after dividing out the machine factors they differ by {b.agg.adjustedSpread.toFixed(3)}. The overall model leaves {m.analysis.residualSpread.toFixed(3)}× of unexplained noise.</li>
         <li><strong>Memory.</strong> Hyperfine records the peak resident set size of every repetition. We report the average over the repetitions of a session, then over sessions: {mb(c.memoryMB)}.</li>
       </ol>

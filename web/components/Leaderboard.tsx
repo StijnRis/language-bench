@@ -53,7 +53,7 @@ export default function Leaderboard({ cells, languages, problems, tags }: Props)
 
   const max = Math.max(...rows.map((r) => r.value), 1e-9);
   const fmt = (v: number) => (metric === "time" ? idx(v) : metric === "memory" ? mb(v) : seconds(v));
-  const label = metric === "time" ? "Speed index (C = 1.0×, lower is faster)" : metric === "memory" ? "Average memory (mean peak RSS per run, lower is better)" : "Start-up time";
+  const label = metric === "time" ? "Speed index (fastest per problem = 1.0×, lower is faster)" : metric === "memory" ? "Average memory (mean peak RSS per run, lower is better)" : "Start-up time";
 
   return (
     <div>

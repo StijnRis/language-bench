@@ -34,12 +34,12 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
           <select value={problem} onChange={(e) => setProblem(e.target.value)}>{problems.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}</select>
         </label>
         <span>
-          <button className="chip" aria-pressed={metric === "index"} onClick={() => setMetric("index")} style={{ marginRight: 6 }}>Relative to C</button>
+          <button className="chip" aria-pressed={metric === "index"} onClick={() => setMetric("index")} style={{ marginRight: 6 }}>Relative to fastest</button>
           <button className="chip" aria-pressed={metric === "seconds"} onClick={() => setMetric("seconds")}>Seconds (average machine)</button>
         </span>
       </div>
       <div className="chartwrap card" style={{ position: "relative", padding: 8 }}>
-        <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={`Execution ${metric === "index" ? "index relative to C" : "time"} per release over time`} style={{ minWidth: 560 }}>
+        <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={`Execution ${metric === "index" ? "index relative to the fastest" : "time"} per release over time`} style={{ minWidth: 560 }}>
           {yticks.map((v) => (<g key={v}><line x1={M.l} x2={W - M.r} y1={Y(v)} y2={Y(v)} stroke="var(--line)" /><text x={M.l - 8} y={Y(v) + 4} textAnchor="end">{fmt(v)}</text></g>))}
           {years.map((y) => { const t = Date.UTC(y, 0, 1); return t >= x0 && t <= x1 ? (<g key={y}><line x1={X(t)} x2={X(t)} y1={M.t} y2={H - M.b} stroke="var(--line)" strokeDasharray="3 4" /><text x={X(t) + 3} y={H - M.b + 16}>{y}</text></g>) : null; })}
           {releases.map((r) => (<line key={r.version} x1={X(+new Date(r.date))} x2={X(+new Date(r.date))} y1={H - M.b} y2={H - M.b + 6} stroke="var(--muted)" />))}

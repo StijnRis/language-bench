@@ -72,11 +72,11 @@ export function versionsOf(m: Model, l: LoadedLanguage): string[] {
 export const latestVersion = (l: LoadedLanguage) => l.spec.versions.find((v) => v.latest)!.version;
 export const defaultVariant = (l: LoadedLanguage) => l.spec.variants.find((v) => v.default)!.id;
 
-/** Reference for "index vs C": newest C, default variant. */
+/** Reference for the index: the fastest (correct) benchmark on this problem, so the best entry is 1.0×. */
 export function reference(m: Model, problem: string): BenchmarkResult | undefined {
-  const c = m.languages.find((l) => l.spec.id === "c");
-  if (!c) return undefined;
-  return m.byId.get(benchId({ language: "c", version: latestVersion(c), variant: defaultVariant(c), problem }));
+  const all = m.analysis.benchmarks.filter((b) => b.problem === problem);
+  const pool = all.some((b) => b.correct) ? all.filter((b) => b.correct) : all;
+  return pool.reduce<BenchmarkResult | undefined>((best, b) => (!best || b.agg.score < best.agg.score ? b : best), undefined);
 }
 
 export function toCell(m: Model, b: BenchmarkResult, ref = reference(m, b.problem)): Cell {

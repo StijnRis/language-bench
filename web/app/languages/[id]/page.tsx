@@ -31,7 +31,7 @@ export default async function Language({ params }: { params: Promise<{ id: strin
       <p><a href={l.spec.website}>{l.spec.website}</a> · <Link href={`/languages/${id}/timeline/`}>Performance over releases →</Link></p>
       <h2>Build settings</h2>
       <ul>{l.spec.variants.map((v) => <li key={v.id}><strong>{v.name}</strong>{v.default && " (default)"} – {v.description}<br /><code>{v.build ?? v.run}</code></li>)}</ul>
-      <h2>Index vs C, per release (default build, lower = faster)</h2>
+      <h2>Index vs fastest, per release (default build, lower = faster)</h2>
       {!has ? <NoData /> : (
         <div className="tablewrap"><table>
           <thead><tr><th>Release</th>{scored.map((p) => <th key={p.spec.id} className="num"><Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></th>)}</tr></thead>
