@@ -2,24 +2,24 @@
  * Folder-based discovery. Nothing is registered centrally:
  *   languages/<id>/language.json   -> a language
  *   problems/<id>/problem.json     -> a problem
- *   data/<language>.json           -> measurements
+ *   data/sessions/<sessionId>.json -> one session with its measurements (see store.ts)
  */
 import fs from "node:fs";
 import path from "node:path";
 import {
   ConfigSchema,
   LanguageDataSchema,
-  SessionsFileSchema,
   LanguageSchema,
   ProblemSchema,
   ReleasesSchema,
   type Config,
   type Language,
-  type SessionsFile,
+  type Session,
   type LanguageData,
   type Problem,
   type Releases,
 } from "./schema";
+import { loadSessionFiles } from "./store";
 
 export function findRepoRoot(from = process.cwd()): string {
   let dir = path.resolve(from);
@@ -85,7 +85,7 @@ export function loadProblems(root = findRepoRoot()): LoadedProblem[] {
 }
 
 export interface LoadedData {
-  sessions: SessionsFile["sessions"];
+  sessions: Record<string, Session>;
   languages: LanguageData[];
 }
 
@@ -94,17 +94,7 @@ export function dataDir(root = findRepoRoot()): string {
 }
 
 export function loadData(root = findRepoRoot()): LoadedData {
-  const dir = dataDir(root);
-  const sessionsFile = path.join(dir, "sessions.json");
-  const sessions = fs.existsSync(sessionsFile) ? SessionsFileSchema.parse(readJson(sessionsFile)).sessions : {};
-  const languages = fs.existsSync(dir)
-    ? fs
-        .readdirSync(dir)
-        .filter((f) => f.endsWith(".json") && f !== "sessions.json")
-        .sort()
-        .map((f) => LanguageDataSchema.parse(readJson(path.join(dir, f))))
-    : [];
-  return { sessions, languages };
+  return loadSessionFiles(dataDir(root));
 }
 
 export function loadConfig(root = findRepoRoot()): Config {

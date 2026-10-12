@@ -41,7 +41,7 @@ export default function Methodology() {
       </ol>
 
       <h2>Data and reproducibility</h2>
-      <p>Everything is stored append-only in <a href={`${repoUrl}/tree/main/data`}>data/</a>: <code>sessions.json</code> (full environment of every session: hardware, OS, kernel, Docker, hyperfine, runner image, trigger, scheduler decisions) and one <code>&lt;language&gt;.json</code> per language with every measurement, including the verbatim hyperfine export, build and run commands, source hash, input hash and output hash. Derived numbers are never stored; they are computed when the site is built using the open <a href={`${repoUrl}/tree/main/core/src`}>statistics code</a>, which is unit-tested on synthetic data with known machine factors. You can re-run any benchmark locally with Docker.</p>
+      <p>Everything is stored append-only in <a href={`${repoUrl}/tree/main/data`}>data/</a>: one <code>sessions/&lt;session&gt;.json</code> file per session with its full environment (hardware, OS, kernel, Docker, hyperfine, runner image, trigger, scheduler decisions) and every measurement of that session: all per-repetition wall-clock, CPU, memory and exit-code values taken from hyperfine&apos;s JSON export, build and run commands, source hash, input hash and output hash. Derived numbers are never stored; they are computed when the site is built using the open <a href={`${repoUrl}/tree/main/core/src`}>statistics code</a>, which is unit-tested on synthetic data with known machine factors. You can re-run any benchmark locally with Docker.</p>
 
       <h2>Limits</h2>
       <ul>

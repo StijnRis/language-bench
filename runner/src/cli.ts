@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { LanguageDataSchema, SessionsFileSchema } from "@lb/core";
+import { fromSessionFile, listSessionFiles } from "@lb/core";
 import { dataDir, loadConfig, loadLanguages, loadProblems } from "@lb/core/discover";
 import { planSessions } from "@lb/core";
 import { ROOT } from "./config";
@@ -121,11 +121,14 @@ async function main() {
       break;
     }
     case "validate": {
-      const dir = dataDir(ROOT);
-      for (const file of fs.existsSync(dir) ? fs.readdirSync(dir) : []) {
-        const json = JSON.parse(fs.readFileSync(path.join(dir, file), "utf8"));
-        (file === "sessions.json" ? SessionsFileSchema : LanguageDataSchema).parse(json);
-        console.log(`ok ${file}`);
+      const files = listSessionFiles(dataDir(ROOT));
+      const seen = new Set<string>();
+      for (const file of files) {
+        const { session } = fromSessionFile(JSON.parse(fs.readFileSync(file, "utf8")));
+        if (path.basename(file) !== `${session.id}.json`) throw new Error(`${file}: file name must be <session id>.json`);
+        if (seen.has(session.id)) throw new Error(`duplicate session ${session.id}`);
+        seen.add(session.id);
+        console.log(`ok ${path.basename(file)}`);
       }
       break;
     }

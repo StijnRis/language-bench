@@ -71,6 +71,8 @@ export const ProblemSchema = z.object({
   title: z.string(),
   summary: z.string(),
   description: z.string(),
+  /** Language-neutral pseudocode of the workload. */
+  pseudocode: z.string().optional(),
   /** What this workload reveals. */
   reveals: z.string(),
   /** What to be careful about when reading the numbers. */
@@ -121,17 +123,22 @@ export const ConfigSchema = z.object({
 export type Config = z.infer<typeof ConfigSchema>;
 
 /* ------------------------------------------------------------------ */
-/* data/sessions.json and data/<language>.json                          */
+/* data/sessions/<sessionId>.json (one file per session, see store.ts)  */
 /* ------------------------------------------------------------------ */
 
-/** Verbatim `hyperfine --export-json` output (schema_version 2). Stored untouched. */
-export const HyperfineExportSchema = z
-  .object({
-    schema_version: z.number(),
-    results: z.array(z.object({ measurements: z.array(z.any()) }).passthrough()).min(1),
-  })
-  .passthrough();
-export type HyperfineExport = z.infer<typeof HyperfineExportSchema>;
+/**
+ * Per-repetition measurements of one benchmark, column-wise (one entry per run, equal lengths).
+ * Units are fixed: seconds and bytes. Taken from hyperfine's `--export-json` measurements.
+ */
+export const RunsSchema = z.object({
+  wall: z.array(z.number()),
+  cpu: z.array(z.number()),
+  user: z.array(z.number()),
+  system: z.array(z.number()),
+  memory: z.array(z.number()),
+  exit: z.array(z.number()),
+});
+export type Runs = z.infer<typeof RunsSchema>;
 
 /** Everything about one VM run that executed many benchmarks. Extra fields are allowed and kept. */
 export const SessionSchema = z
@@ -154,12 +161,6 @@ export const SessionSchema = z
   })
   .passthrough();
 export type Session = z.infer<typeof SessionSchema>;
-
-export const SessionsFileSchema = z.object({
-  schemaVersion: z.literal(2),
-  sessions: z.record(z.string(), SessionSchema),
-});
-export type SessionsFile = z.infer<typeof SessionsFileSchema>;
 
 export const MeasurementSchema = z
   .object({
@@ -192,13 +193,13 @@ export const MeasurementSchema = z
     loadAvgAfter: z.string().optional(),
     hyperfineArgs: z.string().optional(),
     warmupRuns: z.number().optional(),
-    hyperfine: HyperfineExportSchema.optional(),
+    runs: RunsSchema.optional(),
   })
   .passthrough();
 export type Measurement = z.infer<typeof MeasurementSchema>;
 
+/** In-memory view: all measurements of one language, regrouped from the session files. */
 export const LanguageDataSchema = z.object({
-  schemaVersion: z.literal(2),
   language: z.string(),
   measurements: z.array(MeasurementSchema),
 });
@@ -206,6 +207,15 @@ export type LanguageData = z.infer<typeof LanguageDataSchema>;
 
 export const benchmarkKey = (m: { language: string; version: string; variant: string; problem: string }) =>
   `${m.language}|${m.version}|${m.variant}|${m.problem}`;
+
+/** Session file on disk: the session, the distinct variant specs (by hash) and its measurements. */
+export const SessionFileSchema = z.object({
+  schemaVersion: z.literal(3),
+  session: SessionSchema,
+  variants: z.record(z.string(), z.record(z.any())),
+  measurements: z.array(MeasurementSchema.extend({ variantSpec: z.string() })),
+});
+export type SessionFile = z.infer<typeof SessionFileSchema>;
 
 export interface RawRuns {
   times: number[];
@@ -215,14 +225,20 @@ export interface RawRuns {
   exitCodes: number[];
 }
 
-/** Per-repetition arrays out of a verbatim hyperfine 2.x export. */
-export function extractRuns(hf: HyperfineExport): RawRuns {
-  const ms = hf.results[0]!.measurements as any[];
+/** Per-repetition arrays of a measurement. */
+export function extractRuns(runs: Runs): RawRuns {
+  return { times: runs.wall, memory: runs.memory, user: runs.user, system: runs.system, exitCodes: runs.exit };
+}
+
+/** Columns out of a hyperfine 2.x export (only the per-run measurements are kept). */
+export function runsFromHyperfine(hf: { results: { measurements: any[] }[] }): Runs {
+  const ms = hf.results[0]!.measurements;
   return {
-    times: ms.map((m) => m.time_wall_clock.value),
-    memory: ms.map((m) => m.memory_peak_resident?.value ?? 0),
+    wall: ms.map((m) => m.time_wall_clock.value),
+    cpu: ms.map((m) => m.time_cpu?.value ?? 0),
     user: ms.map((m) => m.time_user?.value ?? 0),
     system: ms.map((m) => m.time_system?.value ?? 0),
-    exitCodes: ms.map((m) => m.exit_code ?? 0),
+    memory: ms.map((m) => m.memory_peak_resident?.value ?? 0),
+    exit: ms.map((m) => m.exit_code ?? 0),
   };
 }

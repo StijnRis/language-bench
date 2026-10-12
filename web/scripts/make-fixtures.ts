@@ -4,7 +4,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { mulberry32, type LanguageData, type Session } from "@lb/core";
+import { mulberry32, sessionFilePath, toSessionFile, type Measurement, type Session } from "@lb/core";
 import { findRepoRoot, loadLanguages, loadProblems } from "@lb/core/discover";
 
 const root = findRepoRoot(import.meta.dirname);
@@ -27,17 +27,16 @@ const base: Record<string, Record<string, number>> = {
   python: { startup: 0.015, nbody: 3.2, "binary-trees": 2.5, "json-parse": 0.5, hashmap: 0.9, sort: 1.1, "string-ops": 0.5, "parallel-reduce": 2.6, "file-processing": 2.6 },
 };
 
-const hf = (t: number, mem: number, n: number) => ({
-  schema_version: 2,
-  results: [{ command: "fixture", measurements: Array.from({ length: n }, () => ({
-    time_wall_clock: { value: Math.round(t * noise(0.02) * 1e7) / 1e7, unit: "second" },
-    memory_peak_resident: { value: Math.round(mem * noise(0.03)), unit: "byte" }, exit_code: 0 })) }],
-});
+const runsOf = (t: number, mem: number, n: number) => {
+  const col = (f: () => number) => Array.from({ length: n }, f);
+  const wall = col(() => Math.round(t * noise(0.02) * 1e7) / 1e7);
+  return { wall, cpu: wall, user: wall, system: col(() => 0), memory: col(() => Math.round(mem * noise(0.03))), exit: col(() => 0) };
+};
 
 const langs = loadLanguages(root);
 const problems = loadProblems(root);
 const sessions: Record<string, Session> = {};
-const data = new Map<string, LanguageData>(langs.map((l) => [l.spec.id, { schemaVersion: 2, language: l.spec.id, measurements: [] }]));
+const bySession = new Map<string, Measurement[]>();
 
 type B = { l: (typeof langs)[number]; version: string; variant: (typeof langs)[number]["spec"]["variants"][number]; p: (typeof problems)[number]; age: number };
 const all: B[] = [];
@@ -62,14 +61,17 @@ for (let s = 0; s < 8; s++) {
   all.forEach((b, i) => {
     if (i >= 30 && rnd() > 0.55) return;
     const t = (base[b.l.spec.id]?.[b.p.spec.id] ?? 1) * (1 + b.age * 0.06) * (b.variant.default ? 1 : 1.05 + (b.variant.id.length % 3) * 0.04) * speed;
-    data.get(b.l.spec.id)!.measurements.push({
+    (bySession.get(id) ?? bySession.set(id, []).get(id)!).push({
       sessionId: id, language: b.l.spec.id, version: b.version, toolVersion: `${b.l.spec.name} ${b.version} (fixture)`, variant: b.variant.id,
       variantSpec: b.variant as never, problem: b.p.spec.id, args: [], containerImage: b.l.spec.image.replace("{version}", b.version), sourceFile: "fixture",
       sourceHash: "fixture", runCommand: b.variant.run, buildCommand: b.variant.build, status: "ok", correct: true, startedAt: started, finishedAt: started,
-      hyperfine: hf(t, 10e6 * (1 + rnd()), 12),
+      runs: runsOf(t, 10e6 * (1 + rnd()), 12),
     });
   });
 }
-fs.writeFileSync(path.join(out, "sessions.json"), JSON.stringify({ schemaVersion: 2, sessions }));
-for (const [l, d] of data) fs.writeFileSync(path.join(out, `${l}.json`), JSON.stringify(d));
+for (const [id, session] of Object.entries(sessions)) {
+  const file = sessionFilePath(out, id);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, JSON.stringify(toSessionFile(session, bySession.get(id) ?? [])));
+}
 console.log("fixtures written to", out);

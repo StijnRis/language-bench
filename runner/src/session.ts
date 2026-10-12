@@ -4,6 +4,9 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   benchmarkKey,
+  fromSessionFile,
+  sessionFilePath,
+  toSessionFile,
   hashSeed,
   mulberry32,
   type Candidate,
@@ -14,7 +17,6 @@ import {
   type Measurement,
   type PlannedBenchmark,
   type Session,
-  type SessionsFile,
   type Variant,
 } from "@lb/core";
 import {
@@ -447,7 +449,7 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
           loadAvgAfter: read(c, "cat /proc/loadavg"),
           hyperfineArgs: hf.args,
           warmupRuns: cfg.warmupRuns,
-          hyperfine: hf.json,
+          runs: hf.runs,
         });
       } catch (e) {
         fail(String(e));
@@ -494,22 +496,13 @@ async function writeJson(file: string, data: unknown) {
   fs.writeFileSync(file, await prettier.format(JSON.stringify(data), { ...cfg, parser: "json" }));
 }
 
-/** Append one session fragment: sessions.json gets the session, data/<language>.json the measurements. */
+/** Append one session fragment as its own file data/sessions/<id>.json (never rewrites existing data). */
 export async function mergeFragment(frag: { session: Session; measurements: Measurement[] }) {
-  const dir = dataDir(ROOT);
-  const sFile = path.join(dir, "sessions.json");
-  const sessions: SessionsFile = fs.existsSync(sFile) ? JSON.parse(fs.readFileSync(sFile, "utf8")) : { schemaVersion: 2, sessions: {} };
-  if (sessions.sessions[frag.session.id]) throw new Error(`session ${frag.session.id} already recorded`);
-  sessions.sessions[frag.session.id] = frag.session; // append-only
-  await writeJson(sFile, sessions);
-  const byLang = new Map<string, Measurement[]>();
-  for (const m of frag.measurements) (byLang.get(m.language) ?? byLang.set(m.language, []).get(m.language)!).push(m);
-  for (const [language, ms] of byLang) {
-    const file = path.join(dir, `${language}.json`);
-    const data: LanguageData = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf8")) : { schemaVersion: 2, language, measurements: [] };
-    data.measurements.push(...ms);
-    await writeJson(file, data);
-  }
+  const file = sessionFilePath(dataDir(ROOT), frag.session.id);
+  if (fs.existsSync(file)) throw new Error(`session ${frag.session.id} already recorded`);
+  const content = toSessionFile(frag.session, frag.measurements);
+  fromSessionFile(content); // validate before writing
+  await writeJson(file, content);
 }
 
 export { loadConfig };

@@ -93,19 +93,19 @@ describe("planSessions", () => {
 
 describe("analyze", () => {
   it("builds hardware-corrected benchmarks from sessions and measurements", () => {
-    const hf = (t: number) => ({ schema_version: 2, results: [{ measurements: [1, 2, 3].map(() => ({ time_wall_clock: { value: t }, memory_peak_resident: { value: 1e6 }, exit_code: 0 })) }] });
+    const runs = (t: number) => ({ wall: [t, t, t], cpu: [t, t, t], user: [t, t, t], system: [0, 0, 0], memory: [1e6, 1e6, 1e6], exit: [0, 0, 0] });
     const mkSession = (id: string): Session => ({
       id, startedAt: "2026-01-01T00:00:00Z", finishedAt: "2026-01-01T01:00:00Z", durationSeconds: 3600, repoCommit: "abc", trigger: {}, runner: {},
       host: { cpu: { model: "X", cores: 4 } }, tooling: {}, containers: {}, config: {}, plan: [], order: [], skipped: [],
     });
     const m = (sessionId: string, problem: string, t: number): LanguageData["measurements"][number] => ({
       sessionId, language: "c", version: "1", toolVersion: "gcc", variant: "v", variantSpec: {}, problem, args: [], containerImage: "gcc:1",
-      sourceFile: "main.c", sourceHash: "h", runCommand: "x", status: "ok", correct: true, startedAt: "", finishedAt: "", hyperfine: hf(t),
+      sourceFile: "main.c", sourceHash: "h", runCommand: "x", status: "ok", correct: true, startedAt: "", finishedAt: "", runs: runs(t),
     });
     // machine B is exactly 2x slower than A; benchmark "shared" ran on both
     const a = analyze(
       { A: mkSession("A"), B: mkSession("B") },
-      [{ schemaVersion: 2, language: "c", measurements: [m("A", "shared", 1), m("B", "shared", 2), m("A", "onlyA", 4), m("B", "onlyB", 6)] }],
+      [{ language: "c", measurements: [m("A", "shared", 1), m("B", "shared", 2), m("A", "onlyA", 4), m("B", "onlyB", 6)] }],
       50,
     );
     const by = (p: string) => a.benchmarks.find((b) => b.problem === p)!;

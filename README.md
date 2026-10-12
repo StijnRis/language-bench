@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.svg" width="96" alt="language-bench logo"></p>
+
 # language-bench
 
 ![Homepage screenshot](docs/screenshot.png)
@@ -13,7 +15,7 @@ combined with documented statistics, and published as a static site.
 
 - **Benchmark** = language version + build setting (compiler flags, runtime options) + problem.
 - **Session** = one CI job on one fresh VM running *many* benchmarks (all languages) in randomised order, each with hyperfine repetitions. The planner picks the least-measured benchmarks and re-runs some already measured ones; those overlaps let the statistics separate machine speed from benchmark speed (`log time = benchmark + machine`).
-- **Data** is append-only: `data/sessions.json` (full environment of every session) and `data/<language>.json` (every measurement incl. the verbatim hyperfine export); nothing derived is stored.
+- **Data** is append-only: one file per session, `data/sessions/<sessionId>.json` (full environment of the session plus every measurement with its per-repetition times and memory as columns); files are only ever added, never rewritten, and nothing derived is stored.
 - **Statistics** (`core/src/stats.ts`): sessions are the independent samples; machine factors fitted from overlapping benchmarks; geometric mean over sessions; cluster-bootstrap 95% CIs.
 - **Automation**: `bench.yml` discovers new language releases, plans sessions from `lb.config.json` (target sessions per benchmark, session size, overlap, ...), runs them, commits the data and re-triggers itself until all tracked benchmarks have enough data.
 - **Site** (`web/`, Next.js static export) computes everything from the raw data at build time; every number links to its sessions, source, flags and CI run.

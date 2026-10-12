@@ -77,8 +77,8 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
   const groups = new Map<string, Row[]>();
   for (const d of datas)
     for (const m of d.measurements) {
-      if (m.status !== "ok" || !m.hyperfine || !sessions[m.sessionId]) continue;
-      const reps = extractRuns(m.hyperfine);
+      if (m.status !== "ok" || !m.runs || !sessions[m.sessionId]) continue;
+      const reps = extractRuns(m.runs);
       if (reps.times.length === 0) continue;
       const k = benchmarkKey(m);
       (groups.get(k) ?? groups.set(k, []).get(k)!).push({ m, reps });
