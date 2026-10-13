@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { JsonLd, NoData, Tags } from "@/components/Bits";
+import { JsonLd, NoData } from "@/components/Bits";
+import { LangIcon, ProblemIcon } from "@/components/Icons";
 import Leaderboard from "@/components/Leaderboard";
 import { meta } from "@/lib/meta";
-import { allTags, getModel, latestVersion, snapshotCells } from "@/lib/model";
+import { getModel, latestVersion, siteUrl, snapshotCells } from "@/lib/model";
 
 export const metadata = meta(
   "Programming language speed benchmarks: C vs Rust vs Go vs Node.js vs Python",
@@ -13,15 +14,21 @@ export const metadata = meta(
 export default function Home() {
   const m = getModel();
   const cells = snapshotCells(m);
-  const tags = allTags(m);
+  const scored = m.problems.filter((p) => p.spec.scored);
+  const faq = [
+    { q: "Which programming language is the fastest?", a: "Across the benchmark workloads, compiled languages without a garbage collector (C and Rust) are usually fastest, followed by Go, then Node.js, then CPython. The leaderboard above shows the exact multipliers, per task and overall." },
+    { q: "How are the benchmarks measured?", a: `Each benchmark is a language version, a build setting and a problem. It runs on GitHub Actions in a pinned Docker image with many repetitions. Results from ${m.analysis.sessionCount} sessions on different days and hardware are combined statistically, with machine speed factored out.` },
+    { q: "Can I trust these numbers?", a: "Every number links to its source code, build flags, raw repetitions and CI run. Ranges are 95% confidence intervals computed across independent sessions, and all raw data is open in the repository." },
+  ];
   return (
     <>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "language-bench", description: metadata.description }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "WebSite", name: "language-bench", url: siteUrl, description: metadata.description, inLanguage: "en" }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }} />
       <section className="hero">
         <div>
           <h1>How fast is each programming language, really?</h1>
           <p className="lead">
-            C, Rust, Go, Node.js and CPython measured on {m.problems.filter((p) => p.spec.scored).length} workloads. Each benchmark is re-run on
+            {m.languages.map((l, i) => <span key={l.spec.id} className="inline-lang"><LangIcon id={l.spec.id} size={20} />{l.spec.name}{i < m.languages.length - 2 ? ", " : i === m.languages.length - 2 ? " and " : ""}</span>)} measured on {scored.length} workloads. Each benchmark is re-run on
             different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions
             {m.analysis.cpuModels.length > 0 && <> across {m.analysis.cpuModels.length} CPU model{m.analysis.cpuModels.length === 1 ? "" : "s"}</>}.
             Click through to see exactly how any number came about.
@@ -38,25 +45,30 @@ export default function Home() {
         <Leaderboard
           cells={cells}
           languages={m.languages.map((l) => ({ id: l.spec.id, name: l.spec.name, version: latestVersion(l) }))}
-          problems={m.problems.map((p) => ({ id: p.spec.id, title: p.spec.title, tags: p.spec.tags, scored: p.spec.scored }))}
-          tags={tags}
+          problems={m.problems.map((p) => ({ id: p.spec.id, title: p.spec.title, scored: p.spec.scored }))}
         />
       )}
-      <h2>Browse by what is being tested</h2>
-      <p><Tags tags={tags.filter((t) => t !== "startup")} /></p>
+      <h2>What is being tested</h2>
       <div className="grid">
-        {m.problems.filter((p) => p.spec.scored).map((p) => (
-          <div className="card" key={p.spec.id}>
-            <h3 style={{ margin: "0 0 6px" }}><Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></h3>
-            <div className="small muted">{p.spec.summary}</div>
-          </div>
+        {scored.map((p) => (
+          <Link className="card problem-card" key={p.spec.id} href={`/problems/${p.spec.id}/`}>
+            <ProblemIcon id={p.spec.id} size={52} />
+            <div>
+              <h3>{p.spec.title}</h3>
+              <div className="small muted">{p.spec.summary}</div>
+            </div>
+          </Link>
         ))}
       </div>
       <h2>How to read these numbers</h2>
       <p className="muted">
         Times are normalised against a fixed calibration program run on every machine, so sessions on different hardware can be combined.
-        The index is relative to the fastest entry on each problem (1.0×). Ranges are 95% confidence intervals across sessions. See the <Link href="/methodology/">methodology</Link>.
+        The number in brackets says how many times slower (or heavier) a language is than the best one in that table (1.0×). Hover a single-task value for its 95% confidence interval across sessions. See the <Link href="/methodology/">methodology</Link>.
       </p>
+    <h2>Frequently asked questions</h2>
+      {faq.map((f) => (
+        <details className="faq" key={f.q}><summary>{f.q}</summary><p className="muted">{f.a}</p></details>
+      ))}
     </>
   );
 }

@@ -5,17 +5,18 @@ import { CodeBlock, JsonLd, NoData } from "@/components/Bits";
 import StripPlot from "@/components/StripPlot";
 import { bytes, day, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { getModel, repoUrl, reference, sourceOf, toCell } from "@/lib/model";
+import { LangIcon, ProblemIcon } from "@/components/Icons";
+import { benchPath, getModel, repoUrl, reference, siteUrl, sourceOf, toCell } from "@/lib/model";
 
 export function generateStaticParams() {
-  const ids = [...getModel().byId.keys()];
+  const bs = [...getModel().byId.values()];
   // output: export rejects an empty list; render a placeholder page until the first data exists
-  return (ids.length ? ids : ["none"]).map((id) => ({ id }));
+  return bs.length ? bs.map((b) => ({ problem: b.problem, config: `${b.language}--${b.version}--${b.variant}` })) : [{ problem: "none", config: "none" }];
 }
 
-function lookup(id: string) {
+function lookup(problem: string, config: string) {
   const m = getModel();
-  const b = m.byId.get(id);
+  const b = m.byId.get(`${config}--${problem}`);
   if (!b) return undefined;
   const l = m.languages.find((x) => x.spec.id === b.language)!;
   const p = m.problems.find((x) => x.spec.id === b.problem)!;
@@ -23,19 +24,19 @@ function lookup(id: string) {
   return { m, b, l, p, v };
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const r = lookup(id);
+export async function generateMetadata({ params }: { params: Promise<{ problem: string; config: string }> }) {
+  const { problem, config } = await params;
+  const r = lookup(problem, config);
   if (!r) return {};
   const c = toCell(r.m, r.b);
   return meta(`${r.l.spec.name} ${r.b.version} ${r.p.spec.title} benchmark (${r.v.name})`,
-    `${r.l.spec.name} ${r.b.version} compiled/run with ${r.v.name}: ${idx(c.index)} the time of the fastest implementation on ${r.p.spec.title}, from ${c.sessions} independent sessions. Source, flags and raw repetitions included.`, `/benchmarks/${id}/`);
+    `${r.l.spec.name} ${r.b.version} compiled/run with ${r.v.name}: ${idx(c.index)} the time of the fastest implementation on ${r.p.spec.title}, from ${c.sessions} independent sessions. Source, flags and raw repetitions included.`, benchPath(r.b));
 }
 
-export default async function Benchmark({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const r = lookup(id);
-  if (!r && id === "none") return <NoData />;
+export default async function Benchmark({ params }: { params: Promise<{ problem: string; config: string }> }) {
+  const { problem, config } = await params;
+  const r = lookup(problem, config);
+  if (!r && problem === "none") return <NoData />;
   if (!r) notFound();
   const { m, b, l, p, v } = r;
   const c = toCell(m, b);
@@ -49,9 +50,14 @@ export default async function Benchmark({ params }: { params: Promise<{ id: stri
   const cmd = `pnpm lb verify ${b.language} --version ${b.version} --variant ${b.variant} --problems ${b.problem}`;
   return (
     <>
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: `${l.spec.name} ${b.version} ${p.spec.title} benchmark`, description: `Raw repetitions and statistics of ${b.sessions.length} benchmark sessions`, url: `${repoUrl}/blob/main/data/${b.language}.json` }} />
-      <p className="small muted"><Link href={`/languages/${b.language}/`}>{l.spec.name}</Link> › <Link href={`/problems/${b.problem}/`}>{p.spec.title}</Link></p>
-      <h1>{l.spec.name} {b.version} · {p.spec.title}</h1>
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: `${l.spec.name} ${b.version} ${p.spec.title} benchmark`, description: `Raw repetitions and statistics of ${b.sessions.length} benchmark sessions`, url: `${siteUrl}${benchPath(b)}`, isBasedOn: `${repoUrl}/tree/main/data/sessions` }} />
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Problems", item: `${siteUrl}/problems/` },
+        { "@type": "ListItem", position: 2, name: p.spec.title, item: `${siteUrl}/problems/${b.problem}/` },
+        { "@type": "ListItem", position: 3, name: `${l.spec.name} ${b.version}`, item: `${siteUrl}${benchPath(b)}` },
+      ] }} />
+      <p className="small muted"><Link href={`/problems/${b.problem}/`}>{p.spec.title}</Link> › <Link href={`/languages/${b.language}/`}>{l.spec.name}</Link></p>
+      <h1 className="with-icons"><ProblemIcon id={b.problem} size={52} /><span>{p.spec.title}<small><LangIcon id={b.language} size={20} /> {l.spec.name} {b.version}</small></span></h1>
       <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs the fastest ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the average machine, {mb(c.memoryMB)} average memory.
         {c.provisional && <> <span className="badge warn">provisional: fewer than 3 sessions</span></>} {c.correct ? <span className="badge good">output verified</span> : <span className="badge warn">output differs from expected!</span>}</p>
 

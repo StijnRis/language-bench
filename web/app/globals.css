@@ -125,3 +125,42 @@ a.tag:hover { color: var(--accent); }
 .verdict-hero { border-radius: var(--radius); box-shadow: var(--shadow); padding: 26px 30px; }
 .verdict-hero .big { font-family: var(--font-display), var(--font-body), sans-serif; letter-spacing: -0.03em; font-weight: 800; }
 pre.pseudo, pre.code, .shiki { border-radius: var(--radius); }
+
+/* ---------- icons, footer, faq ---------- */
+.lang-icon { flex: none; vertical-align: middle; }
+.langcell { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; }
+.inline-lang { display: inline-flex; align-items: center; gap: 5px; margin-right: 2px; white-space: nowrap; color: var(--fg); font-weight: 600; }
+.inline-lang .lang-icon { margin-left: 2px; }
+.with-icons { display: flex; align-items: center; gap: 16px; }
+.with-icons small { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-family: var(--font-body), system-ui, sans-serif; font-size: 1rem; font-weight: 600; letter-spacing: 0; color: var(--muted); line-height: 1.2; }
+.with-lang { display: flex; align-items: center; gap: 10px; }
+.problem-icon { display: inline-block; flex: none; }
+.problem-icon img { display: block; width: 100%; height: 100%; }
+.problem-icon .pi-dark { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .problem-icon .pi-light { display: none; }
+  :root:not([data-theme="light"]) .problem-icon .pi-dark { display: block; }
+}
+:root[data-theme="dark"] .problem-icon .pi-light { display: none; }
+:root[data-theme="dark"] .problem-icon .pi-dark { display: block; }
+.problem-card { display: flex; gap: 14px; align-items: flex-start; color: inherit; }
+.problem-card:hover { text-decoration: none; }
+.problem-card h3 { margin: 0 0 4px; }
+td .muted { font-weight: 400; }
+
+.faq { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); padding: 0 18px; margin-bottom: 10px; }
+.faq summary { cursor: pointer; padding: 14px 0; font-weight: 600; }
+.faq p { margin: 0 0 14px; }
+
+footer.site { padding-block: 40px 24px; margin-top: 24px; }
+footer.site h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 12px; font-family: var(--font-body), system-ui, sans-serif; }
+.footer-grid { display: grid; gap: 32px 48px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 760px) { .footer-grid { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr); } }
+.footer-grid nav { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.footer-grid nav a { color: var(--fg); } .footer-grid nav a:hover { color: var(--accent); }
+.footer-about .brand { font-family: var(--font-display), var(--font-body), sans-serif; font-weight: 800; font-size: 19px; color: var(--fg); }
+.footer-about p { max-width: 44ch; margin: 8px 0 0; }
+.footer-langs { display: flex; gap: 12px; }
+.footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 24px; margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); font-size: 13px; }
+.langrow { display: flex; align-items: center; gap: 8px; }
+.langrow .small { line-height: 1; }

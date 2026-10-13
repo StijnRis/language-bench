@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData, Tags } from "@/components/Bits";
+import { LangIcon, ProblemIcon } from "@/components/Icons";
 import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { benchId, defaultVariant, getModel, toCell } from "@/lib/model";
+import { benchPath, defaultVariant, getModel, siteUrl, toCell } from "@/lib/model";
 
 export function generateStaticParams() {
   return getModel().problems.map((p) => ({ id: p.spec.id }));
@@ -29,7 +30,11 @@ export default async function Problem({ params }: { params: Promise<{ id: string
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "TechArticle", headline: `${p.spec.title} benchmark`, description: p.spec.summary }} />
-      <h1>{p.spec.title}</h1>
+      <JsonLd data={{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Problems", item: `${siteUrl}/problems/` },
+        { "@type": "ListItem", position: 2, name: p.spec.title, item: `${siteUrl}/problems/${id}/` },
+      ] }} />
+      <h1 className="with-icons"><ProblemIcon id={id} size={64} /><span>{p.spec.title}</span></h1>
       <p className="lead">{p.spec.summary}</p>
       <p><Tags tags={p.spec.tags} /></p>
       <h2>What is measured</h2>
@@ -44,7 +49,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
           <tbody>{shown.map((r) => {
             const l = m.languages.find((x) => x.spec.id === r.language)!;
             return (<tr key={r.id}>
-              <td><span className="dot" style={{ background: colorOf(r.language) }} /><Link href={`/benchmarks/${r.id}/`}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge" style={{ marginLeft: 6 }}>default</span>}</td>
+              <td><LangIcon id={r.language} size={22} /><Link href={benchPath(r)}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge" style={{ marginLeft: 6 }}>default</span>}</td>
               <td className="num"><strong>{idx(r.index)}</strong> <span className="muted small">({idx(r.indexLow)}–{idx(r.indexHigh)})</span></td>
               <td style={{ minWidth: 160, width: "30%" }}><div className="bar" style={{ width: `${Math.max(2, (r.index / max) * 100)}%`, background: colorOf(r.language) }} /></td>
               <td className="num">{seconds(r.seconds)}</td><td className="num">{mb(r.memoryMB)}</td><td className="num">{bytes(r.binarySize)}</td>

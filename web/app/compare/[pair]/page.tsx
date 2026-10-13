@@ -2,9 +2,10 @@ import { indexVs } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NoData } from "@/components/Bits";
+import { LangIcon } from "@/components/Icons";
 import { colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { benchId, defaultVariant, getModel, latestVersion, pairs } from "@/lib/model";
+import { benchId, benchPath, defaultVariant, getModel, latestVersion, pairs } from "@/lib/model";
 
 export function generateStaticParams() {
   return pairs(getModel().languages.map((l) => l.spec.id)).map((pair) => ({ pair }));
@@ -53,7 +54,7 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
   );
   return (
     <>
-      <h1>{a.spec.name} vs {b.spec.name}</h1>
+      <h1 className="with-icons"><LangIcon id={a.spec.id} size={44} /><span>{a.spec.name} vs {b.spec.name}</span><LangIcon id={b.spec.id} size={44} /></h1>
       {!rows.length ? <NoData /> : (
         <>
           <div className="verdict-hero">
@@ -63,13 +64,13 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
           </div>
           <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster. Each cell shows time / memory; the better value is green.</p>
           <div className="tablewrap"><table>
-            <thead><tr><th>Problem</th><th className="num"><span className="dot" style={{ background: colorOf(a.spec.id) }} />{a.spec.name}</th><th className="num"><span className="dot" style={{ background: colorOf(b.spec.id) }} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th></tr></thead>
+            <thead><tr><th>Problem</th><th className="num"><LangIcon id={a.spec.id} size={20} />{a.spec.name}</th><th className="num"><LangIcon id={b.spec.id} size={20} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th></tr></thead>
             <tbody>{rows.map((r) => {
               const timeA = r.ratio < 1, memA = r.ba.memoryBytes < r.bb.memoryBytes;
               return (<tr key={r.p.spec.id}>
                 <td><Link href={`/problems/${r.p.spec.id}/`}>{r.p.spec.title}</Link></td>
-                <td className="num"><Link href={`/benchmarks/${benchId(r.ba)}/`} className="plain">{cell(r.ba.refSeconds, r.ba.memoryBytes, timeA, memA)}</Link></td>
-                <td className="num"><Link href={`/benchmarks/${benchId(r.bb)}/`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, !timeA, !memA)}</Link></td>
+                <td className="num"><Link href={`${benchPath(r.ba)}`} className="plain">{cell(r.ba.refSeconds, r.ba.memoryBytes, timeA, memA)}</Link></td>
+                <td className="num"><Link href={`${benchPath(r.bb)}`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, !timeA, !memA)}</Link></td>
                 <td className="num">{idx(r.ratio)} <span className="muted small">({idx(r.low)}–{idx(r.high)})</span></td></tr>);
             })}</tbody></table></div>
         </>

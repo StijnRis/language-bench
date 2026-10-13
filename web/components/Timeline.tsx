@@ -4,11 +4,11 @@ import { colorOf, idx, seconds } from "@/lib/fmt";
 
 export interface TPoint { date: string; version: string; index: number; seconds: number; sessions: number; highlights: string[] }
 export interface TSeries { id: string; label: string; color?: string; problem: string; points: TPoint[] }
-interface Props { series: TSeries[]; problems: { id: string; title: string }[]; releases?: { date: string; version: string; highlights: string[] }[] }
+interface Props { series: TSeries[]; problems: { id: string; title: string }[]; releases?: { date: string; version: string; highlights: string[]; id?: string }[]; note?: boolean }
 
-const W = 860, H = 380, M = { l: 64, r: 20, t: 16, b: 40 };
+const W = 860, H = 380, M = { l: 64, r: 28, t: 24, b: 56 };
 
-export default function Timeline({ series, problems, releases = [] }: Props) {
+export default function Timeline({ series, problems, releases = [], note = true }: Props) {
   const [problem, setProblem] = useState(problems[0]?.id ?? "");
   const [metric, setMetric] = useState<"index" | "seconds">("index");
   const [hover, setHover] = useState<{ x: number; y: number; p: TPoint; s: TSeries } | null>(null);
@@ -18,7 +18,11 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
   if (!pts.length) return <div className="empty card">No data for this problem yet.</div>;
 
   const xs = [...pts.map((p) => +new Date(p.date)), ...releases.map((r) => +new Date(r.date))];
-  const x0 = Math.min(...xs), x1 = Math.max(...xs) || x0 + 1;
+  // pad the date range so points at either end stay inside the plot, even when only one release is measured
+  const span = Math.max(Math.max(...xs) - Math.min(...xs), 90 * 864e5), pad = span * 0.06;
+  const x0 = Math.min(...xs) - pad, x1 = Math.min(...xs) + span + pad;
+  const measured = new Set(pts.map((p) => p.version));
+  const unmeasured = releases.filter((r) => !measured.has(r.version));
   const ys = pts.map((p) => p[metric]);
   const y1 = Math.max(...ys) * 1.1, y0 = 0;
   const X = (t: number) => M.l + ((t - x0) / Math.max(1, x1 - x0)) * (W - M.l - M.r);
@@ -41,8 +45,10 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
       <div className="chartwrap card" style={{ position: "relative", padding: 8 }}>
         <svg viewBox={`0 0 ${W} ${H}`} width="100%" role="img" aria-label={`Execution ${metric === "index" ? "index relative to the fastest" : "time"} per release over time`} style={{ minWidth: 560 }}>
           {yticks.map((v) => (<g key={v}><line x1={M.l} x2={W - M.r} y1={Y(v)} y2={Y(v)} stroke="var(--line)" /><text x={M.l - 8} y={Y(v) + 4} textAnchor="end">{fmt(v)}</text></g>))}
-          {years.map((y) => { const t = Date.UTC(y, 0, 1); return t >= x0 && t <= x1 ? (<g key={y}><line x1={X(t)} x2={X(t)} y1={M.t} y2={H - M.b} stroke="var(--line)" strokeDasharray="3 4" /><text x={X(t) + 3} y={H - M.b + 16}>{y}</text></g>) : null; })}
-          {releases.map((r) => (<line key={r.version} x1={X(+new Date(r.date))} x2={X(+new Date(r.date))} y1={H - M.b} y2={H - M.b + 6} stroke="var(--muted)" />))}
+          {years.map((y) => { const t = Date.UTC(y, 0, 1); return t >= x0 && t <= x1 ? (<g key={y}><line x1={X(t)} x2={X(t)} y1={M.t} y2={H - M.b} stroke="var(--line)" strokeDasharray="3 4" /><text x={X(t) + 3} y={H - M.b + 40}>{y}</text></g>) : null; })}
+          {releases.map((r) => (<g key={r.id ?? r.version}>
+            <line x1={X(+new Date(r.date))} x2={X(+new Date(r.date))} y1={H - M.b} y2={H - M.b + 6} stroke="var(--muted)" />
+            {releases.length <= 10 && <text x={X(+new Date(r.date))} y={H - M.b + 18} textAnchor="middle" opacity={measured.has(r.version) ? 1 : 0.55}>{r.version}</text>}</g>))}
           {shown.map((s, si) => {
             const c = s.color ?? colorOf(s.id, si);
             const d = s.points.map((p, i) => `${i ? "L" : "M"}${X(+new Date(p.date))},${Y(p[metric])}`).join(" ");
@@ -51,7 +57,7 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
                 <circle cx={X(+new Date(p.date))} cy={Y(p[metric])} r={5} fill={c} stroke="var(--card)" strokeWidth={1.5} tabIndex={0}
                   onMouseEnter={() => setHover({ x: X(+new Date(p.date)), y: Y(p[metric]), p, s })} onFocus={() => setHover({ x: X(+new Date(p.date)), y: Y(p[metric]), p, s })}
                   onMouseLeave={() => setHover(null)} onBlur={() => setHover(null)} />
-                <text x={X(+new Date(p.date))} y={Y(p[metric]) - 9} textAnchor="middle">{p.version}</text></g>))}</g>);
+                <text x={X(+new Date(p.date))} y={Y(p[metric]) - 10} textAnchor="middle" style={{ fill: "var(--fg)", fontWeight: 600 }}>{fmt(p[metric])}</text></g>))}</g>);
           })}
         </svg>
         {hover && (
@@ -63,6 +69,7 @@ export default function Timeline({ series, problems, releases = [] }: Props) {
           </div>
         )}
       </div>
+      {note && unmeasured.length > 0 && <p className="small muted">{unmeasured.length} tracked release{unmeasured.length === 1 ? " has" : "s have"} not been measured for this problem yet ({unmeasured.map((r) => r.version).join(", ")}, shown faded on the axis). Lines appear as soon as a second release has data.</p>}
       <p className="small muted">Each point is one language release, placed on its official release date. Markers on the axis are releases; hover or focus a point for release highlights.
         {shown.length > 1 && <> Lines: {shown.map((s, i) => <span key={s.id}><span className="dot" style={{ background: s.color ?? colorOf(s.id, i), marginLeft: 8 }} />{s.label}</span>)}</>}</p>
     </div>

@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
+import { LangIcon } from "@/components/Icons";
 import { idx } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { benchId, defaultVariant, getModel, latestVersion, toCell, versionsOf } from "@/lib/model";
+import Timeline from "@/components/Timeline";
+import { languageSeries } from "@/lib/timeline";
+import { benchId, benchPath, defaultVariant, getModel, latestVersion, toCell, versionsOf } from "@/lib/model";
 
 export function generateStaticParams() {
   return getModel().languages.map((l) => ({ id: l.spec.id }));
@@ -26,9 +29,9 @@ export default async function Language({ params }: { params: Promise<{ id: strin
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "TechArticle", headline: `${l.spec.name} performance benchmarks` }} />
-      <h1>{l.spec.name}</h1>
+      <h1 className="with-icons"><LangIcon id={id} size={56} /><span>{l.spec.name}</span></h1>
       <p className="lead">{l.spec.description}</p>
-      <p><a href={l.spec.website}>{l.spec.website}</a> · <Link href={`/languages/${id}/timeline/`}>Performance over releases →</Link></p>
+      <p><a href={l.spec.website}>{l.spec.website}</a></p>
       <h2>Build settings</h2>
       <ul>{l.spec.variants.map((v) => <li key={v.id}><strong>{v.name}</strong>{v.default && " (default)"} – {v.description}<br /><code>{v.build ?? v.run}</code></li>)}</ul>
       <h2>Index vs fastest, per release (default build, lower = faster)</h2>
@@ -39,9 +42,17 @@ export default async function Language({ params }: { params: Promise<{ id: strin
             <tr key={version}><td><strong>{version}</strong> <span className="muted small">{l.releases[version]?.date}</span></td>
               {scored.map((p) => {
                 const b = m.byId.get(benchId({ language: id, version, variant: defaultVariant(l), problem: p.spec.id }));
-                return <td key={p.spec.id} className="num">{b ? <Link href={`/benchmarks/${benchId(b)}/`}>{idx(toCell(m, b).index)}</Link> : "-"}</td>;
+                return <td key={p.spec.id} className="num">{b ? <Link href={`${benchPath(b)}`}>{idx(toCell(m, b).index)}</Link> : "-"}</td>;
               })}</tr>))}</tbody></table></div>
       )}
+      <h2>Speed across releases</h2>
+      <p className="muted">Did {l.spec.name} get faster? Every tracked release plotted at its release date, one line per build setting. Choose a problem to compare.</p>
+      {!has ? <NoData /> : (
+        <Timeline series={languageSeries(m, l)} problems={scored.map((p) => ({ id: p.spec.id, title: p.spec.title }))}
+          releases={versionsOf(m, l).flatMap((v) => (l.releases[v] ? [{ version: v, ...l.releases[v]! }] : []))} />
+      )}
+      <h2>Release highlights</h2>
+      <ul>{versionsOf(m, l).map((v) => <li key={v}><strong>{l.spec.name} {v}</strong> ({l.releases[v]?.date}){l.releases[v]?.highlights.length ? `: ${l.releases[v]!.highlights.join("; ")}` : ""}</li>)}</ul>
       <p className="small muted">Latest release: {latestVersion(l)}. Other build settings are listed on each problem page.</p>
     </>
   );

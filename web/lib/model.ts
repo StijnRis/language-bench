@@ -49,6 +49,10 @@ export interface Model {
 export const benchId = (b: { language: string; version: string; variant: string; problem: string }) =>
   `${b.language}--${b.version}--${b.variant}--${b.problem}`;
 
+/** URL path of a benchmark: problem first, then language--version--build. */
+export const benchPath = (b: { language: string; version: string; variant: string; problem: string }) =>
+  `/benchmarks/${b.problem}/${b.language}--${b.version}--${b.variant}/`;
+
 let cached: Model | undefined;
 
 export function getModel(): Model {
