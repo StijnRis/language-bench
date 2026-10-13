@@ -1,0 +1,3467 @@
+{
+  "schemaVersion": 3,
+  "session": {
+    "id": "2026-10-13T15-19-35-579Z-s11",
+    "startedAt": "2026-10-13T15:19:57.909Z",
+    "finishedAt": "2026-10-13T15:28:03.954Z",
+    "durationSeconds": 486.045,
+    "repoCommit": "fa2735a898127653db9db86c764e584b3a51448e",
+    "trigger": {
+      "event": "workflow_dispatch",
+      "workflow": "bench",
+      "job": "session",
+      "runId": "38421026781",
+      "runAttempt": "1",
+      "runNumber": "29",
+      "runUrl": "https://github.com/StijnRis/language-bench/actions/runs/38421026781",
+      "repository": "StijnRis/language-bench",
+      "ref": "refs/heads/main",
+      "actor": "github-actions[bot]",
+      "plannedAt": "2026-10-13T15:19:35.580Z",
+      "remainingAtPlanTime": 1071,
+      "sessionIndexInRound": 11,
+      "sessionsInRound": 20
+    },
+    "runner": {
+      "githubActions": true,
+      "RUNNER_NAME": "GitHub Actions 1000000558",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64",
+      "RUNNER_ENVIRONMENT": "github-hosted",
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261004.327.1",
+      "RUNNER_TRACKING_ID": "github_692502cf-219d-480a-9c27-aa642889c5cf",
+      "hostOs": "linux x64",
+      "hostNode": "v24.21.0"
+    },
+    "host": {
+      "uname": "Linux 5f8505e3937f 6.17.0-1022-azure #22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026 x86_64 GNU/Linux",
+      "kernel": "6.17.0-1022-azure",
+      "arch": "x86_64",
+      "cpu": {
+        "model": "AMD EPYC 7763 64-Core Processor",
+        "vendor": "AuthenticAMD",
+        "family": "25",
+        "modelNumber": "1",
+        "stepping": "1",
+        "microcode": "0xffffffff",
+        "cacheSize": "512 KB",
+        "mhzAtStart": "3244.150",
+        "bogomips": "4890.86",
+        "flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm",
+        "cores": 4,
+        "logicalProcessors": 4,
+        "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               AuthenticAMD\nModel name:                              AMD EPYC 7763 64-Core Processor\nCPU family:                              25\nModel:                                   1\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                1\nBogoMIPS:                                4890.86\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm\nVirtualization:                          AMD-V\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               64 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                1 MiB (2 instances)\nL3 cache:                                32 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: No microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n"
+      },
+      "memory": {
+        "totalBytes": 16766414848,
+        "availableBytes": 14971465728,
+        "swapTotalBytes": 3221221376
+      },
+      "cgroup": { "cpuMax": "max 100000", "memoryMax": "max" },
+      "scalingGovernor": "",
+      "smt": "1",
+      "loadAvgStart": "0.85 0.26 0.09 2/340 143",
+      "diskFree": "/dev/root        151263856 63662876  87584596      43% /work",
+      "timezone": "UTC",
+      "loadAvgEnd": "1.46 1.35 0.75 2/611 417"
+    },
+    "tooling": {
+      "hyperfineVersion": "2.0.0",
+      "hyperfineBuild": "hyperfine-v2.0.0-x86_64-unknown-linux-musl",
+      "hyperfineSource": "https://github.com/sharkdp/hyperfine/releases/tag/v2.0.0",
+      "docker": "{\"Client\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"DefaultAPIVersion\":\"1.48\",\"GitCommit\":\"b8034c0\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Context\":\"default\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Components\":[{\"Name\":\"Engine\",\"Version\":\"28.0.4\",\"Details\":{\"ApiVersion\":\"1.48\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Experimental\":\"false\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"KernelVersion\":\"6.17.0-1022-azure\",\"MinAPIVersion\":\"1.24\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.3.6\",\"Details\":{\"GitCommit\":\"ee2735368117d2eb259779949d5e75cdafec9761\"}},{\"Name\":\"runc\",\"Version\":\"1.5.1\",\"Details\":{\"GitCommit\":\"v1.5.1-0-g8f2685a4\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"MinAPIVersion\":\"1.24\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"KernelVersion\":\"6.17.0-1022-azure\",\"BuildTime\":\"2025-03-25T15:07:16.000000000+00:00\"}}",
+      "node": "v24.21.0"
+    },
+    "containers": {
+      "gcc:5": {
+        "image": "gcc:5",
+        "digest": "gcc@sha256:207a4645d46ee2eae62500c6c46b3702a78fbcfc1c6a95054a7cf5247ae19130",
+        "osRelease": "Debian GNU/Linux 8 (jessie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.19-18+deb8u10) 2.19",
+        "toolVersion": "gcc (GCC) 5.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:6": {
+        "image": "gcc:6",
+        "digest": "gcc@sha256:1cd3cd6a2507024ab2a5aa6962098890cb52d529e72a2db2e310270ac9cba004",
+        "osRelease": "Debian GNU/Linux 8 (jessie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.19-18+deb8u10) 2.19",
+        "toolVersion": "g++ (GCC) 6.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "eclipse-temurin:16-jdk": {
+        "image": "eclipse-temurin:16-jdk",
+        "digest": "eclipse-temurin@sha256:4b724a9d324cc587641a4e92cf9e1d4a8de1c0cf4a5510f6436a56524eb65c29",
+        "osRelease": "Ubuntu 20.04.4 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.31-0ubuntu9.7) 2.31",
+        "toolVersion": "openjdk 16.0.2 2021-07-20",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "eclipse-temurin:18-jdk": {
+        "image": "eclipse-temurin:18-jdk",
+        "digest": "eclipse-temurin@sha256:1b8a5c3f4dd3c1ece138bd0d011aa708cc0448be48b037af38f577416aa85744",
+        "osRelease": "Ubuntu 22.04.1 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.35-0ubuntu3.1) 2.35",
+        "toolVersion": "openjdk 18.0.2.1 2022-08-18",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:12": {
+        "image": "gcc:12",
+        "digest": "gcc@sha256:f6ddfc063e12d8141189d5b5fd1afc64aedc6eb50a6b8876263f9a944fa9f8ca",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "gcc (GCC) 12.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:6.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:6.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:c8fdd06e430de9f4ddd066b475ea350d771f341b77dd5ff4c2fafa748e3f2ef2",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u11) 2.31",
+        "toolVersion": "6.0.428",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:8": {
+        "image": "gcc:8",
+        "digest": "gcc@sha256:75dc6591489c16fd0c6ef4185df7b3aab07e678762ddfc4bc11d2978560f4f72",
+        "osRelease": "Debian GNU/Linux 10 (buster)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.28-10+deb10u1) 2.28",
+        "toolVersion": "g++ (GCC) 8.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "golang:1.22": {
+        "image": "golang:1.22",
+        "digest": "golang@sha256:1cf6c45ba39db9fd6db16922041d074a63c935556a05c5ccb62d181034df7f02",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u9) 2.36",
+        "toolVersion": "go version go1.22.12 linux/amd64",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "rust:1.84": {
+        "image": "rust:1.84",
+        "digest": "rust@sha256:738ae99a3d75623f41e6882566b4ef37e38a9840244a47efd4a0ca22e9628b88",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u9) 2.36",
+        "toolVersion": "rustc 1.84.1 (e71f9a9a9 2025-01-27)",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:7.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:7.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:d32bd65cf5843f413e81f5d917057c82da99737cb1637e905a1a4bc2e7ec6c8d",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u10) 2.31",
+        "toolVersion": "7.0.410",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "ruby:3.2": {
+        "image": "ruby:3.2",
+        "digest": "ruby@sha256:d3bcbd845d26ae1efafcc987f641aa9ac796267b9b857e0f196a2b05070c8330",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u2) 2.41",
+        "toolVersion": "ruby 3.2.11 (2026-03-27 revision 5483bfc1ae) [x86_64-linux]",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "ruby:2.6": {
+        "image": "ruby:2.6",
+        "digest": "ruby@sha256:a79c8ddb7f3d3748427e2d3a45dcae6d42f1d80d9ae3b98959b3a27b220bf434",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u3) 2.31",
+        "toolVersion": "ruby 2.6.10p210 (2022-04-12 revision 67958) [x86_64-linux]",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:10": {
+        "image": "gcc:10",
+        "digest": "gcc@sha256:19b31d0b2b263047b173e4e253d91f199d99c082973f13604d2913252c13309e",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u10) 2.31",
+        "toolVersion": "gcc (GCC) 10.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:9": {
+        "image": "gcc:9",
+        "digest": "gcc@sha256:a9aba821155db99d0800920f27bf3a94ead6f9dedf330a2e2ce38da73f5370e3",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u9) 2.31",
+        "toolVersion": "g++ (GCC) 9.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "node:20": {
+        "image": "node:20",
+        "digest": "node@sha256:8f693eaa7e0a8e71560c9a82b55fd54c2ae920a2ba5d2cde28bac7d1c01c9ba5",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u13) 2.36",
+        "toolVersion": "v20.20.2",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:13": {
+        "image": "gcc:13",
+        "digest": "gcc@sha256:b59036579f0622d1b3aa5286aaf2fcef9b9c6f88f31c6762236fc2f136f7f650",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "g++ (GCC) 13.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "golang:1.24": {
+        "image": "golang:1.24",
+        "digest": "golang@sha256:d2d2bc1c84f7e60d7d2438a3836ae7d0c847f4888464e7ec9ba3a1339a1ee804",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u1) 2.41",
+        "toolVersion": "go version go1.24.13 linux/amd64",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "eclipse-temurin:11-jdk": {
+        "image": "eclipse-temurin:11-jdk",
+        "digest": "eclipse-temurin@sha256:8db2bcf62ae171d1247c331db0410d8bc6347e7493bdafe104bb9a33d59c1291",
+        "osRelease": "Ubuntu 26.04.1 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.43-2ubuntu2.4) 2.43",
+        "toolVersion": "openjdk 11.0.32.1 2026-08-18",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "rust:1.76": {
+        "image": "rust:1.76",
+        "digest": "rust@sha256:d36f9d8a9a4c76da74c8d983d0d4cb146dd2d19bb9bd60b704cdcf70ef868d3a",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u4) 2.36",
+        "toolVersion": "rustc 1.76.0 (07dca489a 2024-02-04)",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "rust:1.67": {
+        "image": "rust:1.67",
+        "digest": "rust@sha256:aed98ad355d0e8303d057cc4894a7d331010980eb63c7dc46176de82670881dd",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u5) 2.31",
+        "toolVersion": "rustc 1.67.1 (d5a82bbd2 2023-02-07)",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:11": {
+        "image": "gcc:11",
+        "digest": "gcc@sha256:63aaebc5db8930a70241051619cba77781a5466fb3e4dc99d2ff3b752cb715f2",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u10) 2.31",
+        "toolVersion": "g++ (GCC) 11.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      }
+    },
+    "config": {
+      "targetSessionsPerBenchmark": 3,
+      "maxBenchmarksPerSession": 40,
+      "maxSessionsPerRound": 20,
+      "minSessionsPerRound": 2,
+      "overlapFraction": 0.25,
+      "minOverlap": 4,
+      "maxAttempts": 3,
+      "sessionTimeBudgetMinutes": 240,
+      "repetitions": { "min": 15, "max": 30 },
+      "budgetSecondsScale": 0.5,
+      "warmupRuns": 1,
+      "maxChainedRounds": 30
+    },
+    "plan": [
+      {
+        "key": "rust|1.76|rustc-O3-native|sort",
+        "language": "rust",
+        "version": "1.76",
+        "variant": "rustc-O3-native",
+        "problem": "sort",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "go|1.22|go-default|string-ops",
+        "language": "go",
+        "version": "1.22",
+        "variant": "go-default",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "rust|1.67|rustc-O3-native|json-parse",
+        "language": "rust",
+        "version": "1.67",
+        "variant": "rustc-O3-native",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "cpp|11|gxx-O3|json-parse",
+        "language": "cpp",
+        "version": "11",
+        "variant": "gxx-O3",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|12|gcc-O3-native|parallel-reduce",
+        "language": "c",
+        "version": "12",
+        "variant": "gcc-O3-native",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "java|16|java-parallel-gc|hashmap",
+        "language": "java",
+        "version": "16",
+        "variant": "java-parallel-gc",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ruby|3.2|ruby-default|string-ops",
+        "language": "ruby",
+        "version": "3.2",
+        "variant": "ruby-default",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "node|20|node-semi-space-64|parallel-reduce",
+        "language": "node",
+        "version": "20",
+        "variant": "node-semi-space-64",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|13|gcc-O2|parallel-reduce",
+        "language": "c",
+        "version": "13",
+        "variant": "gcc-O2",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "java|16|java-default|hashmap",
+        "language": "java",
+        "version": "16",
+        "variant": "java-default",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "rust|1.67|rustc-O3|parallel-reduce",
+        "language": "rust",
+        "version": "1.67",
+        "variant": "rustc-O3",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "rust|1.84|rustc-O3-lto|nbody",
+        "language": "rust",
+        "version": "1.84",
+        "variant": "rustc-O3-lto",
+        "problem": "nbody",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|5|gcc-O3|startup",
+        "language": "c",
+        "version": "5",
+        "variant": "gcc-O3",
+        "problem": "startup",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "java|18|java-parallel-gc|nbody",
+        "language": "java",
+        "version": "18",
+        "variant": "java-parallel-gc",
+        "problem": "nbody",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|12|gcc-O3-native|hashmap",
+        "language": "c",
+        "version": "12",
+        "variant": "gcc-O3-native",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|6|gcc-O3-native|string-ops",
+        "language": "c",
+        "version": "6",
+        "variant": "gcc-O3-native",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "cpp|8|gxx-O2|startup",
+        "language": "cpp",
+        "version": "8",
+        "variant": "gxx-O2",
+        "problem": "startup",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "cpp|11|gxx-O3-native|file-processing",
+        "language": "cpp",
+        "version": "11",
+        "variant": "gxx-O3-native",
+        "problem": "file-processing",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|12|gcc-O3-native|json-parse",
+        "language": "c",
+        "version": "12",
+        "variant": "gcc-O3-native",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "go|1.24|go-default|startup",
+        "language": "go",
+        "version": "1.24",
+        "variant": "go-default",
+        "problem": "startup",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ruby|2.6|ruby-default|string-ops",
+        "language": "ruby",
+        "version": "2.6",
+        "variant": "ruby-default",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|10|gcc-O3|hashmap",
+        "language": "c",
+        "version": "10",
+        "variant": "gcc-O3",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|12|gcc-O2|file-processing",
+        "language": "c",
+        "version": "12",
+        "variant": "gcc-O2",
+        "problem": "file-processing",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "csharp|6.0|dotnet-default|binary-trees",
+        "language": "csharp",
+        "version": "6.0",
+        "variant": "dotnet-default",
+        "problem": "binary-trees",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "java|16|java-default|nbody",
+        "language": "java",
+        "version": "16",
+        "variant": "java-default",
+        "problem": "nbody",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "rust|1.76|rustc-O3-native|string-ops",
+        "language": "rust",
+        "version": "1.76",
+        "variant": "rustc-O3-native",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "csharp|6.0|dotnet-no-tiering|hashmap",
+        "language": "csharp",
+        "version": "6.0",
+        "variant": "dotnet-no-tiering",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|6|gcc-O2|binary-trees",
+        "language": "c",
+        "version": "6",
+        "variant": "gcc-O2",
+        "problem": "binary-trees",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "csharp|7.0|dotnet-default|parallel-reduce",
+        "language": "csharp",
+        "version": "7.0",
+        "variant": "dotnet-default",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "cpp|9|gxx-O3-native|file-processing",
+        "language": "cpp",
+        "version": "9",
+        "variant": "gxx-O3-native",
+        "problem": "file-processing",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "c|5|gcc-O3|file-processing",
+        "language": "c",
+        "version": "5",
+        "variant": "gcc-O3",
+        "problem": "file-processing",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "rust|1.76|rustc-O3|json-parse",
+        "language": "rust",
+        "version": "1.76",
+        "variant": "rustc-O3",
+        "problem": "json-parse",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "cpp|13|gxx-O3|sort",
+        "language": "cpp",
+        "version": "13",
+        "variant": "gxx-O3",
+        "problem": "sort",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "java|11|java-parallel-gc|hashmap",
+        "language": "java",
+        "version": "11",
+        "variant": "java-parallel-gc",
+        "problem": "hashmap",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "cpp|5|gxx-O2|nbody",
+        "language": "cpp",
+        "version": "5",
+        "variant": "gxx-O2",
+        "problem": "nbody",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "cpp|6|gxx-O2|json-parse",
+        "language": "cpp",
+        "version": "6",
+        "variant": "gxx-O2",
+        "problem": "json-parse",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "ruby|2.6|ruby-default|hashmap",
+        "language": "ruby",
+        "version": "2.6",
+        "variant": "ruby-default",
+        "problem": "hashmap",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "cpp|9|gxx-O2|nbody",
+        "language": "cpp",
+        "version": "9",
+        "variant": "gxx-O2",
+        "problem": "nbody",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "c|8|gcc-O2|parallel-reduce",
+        "language": "c",
+        "version": "8",
+        "variant": "gcc-O2",
+        "problem": "parallel-reduce",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "java|11|java-parallel-gc|nbody",
+        "language": "java",
+        "version": "11",
+        "variant": "java-parallel-gc",
+        "problem": "nbody",
+        "reason": "overlap",
+        "priorSessions": 1
+      }
+    ],
+    "order": [
+      "c|5|gcc-O3|startup",
+      "cpp|6|gxx-O2|json-parse",
+      "java|16|java-default|hashmap",
+      "c|6|gcc-O3-native|string-ops",
+      "java|18|java-parallel-gc|nbody",
+      "c|12|gcc-O3-native|json-parse",
+      "csharp|6.0|dotnet-no-tiering|hashmap",
+      "cpp|8|gxx-O2|startup",
+      "go|1.22|go-default|string-ops",
+      "rust|1.84|rustc-O3-lto|nbody",
+      "csharp|7.0|dotnet-default|parallel-reduce",
+      "ruby|3.2|ruby-default|string-ops",
+      "ruby|2.6|ruby-default|hashmap",
+      "java|16|java-parallel-gc|hashmap",
+      "c|10|gcc-O3|hashmap",
+      "csharp|6.0|dotnet-default|binary-trees",
+      "cpp|9|gxx-O3-native|file-processing",
+      "node|20|node-semi-space-64|parallel-reduce",
+      "cpp|9|gxx-O2|nbody",
+      "ruby|2.6|ruby-default|string-ops",
+      "cpp|13|gxx-O3|sort",
+      "c|12|gcc-O2|file-processing",
+      "c|12|gcc-O3-native|parallel-reduce",
+      "c|13|gcc-O2|parallel-reduce",
+      "go|1.24|go-default|startup",
+      "java|11|java-parallel-gc|hashmap",
+      "rust|1.76|rustc-O3-native|sort",
+      "rust|1.67|rustc-O3|parallel-reduce",
+      "java|11|java-parallel-gc|nbody",
+      "rust|1.67|rustc-O3-native|json-parse",
+      "cpp|11|gxx-O3|json-parse",
+      "rust|1.76|rustc-O3-native|string-ops",
+      "c|8|gcc-O2|parallel-reduce",
+      "c|6|gcc-O2|binary-trees",
+      "rust|1.76|rustc-O3|json-parse",
+      "c|12|gcc-O3-native|hashmap",
+      "c|5|gcc-O3|file-processing",
+      "cpp|11|gxx-O3-native|file-processing",
+      "cpp|5|gxx-O2|nbody",
+      "java|16|java-default|nbody"
+    ],
+    "skipped": []
+  },
+  "variants": {
+    "18d0ab900300": {
+      "id": "gcc-O3",
+      "name": "gcc -O3",
+      "description": "Portable x86-64 baseline, no CPU-specific instructions.",
+      "build": "gcc -O3 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": false
+    },
+    "2d75108a1794": {
+      "id": "gxx-O2",
+      "name": "g++ -O2",
+      "description": "The most common release optimisation level.",
+      "build": "g++ -std=c++14 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "default": false,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
+    },
+    "ad7a7a619426": {
+      "id": "java-default",
+      "name": "java",
+      "description": "Default JVM flags (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
+      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
+      "run": "java -cp {bin} Main",
+      "default": true
+    },
+    "7edbaa312dc3": {
+      "id": "gcc-O3-native",
+      "name": "gcc -O3 -march=native",
+      "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
+      "build": "gcc -O3 -march=native -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": true
+    },
+    "ab56943350fe": {
+      "id": "java-parallel-gc",
+      "name": "java -XX:+UseParallelGC",
+      "description": "Throughput-oriented collector with less barrier overhead than G1.",
+      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
+      "run": "java -XX:+UseParallelGC -cp {bin} Main",
+      "default": false
+    },
+    "a1a282b40e30": {
+      "id": "dotnet-no-tiering",
+      "name": "DOTNET_TieredCompilation=0",
+      "description": "Every method is fully optimised on its first call: slower start-up, no tier-0 phase.",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "DOTNET_TieredCompilation=0 dotnet {bin}/app.dll",
+      "default": false
+    },
+    "81fe80628a40": {
+      "id": "go-default",
+      "name": "go build",
+      "description": "Default toolchain settings (GOAMD64=v1).",
+      "build": "go build -o {bin} {src}/main.go",
+      "run": "{bin}",
+      "default": true
+    },
+    "a18244de109c": {
+      "id": "rustc-O3-lto",
+      "name": "rustc -C opt-level=3 -C codegen-units=1 -C lto",
+      "description": "Single codegen unit with link-time optimisation.",
+      "build": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {src}/main.rs",
+      "run": "{bin}",
+      "default": false
+    },
+    "d78ec7ecab28": {
+      "id": "dotnet-default",
+      "name": "dotnet build -c Release",
+      "description": "Release build, default runtime settings (tiered compilation, dynamic PGO, concurrent workstation GC).",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "dotnet {bin}/app.dll",
+      "default": true
+    },
+    "5b5a92d9f767": {
+      "id": "ruby-default",
+      "name": "ruby",
+      "description": "Default interpreter, JIT off.",
+      "run": "ruby {src}/main.rb",
+      "default": true
+    },
+    "0e12ef4516dc": {
+      "id": "gxx-O3-native",
+      "name": "g++ -O3 -march=native",
+      "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
+      "build": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "default": true,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
+    },
+    "d24caae747f0": {
+      "id": "node-semi-space-64",
+      "name": "node --max-semi-space-size=64",
+      "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
+      "run": "node --max-semi-space-size=64 {src}/main.js",
+      "default": false
+    },
+    "748c3ab118d6": {
+      "id": "gxx-O3",
+      "name": "g++ -O3",
+      "description": "Portable x86-64 baseline, no CPU-specific instructions.",
+      "build": "g++ -std=c++14 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "default": false,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
+    },
+    "cada63d52a4a": {
+      "id": "gcc-O2",
+      "name": "gcc -O2",
+      "description": "The most common release optimisation level.",
+      "build": "gcc -O2 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": false
+    },
+    "85d2ecfb02ac": {
+      "id": "rustc-O3-native",
+      "name": "rustc -C opt-level=3 -C target-cpu=native",
+      "description": "Optimised for the benchmark CPU.",
+      "build": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o {bin} {src}/main.rs",
+      "run": "{bin}",
+      "default": false
+    },
+    "75c96b1e1dd9": {
+      "id": "rustc-O3",
+      "name": "rustc -C opt-level=3",
+      "description": "Equivalent to cargo build --release with the default codegen settings.",
+      "build": "rustc --edition 2021 -C opt-level=3 -o {bin} {src}/main.rs",
+      "run": "{bin}",
+      "default": true
+    }
+  },
+  "measurements": [
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "5",
+      "toolVersion": "gcc (GCC) 5.5.0",
+      "variant": "gcc-O3",
+      "variantSpec": "18d0ab900300",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "gcc:5",
+      "sourceFile": "languages/c/impl/startup/main.c",
+      "sourceHash": "7f9b218c301cadb3",
+      "buildCommand": "gcc -O3 -ffp-contract=off -o /work/bin/c-5-gcc-O3-startup /repo/languages/c/impl/startup/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-5-gcc-O3-startup",
+      "loadAvgBefore": "0.85 0.26 0.09 1/340 158",
+      "buildSeconds": 0.08365077400000155,
+      "buildOutput": "",
+      "binarySize": 6744,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-13T15:20:14.816Z",
+      "finishedAt": "2026-10-13T15:20:15.115Z",
+      "loadAvgAfter": "0.85 0.26 0.09 1/340 237",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.000584628, 0.0005769120000000001, 0.0005451830000000001, 0.0005670240000000001,
+          0.000534242, 0.0005779040000000001, 0.000539863, 0.0005506230000000001, 0.000561684,
+          0.00052211, 0.000550834, 0.00052771, 0.0006780120000000001, 0.0005636980000000001,
+          0.000513925, 0.000541166, 0.000507623, 0.000624332, 0.000531608, 0.000544091,
+          0.0005422480000000001, 0.0005386410000000001, 0.0005495820000000001, 0.000530386,
+          0.000572144, 0.000533542, 0.000536917, 0.000542989, 0.00051658, 0.0005449620000000001
+        ],
+        "cpu": [
+          0.000534, 0.000518, 0.000488, 0.0005189999999999999, 0.000484, 0.000514,
+          0.00047599999999999997, 0.00047, 0.0005059999999999999, 0.000475, 0.0005059999999999999,
+          0.00047999999999999996, 0.0005459999999999999, 0.000491, 0.00046699999999999997, 0.000498,
+          0.00046199999999999995, 0.000523, 0.00046699999999999997, 0.000496, 0.000495, 0.000475,
+          0.000502, 0.000455, 0.0005059999999999999, 0.00047, 0.000468, 0.000496, 0.00047, 0.000496
+        ],
+        "user": [
+          0, 0, 0.000488, 0, 0.000484, 0.000514, 0.00047599999999999997, 0.00047,
+          0.0005059999999999999, 0.000475, 0.0005059999999999999, 0.00047999999999999996, 0, 0,
+          0.00046699999999999997, 0, 0.00046199999999999995, 0, 0.00046699999999999997, 0, 0,
+          0.000475, 0.000502, 0.000455, 0, 0.00047, 0.000468, 0, 0.00047, 0
+        ],
+        "system": [
+          0.000534, 0.000518, 0, 0.0005189999999999999, 0, 0, 0, 0, 0, 0, 0, 0,
+          0.0005459999999999999, 0.000491, 0, 0.000498, 0, 0.000523, 0, 0.000496, 0.000495, 0, 0, 0,
+          0.0005059999999999999, 0, 0, 0.000496, 0, 0.000496
+        ],
+        "memory": [
+          3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808,
+          3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808,
+          3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808, 3575808
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "6",
+      "toolVersion": "g++ (GCC) 6.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "gcc:6",
+      "sourceFile": "languages/cpp/impl/json-parse/main.cpp",
+      "sourceHash": "2b2810a7b8df540b",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "g++ -std=c++14 -O2 -ffp-contract=off -o /work/bin/cpp-6-gxx-O2-json-parse /repo/languages/cpp/impl/json-parse/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-6-gxx-O2-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.17 0.36 0.13 6/347 56",
+      "buildSeconds": 0.329455791999997,
+      "buildOutput": "",
+      "binarySize": 12368,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-13T15:20:27.977Z",
+      "finishedAt": "2026-10-13T15:20:30.715Z",
+      "loadAvgAfter": "1.17 0.36 0.13 9/346 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.07019386700000001, 0.06928171500000001, 0.069083293, 0.06908703000000001, 0.069419463,
+          0.068475652, 0.068703489, 0.06839994, 0.06877323, 0.068790984, 0.068894488,
+          0.06837095600000001, 0.068579106, 0.069666226, 0.068725811, 0.068452258, 0.069824284,
+          0.06908710900000001, 0.068785303, 0.068529032, 0.06878034400000001, 0.068865143,
+          0.0694761, 0.068713168, 0.06885474300000001, 0.06866728100000001, 0.06908146800000001,
+          0.06946064, 0.06942896100000001, 0.070353065
+        ],
+        "cpu": [
+          0.07006799999999999, 0.06915199999999999, 0.068961, 0.06889899999999999,
+          0.06921799999999999, 0.068302, 0.06851, 0.068252, 0.068628, 0.068576, 0.068725, 0.068226,
+          0.06838999999999999, 0.069468, 0.06858199999999999, 0.068262, 0.06965299999999999,
+          0.068892, 0.068535, 0.06834, 0.068613, 0.068683, 0.06936, 0.068584, 0.068714, 0.068408,
+          0.06895799999999999, 0.069309, 0.0693, 0.070225
+        ],
+        "user": [
+          0.054053, 0.058128, 0.055969, 0.056916999999999995, 0.062195999999999994, 0.058258,
+          0.057428, 0.060339, 0.058536, 0.056475, 0.057768999999999994, 0.058338999999999995,
+          0.061349999999999995, 0.055575, 0.059636999999999996, 0.058224, 0.058707999999999996,
+          0.056910999999999996, 0.058456999999999995, 0.057446, 0.054692, 0.056738, 0.061319,
+          0.057651, 0.056763999999999995, 0.06036, 0.061963, 0.060268999999999996,
+          0.056429999999999994, 0.060192999999999997
+        ],
+        "system": [
+          0.016014999999999998, 0.011023999999999999, 0.012992, 0.011982, 0.007022,
+          0.010043999999999999, 0.011082, 0.007913, 0.010092, 0.012100999999999999,
+          0.010955999999999999, 0.009887, 0.007039999999999999, 0.013892999999999999, 0.008945,
+          0.010038, 0.010945, 0.011980999999999999, 0.010078, 0.010894, 0.013921,
+          0.011944999999999999, 0.008041, 0.010933, 0.011949999999999999, 0.008048,
+          0.0069949999999999995, 0.00904, 0.01287, 0.010032
+        ],
+        "memory": [
+          35274752, 34873344, 35344384, 36704256, 36311040, 35872768, 36470784, 34836480, 34672640,
+          34992128, 35164160, 34705408, 36585472, 34897920, 36290560, 34484224, 35692544, 36257792,
+          36143104, 36229120, 35749888, 34922496, 35033088, 34951168, 35876864, 34521088, 36540416,
+          36470784, 35491840, 36642816
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "16",
+      "toolVersion": "openjdk 16.0.2 2021-07-20",
+      "variant": "java-default",
+      "variantSpec": "ad7a7a619426",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:16-jdk",
+      "sourceFile": "languages/java/impl/hashmap/Main.java",
+      "sourceHash": "390948118b7db383",
+      "buildCommand": "mkdir -p /work/bin/java-16-java-default-hashmap && javac -d /work/bin/java-16-java-default-hashmap /repo/languages/java/impl/hashmap/Main.java",
+      "runCommand": "java -cp /work/bin/java-16-java-default-hashmap Main 1000000",
+      "loadAvgBefore": "1.23 0.40 0.14 1/358 73",
+      "buildSeconds": 0.6244976569999999,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:20:36.562Z",
+      "finishedAt": "2026-10-13T15:20:46.072Z",
+      "loadAvgAfter": "1.66 0.52 0.18 1/352 955",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.275146543, 0.271204137, 0.287723065, 0.27235699900000004, 0.27904756000000003,
+          0.262927481, 0.277205205, 0.28258050500000004, 0.25494825600000004, 0.274915089,
+          0.263366549, 0.26886959, 0.280027727, 0.263757354, 0.27021118, 0.28703919,
+          0.28298216600000003, 0.274460142, 0.27610907300000004, 0.27617105000000003,
+          0.25630451200000004, 0.277834888, 0.265229991, 0.254816042, 0.26209586700000004,
+          0.26764554, 0.272188755, 0.256712286, 0.27134112600000004, 0.268133023
+        ],
+        "cpu": [
+          0.687663, 0.679828, 0.705759, 0.6824859999999999, 0.694248, 0.6709529999999999, 0.680164,
+          0.688993, 0.664608, 0.688406, 0.667372, 0.676465, 0.6872419999999999, 0.678583, 0.66976,
+          0.70635, 0.682471, 0.672403, 0.681685, 0.683585, 0.667424, 0.673398, 0.663936, 0.658909,
+          0.677217, 0.690921, 0.6740929999999999, 0.663087, 0.6793729999999999, 0.6755059999999999
+        ],
+        "user": [
+          0.655633, 0.6528349999999999, 0.669721, 0.6561589999999999, 0.651233, 0.6417379999999999,
+          0.650069, 0.661596, 0.635002, 0.6510589999999999, 0.630636, 0.644301, 0.6490619999999999,
+          0.646903, 0.6279, 0.671083, 0.651359, 0.643343, 0.648408, 0.655561, 0.632138, 0.652868,
+          0.638361, 0.6296919999999999, 0.644921, 0.661713, 0.644608, 0.627655, 0.6532439999999999,
+          0.639265
+        ],
+        "system": [
+          0.032029999999999996, 0.026993, 0.036038, 0.026327, 0.043015, 0.029214999999999998,
+          0.030095, 0.027396999999999998, 0.029606, 0.037347, 0.036736, 0.032164, 0.03818, 0.03168,
+          0.04186, 0.035267, 0.031111999999999997, 0.02906, 0.033277, 0.028024, 0.035286, 0.02053,
+          0.025575, 0.029217, 0.032296, 0.029207999999999998, 0.029484999999999997, 0.035432,
+          0.026129, 0.036240999999999995
+        ],
+        "memory": [
+          95051776, 96956416, 96903168, 95846400, 94810112, 94830592, 95080448, 94953472, 94912512,
+          97202176, 95313920, 96018432, 97312768, 95305728, 94625792, 95498240, 97456128, 97460224,
+          95293440, 94953472, 94986240, 94597120, 94908416, 94773248, 95363072, 94404608, 94728192,
+          94199808, 94756864, 95158272
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "6",
+      "toolVersion": "g++ (GCC) 6.5.0",
+      "variant": "gcc-O3-native",
+      "variantSpec": "7edbaa312dc3",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "gcc:6",
+      "sourceFile": "languages/c/impl/string-ops/main.c",
+      "sourceHash": "ec702ff5f7b2ef52",
+      "buildCommand": "gcc -O3 -march=native -ffp-contract=off -o /work/bin/c-6-gcc-O3-native-string-ops /repo/languages/c/impl/string-ops/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-6-gcc-O3-native-string-ops 1000000",
+      "loadAvgBefore": "1.66 0.52 0.18 2/352 142",
+      "buildSeconds": 0.12416057600000203,
+      "buildOutput": "",
+      "binarySize": 10544,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-13T15:20:46.171Z",
+      "finishedAt": "2026-10-13T15:20:47.601Z",
+      "loadAvgAfter": "1.66 0.52 0.18 3/351 222",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.03491913, 0.034375839000000005, 0.034460048, 0.035610457000000005, 0.034260663000000004,
+          0.034590523000000005, 0.034901576000000004, 0.034282986, 0.034516844000000005,
+          0.034545107000000005, 0.034304255, 0.034843047, 0.034566086, 0.034787032, 0.034507006,
+          0.034681193, 0.034642851, 0.034768807, 0.034800456, 0.034812519, 0.034659842, 0.034262517,
+          0.034176385000000004, 0.034258039000000004, 0.03464246, 0.034892068000000005,
+          0.034532493000000004, 0.034134497, 0.034852775, 0.034759620000000005
+        ],
+        "cpu": [
+          0.034808, 0.034286, 0.034331999999999994, 0.035508, 0.034148, 0.034526,
+          0.034804999999999996, 0.034205, 0.034428, 0.034459, 0.034215999999999996, 0.03471,
+          0.034437999999999996, 0.034693, 0.034402, 0.034565, 0.034551, 0.034681, 0.034694,
+          0.034728999999999996, 0.034564, 0.034169, 0.034082999999999995, 0.03417, 0.034538,
+          0.034802, 0.034429, 0.034046999999999994, 0.034742999999999996, 0.03464
+        ],
+        "user": [
+          0.033784999999999996, 0.028409, 0.030292999999999997, 0.031563, 0.031135, 0.029594,
+          0.029833, 0.034205, 0.028526, 0.029391999999999998, 0.031197, 0.032669,
+          0.030386999999999997, 0.030728, 0.031367, 0.030615, 0.032577, 0.030718, 0.029592,
+          0.029768, 0.031602, 0.034169, 0.032078999999999996, 0.028312999999999998, 0.030475,
+          0.031819, 0.030494999999999998, 0.032045, 0.029779999999999997, 0.030681999999999997
+        ],
+        "system": [
+          0.001023, 0.005876999999999999, 0.004039, 0.003945, 0.003013, 0.004932, 0.004972, 0,
+          0.005902, 0.0050669999999999995, 0.003019, 0.002041, 0.004051, 0.003965, 0.003035,
+          0.0039499999999999995, 0.001974, 0.0039629999999999995, 0.005102, 0.004961, 0.002962, 0,
+          0.0020039999999999997, 0.005856999999999999, 0.004063, 0.002983, 0.003934, 0.002002,
+          0.0049629999999999995, 0.003958
+        ],
+        "memory": [
+          14565376, 16392192, 14737408, 16060416, 14692352, 15257600, 15630336, 16347136, 15654912,
+          15298560, 14843904, 14999552, 15519744, 16175104, 15208448, 15929344, 15974400, 15429632,
+          16048128, 16044032, 15388672, 15224832, 16416768, 16498688, 15962112, 16220160, 15052800,
+          16347136, 15192064, 16412672
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "18",
+      "toolVersion": "openjdk 18.0.2.1 2022-08-18",
+      "variant": "java-parallel-gc",
+      "variantSpec": "ab56943350fe",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:18-jdk",
+      "sourceFile": "languages/java/impl/nbody/Main.java",
+      "sourceHash": "ecadba0dc2b6dc6d",
+      "buildCommand": "mkdir -p /work/bin/java-18-java-parallel-gc-nbody && javac -d /work/bin/java-18-java-parallel-gc-nbody /repo/languages/java/impl/nbody/Main.java",
+      "runCommand": "java -XX:+UseParallelGC -cp /work/bin/java-18-java-parallel-gc-nbody Main 1000000",
+      "loadAvgBefore": "1.69 0.54 0.19 1/372 73",
+      "buildSeconds": 0.6145279279999959,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:20:53.610Z",
+      "finishedAt": "2026-10-13T15:20:58.921Z",
+      "loadAvgAfter": "1.63 0.55 0.20 2/367 619",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.14119130600000002, 0.136144589, 0.14045743800000002, 0.14472109600000002, 0.138760251,
+          0.140593615, 0.14321366600000002, 0.13600050900000002, 0.14364263100000002, 0.141182831,
+          0.140793989, 0.143676345, 0.139776524, 0.14359211600000002, 0.146302454, 0.130905973,
+          0.148535515, 0.128194033, 0.141875529, 0.139764061, 0.14333067100000002, 0.138035451,
+          0.14042884900000002, 0.13097507, 0.142685728, 0.143531806, 0.13845310900000002,
+          0.144164543, 0.142682562, 0.14415967400000002
+        ],
+        "cpu": [
+          0.18373599999999998, 0.17651299999999998, 0.179277, 0.184302, 0.17608, 0.184784,
+          0.18667699999999998, 0.17795, 0.181369, 0.17415399999999998, 0.184103,
+          0.17796599999999999, 0.180483, 0.17387, 0.18603199999999998, 0.162511, 0.18677, 0.163345,
+          0.181978, 0.17144199999999998, 0.18874799999999997, 0.178251, 0.178171, 0.165144,
+          0.17096899999999998, 0.186693, 0.175747, 0.184383, 0.183288, 0.18446200000000001
+        ],
+        "user": [
+          0.166761, 0.157458, 0.16056199999999998, 0.16935899999999998, 0.159073, 0.167619,
+          0.171703, 0.156474, 0.159851, 0.16586099999999998, 0.16341799999999998, 0.157743,
+          0.160999, 0.16004, 0.17003, 0.148202, 0.1697, 0.146309, 0.160101, 0.148383,
+          0.16503099999999998, 0.15236, 0.160863, 0.143737, 0.154687, 0.172489, 0.154414, 0.163453,
+          0.167929, 0.161529
+        ],
+        "system": [
+          0.016975, 0.019055, 0.018715, 0.014943, 0.017006999999999998, 0.017165, 0.014974,
+          0.021476, 0.021518, 0.008293, 0.020685, 0.020222999999999998, 0.019483999999999998,
+          0.013829999999999999, 0.016002, 0.014308999999999999, 0.01707, 0.017036, 0.021877,
+          0.023059, 0.023717, 0.025890999999999997, 0.017308, 0.021407, 0.016281999999999998,
+          0.014204, 0.021332999999999998, 0.02093, 0.015359, 0.022933
+        ],
+        "memory": [
+          44294144, 44687360, 44347392, 46301184, 44277760, 44478464, 44720128, 44474368, 44662784,
+          44331008, 44404736, 44511232, 44277760, 44539904, 44642304, 44290048, 44269568, 44613632,
+          44261376, 46645248, 44314624, 44617728, 44687360, 46764032, 44584960, 44478464, 44208128,
+          44417024, 44724224, 44359680
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "12",
+      "toolVersion": "gcc (GCC) 12.5.0",
+      "variant": "gcc-O3-native",
+      "variantSpec": "7edbaa312dc3",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "gcc:12",
+      "sourceFile": "languages/c/impl/json-parse/main.c",
+      "sourceHash": "29a0dc89dcaa82e3",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "gcc -O3 -march=native -ffp-contract=off -o /work/bin/c-12-gcc-O3-native-json-parse /repo/languages/c/impl/json-parse/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-12-gcc-O3-native-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.76 0.65 0.24 1/384 56",
+      "buildSeconds": 0.13128960499999812,
+      "buildOutput": "",
+      "binarySize": 16336,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-13T15:21:16.368Z",
+      "finishedAt": "2026-10-13T15:21:17.640Z",
+      "loadAvgAfter": "1.76 0.65 0.24 1/384 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.032076344, 0.028731507000000003, 0.029561014000000004, 0.029312006, 0.0295435,
+          0.03172243, 0.028467290000000003, 0.029468169000000002, 0.029065965000000003, 0.029147097,
+          0.029106801, 0.029497895000000003, 0.029068829, 0.029144642000000002, 0.02819025,
+          0.028974312000000002, 0.032536187, 0.028314243000000003, 0.028640446000000003,
+          0.028445750000000002, 0.030110815000000003, 0.029161713000000002, 0.029253226,
+          0.029354145, 0.029406153, 0.028244593000000002, 0.02920765, 0.029081553000000003,
+          0.028355311, 0.029555523
+        ],
+        "cpu": [
+          0.031985, 0.0286, 0.029407000000000003, 0.029199999999999997, 0.029422, 0.031582,
+          0.028344999999999995, 0.028525000000000002, 0.028929, 0.029015999999999997, 0.028205,
+          0.029103999999999998, 0.028968, 0.029051999999999998, 0.028067, 0.028878, 0.032436,
+          0.028189, 0.028566, 0.028344, 0.030028, 0.028658999999999997, 0.029154, 0.029217, 0.02928,
+          0.028124, 0.029105999999999996, 0.028964999999999998, 0.028234999999999996,
+          0.029435999999999997
+        ],
+        "user": [
+          0.019991, 0.020429, 0.020281, 0.020138, 0.020291, 0.019739, 0.020246999999999998,
+          0.018689, 0.019951, 0.020010999999999998, 0.019452, 0.020072, 0.019978,
+          0.020035999999999998, 0.020048, 0.019916, 0.020641, 0.021141999999999998, 0.019701,
+          0.020246, 0.020019, 0.019764999999999998, 0.020106, 0.019478, 0.020193, 0.020089,
+          0.019403999999999998, 0.019976, 0.020168, 0.019624
+        ],
+        "system": [
+          0.011994, 0.008171, 0.009126, 0.009061999999999999, 0.009131, 0.011843, 0.008098,
+          0.009836, 0.008978, 0.009004999999999999, 0.008753, 0.009032, 0.00899, 0.009016, 0.008019,
+          0.008962, 0.011795, 0.0070469999999999994, 0.008865, 0.008098, 0.010008999999999999,
+          0.008893999999999999, 0.009047999999999999, 0.009739, 0.009087, 0.008035,
+          0.009701999999999999, 0.008988999999999999, 0.008067, 0.009812
+        ],
+        "memory": [
+          21000192, 21094400, 21057536, 20852736, 20930560, 21000192, 21032960, 21078016, 21082112,
+          21016576, 21053440, 20959232, 21032960, 20910080, 21073920, 21012480, 21065728, 20897792,
+          21032960, 20992000, 21053440, 21192704, 20996096, 21082112, 20963328, 20987904, 21078016,
+          21032960, 20951040, 21155840
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "csharp",
+      "version": "6.0",
+      "toolVersion": "6.0.428",
+      "variant": "dotnet-no-tiering",
+      "variantSpec": "a1a282b40e30",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:6.0",
+      "sourceFile": "languages/csharp/impl/hashmap/Program.cs",
+      "sourceHash": "d9f3382720ce07c5",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/csharp-6.0-dotnet-no-tiering-hashmap.proj; mkdir -p $P && cp /repo/languages/csharp/impl/hashmap/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o /work/bin/csharp-6.0-dotnet-no-tiering-hashmap -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/csharp-6.0-dotnet-no-tiering-hashmap/app.dll 1000000",
+      "loadAvgBefore": "1.70 0.65 0.24 1/394 62",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/csharp-6.0-dotnet-no-tiering-hashmap/app.dll 1000000' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-13T15:21:25.889Z",
+      "finishedAt": "2026-10-13T15:21:28.739Z"
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "8",
+      "toolVersion": "g++ (GCC) 8.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "gcc:8",
+      "sourceFile": "languages/cpp/impl/startup/main.cpp",
+      "sourceHash": "0f2bfad3198e36ed",
+      "buildCommand": "g++ -std=c++14 -O2 -ffp-contract=off -o /work/bin/cpp-8-gxx-O2-startup /repo/languages/cpp/impl/startup/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-8-gxx-O2-startup",
+      "loadAvgBefore": "1.58 0.69 0.26 9/427 56",
+      "buildSeconds": 0.10978985100000864,
+      "buildOutput": "",
+      "binarySize": 16384,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-13T15:21:44.390Z",
+      "finishedAt": "2026-10-13T15:21:44.729Z",
+      "loadAvgAfter": "1.58 0.69 0.26 6/428 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.001066652, 0.0011399490000000001, 0.001042076, 0.001036426, 0.001072052, 0.001040333,
+          0.001040693, 0.0010685760000000001, 0.001058838, 0.001025735, 0.001088533, 0.001081079,
+          0.001040813, 0.001054409, 0.001121445, 0.0010140630000000002, 0.001039591, 0.001038098,
+          0.00104399, 0.00103355, 0.0010462730000000001, 0.0010778130000000002, 0.001034963,
+          0.001147273, 0.001051794, 0.001043078, 0.0011135300000000002, 0.00105013, 0.001052325,
+          0.001012621
+        ],
+        "cpu": [
+          0.001014, 0.001029, 0.000995, 0.000987, 0.0010019999999999999, 0.0009839999999999998,
+          0.000992, 0.001011, 0.000993, 0.000979, 0.001013, 0.0010199999999999999, 0.000986,
+          0.000998, 0.000996, 0.000966, 0.000976, 0.0009809999999999999, 0.000985,
+          0.0009739999999999999, 0.000988, 0.001003, 0.000986, 0.001078, 0.0009939999999999999,
+          0.000979, 0.001001, 0.000975, 0.000998, 0.000966
+        ],
+        "user": [
+          0, 0, 0, 0, 0, 0.0009839999999999998, 0.000992, 0.001011, 0.000993, 0, 0, 0, 0.000986, 0,
+          0, 0, 0, 0.0009809999999999999, 0, 0.0009739999999999999, 0.000988, 0.001003, 0, 0, 0,
+          0.000979, 0, 0, 0.000998, 0.000966
+        ],
+        "system": [
+          0.001014, 0.001029, 0.000995, 0.000987, 0.0010019999999999999, 0, 0, 0, 0, 0.000979,
+          0.001013, 0.0010199999999999999, 0, 0.000998, 0.000996, 0.000966, 0.000976, 0, 0.000985,
+          0, 0, 0, 0.000986, 0.001078, 0.0009939999999999999, 0, 0.001001, 0.000975, 0, 0
+        ],
+        "memory": [
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "go",
+      "version": "1.22",
+      "toolVersion": "go version go1.22.12 linux/amd64",
+      "variant": "go-default",
+      "variantSpec": "81fe80628a40",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "golang:1.22",
+      "sourceFile": "languages/go/impl/string-ops/main.go",
+      "sourceHash": "c369288eb7077d5e",
+      "buildCommand": "go build -o /work/bin/go-1.22-go-default-string-ops /repo/languages/go/impl/string-ops/main.go",
+      "runCommand": "/work/bin/go-1.22-go-default-string-ops 1000000",
+      "loadAvgBefore": "1.52 0.72 0.28 1/436 60",
+      "buildSeconds": 3.541722926000002,
+      "buildOutput": "",
+      "binarySize": 1947672,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-13T15:21:58.490Z",
+      "finishedAt": "2026-10-13T15:22:04.610Z",
+      "loadAvgAfter": "2.04 0.85 0.32 1/426 773",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.071700715, 0.07222260400000001, 0.07273613000000001, 0.072255174, 0.07279054,
+          0.071415109, 0.07239812400000001, 0.076407798, 0.072233876, 0.07116238500000001,
+          0.07208473700000001, 0.072443559, 0.072134759, 0.07740361600000001, 0.07800493600000001,
+          0.076318492, 0.07180401800000001, 0.077579939, 0.07878212600000001, 0.082384042,
+          0.077656712, 0.072401159, 0.07198109200000001, 0.078040131, 0.071510739, 0.072433841,
+          0.07152024700000001, 0.071857129, 0.07784943300000001, 0.07797688300000001
+        ],
+        "cpu": [
+          0.086175, 0.08674899999999999, 0.087851, 0.086752, 0.088589, 0.086669, 0.086911,
+          0.09544899999999999, 0.08676299999999999, 0.08633300000000001, 0.08655299999999999,
+          0.08766199999999999, 0.088422, 0.09971000000000001, 0.09879099999999999, 0.095433,
+          0.086062, 0.09775400000000001, 0.099536, 0.10752300000000001, 0.097882,
+          0.08817199999999999, 0.08637299999999999, 0.102416, 0.087508, 0.08734299999999999,
+          0.086338, 0.089749, 0.098201, 0.09812499999999999
+        ],
+        "user": [
+          0.084074, 0.08076699999999999, 0.085784, 0.08077, 0.084516, 0.08562499999999999, 0.083844,
+          0.090372, 0.08166, 0.080167, 0.08243199999999999, 0.0856, 0.087394, 0.094571, 0.094675,
+          0.093403, 0.082106, 0.093681, 0.094458, 0.104451, 0.094855, 0.08407099999999999,
+          0.07722799999999999, 0.098439, 0.083438, 0.084297, 0.082227, 0.08470699999999999,
+          0.091041, 0.094079
+        ],
+        "system": [
+          0.002101, 0.0059819999999999995, 0.002067, 0.0059819999999999995, 0.004073, 0.001044,
+          0.003067, 0.005077, 0.005103, 0.006166, 0.004121, 0.002062, 0.001028,
+          0.0051389999999999995, 0.004116, 0.00203, 0.0039559999999999994, 0.004073, 0.005078,
+          0.003072, 0.0030269999999999997, 0.004101, 0.009145, 0.003977, 0.00407,
+          0.0030459999999999997, 0.004111, 0.005042, 0.00716, 0.004046
+        ],
+        "memory": [
+          49803264, 49909760, 49823744, 49643520, 49934336, 49692672, 49836032, 49954816, 49803264,
+          49827840, 49807360, 49864704, 49897472, 49745920, 49942528, 49881088, 49733632, 49893376,
+          49811456, 49823744, 49831936, 49840128, 49799168, 49594368, 49860608, 49860608, 49889280,
+          49733632, 49774592, 49885184
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.84",
+      "toolVersion": "rustc 1.84.1 (e71f9a9a9 2025-01-27)",
+      "variant": "rustc-O3-lto",
+      "variantSpec": "a18244de109c",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "rust:1.84",
+      "sourceFile": "languages/rust/impl/nbody/main.rs",
+      "sourceHash": "590a9d6dc0e8a0a9",
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o /work/bin/rust-1.84-rustc-O3-lto-nbody /repo/languages/rust/impl/nbody/main.rs",
+      "runCommand": "/work/bin/rust-1.84-rustc-O3-lto-nbody 1000000",
+      "loadAvgBefore": "2.11 0.92 0.36 1/447 57",
+      "buildSeconds": 2.9568749670000107,
+      "buildOutput": "",
+      "binarySize": 1933440,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:22:16.934Z",
+      "finishedAt": "2026-10-13T15:22:21.626Z",
+      "loadAvgAfter": "2.02 0.92 0.36 6/438 142",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.048069869, 0.047951366, 0.048010498000000006, 0.048093884, 0.048105696,
+          0.048002854000000005, 0.048000189000000006, 0.047984298, 0.048016469000000006, 0.04801173,
+          0.048189013, 0.048015707000000005, 0.047830740000000004, 0.048005579,
+          0.048111517000000006, 0.048133187, 0.04787311, 0.047898287000000005, 0.048030535000000006,
+          0.047876826000000004, 0.047891861, 0.047972637000000005, 0.047938913,
+          0.047836801000000005, 0.04799544, 0.047919116000000005, 0.047929776, 0.047946257000000006,
+          0.047895011, 0.048114493
+        ],
+        "cpu": [
+          0.047961, 0.047838, 0.047890999999999996, 0.047979999999999995, 0.047962, 0.047914,
+          0.047855999999999996, 0.047885, 0.047904999999999996, 0.04792, 0.047863, 0.047928,
+          0.047688999999999995, 0.047840999999999995, 0.047966999999999996, 0.048014,
+          0.047750999999999995, 0.047777, 0.047909, 0.047765999999999996, 0.047778,
+          0.04785999999999999, 0.047851, 0.047722999999999995, 0.047833, 0.047771999999999995,
+          0.04776, 0.047785999999999995, 0.047782, 0.047958
+        ],
+        "user": [
+          0.047961, 0.047838, 0.047890999999999996, 0.046980999999999995, 0.047962, 0.047914,
+          0.046859, 0.046888, 0.046907, 0.04792, 0.04591, 0.04693, 0.047688999999999995,
+          0.047840999999999995, 0.046967999999999996, 0.048014, 0.047750999999999995, 0.047777,
+          0.047909, 0.047765999999999996, 0.046783, 0.046862999999999995, 0.046855,
+          0.047722999999999995, 0.047833, 0.047771999999999995, 0.04776, 0.047785999999999995,
+          0.046786999999999995, 0.046959
+        ],
+        "system": [
+          0, 0, 0, 0.0009989999999999999, 0, 0, 0.000997, 0.000997, 0.000998, 0,
+          0.0019529999999999999, 0.000998, 0, 0, 0.0009989999999999999, 0, 0, 0, 0, 0, 0.000995,
+          0.000997, 0.000996, 0, 0, 0, 0, 0, 0.000995, 0.0009989999999999999
+        ],
+        "memory": [
+          3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248,
+          3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248,
+          3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248, 3637248
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "csharp",
+      "version": "7.0",
+      "toolVersion": "7.0.410",
+      "variant": "dotnet-default",
+      "variantSpec": "d78ec7ecab28",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:7.0",
+      "sourceFile": "languages/csharp/impl/parallel-reduce/Program.cs",
+      "sourceHash": "a24ef0a86e8e2de4",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/csharp-7.0-dotnet-default-parallel-reduce.proj; mkdir -p $P && cp /repo/languages/csharp/impl/parallel-reduce/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o /work/bin/csharp-7.0-dotnet-default-parallel-reduce -v q -nologo",
+      "runCommand": "dotnet /work/bin/csharp-7.0-dotnet-default-parallel-reduce/app.dll 2000000 4",
+      "loadAvgBefore": "2.18 0.97 0.38 1/459 62",
+      "buildSeconds": 3.2828504810000014,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:02.84\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:22:30.708Z",
+      "finishedAt": "2026-10-13T15:22:44.111Z",
+      "loadAvgAfter": "2.07 1.01 0.40 2/469 546",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.309563171, 0.309083481, 0.312362615, 0.31348615900000004, 0.310396916, 0.31233832,
+          0.307001193, 0.308613895, 0.309135714, 0.315442055, 0.30823772400000005,
+          0.30831108700000004, 0.308355394, 0.305485222, 0.308666578, 0.31510394, 0.306574818,
+          0.31155017, 0.309116803, 0.30973419300000005, 0.31230765200000005, 0.310603057,
+          0.31345626800000004, 0.308004836, 0.308398253, 0.30669429400000003, 0.30859358000000003,
+          0.314145053, 0.30747908700000004, 0.31195362600000004
+        ],
+        "cpu": [
+          0.66011, 0.631303, 0.6624140000000001, 0.655969, 0.684841, 0.662414, 0.632045, 0.66511,
+          0.65354, 0.66984, 0.6523359999999999, 0.655615, 0.6399009999999999, 0.590692, 0.652623,
+          0.6603399999999999, 0.661678, 0.6568289999999999, 0.6643830000000001, 0.666787,
+          0.6606609999999999, 0.689339, 0.661813, 0.6616949999999999, 0.667907, 0.6024649999999999,
+          0.6655359999999999, 0.661547, 0.6617909999999999, 0.660679
+        ],
+        "user": [
+          0.647108, 0.612354, 0.651424, 0.641927, 0.674844, 0.651408, 0.611981, 0.646107, 0.639529,
+          0.656824, 0.6373289999999999, 0.6395759999999999, 0.622957, 0.574674, 0.635581, 0.642276,
+          0.6506339999999999, 0.6407849999999999, 0.647374, 0.651837, 0.6456459999999999, 0.677299,
+          0.650817, 0.6486419999999999, 0.655891, 0.5834509999999999, 0.6534719999999999, 0.647515,
+          0.6467959999999999, 0.643713
+        ],
+        "system": [
+          0.013002, 0.018949, 0.01099, 0.014041999999999999, 0.009996999999999999, 0.011006,
+          0.020064, 0.019003, 0.014011, 0.013016, 0.015007, 0.016038999999999998, 0.016944,
+          0.016018, 0.017041999999999998, 0.018064, 0.011044, 0.016044, 0.017009, 0.01495,
+          0.015014999999999999, 0.012039999999999999, 0.010995999999999999, 0.013052999999999999,
+          0.012015999999999999, 0.019014, 0.012064, 0.014032, 0.014995, 0.016966
+        ],
+        "memory": [
+          25956352, 25755648, 25935872, 25915392, 26038272, 26173440, 26169344, 26107904, 26034176,
+          26099712, 26034176, 26144768, 26234880, 25939968, 26132480, 25997312, 26038272, 26132480,
+          26169344, 26120192, 25731072, 26112000, 25993216, 26009600, 26279936, 25980928, 26157056,
+          25866240, 26050560, 25939968
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "ruby",
+      "version": "3.2",
+      "toolVersion": "ruby 3.2.11 (2026-03-27 revision 5483bfc1ae) [x86_64-linux]",
+      "variant": "ruby-default",
+      "variantSpec": "5b5a92d9f767",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "ruby:3.2",
+      "sourceFile": "languages/ruby/impl/string-ops/main.rb",
+      "sourceHash": "b3acc9c723ab1905",
+      "runCommand": "ruby /repo/languages/ruby/impl/string-ops/main.rb 1000000",
+      "loadAvgBefore": "2.15 1.07 0.43 1/487 54",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-13T15:23:00.065Z",
+      "finishedAt": "2026-10-13T15:23:20.137Z",
+      "loadAvgAfter": "1.82 1.07 0.45 1/479 115",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.6198075620000001, 0.6183812750000001, 0.6321397480000001, 0.624586301, 0.622106838,
+          0.619259564, 0.616240537, 0.618423927, 0.6177799860000001, 0.619888714, 0.619635689,
+          0.631604232, 0.616301772, 0.6189786660000001, 0.627977515, 0.621579026,
+          0.6168114490000001, 0.619798124, 0.6217978070000001, 0.6702114800000001, 0.617335654,
+          0.626249505, 0.621476938, 0.6230224590000001, 0.6189418710000001, 0.619516229,
+          0.620416818, 0.620928118, 0.620414825, 0.629357819
+        ],
+        "cpu": [
+          0.6194009999999999, 0.61798, 0.631643, 0.617651, 0.621833, 0.618813, 0.615785, 0.617931,
+          0.617215, 0.6196539999999999, 0.619165, 0.6312450000000001, 0.6158849999999999,
+          0.6184689999999999, 0.6275229999999999, 0.621131, 0.6163289999999999, 0.619412,
+          0.6213829999999999, 0.669814, 0.617029, 0.625781, 0.620853, 0.622683, 0.6184799999999999,
+          0.619035, 0.619972, 0.620493, 0.619985, 0.628859
+        ],
+        "user": [
+          0.5434749999999999, 0.551091, 0.5476909999999999, 0.5359619999999999, 0.55885,
+          0.5388379999999999, 0.532814, 0.53994, 0.5343209999999999, 0.5387, 0.545146, 0.556335,
+          0.5388999999999999, 0.5395369999999999, 0.546585, 0.539246, 0.546406, 0.5364909999999999,
+          0.5513399999999999, 0.57884, 0.550026, 0.557805, 0.545871, 0.548721, 0.540546, 0.543154,
+          0.536976, 0.541558, 0.536123, 0.5538759999999999
+        ],
+        "system": [
+          0.075926, 0.06688899999999999, 0.083952, 0.081689, 0.062983, 0.07997499999999999,
+          0.082971, 0.07799099999999999, 0.082894, 0.080954, 0.074019, 0.07490999999999999,
+          0.076985, 0.078932, 0.080938, 0.081885, 0.069923, 0.082921, 0.070043, 0.090974, 0.067003,
+          0.067976, 0.074982, 0.073962, 0.077934, 0.07588099999999999, 0.082996,
+          0.07893499999999999, 0.08386199999999999, 0.074983
+        ],
+        "memory": [
+          146563072, 146780160, 146780160, 146599936, 146755584, 146726912, 146481152, 146706432,
+          146632704, 146673664, 146853888, 146722816, 146563072, 146501632, 146608128, 146657280,
+          146804736, 146739200, 146669568, 146755584, 146546688, 146661376, 146784256, 146657280,
+          146575360, 146653184, 146571264, 146800640, 146694144, 146792448
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "ruby",
+      "version": "2.6",
+      "toolVersion": "ruby 2.6.10p210 (2022-04-12 revision 67958) [x86_64-linux]",
+      "variant": "ruby-default",
+      "variantSpec": "5b5a92d9f767",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "ruby:2.6",
+      "sourceFile": "languages/ruby/impl/hashmap/main.rb",
+      "sourceHash": "3333caa66618c0ed",
+      "runCommand": "ruby /repo/languages/ruby/impl/hashmap/main.rb 1000000",
+      "loadAvgBefore": "2.07 1.16 0.49 1/499 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:23:33.697Z",
+      "finishedAt": "2026-10-13T15:23:46.523Z",
+      "loadAvgAfter": "1.83 1.15 0.50 1/484 117",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.381236257, 0.39896411800000003, 0.38552600800000003, 0.39414051600000005, 0.390882271,
+          0.38713690100000003, 0.39950105500000005, 0.390747758, 0.391362401, 0.406935818,
+          0.41044991700000005, 0.396697966, 0.393408974, 0.403784397, 0.39786608900000003,
+          0.409402561, 0.42537018800000004, 0.398656673, 0.398345088, 0.39115901200000003,
+          0.393595003, 0.399492241, 0.414033572, 0.38935838500000003, 0.387581577,
+          0.39342019500000003, 0.38834102200000004, 0.396860461, 0.393463116, 0.38952307900000005
+        ],
+        "cpu": [
+          0.38106399999999996, 0.39870399999999995, 0.385252, 0.39390499999999995, 0.390592,
+          0.386899, 0.39924299999999996, 0.39052, 0.39115599999999995, 0.406734,
+          0.41024499999999997, 0.396479, 0.393112, 0.403561, 0.39763899999999996, 0.409161,
+          0.42515099999999995, 0.398414, 0.398092, 0.390963, 0.393409, 0.39925799999999995,
+          0.41376799999999997, 0.38911699999999994, 0.387354, 0.393146, 0.38814, 0.396601, 0.393249,
+          0.38931699999999997
+        ],
+        "user": [
+          0.36106099999999997, 0.378719, 0.360236, 0.36591199999999996, 0.36255, 0.365851, 0.376229,
+          0.364552, 0.36414599999999997, 0.385748, 0.381299, 0.37245, 0.371106, 0.378589,
+          0.37166299999999997, 0.38115, 0.399203, 0.375391, 0.380088, 0.369965, 0.370444,
+          0.37023999999999996, 0.379787, 0.36916299999999996, 0.36433299999999996, 0.37614,
+          0.356129, 0.373625, 0.373288, 0.36829999999999996
+        ],
+        "system": [
+          0.020003, 0.019985, 0.025016, 0.027992999999999997, 0.028041999999999997, 0.021048,
+          0.023014, 0.025967999999999998, 0.02701, 0.020985999999999998, 0.028946, 0.024029,
+          0.022005999999999998, 0.024971999999999998, 0.025976, 0.028010999999999998, 0.025948,
+          0.023023, 0.018004, 0.020998, 0.022965, 0.029018, 0.033981, 0.019954, 0.023021, 0.017006,
+          0.032011, 0.022976, 0.019961, 0.021016999999999997
+        ],
+        "memory": [
+          33345536, 33390592, 33320960, 33288192, 33460224, 33513472, 33333248, 33173504, 33185792,
+          33505280, 33509376, 33447936, 33226752, 33337344, 33488896, 33464320, 33468416, 33472512,
+          33198080, 33468416, 33591296, 33374208, 33259520, 33460224, 33431552, 33468416, 33325056,
+          33234944, 33284096, 33349632
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "16",
+      "toolVersion": "openjdk 16.0.2 2021-07-20",
+      "variant": "java-parallel-gc",
+      "variantSpec": "ab56943350fe",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:16-jdk",
+      "sourceFile": "languages/java/impl/hashmap/Main.java",
+      "sourceHash": "390948118b7db383",
+      "buildCommand": "mkdir -p /work/bin/java-16-java-parallel-gc-hashmap && javac -d /work/bin/java-16-java-parallel-gc-hashmap /repo/languages/java/impl/hashmap/Main.java",
+      "runCommand": "java -XX:+UseParallelGC -cp /work/bin/java-16-java-parallel-gc-hashmap Main 1000000",
+      "loadAvgBefore": "1.83 1.15 0.50 1/485 962",
+      "buildSeconds": 0.5653575659999915,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:23:46.621Z",
+      "finishedAt": "2026-10-13T15:23:53.377Z",
+      "loadAvgAfter": "1.85 1.17 0.51 1/482 1507",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.18172823700000001, 0.17474478100000002, 0.180920395, 0.188729846, 0.178995428,
+          0.19826064300000001, 0.18681022300000003, 0.190539392, 0.192519293, 0.193991731,
+          0.18325707600000002, 0.199652505, 0.178516805, 0.19072542, 0.184912291, 0.200878876,
+          0.173422559, 0.193922952, 0.18843680200000001, 0.18054831600000001, 0.189273151,
+          0.182541212, 0.184705995, 0.18462286800000002, 0.18376883100000002, 0.19298062900000001,
+          0.186186974, 0.18971696300000002, 0.178759981, 0.184324379
+        ],
+        "cpu": [
+          0.262629, 0.26324899999999996, 0.26466999999999996, 0.28418899999999997, 0.273576,
+          0.284777, 0.268719, 0.278495, 0.281913, 0.282456, 0.270069, 0.28612899999999997, 0.275761,
+          0.286363, 0.270105, 0.295585, 0.261397, 0.27982, 0.266605, 0.262115, 0.267376, 0.272954,
+          0.274647, 0.268211, 0.25910099999999997, 0.27588399999999996, 0.277385,
+          0.27887999999999996, 0.260807, 0.271208
+        ],
+        "user": [
+          0.235145, 0.23812999999999998, 0.24329299999999998, 0.26287499999999997,
+          0.24561999999999998, 0.256502, 0.24548399999999998, 0.257306, 0.257921, 0.25986, 0.248828,
+          0.257719, 0.25069199999999997, 0.252492, 0.24528, 0.267625, 0.239194, 0.255921,
+          0.24523599999999998, 0.24598499999999998, 0.24243499999999998, 0.25521699999999997,
+          0.24912299999999998, 0.243829, 0.23452299999999998, 0.248296, 0.25936,
+          0.25427299999999997, 0.23746699999999998, 0.238061
+        ],
+        "system": [
+          0.027483999999999998, 0.025119, 0.021377, 0.021314, 0.027955999999999998,
+          0.028274999999999998, 0.023235, 0.021189, 0.023992, 0.022595999999999998, 0.021241,
+          0.028409999999999998, 0.025068999999999998, 0.033871, 0.024825, 0.02796, 0.022203,
+          0.023899, 0.021369, 0.01613, 0.024940999999999998, 0.017737, 0.025523999999999998,
+          0.024381999999999997, 0.024578, 0.027587999999999998, 0.018025, 0.024607, 0.02334,
+          0.033146999999999996
+        ],
+        "memory": [
+          98738176, 98594816, 102682624, 100532224, 100278272, 101388288, 100814848, 102600704,
+          100823040, 99532800, 102686720, 99332096, 98623488, 98476032, 99225600, 100597760,
+          100089856, 99651584, 100450304, 100794368, 100597760, 100765696, 100802560, 101134336,
+          100392960, 99368960, 100761600, 99491840, 100573184, 102719488
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "10",
+      "toolVersion": "gcc (GCC) 10.5.0",
+      "variant": "gcc-O3",
+      "variantSpec": "18d0ab900300",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "gcc:10",
+      "sourceFile": "languages/c/impl/hashmap/main.c",
+      "sourceHash": "b316a567a5fad3ab",
+      "buildCommand": "gcc -O3 -ffp-contract=off -o /work/bin/c-10-gcc-O3-hashmap /repo/languages/c/impl/hashmap/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-10-gcc-O3-hashmap 1000000",
+      "loadAvgBefore": "2.06 1.24 0.54 1/503 56",
+      "buildSeconds": 0.11162517300000764,
+      "buildOutput": "",
+      "binarySize": 16624,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:24:09.224Z",
+      "finishedAt": "2026-10-13T15:24:10.907Z",
+      "loadAvgAfter": "2.06 1.24 0.54 3/505 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.042576750000000003, 0.042002734, 0.041630955000000004, 0.041269998, 0.042255958,
+          0.040892289000000005, 0.041634753000000004, 0.041382198, 0.041044785, 0.040921775,
+          0.050482897000000006, 0.045937959, 0.046349701, 0.043303213, 0.044571116, 0.04281254,
+          0.043712931000000003, 0.042042435, 0.042497269000000004, 0.041759274000000006,
+          0.042013551, 0.04200765, 0.043316748, 0.042716991, 0.044273172, 0.041684133000000005,
+          0.041519775, 0.041099104000000004, 0.04143788, 0.041701345
+        ],
+        "cpu": [
+          0.042495, 0.041854, 0.041467000000000004, 0.041136, 0.042093, 0.040771, 0.041523,
+          0.041243999999999996, 0.040917999999999996, 0.040822, 0.050295999999999993, 0.045783,
+          0.046186, 0.043174, 0.044406999999999995, 0.042652999999999996, 0.043545999999999994,
+          0.041921, 0.042305999999999996, 0.041646, 0.041904, 0.041861, 0.043174,
+          0.042512999999999995, 0.044084, 0.04156, 0.04139999999999999, 0.040956, 0.041326,
+          0.04158099999999999
+        ],
+        "user": [
+          0.036425, 0.034879, 0.034388, 0.034113, 0.035078, 0.032816, 0.034434, 0.032406, 0.033932,
+          0.034848, 0.041242999999999995, 0.036826, 0.039307999999999996, 0.035142,
+          0.035525999999999995, 0.036559999999999995, 0.035445, 0.033936, 0.033241, 0.033714,
+          0.032924999999999996, 0.033888, 0.035142, 0.033615, 0.037071, 0.034634,
+          0.034499999999999996, 0.031966, 0.033263, 0.033660999999999996
+        ],
+        "system": [
+          0.00607, 0.006974999999999999, 0.007078999999999999, 0.007023, 0.0070149999999999995,
+          0.007955, 0.007089, 0.008838, 0.006986, 0.005974, 0.009053, 0.008957,
+          0.0068779999999999996, 0.008032, 0.008881, 0.0060929999999999995, 0.008100999999999999,
+          0.007984999999999999, 0.009065, 0.007932, 0.008979, 0.007973, 0.008032, 0.008898,
+          0.007012999999999999, 0.006926, 0.0069, 0.00899, 0.008062999999999999, 0.00792
+        ],
+        "memory": [
+          18526208, 18452480, 18513920, 18464768, 18382848, 18436096, 18513920, 18526208, 18526208,
+          18411520, 18472960, 18558976, 18333696, 18534400, 18526208, 18411520, 18583552, 18575360,
+          18513920, 18460672, 18382848, 18436096, 18558976, 18534400, 18411520, 18513920, 18526208,
+          18460672, 18534400, 18558976
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "csharp",
+      "version": "6.0",
+      "toolVersion": "6.0.428",
+      "variant": "dotnet-default",
+      "variantSpec": "d78ec7ecab28",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:6.0",
+      "sourceFile": "languages/csharp/impl/binary-trees/Program.cs",
+      "sourceHash": "8ebfb2f82b6ea86e",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/csharp-6.0-dotnet-default-binary-trees.proj; mkdir -p $P && cp /repo/languages/csharp/impl/binary-trees/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o /work/bin/csharp-6.0-dotnet-default-binary-trees -v q -nologo",
+      "runCommand": "dotnet /work/bin/csharp-6.0-dotnet-default-binary-trees/app.dll 14",
+      "loadAvgBefore": "1.98 1.24 0.54 1/505 184",
+      "buildSeconds": 1.5036966250000114,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:01.18\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-13T15:24:11.008Z",
+      "finishedAt": "2026-10-13T15:24:17.420Z",
+      "loadAvgAfter": "1.98 1.25 0.55 1/518 540",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.163056911, 0.16663728500000002, 0.145883559, 0.14175906700000002, 0.153676707,
+          0.153061842, 0.14640571900000002, 0.14751033200000002, 0.139186953, 0.141260762,
+          0.13888456200000002, 0.151848636, 0.143917589, 0.14213344, 0.139202558,
+          0.13923502000000001, 0.14621976, 0.14465170600000002, 0.139721052, 0.142106329,
+          0.140714326, 0.13951575600000002, 0.139498915, 0.148849326, 0.154559143,
+          0.14038777400000002, 0.139068516, 0.139302433, 0.14733822000000002, 0.154214356
+        ],
+        "cpu": [
+          0.151697, 0.16028599999999998, 0.139342, 0.138317, 0.14514, 0.14851, 0.141145, 0.144571,
+          0.135123, 0.135273, 0.135131, 0.143703, 0.13911199999999999, 0.138281, 0.136292,
+          0.13418799999999997, 0.143508, 0.140413, 0.135926, 0.13784, 0.135413, 0.136797, 0.135507,
+          0.14012, 0.14798599999999998, 0.136286, 0.13675199999999998, 0.136149,
+          0.14302499999999999, 0.149311
+        ],
+        "user": [
+          0.082928, 0.098561, 0.08340199999999999, 0.082788, 0.08308, 0.086714, 0.092781, 0.096381,
+          0.06855499999999999, 0.080162, 0.078495, 0.084413, 0.08669299999999999, 0.086175,
+          0.08417999999999999, 0.07510499999999999, 0.09068899999999999, 0.090556, 0.085326,
+          0.089249, 0.08225099999999999, 0.08723299999999999, 0.095357, 0.079501,
+          0.09038099999999999, 0.076724, 0.088487, 0.070077, 0.094357, 0.098545
+        ],
+        "system": [
+          0.068769, 0.061724999999999995, 0.05594, 0.055528999999999995, 0.06206, 0.061796,
+          0.048364, 0.04819, 0.066568, 0.055111, 0.056636, 0.059289999999999995, 0.052419, 0.052106,
+          0.052112, 0.059083, 0.052819, 0.049857, 0.0506, 0.048590999999999995, 0.053162, 0.049564,
+          0.04015, 0.060619, 0.057604999999999996, 0.059562, 0.048264999999999995,
+          0.06607199999999999, 0.048667999999999996, 0.050766
+        ],
+        "memory": [
+          110489600, 110428160, 110452736, 110673920, 110616576, 110751744, 110583808, 110579712,
+          110678016, 110768128, 110829568, 110526464, 110596096, 110587904, 110587904, 110559232,
+          110510080, 110505984, 110727168, 110534656, 110682112, 110575616, 110436352, 110772224,
+          110600192, 110534656, 110518272, 110526464, 110436352, 110669824
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "9",
+      "toolVersion": "g++ (GCC) 9.5.0",
+      "variant": "gxx-O3-native",
+      "variantSpec": "0e12ef4516dc",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "gcc:9",
+      "sourceFile": "languages/cpp/impl/file-processing/main.cpp",
+      "sourceHash": "4f1b71574a9200c4",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "buildCommand": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o /work/bin/cpp-9-gxx-O3-native-file-processing /repo/languages/cpp/impl/file-processing/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-9-gxx-O3-native-file-processing /work/inputs/input.csv",
+      "loadAvgBefore": "1.83 1.25 0.56 4/531 56",
+      "buildSeconds": 0.5126884730000165,
+      "buildOutput": "",
+      "binarySize": 19000,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-13T15:24:32.708Z",
+      "finishedAt": "2026-10-13T15:24:39.227Z",
+      "loadAvgAfter": "1.76 1.25 0.57 1/523 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.184258743, 0.17955294100000002, 0.17950476, 0.179700667, 0.178443287,
+          0.17946093700000001, 0.178809233, 0.194047774, 0.180113972, 0.178534679,
+          0.18070586300000002, 0.182515439, 0.182505842, 0.181479505, 0.180001942, 0.18015563,
+          0.180632546, 0.181047855, 0.181424142, 0.18123513700000002, 0.17911780300000002,
+          0.17895903500000002, 0.17974336700000001, 0.1813114, 0.181960528, 0.181047585,
+          0.183083338, 0.185454262, 0.183019586, 0.179365207
+        ],
+        "cpu": [
+          0.182013, 0.179383, 0.179312, 0.179478, 0.17823, 0.179245, 0.178645, 0.19389599999999999,
+          0.179935, 0.17834799999999998, 0.180474, 0.182306, 0.182316, 0.181294, 0.179846, 0.179917,
+          0.180521, 0.18090799999999999, 0.181289, 0.1811, 0.178945, 0.17870999999999998,
+          0.17957499999999998, 0.181164, 0.181783, 0.180868, 0.182885, 0.18533399999999997,
+          0.182856, 0.17918299999999998
+        ],
+        "user": [
+          0.172013, 0.166428, 0.176307, 0.171502, 0.167216, 0.169232, 0.16467299999999999,
+          0.18490099999999998, 0.16794, 0.16838499999999998, 0.172453, 0.171288, 0.177335, 0.176286,
+          0.171853, 0.164924, 0.173501, 0.17091399999999998, 0.172325, 0.176098, 0.171948, 0.16673,
+          0.169599, 0.166151, 0.173793, 0.172874, 0.171892, 0.17832199999999998, 0.172864, 0.169229
+        ],
+        "system": [
+          0.01, 0.012955, 0.003005, 0.007976, 0.011014, 0.010013, 0.013972, 0.008995,
+          0.011994999999999999, 0.009963, 0.008021, 0.011018, 0.004981, 0.005007999999999999,
+          0.007993, 0.014993, 0.007019999999999999, 0.009994, 0.008964, 0.0050019999999999995,
+          0.006997, 0.01198, 0.009975999999999999, 0.015012999999999999, 0.007989999999999999,
+          0.007994, 0.010993, 0.007012, 0.009992, 0.009954
+        ],
+        "memory": [
+          3698688, 4014080, 3727360, 3866624, 3862528, 3788800, 3928064, 3862528, 3698688, 3891200,
+          3862528, 4014080, 3891200, 3825664, 3862528, 3891200, 3665920, 3862528, 3825664, 3780608,
+          4014080, 3862528, 3788800, 3698688, 3891200, 3862528, 3862528, 3792896, 3825664, 3928064
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "node",
+      "version": "20",
+      "toolVersion": "v20.20.2",
+      "variant": "node-semi-space-64",
+      "variantSpec": "d24caae747f0",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "node:20",
+      "sourceFile": "languages/node/impl/parallel-reduce/main.js",
+      "sourceHash": "a9e26e90b6bc8dd7",
+      "runCommand": "node --max-semi-space-size=64 /repo/languages/node/impl/parallel-reduce/main.js 2000000 4",
+      "loadAvgBefore": "1.73 1.27 0.59 1/545 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:24:54.842Z",
+      "finishedAt": "2026-10-13T15:25:01.525Z",
+      "loadAvgAfter": "1.86 1.31 0.61 4/536 437",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.199692105, 0.20884634600000002, 0.19835001600000002, 0.206186327, 0.20701255400000002,
+          0.20700168500000002, 0.19622639900000002, 0.21228611700000002, 0.199882832, 0.214970724,
+          0.19682101600000002, 0.20779044400000002, 0.20032364100000002, 0.20162283900000003,
+          0.198307952, 0.198945124, 0.200442107, 0.21336009900000003, 0.201099039,
+          0.19976554600000002, 0.19731368600000002, 0.21368656300000002, 0.210283416, 0.217213863,
+          0.20001347100000003, 0.20640269200000003, 0.197360531, 0.216949366, 0.196273521,
+          0.19890415900000002
+        ],
+        "cpu": [
+          0.5091239999999999, 0.525513, 0.502918, 0.521778, 0.520389, 0.519946, 0.501955, 0.515764,
+          0.511002, 0.546475, 0.49400799999999995, 0.527372, 0.509936, 0.5095109999999999, 0.504153,
+          0.503163, 0.514315, 0.515002, 0.517067, 0.501153, 0.49025199999999997, 0.534633, 0.521352,
+          0.5418639999999999, 0.5103, 0.510135, 0.5113289999999999, 0.546752, 0.497478,
+          0.5051019999999999
+        ],
+        "user": [
+          0.47484699999999996, 0.488477, 0.458015, 0.484935, 0.491589, 0.478192, 0.453671,
+          0.46942599999999995, 0.470082, 0.511509, 0.45585299999999995, 0.47543399999999997,
+          0.46785899999999997, 0.47447599999999995, 0.461889, 0.461904, 0.480228,
+          0.46590699999999996, 0.469061, 0.467143, 0.45487299999999997, 0.494735, 0.475497,
+          0.49987499999999996, 0.47142999999999996, 0.47989, 0.46730099999999997, 0.50169, 0.451155,
+          0.465939
+        ],
+        "system": [
+          0.034277, 0.037036, 0.044903, 0.036843, 0.0288, 0.041754, 0.048284, 0.046338, 0.04092,
+          0.034966, 0.038155, 0.051938, 0.042076999999999996, 0.035035, 0.042263999999999996,
+          0.041259, 0.034087, 0.049095, 0.048006, 0.03401, 0.035379, 0.039897999999999996, 0.045855,
+          0.041989, 0.038869999999999995, 0.030244999999999998, 0.044028, 0.045062,
+          0.046322999999999996, 0.039162999999999996
+        ],
+        "memory": [
+          79888384, 80052224, 80351232, 80072704, 79872000, 80232448, 80265216, 79691776, 79925248,
+          80048128, 79843328, 79667200, 80314368, 80089088, 80019456, 80056320, 80142336, 80343040,
+          80068608, 80023552, 79806464, 80191488, 80338944, 80117760, 80457728, 80322560, 79941632,
+          80072704, 79724544, 79867904
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "9",
+      "toolVersion": "g++ (GCC) 9.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "gcc:9",
+      "sourceFile": "languages/cpp/impl/nbody/main.cpp",
+      "sourceHash": "8521818c94cc1683",
+      "buildCommand": "g++ -std=c++14 -O2 -ffp-contract=off -o /work/bin/cpp-9-gxx-O2-nbody /repo/languages/cpp/impl/nbody/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-9-gxx-O2-nbody 1000000",
+      "loadAvgBefore": "1.86 1.31 0.61 1/536 142",
+      "buildSeconds": 0.2828004729999811,
+      "buildOutput": "",
+      "binarySize": 16864,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:25:01.621Z",
+      "finishedAt": "2026-10-13T15:25:04.377Z",
+      "loadAvgAfter": "1.86 1.31 0.61 1/536 221",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.071124609, 0.07123565700000001, 0.071546881, 0.071360091, 0.07127462000000001,
+          0.07094296800000001, 0.070899747, 0.070819686, 0.07117364000000001, 0.07115213000000001,
+          0.071131491, 0.070815709, 0.070862517, 0.071209148, 0.071004169, 0.070859591, 0.071029941,
+          0.070865416, 0.070841227, 0.07089627000000001, 0.071005254, 0.07087309700000001,
+          0.070969377, 0.073492403, 0.071204528, 0.070895498, 0.070950051, 0.07101373100000001,
+          0.07154086, 0.070973194
+        ],
+        "cpu": [
+          0.07101299999999999, 0.071111, 0.07145699999999999, 0.07124799999999999, 0.071147,
+          0.07081399999999999, 0.07076099999999999, 0.07070699999999999, 0.071065, 0.070982,
+          0.07098, 0.07070699999999999, 0.070722, 0.071109, 0.070884, 0.07074699999999999, 0.070917,
+          0.070723, 0.070695, 0.070754, 0.070865, 0.070728, 0.070836, 0.07178299999999999, 0.07107,
+          0.070758, 0.070799, 0.070854, 0.071394, 0.070807
+        ],
+        "user": [
+          0.07001299999999999, 0.071111, 0.070451, 0.069269, 0.071147, 0.06981699999999999,
+          0.069765, 0.07070699999999999, 0.071065, 0.069983, 0.069981, 0.069712, 0.070722, 0.070108,
+          0.069886, 0.069751, 0.070917, 0.069727, 0.070695, 0.069758, 0.069867, 0.069732, 0.069839,
+          0.06981699999999999, 0.07107, 0.070758, 0.070799, 0.070854, 0.071394, 0.070807
+        ],
+        "system": [
+          0.001, 0, 0.001006, 0.001979, 0, 0.000997, 0.000996, 0, 0, 0.0009989999999999999,
+          0.0009989999999999999, 0.000995, 0, 0.001001, 0.000998, 0.000996, 0, 0.000996, 0,
+          0.000996, 0.000998, 0.000996, 0.000997, 0.001966, 0, 0, 0, 0, 0, 0
+        ],
+        "memory": [
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "ruby",
+      "version": "2.6",
+      "toolVersion": "ruby 2.6.10p210 (2022-04-12 revision 67958) [x86_64-linux]",
+      "variant": "ruby-default",
+      "variantSpec": "5b5a92d9f767",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "ruby:2.6",
+      "sourceFile": "languages/ruby/impl/string-ops/main.rb",
+      "sourceHash": "b3acc9c723ab1905",
+      "runCommand": "ruby /repo/languages/ruby/impl/string-ops/main.rb 1000000",
+      "loadAvgBefore": "1.86 1.31 0.61 1/536 124",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-13T15:25:04.477Z",
+      "finishedAt": "2026-10-13T15:25:24.554Z",
+      "loadAvgAfter": "1.61 1.29 0.62 1/535 185",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.6177212350000001, 0.6192446530000001, 0.618824314, 0.623503586, 0.623983677,
+          0.6224110350000001, 0.6253278800000001, 0.6229292280000001, 0.6235503440000001,
+          0.624298789, 0.6241609, 0.627074478, 0.62354847, 0.6262079810000001, 0.624066871,
+          0.6235527860000001, 0.618923157, 0.621478182, 0.619046528, 0.6194842700000001,
+          0.6216918570000001, 0.624309536, 0.6233792, 0.624973883, 0.621345754, 0.621404654,
+          0.6283170840000001, 0.623418715, 0.62306412, 0.62130522
+        ],
+        "cpu": [
+          0.617484, 0.618959, 0.618518, 0.623275, 0.6237159999999999, 0.622157, 0.624794,
+          0.6226529999999999, 0.623345, 0.6239699999999999, 0.6214369999999999, 0.626881,
+          0.6232489999999999, 0.625885, 0.623736, 0.623313, 0.618683, 0.621189, 0.6187879999999999,
+          0.619184, 0.621459, 0.62403, 0.622922, 0.624683, 0.621071, 0.6210479999999999, 0.628049,
+          0.623038, 0.622825, 0.6210789999999999
+        ],
+        "user": [
+          0.546544, 0.555964, 0.55257, 0.553357, 0.5527489999999999, 0.55314, 0.560815,
+          0.5555829999999999, 0.554307, 0.547974, 0.5496179999999999, 0.545897, 0.554222, 0.552899,
+          0.5487679999999999, 0.55728, 0.559618, 0.5571699999999999, 0.5528109999999999, 0.549277,
+          0.547405, 0.5600269999999999, 0.548932, 0.553719, 0.545185, 0.552043, 0.557044, 0.556034,
+          0.559843, 0.555071
+        ],
+        "system": [
+          0.07094, 0.062995, 0.06594799999999999, 0.069918, 0.070967, 0.069017, 0.063979,
+          0.06706999999999999, 0.069038, 0.075996, 0.071819, 0.080984, 0.06902699999999999,
+          0.072986, 0.07496799999999999, 0.066033, 0.059065, 0.06401899999999999, 0.065977,
+          0.069907, 0.074054, 0.06400299999999999, 0.07399, 0.070964, 0.075886, 0.069005, 0.071005,
+          0.067004, 0.062982, 0.066008
+        ],
+        "memory": [
+          143659008, 143667200, 143900672, 143593472, 143593472, 143585280, 143978496, 143589376,
+          143892480, 143876096, 143548416, 143855616, 143863808, 143773696, 143900672, 143761408,
+          143847424, 143826944, 143781888, 143777792, 143687680, 143859712, 143769600, 143765504,
+          143593472, 143773696, 143978496, 144080896, 143863808, 143933440
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "13",
+      "toolVersion": "g++ (GCC) 13.5.0",
+      "variant": "gxx-O3",
+      "variantSpec": "748c3ab118d6",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "gcc:13",
+      "sourceFile": "languages/cpp/impl/sort/main.cpp",
+      "sourceHash": "43f567b3f834ac02",
+      "buildCommand": "g++ -std=c++20 -O3 -ffp-contract=off -o /work/bin/cpp-13-gxx-O3-sort /repo/languages/cpp/impl/sort/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-13-gxx-O3-sort 2000000",
+      "loadAvgBefore": "1.56 1.28 0.62 7/555 56",
+      "buildSeconds": 0.4768533129999996,
+      "buildOutput": "",
+      "binarySize": 16616,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "0e4cdffacd5a55db45412bb3916f41b8e345b118b0224da12967fc1578fe496b",
+      "startedAt": "2026-10-13T15:25:29.223Z",
+      "finishedAt": "2026-10-13T15:25:34.863Z",
+      "loadAvgAfter": "1.52 1.28 0.62 1/546 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.15597237, 0.156011186, 0.15442903700000002, 0.155475041, 0.15541025900000002,
+          0.15564049000000002, 0.154519708, 0.154855438, 0.15493494700000002, 0.155184084,
+          0.15566337400000002, 0.15433454000000002, 0.154959082, 0.15538262700000002, 0.155043641,
+          0.15411164100000002, 0.15441195500000002, 0.15468753300000002, 0.15445883300000002,
+          0.154883019, 0.154531299, 0.15396279300000001, 0.15396509700000002, 0.157853387,
+          0.154454485, 0.154310044, 0.15423545300000002, 0.15397224, 0.153876921, 0.155042748
+        ],
+        "cpu": [
+          0.155776, 0.155849, 0.154257, 0.155286, 0.155229, 0.155432, 0.15433599999999997, 0.154685,
+          0.154749, 0.154974, 0.155496, 0.154137, 0.154783, 0.15520899999999999, 0.154891, 0.153951,
+          0.15426499999999999, 0.154491, 0.154286, 0.154695, 0.154364, 0.153824, 0.153772, 0.156067,
+          0.154278, 0.154136, 0.15406899999999998, 0.153824, 0.153713, 0.15487399999999998
+        ],
+        "user": [
+          0.152781, 0.152852, 0.154257, 0.152281, 0.153227, 0.15442999999999998,
+          0.15234499999999998, 0.153688, 0.153751, 0.151975, 0.152506, 0.152136, 0.153785,
+          0.15320699999999998, 0.152893, 0.151952, 0.15326399999999998, 0.153495, 0.152283,
+          0.154695, 0.153362, 0.152826, 0.151775, 0.152091, 0.152275, 0.151134, 0.15406899999999998,
+          0.151827, 0.151717, 0.15087799999999998
+        ],
+        "system": [
+          0.002995, 0.0029969999999999997, 0, 0.003005, 0.002002, 0.0010019999999999999,
+          0.0019909999999999997, 0.000997, 0.000998, 0.002999, 0.00299, 0.0020009999999999997,
+          0.000998, 0.002002, 0.0019979999999999998, 0.001999, 0.001001, 0.000996, 0.002003, 0,
+          0.0010019999999999999, 0.000998, 0.001997, 0.0039759999999999995, 0.002003, 0.003002, 0,
+          0.001997, 0.001996, 0.0039959999999999996
+        ],
+        "memory": [
+          11399168, 11374592, 11464704, 11313152, 11333632, 11354112, 11378688, 11329536, 11313152,
+          11264000, 11280384, 11350016, 11337728, 11399168, 11350016, 11100160, 11399168, 11399168,
+          11169792, 11399168, 11255808, 11280384, 11104256, 11259904, 11399168, 11378688, 11317248,
+          11325440, 11337728, 11104256
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "12",
+      "toolVersion": "gcc (GCC) 12.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "gcc:12",
+      "sourceFile": "languages/c/impl/file-processing/main.c",
+      "sourceHash": "a85376cc94fb1a0a",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-12-gcc-O2-file-processing /repo/languages/c/impl/file-processing/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-12-gcc-O2-file-processing /work/inputs/input.csv",
+      "loadAvgBefore": "1.52 1.28 0.62 3/546 142",
+      "buildSeconds": 0.1097473679999821,
+      "buildOutput": "",
+      "binarySize": 16360,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-13T15:25:34.961Z",
+      "finishedAt": "2026-10-13T15:25:41.628Z",
+      "loadAvgAfter": "1.44 1.27 0.63 2/544 221",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.199195793, 0.19863477100000002, 0.19813065500000002, 0.197671654, 0.19804064700000001,
+          0.196595925, 0.197930289, 0.19782352900000003, 0.199324726, 0.197255973, 0.197018157,
+          0.198184255, 0.19670299500000002, 0.197552724, 0.19856151200000002, 0.197388912,
+          0.20145669500000002, 0.197279366, 0.197242517, 0.19760548700000002, 0.196560707,
+          0.198488034, 0.197761381, 0.19741639200000002, 0.20058271500000002, 0.19871295600000002,
+          0.19924028600000002, 0.198177541, 0.199049578, 0.19672498500000002
+        ],
+        "cpu": [
+          0.198967, 0.19839099999999998, 0.197961, 0.19747499999999998, 0.19776, 0.196429,
+          0.19774299999999997, 0.19765799999999997, 0.19915999999999998, 0.19704699999999997,
+          0.196675, 0.197912, 0.19655, 0.197319, 0.198376, 0.19716199999999998, 0.20126399999999997,
+          0.19716099999999998, 0.197074, 0.197415, 0.19631099999999999, 0.19827,
+          0.19757799999999998, 0.19725399999999998, 0.200469, 0.19852999999999998, 0.199056,
+          0.19800800000000002, 0.198872, 0.19650399999999998
+        ],
+        "user": [
+          0.188969, 0.189374, 0.184964, 0.184444, 0.186774, 0.18247, 0.18675799999999998,
+          0.18268399999999999, 0.18815199999999999, 0.18404399999999999, 0.186641, 0.188916,
+          0.18552, 0.1853, 0.177442, 0.18214999999999998, 0.18831199999999998, 0.18515199999999998,
+          0.188071, 0.185451, 0.190302, 0.182249, 0.19159099999999998, 0.18323599999999998,
+          0.190496, 0.192545, 0.187053, 0.183008, 0.185881, 0.183471
+        ],
+        "system": [
+          0.009998, 0.009016999999999999, 0.012997, 0.013031, 0.010986, 0.013959, 0.010985,
+          0.014974, 0.011007999999999999, 0.013002999999999999, 0.010034, 0.008995999999999999,
+          0.01103, 0.012019, 0.020933999999999998, 0.015012, 0.012952, 0.012008999999999999,
+          0.009002999999999999, 0.011963999999999999, 0.006009, 0.016021, 0.005987, 0.014018,
+          0.009973, 0.005985, 0.012003, 0.015, 0.012990999999999999, 0.013033
+        ],
+        "memory": [
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "12",
+      "toolVersion": "gcc (GCC) 12.5.0",
+      "variant": "gcc-O3-native",
+      "variantSpec": "7edbaa312dc3",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "gcc:12",
+      "sourceFile": "languages/c/impl/parallel-reduce/main.c",
+      "sourceHash": "05ece551dcab365f",
+      "buildCommand": "gcc -O3 -march=native -ffp-contract=off -o /work/bin/c-12-gcc-O3-native-parallel-reduce /repo/languages/c/impl/parallel-reduce/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-12-gcc-O3-native-parallel-reduce 2000000 4",
+      "loadAvgBefore": "1.44 1.27 0.63 1/544 228",
+      "buildSeconds": 0.11152911399997538,
+      "buildOutput": "",
+      "binarySize": 16048,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:25:41.725Z",
+      "finishedAt": "2026-10-13T15:25:45.540Z",
+      "loadAvgAfter": "1.44 1.27 0.63 4/552 435",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.112553811, 0.11263009400000001, 0.100148521, 0.11804895200000001, 0.101279462,
+          0.10871776100000001, 0.10634528800000001, 0.10897228, 0.109055045, 0.10508666700000001,
+          0.10950633200000001, 0.106191671, 0.11287595500000001, 0.11301957400000001, 0.109008457,
+          0.11300016800000001, 0.10609317600000001, 0.106944804, 0.099822299, 0.10750193000000001,
+          0.10910573000000001, 0.11288234700000001, 0.111667237, 0.11125875, 0.112976665,
+          0.11308005800000001, 0.112872779, 0.112957818, 0.11055274400000001, 0.10938342100000001
+        ],
+        "cpu": [
+          0.225405, 0.21989999999999998, 0.19994399999999998, 0.235597, 0.201005, 0.217504,
+          0.212802, 0.21814, 0.21827, 0.21040599999999998, 0.21911, 0.21246099999999998, 0.225961,
+          0.226213, 0.21811899999999998, 0.22632399999999997, 0.212251, 0.213862, 0.200145,
+          0.215278, 0.21845599999999998, 0.226207, 0.22361999999999999, 0.222741,
+          0.22625399999999998, 0.22661499999999998, 0.22613699999999998, 0.22624599999999997,
+          0.22130899999999998, 0.218986
+        ],
+        "user": [
+          0.225405, 0.21989999999999998, 0.19893999999999998, 0.234591, 0.200005, 0.217504,
+          0.210814, 0.217144, 0.217274, 0.20940899999999998, 0.21911, 0.21146399999999999, 0.224966,
+          0.225217, 0.21712399999999998, 0.22533599999999998, 0.21125, 0.212858,
+          0.19913499999999998, 0.215278, 0.216461, 0.226207, 0.22361999999999999, 0.221738,
+          0.22625399999999998, 0.22561699999999998, 0.22613699999999998, 0.22524999999999998,
+          0.22130899999999998, 0.21797699999999998
+        ],
+        "system": [
+          0, 0, 0.001004, 0.001006, 0.001, 0, 0.0019879999999999997, 0.000996, 0.000996, 0.000997,
+          0, 0.000997, 0.000995, 0.000996, 0.000995, 0.000988, 0.001001, 0.001004, 0.00101, 0,
+          0.001995, 0, 0, 0.001003, 0, 0.000998, 0, 0.000996, 0, 0.001009
+        ],
+        "memory": [
+          3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712,
+          3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712,
+          3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712, 3571712
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "13",
+      "toolVersion": "g++ (GCC) 13.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "gcc:13",
+      "sourceFile": "languages/c/impl/parallel-reduce/main.c",
+      "sourceHash": "05ece551dcab365f",
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-13-gcc-O2-parallel-reduce /repo/languages/c/impl/parallel-reduce/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-13-gcc-O2-parallel-reduce 2000000 4",
+      "loadAvgBefore": "1.44 1.27 0.63 2/552 142",
+      "buildSeconds": 0.1105459930000361,
+      "buildOutput": "",
+      "binarySize": 16048,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:25:45.636Z",
+      "finishedAt": "2026-10-13T15:25:49.476Z",
+      "loadAvgAfter": "1.56 1.30 0.64 1/549 349",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.110253023, 0.10918843600000001, 0.112240803, 0.11244918400000001, 0.10624615200000001,
+          0.11289133900000001, 0.11525320700000001, 0.11391176900000001, 0.10600922800000001,
+          0.11598770600000001, 0.113820819, 0.10599061200000001, 0.105995222, 0.10601853600000001,
+          0.10001112100000001, 0.117535781, 0.10617678200000001, 0.106024828, 0.10614817900000001,
+          0.114143956, 0.11618539600000001, 0.11327885200000001, 0.10609233400000001, 0.106865024,
+          0.11803804300000001, 0.10712606400000001, 0.114861211, 0.099936281, 0.108726287,
+          0.122926819
+        ],
+        "cpu": [
+          0.22164899999999998, 0.21951099999999998, 0.22556299999999999, 0.22566699999999998,
+          0.213555, 0.22677899999999998, 0.231563, 0.228848, 0.21293199999999998,
+          0.23291099999999998, 0.228626, 0.21315699999999999, 0.212994, 0.213117, 0.201096,
+          0.235728, 0.213273, 0.212974, 0.213055, 0.22914099999999998, 0.233323, 0.227398,
+          0.21320699999999998, 0.214973, 0.237036, 0.214657, 0.230402, 0.200953,
+          0.21841099999999997, 0.24673499999999998
+        ],
+        "user": [
+          0.22064699999999998, 0.21850899999999998, 0.224565, 0.22466899999999998, 0.21156,
+          0.22577999999999998, 0.230565, 0.227849, 0.21293199999999998, 0.23191199999999998,
+          0.22663, 0.21315699999999999, 0.212994, 0.213117, 0.200101, 0.235728, 0.212272, 0.212974,
+          0.213055, 0.22814099999999998, 0.232322, 0.227398, 0.21320699999999998, 0.214973,
+          0.237036, 0.21365399999999998, 0.228408, 0.198964, 0.21642599999999998,
+          0.24573699999999998
+        ],
+        "system": [
+          0.0010019999999999999, 0.0010019999999999999, 0.000998, 0.000998, 0.001995,
+          0.0009989999999999999, 0.000998, 0.0009989999999999999, 0, 0.0009989999999999999,
+          0.001996, 0, 0, 0, 0.000995, 0, 0.001001, 0, 0, 0.001, 0.001001, 0, 0, 0, 0, 0.001003,
+          0.001994, 0.001989, 0.001985, 0.000998
+        ],
+        "memory": [
+          3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344,
+          3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344,
+          3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344, 3641344
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "go",
+      "version": "1.24",
+      "toolVersion": "go version go1.24.13 linux/amd64",
+      "variant": "go-default",
+      "variantSpec": "81fe80628a40",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "golang:1.24",
+      "sourceFile": "languages/go/impl/startup/main.go",
+      "sourceHash": "0c826e723a6f9d2b",
+      "buildCommand": "go build -o /work/bin/go-1.24-go-default-startup /repo/languages/go/impl/startup/main.go",
+      "runCommand": "/work/bin/go-1.24-go-default-startup",
+      "loadAvgBefore": "1.45 1.28 0.64 5/568 64",
+      "buildSeconds": 3.978035489000031,
+      "buildOutput": "",
+      "binarySize": 2213311,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-13T15:26:04.212Z",
+      "finishedAt": "2026-10-13T15:26:08.413Z",
+      "loadAvgAfter": "1.66 1.33 0.66 8/559 832",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.000878319, 0.0008551850000000001, 0.000870883, 0.0009258480000000001,
+          0.0010046150000000002, 0.0009288330000000001, 0.000886273, 0.000925487,
+          0.0008491340000000001, 0.000862208, 0.0009124620000000001, 0.0008804220000000001,
+          0.000976273, 0.0008418200000000001, 0.000804841, 0.0008842600000000001, 0.000866937,
+          0.000823165, 0.000809028, 0.0007785310000000001, 0.000963038, 0.0008148890000000001,
+          0.000857339, 0.000875704, 0.000845136, 0.000896753, 0.000818075, 0.0008258100000000001,
+          0.0008621280000000001, 0.00097497
+        ],
+        "cpu": [
+          0.0009149999999999999, 0.0009509999999999999, 0.000913, 0.001063, 0.001103, 0.000995,
+          0.000971, 0.001018, 0.0009289999999999999, 0.001004, 0.001022, 0.000975,
+          0.0011099999999999999, 0.000944, 0.000909, 0.000976, 0.0009429999999999999,
+          0.0009289999999999999, 0.00091, 0.000904, 0.001058, 0.000904, 0.000917, 0.000963, 0.00095,
+          0.001037, 0.0009519999999999999, 0.000954, 0.0010249999999999999, 0.001088
+        ],
+        "user": [
+          0.0009149999999999999, 0, 0, 0, 0, 0.000995, 0.000971, 0.001018, 0.0009289999999999999,
+          0.001004, 0.000511, 0, 0, 0.000944, 0.000909, 0, 0, 0, 0, 0, 0, 0.000904, 0.000917, 0, 0,
+          0, 0, 0, 0, 0
+        ],
+        "system": [
+          0, 0.0009509999999999999, 0.000913, 0.001063, 0.001103, 0, 0, 0, 0, 0, 0.000511, 0.000975,
+          0.0011099999999999999, 0, 0, 0.000976, 0.0009429999999999999, 0.0009289999999999999,
+          0.00091, 0.000904, 0.001058, 0, 0, 0.000963, 0.00095, 0.001037, 0.0009519999999999999,
+          0.000954, 0.0010249999999999999, 0.001088
+        ],
+        "memory": [
+          3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904,
+          3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904,
+          3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904, 3579904
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "11",
+      "toolVersion": "openjdk 11.0.32.1 2026-08-18",
+      "variant": "java-parallel-gc",
+      "variantSpec": "ab56943350fe",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:11-jdk",
+      "sourceFile": "languages/java/impl/hashmap/Main.java",
+      "sourceHash": "390948118b7db383",
+      "buildCommand": "mkdir -p /work/bin/java-11-java-parallel-gc-hashmap && javac -d /work/bin/java-11-java-parallel-gc-hashmap /repo/languages/java/impl/hashmap/Main.java",
+      "runCommand": "java -XX:+UseParallelGC -cp /work/bin/java-11-java-parallel-gc-hashmap Main 1000000",
+      "loadAvgBefore": "1.52 1.31 0.66 2/585 71",
+      "buildSeconds": 0.6231982520000311,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:26:15.226Z",
+      "finishedAt": "2026-10-13T15:26:23.071Z",
+      "loadAvgAfter": "1.52 1.31 0.67 1/575 548",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.220338748, 0.21578406500000002, 0.22416296100000002, 0.218148113, 0.211292435,
+          0.22000485700000003, 0.21579893400000003, 0.208778141, 0.228043293, 0.222148367,
+          0.215594787, 0.22174529, 0.211121165, 0.218670459, 0.24734333400000003,
+          0.21602420800000002, 0.229547774, 0.208959113, 0.210934805, 0.206032289,
+          0.20898300700000003, 0.218496242, 0.20958615000000003, 0.22078549900000002, 0.213724937,
+          0.23075799500000002, 0.21374272000000002, 0.204589076, 0.21022474200000002, 0.224817712
+        ],
+        "cpu": [
+          0.357776, 0.34144399999999997, 0.335332, 0.331783, 0.33267899999999995,
+          0.35480999999999996, 0.339252, 0.32989099999999993, 0.33379000000000003, 0.349267,
+          0.314828, 0.334976, 0.33425699999999997, 0.353524, 0.360992, 0.34829699999999997,
+          0.370584, 0.332932, 0.32958699999999996, 0.325442, 0.32197999999999993, 0.328805,
+          0.331159, 0.349983, 0.331461, 0.35441599999999995, 0.340592, 0.31488, 0.33313, 0.354631
+        ],
+        "user": [
+          0.328875, 0.30305699999999997, 0.305122, 0.301345, 0.295826, 0.31516099999999997, 0.30077,
+          0.30036399999999996, 0.293935, 0.316616, 0.285471, 0.301479, 0.30023099999999997,
+          0.318172, 0.32278199999999996, 0.304133, 0.333121, 0.297188, 0.29387399999999997,
+          0.289058, 0.29150899999999996, 0.28959, 0.297637, 0.317332, 0.297311, 0.31887299999999996,
+          0.29827, 0.28644, 0.30403199999999997, 0.316347
+        ],
+        "system": [
+          0.028901, 0.038387, 0.030209999999999997, 0.030438, 0.036853, 0.039649,
+          0.038481999999999995, 0.029526999999999998, 0.039855, 0.032651, 0.029356999999999998,
+          0.033497, 0.034026, 0.035352, 0.03821, 0.044163999999999995, 0.037462999999999996,
+          0.035744, 0.035713, 0.036384, 0.030470999999999998, 0.039215, 0.033521999999999996,
+          0.032651, 0.03415, 0.035543, 0.042322, 0.02844, 0.029098, 0.038284
+        ],
+        "memory": [
+          101314560, 101601280, 101552128, 101421056, 101429248, 101539840, 101572608, 101511168,
+          101199872, 103723008, 101470208, 101613568, 101494784, 101486592, 101412864, 101670912,
+          101814272, 101490688, 102645760, 101507072, 101216256, 101208064, 101453824, 101445632,
+          101429248, 101326848, 101801984, 101568512, 101392384, 101376000
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.76",
+      "toolVersion": "rustc 1.76.0 (07dca489a 2024-02-04)",
+      "variant": "rustc-O3-native",
+      "variantSpec": "85d2ecfb02ac",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "rust:1.76",
+      "sourceFile": "languages/rust/impl/sort/main.rs",
+      "sourceHash": "82e7e107eb7e1ecc",
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o /work/bin/rust-1.76-rustc-O3-native-sort /repo/languages/rust/impl/sort/main.rs",
+      "runCommand": "/work/bin/rust-1.76-rustc-O3-native-sort 2000000",
+      "loadAvgBefore": "1.55 1.33 0.68 1/590 55",
+      "buildSeconds": 0.34449706800002605,
+      "buildOutput": "",
+      "binarySize": 3802216,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "0e4cdffacd5a55db45412bb3916f41b8e345b118b0224da12967fc1578fe496b",
+      "startedAt": "2026-10-13T15:26:40.576Z",
+      "finishedAt": "2026-10-13T15:26:43.548Z",
+      "loadAvgAfter": "1.51 1.32 0.69 1/598 142",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.07565548400000001, 0.076404419, 0.075750973, 0.07546994600000001, 0.07518429900000001,
+          0.076321734, 0.07544025, 0.075230686, 0.075379766, 0.07529972600000001,
+          0.07627669000000001, 0.07653517400000001, 0.07542259600000001, 0.075393733,
+          0.07555550000000001, 0.07795598000000001, 0.07580557, 0.075183546, 0.07555384100000001,
+          0.076792556, 0.07613618400000001, 0.07626561700000001, 0.07548152500000001, 0.075245612,
+          0.07502974800000001, 0.076294491, 0.07532675400000001, 0.075593044, 0.075309602,
+          0.075376117
+        ],
+        "cpu": [
+          0.07555899999999999, 0.076231, 0.075546, 0.075281, 0.07502, 0.07610499999999999, 0.075269,
+          0.075104, 0.075207, 0.075138, 0.076102, 0.076388, 0.07528199999999999,
+          0.07522899999999999, 0.075381, 0.076323, 0.075449, 0.075059, 0.075462, 0.076652, 0.075949,
+          0.07610499999999999, 0.075292, 0.075071, 0.07488099999999999, 0.076125, 0.075155,
+          0.075385, 0.075152, 0.075192
+        ],
+        "user": [
+          0.074552, 0.074225, 0.073558, 0.075281, 0.07402, 0.07510399999999999, 0.074266, 0.073128,
+          0.075207, 0.07313499999999999, 0.075101, 0.074378, 0.07132, 0.07221999999999999, 0.072406,
+          0.075332, 0.074457, 0.073058, 0.073477, 0.07463499999999999, 0.073951, 0.0721, 0.073285,
+          0.07307, 0.07288499999999999, 0.075124, 0.073151, 0.07236999999999999, 0.075152, 0.075192
+        ],
+        "system": [
+          0.0010069999999999999, 0.002006, 0.0019879999999999997, 0, 0.001, 0.001001, 0.001003,
+          0.001976, 0, 0.002003, 0.001001, 0.00201, 0.003962, 0.003009, 0.0029749999999999998,
+          0.000991, 0.000992, 0.0020009999999999997, 0.001985, 0.0020169999999999997,
+          0.0019979999999999998, 0.004005, 0.002007, 0.0020009999999999997, 0.001996, 0.001001,
+          0.0020039999999999997, 0.003015, 0, 0
+        ],
+        "memory": [
+          9760768, 9986048, 9789440, 9846784, 9728000, 9891840, 9842688, 9641984, 9814016, 9871360,
+          9605120, 9854976, 9797632, 9732096, 9654272, 9895936, 9764864, 9912320, 9809920, 9768960,
+          9867264, 9863168, 9650176, 9842688, 10027008, 9666560, 9920512, 9830400, 9801728, 9994240
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.67",
+      "toolVersion": "rustc 1.67.1 (d5a82bbd2 2023-02-07)",
+      "variant": "rustc-O3",
+      "variantSpec": "75c96b1e1dd9",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "rust:1.67",
+      "sourceFile": "languages/rust/impl/parallel-reduce/main.rs",
+      "sourceHash": "0433167c3e4f6559",
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -o /work/bin/rust-1.67-rustc-O3-parallel-reduce /repo/languages/rust/impl/parallel-reduce/main.rs",
+      "runCommand": "/work/bin/rust-1.67-rustc-O3-parallel-reduce 2000000 4",
+      "loadAvgBefore": "1.49 1.33 0.70 2/607 55",
+      "buildSeconds": 0.40507510199997343,
+      "buildOutput": "",
+      "binarySize": 4210392,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:27:00.256Z",
+      "finishedAt": "2026-10-13T15:27:04.047Z",
+      "loadAvgAfter": "1.53 1.34 0.70 1/597 297",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.09774155300000001, 0.104946935, 0.087849758, 0.10087738900000001, 0.09704718000000001,
+          0.10462969000000001, 0.10379403200000001, 0.09390772800000001, 0.101569848,
+          0.09589014800000001, 0.096957843, 0.09451656, 0.09704847200000001, 0.09506012100000001,
+          0.10879935700000001, 0.096144636, 0.108844542, 0.101952416, 0.097134885, 0.099009232,
+          0.10306451300000001, 0.100860527, 0.097019247, 0.10117728100000001, 0.10202359000000001,
+          0.09709738400000001, 0.102700279, 0.10462813800000001, 0.10022027500000001,
+          0.10686200000000001
+        ],
+        "cpu": [
+          0.19535, 0.20976999999999998, 0.175626, 0.201677, 0.19388699999999998,
+          0.20935199999999998, 0.207592, 0.187847, 0.20294099999999998, 0.191706,
+          0.19377199999999997, 0.188932, 0.19406500000000002, 0.19019, 0.21751299999999998,
+          0.192193, 0.217326, 0.203867, 0.19405, 0.197824, 0.206265, 0.201787, 0.193955,
+          0.20197299999999999, 0.20369099999999998, 0.193871, 0.20570999999999998, 0.209227,
+          0.200299, 0.21050199999999997
+        ],
+        "user": [
+          0.19535, 0.20976999999999998, 0.17265, 0.201677, 0.19289299999999998, 0.20836, 0.206585,
+          0.185828, 0.20094199999999998, 0.191706, 0.19277899999999998, 0.186944, 0.192054, 0.19019,
+          0.215499, 0.190181, 0.21631999999999998, 0.203867, 0.19304, 0.196815, 0.205259, 0.197811,
+          0.192956, 0.200979, 0.202698, 0.192877, 0.20471199999999998, 0.208236, 0.199288,
+          0.20951399999999998
+        ],
+        "system": [
+          0, 0, 0.002976, 0, 0.0009939999999999999, 0.000992, 0.0010069999999999999, 0.002019,
+          0.001999, 0, 0.000993, 0.0019879999999999997, 0.0020109999999999998, 0,
+          0.0020139999999999997, 0.002012, 0.001006, 0, 0.00101, 0.001009, 0.001006,
+          0.0039759999999999995, 0.0009989999999999999, 0.0009939999999999999, 0.000993,
+          0.0009939999999999999, 0.000998, 0.000991, 0.001011, 0.000988
+        ],
+        "memory": [
+          3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328,
+          3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328,
+          3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328, 3555328
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "11",
+      "toolVersion": "openjdk 11.0.32.1 2026-08-18",
+      "variant": "java-parallel-gc",
+      "variantSpec": "ab56943350fe",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:11-jdk",
+      "sourceFile": "languages/java/impl/nbody/Main.java",
+      "sourceHash": "ecadba0dc2b6dc6d",
+      "buildCommand": "mkdir -p /work/bin/java-11-java-parallel-gc-nbody && javac -d /work/bin/java-11-java-parallel-gc-nbody /repo/languages/java/impl/nbody/Main.java",
+      "runCommand": "java -XX:+UseParallelGC -cp /work/bin/java-11-java-parallel-gc-nbody Main 1000000",
+      "loadAvgBefore": "1.53 1.34 0.70 1/597 555",
+      "buildSeconds": 0.5548398710000328,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:27:04.149Z",
+      "finishedAt": "2026-10-13T15:27:09.778Z",
+      "loadAvgAfter": "1.57 1.35 0.71 1/596 1032",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.148941767, 0.147365628, 0.15356914100000002, 0.15345255300000002, 0.15032953100000002,
+          0.155754743, 0.14985976, 0.15452004600000002, 0.154058509, 0.15031333000000002,
+          0.15237688300000002, 0.151438802, 0.14133283600000002, 0.15343868600000002,
+          0.15107209400000002, 0.154542638, 0.15505875700000002, 0.151800241, 0.152606752,
+          0.153351795, 0.154954972, 0.151955653, 0.154246652, 0.15383480700000002, 0.145504096,
+          0.14597592, 0.15730397000000002, 0.156562118, 0.154487584, 0.15401900300000002
+        ],
+        "cpu": [
+          0.19894, 0.19311299999999998, 0.21020699999999998, 0.206393, 0.19927499999999998, 0.20796,
+          0.18823199999999998, 0.21125099999999997, 0.202668, 0.19969900000000002, 0.211479,
+          0.195167, 0.18663799999999997, 0.19913, 0.204853, 0.199947, 0.207997, 0.205674,
+          0.20884899999999998, 0.20934999999999998, 0.21075899999999997, 0.20010299999999998,
+          0.19686299999999998, 0.204267, 0.193931, 0.186182, 0.211877, 0.20213599999999998,
+          0.214075, 0.208342
+        ],
+        "user": [
+          0.174704, 0.17810499999999999, 0.19411499999999998, 0.187357, 0.180249, 0.185751,
+          0.17280399999999999, 0.19500099999999998, 0.179244, 0.179425, 0.199452, 0.177152,
+          0.164563, 0.178429, 0.188865, 0.182952, 0.191079, 0.186518, 0.187764, 0.192931,
+          0.19328199999999998, 0.178773, 0.17577099999999998, 0.188168, 0.179864, 0.170838,
+          0.188444, 0.188127, 0.189183, 0.195321
+        ],
+        "system": [
+          0.024236, 0.015007999999999999, 0.016092, 0.019036, 0.019025999999999998, 0.022209,
+          0.015427999999999999, 0.01625, 0.023424, 0.020274, 0.012027, 0.018015,
+          0.022074999999999997, 0.020701, 0.015988, 0.016995, 0.016918, 0.019156, 0.021085,
+          0.016419, 0.017477, 0.02133, 0.021092, 0.016099, 0.014067, 0.015344, 0.023433,
+          0.014008999999999999, 0.024891999999999997, 0.013021
+        ],
+        "memory": [
+          43798528, 38756352, 38821888, 38535168, 38637568, 38842368, 38637568, 46063616, 45932544,
+          45817856, 46358528, 45846528, 45834240, 43929600, 46092288, 46047232, 46055424, 45981696,
+          46120960, 46104576, 45793280, 45965312, 45944832, 45723648, 45694976, 45875200, 46026752,
+          38694912, 46071808, 46120960
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.67",
+      "toolVersion": "rustc 1.67.1 (d5a82bbd2 2023-02-07)",
+      "variant": "rustc-O3-native",
+      "variantSpec": "85d2ecfb02ac",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "rust:1.67",
+      "sourceFile": "languages/rust/impl/json-parse/main.rs",
+      "sourceHash": "f78a56e866f94b36",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o /work/bin/rust-1.67-rustc-O3-native-json-parse /repo/languages/rust/impl/json-parse/main.rs",
+      "runCommand": "/work/bin/rust-1.67-rustc-O3-native-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.57 1.35 0.71 1/596 304",
+      "buildSeconds": 0.306883153999981,
+      "buildOutput": "",
+      "binarySize": 4176976,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-13T15:27:09.882Z",
+      "finishedAt": "2026-10-13T15:27:11.597Z",
+      "loadAvgAfter": "1.52 1.34 0.71 6/597 410",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.034661663, 0.034498677000000005, 0.034347573, 0.034268055000000006, 0.036747478,
+          0.033495174, 0.034522593000000004, 0.033513268, 0.033697634000000004, 0.032143597,
+          0.039370371, 0.038732644000000004, 0.039013801, 0.039234066000000005,
+          0.038995457000000004, 0.038878648, 0.038985829, 0.038868809000000004, 0.038917501,
+          0.038651782, 0.038603382000000006, 0.038392456000000005, 0.038727625,
+          0.038844985000000005, 0.039347247, 0.039376092, 0.039389897, 0.039226851,
+          0.038675718000000005, 0.039115673000000004
+        ],
+        "cpu": [
+          0.034527999999999996, 0.034381999999999996, 0.034203, 0.034131, 0.036619, 0.033337,
+          0.034429, 0.033384, 0.033592, 0.032052, 0.039269, 0.038637, 0.038874, 0.039056, 0.038856,
+          0.03874899999999999, 0.038881, 0.038759, 0.038822999999999996, 0.038553000000000004,
+          0.038493, 0.038267999999999996, 0.038594, 0.038738999999999996, 0.039224999999999996,
+          0.039228, 0.039245, 0.039083, 0.038525, 0.038969
+        ],
+        "user": [
+          0.02269, 0.022247, 0.021499, 0.022085, 0.022763, 0.023235, 0.021641, 0.023268, 0.021736,
+          0.022036, 0.021598, 0.022369, 0.022505999999999998, 0.022032, 0.022914999999999998,
+          0.022851999999999997, 0.021932999999999998, 0.021863999999999998, 0.0219, 0.02232,
+          0.021714, 0.022154999999999998, 0.022344, 0.021852999999999997, 0.022126999999999997,
+          0.022129, 0.022137999999999998, 0.022047, 0.022303999999999997, 0.021983
+        ],
+        "system": [
+          0.011838, 0.012135, 0.012704, 0.012046, 0.013855999999999999, 0.010102,
+          0.012787999999999999, 0.010116, 0.011856, 0.010015999999999999, 0.017671,
+          0.016267999999999998, 0.016368, 0.017024, 0.015941, 0.015896999999999998,
+          0.016947999999999998, 0.016895, 0.016923, 0.016233, 0.016779, 0.016113, 0.01625,
+          0.016885999999999998, 0.017098, 0.017099, 0.017107, 0.017036, 0.016221,
+          0.016985999999999998
+        ],
+        "memory": [
+          21258240, 21229568, 21184512, 21225472, 21049344, 21303296, 21237760, 21204992, 21454848,
+          21192704, 21352448, 21254144, 21458944, 21245952, 21237760, 21233664, 21237760, 21209088,
+          21336064, 21458944, 21331968, 21331968, 21114880, 21327872, 21127168, 21254144, 21164032,
+          21237760, 21311488, 21344256
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "11",
+      "toolVersion": "g++ (GCC) 11.5.0",
+      "variant": "gxx-O3",
+      "variantSpec": "748c3ab118d6",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "gcc:11",
+      "sourceFile": "languages/cpp/impl/json-parse/main.cpp",
+      "sourceHash": "2b2810a7b8df540b",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "g++ -std=c++20 -O3 -ffp-contract=off -o /work/bin/cpp-11-gxx-O3-json-parse /repo/languages/cpp/impl/json-parse/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-11-gxx-O3-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.47 1.34 0.73 1/618 56",
+      "buildSeconds": 0.570177003000048,
+      "buildOutput": "",
+      "binarySize": 17584,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-13T15:27:27.630Z",
+      "finishedAt": "2026-10-13T15:27:30.737Z",
+      "loadAvgAfter": "1.47 1.34 0.73 1/617 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.08159691200000001, 0.081869464, 0.082058398, 0.08194000600000001, 0.08270402,
+          0.08197322800000001, 0.08120117, 0.08208017000000001, 0.08069770200000001, 0.067064178,
+          0.069614824, 0.06710141700000001, 0.06718222800000001, 0.06906638500000001, 0.067775312,
+          0.067599591, 0.067637994, 0.068971217, 0.067676466, 0.067362898, 0.06720192600000001,
+          0.067829043, 0.06809931000000001, 0.06698807400000001, 0.067467975, 0.06768259700000001,
+          0.068048104, 0.06909965800000001, 0.068587467, 0.068973621
+        ],
+        "cpu": [
+          0.081457, 0.081672, 0.081865, 0.081747, 0.08254, 0.081784, 0.08105599999999999, 0.081874,
+          0.08057299999999999, 0.066919, 0.06948, 0.06695799999999999, 0.067048, 0.068894, 0.067588,
+          0.06743199999999999, 0.067492, 0.06877, 0.067481, 0.067163, 0.067036, 0.06765199999999999,
+          0.067966, 0.066797, 0.06724999999999999, 0.06752999999999999, 0.06785899999999999,
+          0.068929, 0.068402, 0.068812
+        ],
+        "user": [
+          0.056316, 0.056464999999999994, 0.057609, 0.056517, 0.056368999999999995, 0.051863,
+          0.055038, 0.055914, 0.058415999999999996, 0.052724, 0.056389999999999996,
+          0.061961999999999996, 0.058041999999999996, 0.056913, 0.056492, 0.055354999999999994,
+          0.058559999999999994, 0.05681, 0.052596, 0.060146, 0.053029, 0.053515999999999994,
+          0.055972, 0.051615999999999995, 0.053197999999999995, 0.055612999999999996,
+          0.056881999999999995, 0.057941, 0.056506, 0.055847999999999995
+        ],
+        "system": [
+          0.025141, 0.025207, 0.024256, 0.02523, 0.026171, 0.029921, 0.026018, 0.02596, 0.022157,
+          0.014195, 0.01309, 0.004996, 0.009006, 0.011980999999999999, 0.011096, 0.012077,
+          0.008931999999999999, 0.01196, 0.014884999999999999, 0.007017, 0.014006999999999999,
+          0.014136, 0.011994, 0.015181, 0.014051999999999999, 0.011916999999999999,
+          0.010976999999999999, 0.010988, 0.011896, 0.012964
+        ],
+        "memory": [
+          34865152, 34869248, 34930688, 34914304, 34877440, 34811904, 34877440, 34816000, 35307520,
+          35274752, 34750464, 36425728, 34779136, 34766848, 34861056, 34840576, 34779136, 34828288,
+          34754560, 34902016, 34844672, 34766848, 34770944, 35196928, 34975744, 35586048, 34869248,
+          34783232, 34754560, 34766848
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.76",
+      "toolVersion": "rustc 1.76.0 (07dca489a 2024-02-04)",
+      "variant": "rustc-O3-native",
+      "variantSpec": "85d2ecfb02ac",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "rust:1.76",
+      "sourceFile": "languages/rust/impl/string-ops/main.rs",
+      "sourceHash": "7f1355259091942c",
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o /work/bin/rust-1.76-rustc-O3-native-string-ops /repo/languages/rust/impl/string-ops/main.rs",
+      "runCommand": "/work/bin/rust-1.76-rustc-O3-native-string-ops 1000000",
+      "loadAvgBefore": "1.47 1.34 0.73 1/618 149",
+      "buildSeconds": 0.3271208719999995,
+      "buildOutput": "",
+      "binarySize": 3798312,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-13T15:27:30.836Z",
+      "finishedAt": "2026-10-13T15:27:33.573Z",
+      "loadAvgAfter": "1.43 1.33 0.73 4/607 237",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.069460876, 0.06927151100000001, 0.06950608, 0.069012344, 0.069143339, 0.069052139,
+          0.06912528600000001, 0.069613152, 0.069678524, 0.06894380600000001, 0.069920228,
+          0.070043429, 0.06900858600000001, 0.068800476, 0.06992532700000001, 0.069098195,
+          0.069306616, 0.068715567, 0.068657839, 0.068940189, 0.068556829, 0.069143069,
+          0.06862902400000001, 0.06853948700000001, 0.06882711600000001, 0.067943739, 0.068799945,
+          0.068948984, 0.069012985, 0.069109796
+        ],
+        "cpu": [
+          0.069308, 0.069133, 0.069325, 0.068828, 0.068952, 0.068882, 0.068966, 0.06942, 0.069463,
+          0.068731, 0.069745, 0.069812, 0.06881699999999999, 0.068613, 0.06973199999999999,
+          0.06893099999999999, 0.069071, 0.06856499999999999, 0.06848299999999999, 0.068743,
+          0.06835799999999999, 0.068974, 0.068462, 0.068363, 0.06862099999999999, 0.067777,
+          0.068587, 0.068802, 0.068841, 0.06891
+        ],
+        "user": [
+          0.060267999999999995, 0.058112, 0.06329699999999999, 0.054658, 0.060958, 0.059898,
+          0.060969999999999996, 0.059503, 0.059396, 0.061655999999999996, 0.060648, 0.063742,
+          0.060721, 0.064577, 0.06265799999999999, 0.060939, 0.059060999999999995,
+          0.06260299999999999, 0.061433999999999996, 0.063689, 0.061321999999999995, 0.059978,
+          0.058539999999999995, 0.057304999999999995, 0.063576, 0.0608, 0.060517999999999995,
+          0.056837, 0.057866999999999995, 0.055927
+        ],
+        "system": [
+          0.00904, 0.011021, 0.0060279999999999995, 0.014169999999999999, 0.007994,
+          0.008983999999999999, 0.007996, 0.009916999999999999, 0.010067, 0.007075, 0.009097,
+          0.00607, 0.008095999999999999, 0.004036, 0.0070739999999999996, 0.007991999999999999,
+          0.01001, 0.005961999999999999, 0.007049, 0.0050539999999999995, 0.007036,
+          0.008995999999999999, 0.009922, 0.011058, 0.005045, 0.006977, 0.008069, 0.011965,
+          0.010974, 0.012983
+        ],
+        "memory": [
+          31047680, 30965760, 31154176, 31027200, 31010816, 31080448, 30982144, 31080448, 31010816,
+          31125504, 31084544, 31043584, 31072256, 31092736, 31014912, 31027200, 31182848, 31072256,
+          30986240, 30978048, 31027200, 30916608, 31035392, 31080448, 31080448, 30998528, 31240192,
+          30867456, 31154176, 30982144
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "8",
+      "toolVersion": "g++ (GCC) 8.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "gcc:8",
+      "sourceFile": "languages/c/impl/parallel-reduce/main.c",
+      "sourceHash": "05ece551dcab365f",
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-8-gcc-O2-parallel-reduce /repo/languages/c/impl/parallel-reduce/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-8-gcc-O2-parallel-reduce 2000000 4",
+      "loadAvgBefore": "1.43 1.33 0.73 1/607 142",
+      "buildSeconds": 0.21579270500002895,
+      "buildOutput": "",
+      "binarySize": 16680,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-13T15:27:33.675Z",
+      "finishedAt": "2026-10-13T15:27:37.650Z",
+      "loadAvgAfter": "1.48 1.35 0.73 1/609 349",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.112120039, 0.117032219, 0.10603393700000001, 0.106167568, 0.10772352700000001,
+          0.115886187, 0.119860988, 0.11970656800000001, 0.101689793, 0.11570778200000001,
+          0.106475255, 0.113423296, 0.114705311, 0.106209095, 0.106105501, 0.109645855, 0.113056206,
+          0.10609549200000001, 0.10696979300000001, 0.116111561, 0.117392034, 0.106274799,
+          0.10610401800000001, 0.112158562, 0.117665187, 0.106125669, 0.113625745,
+          0.11504456800000001, 0.113281429, 0.113366669
+        ],
+        "cpu": [
+          0.224904, 0.23476, 0.212784, 0.21290399999999998, 0.215574, 0.232365, 0.240224,
+          0.23687399999999997, 0.202367, 0.23188599999999998, 0.213694, 0.22711699999999999,
+          0.229675, 0.21293299999999998, 0.21273999999999998, 0.219866, 0.227011, 0.212861,
+          0.21459699999999998, 0.232479, 0.234945, 0.21271099999999998, 0.212608, 0.224441,
+          0.235523, 0.212749, 0.227244, 0.230565, 0.22664299999999998, 0.226952
+        ],
+        "user": [
+          0.223905, 0.23476, 0.212784, 0.21189999999999998, 0.21356, 0.231368, 0.239228,
+          0.23488399999999998, 0.202367, 0.22988699999999998, 0.212696, 0.226121,
+          0.22766999999999998, 0.21293299999999998, 0.21273999999999998, 0.218858, 0.226011,
+          0.212861, 0.21459699999999998, 0.232479, 0.234945, 0.21271099999999998, 0.212608,
+          0.223435, 0.234517, 0.212749, 0.225233, 0.229567, 0.22664299999999998, 0.22594399999999998
+        ],
+        "system": [
+          0.0009989999999999999, 0, 0, 0.001004, 0.0020139999999999997, 0.000997, 0.000996, 0.00199,
+          0, 0.001999, 0.000998, 0.000996, 0.002005, 0, 0, 0.001008, 0.001, 0, 0, 0, 0, 0, 0,
+          0.001006, 0.001006, 0, 0.0020109999999999998, 0.000998, 0, 0.001008
+        ],
+        "memory": [
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872,
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872,
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "6",
+      "toolVersion": "g++ (GCC) 6.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "gcc:6",
+      "sourceFile": "languages/c/impl/binary-trees/main.c",
+      "sourceHash": "c4f25d489f5e489c",
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-6-gcc-O2-binary-trees /repo/languages/c/impl/binary-trees/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-6-gcc-O2-binary-trees 14",
+      "loadAvgBefore": "1.48 1.35 0.73 1/609 229",
+      "buildSeconds": 0.19685111499996855,
+      "buildOutput": "",
+      "binarySize": 8208,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-13T15:27:37.749Z",
+      "finishedAt": "2026-10-13T15:27:40.124Z",
+      "loadAvgAfter": "1.48 1.35 0.73 1/608 308",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.060688542000000005, 0.060206857, 0.060625815000000007, 0.06135634500000001, 0.060667312,
+          0.06098655100000001, 0.060585869, 0.06073175200000001, 0.060602971000000005, 0.061905104,
+          0.06298690500000001, 0.061179884000000004, 0.060515877, 0.060780464000000006,
+          0.060410399000000004, 0.06138612, 0.066584207, 0.060648576, 0.062048053000000006,
+          0.060631845000000004, 0.060791425, 0.060520557, 0.060873629000000005, 0.060683101,
+          0.060743113, 0.07541454, 0.06090252300000001, 0.062644423, 0.060616676,
+          0.061637102000000006
+        ],
+        "cpu": [
+          0.060604, 0.060133, 0.060543, 0.061248, 0.06052899999999999, 0.060823999999999996,
+          0.060431, 0.060613, 0.06048799999999999, 0.061796, 0.062879, 0.061064, 0.060384, 0.060641,
+          0.060281999999999995, 0.06127799999999999, 0.06648899999999999, 0.060568, 0.061943,
+          0.06052, 0.060654999999999994, 0.060405999999999994, 0.06070299999999999, 0.06053,
+          0.060615999999999996, 0.075267, 0.060765, 0.062506, 0.060472, 0.061493
+        ],
+        "user": [
+          0.060604, 0.057176, 0.058525, 0.058285, 0.058511999999999995, 0.059810999999999996,
+          0.059424, 0.05962, 0.058504999999999995, 0.0608, 0.060883, 0.061064, 0.059378, 0.059647,
+          0.058273, 0.059268999999999995, 0.063512, 0.059558999999999994, 0.059945, 0.059528,
+          0.057671999999999994, 0.060405999999999994, 0.059691999999999995, 0.06053,
+          0.060615999999999996, 0.075267, 0.058773, 0.05953, 0.059481, 0.060485
+        ],
+        "system": [
+          0, 0.002957, 0.002018, 0.002963, 0.0020169999999999997, 0.001013, 0.0010069999999999999,
+          0.000993, 0.001983, 0.000996, 0.001996, 0, 0.001006, 0.0009939999999999999, 0.002009,
+          0.002009, 0.002977, 0.001009, 0.0019979999999999998, 0.000992, 0.002983, 0, 0.001011, 0,
+          0, 0, 0.001992, 0.002976, 0.000991, 0.001008
+        ],
+        "memory": [
+          3706880, 3854336, 3731456, 3698688, 3698688, 3608576, 3715072, 3854336, 3846144, 3751936,
+          3706880, 3731456, 3747840, 3866624, 3751936, 3764224, 3661824, 3837952, 3661824, 3706880,
+          3764224, 3764224, 3842048, 3837952, 3854336, 3698688, 3698688, 3846144, 3731456, 3854336
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "rust",
+      "version": "1.76",
+      "toolVersion": "rustc 1.76.0 (07dca489a 2024-02-04)",
+      "variant": "rustc-O3",
+      "variantSpec": "75c96b1e1dd9",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "rust:1.76",
+      "sourceFile": "languages/rust/impl/json-parse/main.rs",
+      "sourceHash": "f78a56e866f94b36",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -o /work/bin/rust-1.76-rustc-O3-json-parse /repo/languages/rust/impl/json-parse/main.rs",
+      "runCommand": "/work/bin/rust-1.76-rustc-O3-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.48 1.35 0.73 1/608 244",
+      "buildSeconds": 0.2469094760000007,
+      "buildOutput": "",
+      "binarySize": 3799192,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-13T15:27:40.221Z",
+      "finishedAt": "2026-10-13T15:27:41.690Z",
+      "loadAvgAfter": "1.44 1.34 0.74 1/609 328",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.031261943, 0.031876777, 0.031852341, 0.031893268, 0.032588403, 0.032069819, 0.031858583,
+          0.032032068000000004, 0.030962251000000003, 0.031858713000000004, 0.031593666,
+          0.031684907000000005, 0.03164941, 0.03426015, 0.031517744, 0.031822996,
+          0.031985531000000005, 0.034311055, 0.031775597, 0.031666953000000005, 0.031737135,
+          0.030916395000000003, 0.032514574000000004, 0.031311727000000004, 0.031484531,
+          0.032078194000000004, 0.032014044000000005, 0.032151562, 0.031299243000000004, 0.031941558
+        ],
+        "cpu": [
+          0.031132, 0.031774, 0.031737, 0.03178399999999999, 0.032469, 0.031962000000000004,
+          0.031729, 0.031911999999999996, 0.030830999999999997, 0.031752999999999997, 0.031511,
+          0.031601, 0.031557, 0.034172999999999995, 0.031436, 0.031727, 0.03188, 0.034232, 0.031672,
+          0.031562, 0.031656, 0.030819, 0.032381999999999994, 0.031182, 0.031363, 0.031957,
+          0.031918, 0.032021, 0.031141, 0.031819
+        ],
+        "user": [
+          0.023098, 0.023830999999999998, 0.023802999999999998, 0.022844999999999997, 0.023614,
+          0.021974, 0.021814, 0.021939999999999998, 0.02188, 0.02183, 0.022362999999999997,
+          0.023701, 0.023667999999999998, 0.023117, 0.02231, 0.022515999999999998, 0.021918,
+          0.021516999999999998, 0.022477, 0.022399, 0.022753, 0.022865999999999997,
+          0.022262999999999998, 0.023135, 0.022258, 0.022678999999999998, 0.021943999999999998,
+          0.022015, 0.022099999999999998, 0.022869999999999998
+        ],
+        "system": [
+          0.008034, 0.007943, 0.007934, 0.008938999999999999, 0.008855, 0.009988, 0.009915,
+          0.009972, 0.008950999999999999, 0.009923, 0.009148, 0.007899999999999999, 0.007889,
+          0.011056, 0.009126, 0.009211, 0.009962, 0.012714999999999999, 0.009195, 0.009163,
+          0.008903, 0.007953, 0.010119, 0.008047, 0.009105, 0.009278, 0.009974, 0.010006, 0.009041,
+          0.008949
+        ],
+        "memory": [
+          21147648, 21233664, 21143552, 21155840, 21417984, 21254144, 21155840, 21127168, 21143552,
+          21303296, 21053440, 21217280, 21262336, 21127168, 21204992, 21192704, 21299200, 21061632,
+          21139456, 21123072, 21196800, 21270528, 21229568, 21135360, 21053440, 21303296, 21139456,
+          21229568, 21266432, 21278720
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "12",
+      "toolVersion": "gcc (GCC) 12.5.0",
+      "variant": "gcc-O3-native",
+      "variantSpec": "7edbaa312dc3",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "gcc:12",
+      "sourceFile": "languages/c/impl/hashmap/main.c",
+      "sourceHash": "b316a567a5fad3ab",
+      "buildCommand": "gcc -O3 -march=native -ffp-contract=off -o /work/bin/c-12-gcc-O3-native-hashmap /repo/languages/c/impl/hashmap/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-12-gcc-O3-native-hashmap 1000000",
+      "loadAvgBefore": "1.44 1.34 0.74 2/609 442",
+      "buildSeconds": 0.22514005899999756,
+      "buildOutput": "",
+      "binarySize": 16000,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-13T15:27:41.787Z",
+      "finishedAt": "2026-10-13T15:27:43.225Z",
+      "loadAvgAfter": "1.44 1.34 0.74 1/616 522",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.033306259000000005, 0.030814483000000004, 0.030697023, 0.030719815, 0.031166855,
+          0.034730934000000005, 0.03333804, 0.033989823, 0.030987067000000004, 0.0308338,
+          0.031289595, 0.031218011, 0.030810095000000003, 0.031167385000000002, 0.032260998,
+          0.030877441000000002, 0.030946732, 0.030841484000000002, 0.030700149000000003,
+          0.033231590000000005, 0.030941512, 0.030808572000000003, 0.031088728000000003,
+          0.030922486000000002, 0.031017824000000003, 0.030801459000000003, 0.030678508000000004,
+          0.030937534000000003, 0.03092446, 0.030851072
+        ],
+        "cpu": [
+          0.033198, 0.030718, 0.030625, 0.030629, 0.030796999999999998, 0.034378, 0.033231,
+          0.032353, 0.030900999999999998, 0.030746999999999997, 0.031206, 0.031073999999999997,
+          0.030721, 0.031079999999999997, 0.03216, 0.030763, 0.030861, 0.030733, 0.030593,
+          0.033125999999999996, 0.030856, 0.030696, 0.030975, 0.030830999999999997,
+          0.030927999999999997, 0.030718999999999996, 0.030608999999999997, 0.030857999999999997,
+          0.030836, 0.030772
+        ],
+        "user": [
+          0.03018, 0.027746, 0.029637999999999998, 0.026677, 0.027816999999999998, 0.029467,
+          0.031216999999999998, 0.028432, 0.028908, 0.027771999999999998, 0.029193,
+          0.028066999999999998, 0.028672999999999997, 0.028072999999999997, 0.02814,
+          0.027785999999999998, 0.026879, 0.027759, 0.027534, 0.029110999999999998, 0.026875,
+          0.026736, 0.027978, 0.026853, 0.027934999999999998, 0.026756, 0.028568999999999997,
+          0.028867999999999998, 0.027852, 0.028787
+        ],
+        "system": [
+          0.003018, 0.002972, 0.000987, 0.003952, 0.00298, 0.004911, 0.0020139999999999997,
+          0.003921, 0.001993, 0.0029749999999999998, 0.002013, 0.0030069999999999997, 0.002048,
+          0.0030069999999999997, 0.00402, 0.002977, 0.003981999999999999, 0.002974,
+          0.0030589999999999997, 0.0040149999999999995, 0.003981, 0.00396, 0.0029969999999999997,
+          0.003978, 0.002993, 0.0039629999999999995, 0.0020399999999999997, 0.00199,
+          0.0029839999999999997, 0.001985
+        ],
+        "memory": [
+          18325504, 18493440, 18370560, 18333696, 18345984, 18341888, 18325504, 18333696, 18350080,
+          18354176, 18599936, 18350080, 18374656, 18358272, 18403328, 18354176, 18329600, 18325504,
+          18399232, 18362368, 18354176, 18362368, 18313216, 18329600, 18599936, 18444288, 18354176,
+          18366464, 18472960, 18362368
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "c",
+      "version": "5",
+      "toolVersion": "gcc (GCC) 5.5.0",
+      "variant": "gcc-O3",
+      "variantSpec": "18d0ab900300",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "gcc:5",
+      "sourceFile": "languages/c/impl/file-processing/main.c",
+      "sourceHash": "a85376cc94fb1a0a",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "buildCommand": "gcc -O3 -ffp-contract=off -o /work/bin/c-5-gcc-O3-file-processing /repo/languages/c/impl/file-processing/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-5-gcc-O3-file-processing /work/inputs/input.csv",
+      "loadAvgBefore": "1.44 1.34 0.74 1/616 244",
+      "buildSeconds": 0.1988871470000013,
+      "buildOutput": "",
+      "binarySize": 8792,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-13T15:27:43.322Z",
+      "finishedAt": "2026-10-13T15:27:49.050Z",
+      "loadAvgAfter": "1.41 1.33 0.74 7/613 324",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.16606694800000002, 0.16654348100000002, 0.166289244, 0.165778807, 0.165683258,
+          0.166985241, 0.16655450300000002, 0.166501594, 0.16709895500000002, 0.166676171,
+          0.166918315, 0.166548572, 0.166663196, 0.166043303, 0.16736357100000002, 0.165721167,
+          0.16666577000000002, 0.16600988, 0.16554864300000002, 0.165899291, 0.16541065400000002,
+          0.165298534, 0.16541364, 0.1665482, 0.165468413, 0.166096863, 0.16684114900000002,
+          0.166773462, 0.165707182, 0.167590496
+        ],
+        "cpu": [
+          0.1659, 0.1664, 0.166174, 0.165652, 0.16551999999999997, 0.166795, 0.16636199999999998,
+          0.16629899999999997, 0.166901, 0.166502, 0.166725, 0.166354, 0.16647299999999998,
+          0.165854, 0.167203, 0.165589, 0.166534, 0.165847, 0.16540999999999997,
+          0.16570600000000002, 0.16521499999999997, 0.165146, 0.165294, 0.166363, 0.16529, 0.165937,
+          0.166661, 0.166628, 0.165549, 0.16738
+        ],
+        "user": [
+          0.158905, 0.151454, 0.15216, 0.159665, 0.16150799999999998, 0.155743, 0.15133,
+          0.15634099999999998, 0.147913, 0.157529, 0.153669, 0.155331, 0.151521, 0.148869,
+          0.15118399999999999, 0.157609, 0.15456799999999998, 0.157855, 0.15237799999999999,
+          0.157672, 0.15720499999999998, 0.14612999999999998, 0.147371, 0.155339, 0.149359,
+          0.153942, 0.153688, 0.150664, 0.152506, 0.155353
+        ],
+        "system": [
+          0.0069949999999999995, 0.014946, 0.014013999999999999, 0.005987, 0.004012, 0.011052,
+          0.015031999999999998, 0.009958, 0.018987999999999998, 0.008973, 0.013056, 0.011023,
+          0.014952, 0.016985, 0.016019, 0.00798, 0.011966, 0.007991999999999999, 0.013032, 0.008034,
+          0.00801, 0.019015999999999998, 0.017922999999999998, 0.011023999999999999, 0.015931,
+          0.011994999999999999, 0.012973, 0.015964, 0.013042999999999999, 0.012027
+        ],
+        "memory": [
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872,
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872,
+          3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872, 3407872
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "11",
+      "toolVersion": "g++ (GCC) 11.5.0",
+      "variant": "gxx-O3-native",
+      "variantSpec": "0e12ef4516dc",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "gcc:11",
+      "sourceFile": "languages/cpp/impl/file-processing/main.cpp",
+      "sourceHash": "4f1b71574a9200c4",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "buildCommand": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o /work/bin/cpp-11-gxx-O3-native-file-processing /repo/languages/cpp/impl/file-processing/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-11-gxx-O3-native-file-processing /work/inputs/input.csv",
+      "loadAvgBefore": "1.41 1.33 0.74 1/613 142",
+      "buildSeconds": 0.6466432579999674,
+      "buildOutput": "",
+      "binarySize": 19456,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-13T15:27:49.145Z",
+      "finishedAt": "2026-10-13T15:27:55.919Z",
+      "loadAvgAfter": "1.37 1.33 0.74 5/611 222",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.185359626, 0.184411486, 0.184662076, 0.18466998, 0.18528507600000002, 0.184722029,
+          0.183719357, 0.18389211400000002, 0.184854979, 0.183999452, 0.18501604000000002,
+          0.185674583, 0.18430004700000002, 0.18807236600000002, 0.18483096200000002, 0.184771121,
+          0.185415289, 0.18601788000000002, 0.18591790300000002, 0.187394834, 0.18617492600000002,
+          0.183898583, 0.18482261700000002, 0.18759657300000002, 0.18629299700000002,
+          0.18611012400000002, 0.18536142900000002, 0.18561596700000002, 0.186077973, 0.187519338
+        ],
+        "cpu": [
+          0.18523299999999998, 0.18424, 0.184501, 0.18450099999999997, 0.185083, 0.184597, 0.183587,
+          0.183781, 0.184723, 0.183868, 0.18487399999999998, 0.18553999999999998, 0.184147,
+          0.187892, 0.184657, 0.184579, 0.18526399999999998, 0.185838, 0.185743,
+          0.18722399999999997, 0.186062, 0.183796, 0.184656, 0.187445, 0.18612599999999999, 0.18596,
+          0.185187, 0.18548699999999999, 0.185886, 0.18732999999999997
+        ],
+        "user": [
+          0.173283, 0.173226, 0.172534, 0.17948799999999998, 0.17808, 0.171626, 0.176565, 0.171796,
+          0.177734, 0.173876, 0.17887899999999998, 0.17756, 0.176141, 0.17684, 0.17662899999999998,
+          0.169532, 0.173312, 0.180843, 0.176756, 0.17621099999999998, 0.169148,
+          0.17776999999999998, 0.174621, 0.179469, 0.175119, 0.17796199999999998,
+          0.17918099999999998, 0.17746599999999998, 0.181889, 0.18031799999999998
+        ],
+        "system": [
+          0.011949999999999999, 0.011014, 0.011967, 0.005013, 0.007003, 0.012971, 0.007022,
+          0.011984999999999999, 0.0069889999999999996, 0.009992, 0.0059949999999999995, 0.00798,
+          0.008006, 0.011052, 0.008028, 0.015047, 0.011951999999999999, 0.0049949999999999994,
+          0.008987, 0.011013, 0.016914, 0.006026, 0.010034999999999999, 0.007976, 0.011007,
+          0.007998, 0.006006, 0.008021, 0.003997, 0.007012
+        ],
+        "memory": [
+          3895296, 3772416, 4022272, 3903488, 3858432, 4005888, 4022272, 3883008, 4153344, 4153344,
+          3883008, 4014080, 3874816, 4108288, 4087808, 3883008, 3772416, 3772416, 4087808, 3874816,
+          4153344, 4116480, 4005888, 4038656, 3858432, 4022272, 3772416, 3858432, 4005888, 4153344
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "cpp",
+      "version": "5",
+      "toolVersion": "gcc (GCC) 5.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "gcc:5",
+      "sourceFile": "languages/cpp/impl/nbody/main.cpp",
+      "sourceHash": "8521818c94cc1683",
+      "buildCommand": "g++ -std=c++14 -O2 -ffp-contract=off -o /work/bin/cpp-5-gxx-O2-nbody /repo/languages/cpp/impl/nbody/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-5-gxx-O2-nbody 1000000",
+      "loadAvgBefore": "1.37 1.33 0.74 1/611 331",
+      "buildSeconds": 0.31576290700002574,
+      "buildOutput": "",
+      "binarySize": 9456,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:27:56.016Z",
+      "finishedAt": "2026-10-13T15:27:58.839Z",
+      "loadAvgAfter": "1.50 1.36 0.75 1/611 410",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.072243818, 0.071806297, 0.07183808700000001, 0.071917516, 0.07207961, 0.071926343,
+          0.072143871, 0.071891547, 0.071833087, 0.07187187, 0.07218445600000001, 0.072084148,
+          0.07181277900000001, 0.071858485, 0.071874083, 0.07234752300000001, 0.072044153,
+          0.072049633, 0.07287771800000001, 0.071860145, 0.072169589, 0.071953984,
+          0.07199588200000001, 0.072743836, 0.07252536700000001, 0.072238939, 0.071969062,
+          0.072522231, 0.072247895, 0.072007475
+        ],
+        "cpu": [
+          0.072113, 0.07171599999999999, 0.07171799999999999, 0.071797, 0.071909, 0.071808,
+          0.072032, 0.071782, 0.07171599999999999, 0.07175999999999999, 0.07209499999999999,
+          0.072001, 0.07167399999999999, 0.07173399999999999, 0.071758, 0.07221899999999999,
+          0.07189999999999999, 0.071924, 0.072739, 0.071767, 0.07205399999999999,
+          0.07186999999999999, 0.07189999999999999, 0.07259, 0.072366, 0.07212, 0.071824,
+          0.07231699999999999, 0.072134, 0.07185799999999999
+        ],
+        "user": [
+          0.072113, 0.07071999999999999, 0.07171799999999999, 0.071797, 0.071909, 0.071808,
+          0.072032, 0.070786, 0.07071999999999999, 0.07175999999999999, 0.07209499999999999,
+          0.071001, 0.07067899999999999, 0.070738, 0.071758, 0.07221899999999999,
+          0.07189999999999999, 0.070926, 0.071743, 0.070771, 0.07105399999999999,
+          0.07087199999999999, 0.07090199999999999, 0.07259, 0.071375, 0.07212, 0.070827, 0.070336,
+          0.072134, 0.07185799999999999
+        ],
+        "system": [
+          0, 0.000996, 0, 0, 0, 0, 0, 0.000996, 0.000996, 0, 0, 0.001, 0.000995, 0.000996, 0, 0, 0,
+          0.000998, 0.000996, 0.000996, 0.001, 0.000998, 0.000998, 0, 0.000991, 0, 0.000997,
+          0.001981, 0, 0
+        ],
+        "memory": [
+          3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368,
+          3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368,
+          3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368, 3514368
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-13T15-19-35-579Z-s11",
+      "language": "java",
+      "version": "16",
+      "toolVersion": "openjdk 16.0.2 2021-07-20",
+      "variant": "java-default",
+      "variantSpec": "ad7a7a619426",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "eclipse-temurin:16-jdk",
+      "sourceFile": "languages/java/impl/nbody/Main.java",
+      "sourceHash": "ecadba0dc2b6dc6d",
+      "buildCommand": "mkdir -p /work/bin/java-16-java-default-nbody && javac -d /work/bin/java-16-java-default-nbody /repo/languages/java/impl/nbody/Main.java",
+      "runCommand": "java -cp /work/bin/java-16-java-default-nbody Main 1000000",
+      "loadAvgBefore": "1.50 1.36 0.75 1/611 1514",
+      "buildSeconds": 0.6107422009999863,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-13T15:27:58.937Z",
+      "finishedAt": "2026-10-13T15:28:03.904Z",
+      "loadAvgAfter": "1.46 1.35 0.75 6/609 2187",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.134533645, 0.12916061, 0.12975783100000002, 0.127442926, 0.123226413, 0.136967622,
+          0.127380409, 0.125695166, 0.13718854600000002, 0.128295626, 0.129747833, 0.131255693,
+          0.13038132200000002, 0.13212448200000002, 0.135488666, 0.13400856900000002,
+          0.12717820000000002, 0.12719022300000002, 0.129413404, 0.13319746100000002,
+          0.12345775900000001, 0.124538457, 0.130568965, 0.13582190300000002, 0.127732792,
+          0.12343983500000001, 0.135384151, 0.12459426200000001, 0.128164583, 0.11914767000000001
+        ],
+        "cpu": [
+          0.14762999999999998, 0.155576, 0.157627, 0.154606, 0.14646900000000002, 0.16784, 0.150605,
+          0.145314, 0.15945399999999998, 0.151959, 0.158979, 0.160933, 0.15708499999999997,
+          0.163036, 0.159853, 0.16213699999999998, 0.14631, 0.153521, 0.15623599999999999, 0.156742,
+          0.14846199999999998, 0.146943, 0.15895499999999999, 0.167649, 0.151537,
+          0.14676299999999998, 0.159706, 0.14310699999999998, 0.14870499999999998,
+          0.13979799999999998
+        ],
+        "user": [
+          0.12653999999999999, 0.139307, 0.142757, 0.139449, 0.130776, 0.147107, 0.132771, 0.123567,
+          0.133042, 0.129965, 0.14379, 0.142599, 0.14044099999999998, 0.14215999999999998, 0.143868,
+          0.13771899999999998, 0.127778, 0.130443, 0.138763, 0.139327, 0.128874, 0.125364, 0.143671,
+          0.147451, 0.136484, 0.129152, 0.141279, 0.123092, 0.13011699999999998, 0.12245099999999999
+        ],
+        "system": [
+          0.021089999999999998, 0.016269, 0.01487, 0.015156999999999999, 0.015693,
+          0.020732999999999998, 0.017834, 0.021747, 0.026411999999999998, 0.021994, 0.015189,
+          0.018334, 0.016644, 0.020876, 0.015985, 0.024418, 0.018532, 0.023077999999999998,
+          0.017473, 0.017415, 0.019587999999999998, 0.021578999999999997, 0.015283999999999999,
+          0.020198, 0.015052999999999999, 0.017610999999999998, 0.018427, 0.020014999999999998,
+          0.018588, 0.017346999999999998
+        ],
+        "memory": [
+          43593728, 43745280, 43704320, 43741184, 43388928, 43921408, 43892736, 43606016, 44187648,
+          44118016, 43814912, 43794432, 43790336, 43925504, 44146688, 43618304, 43356160, 43880448,
+          43642880, 43888640, 43487232, 43573248, 43843584, 43708416, 43790336, 43614208, 43663360,
+          43593728, 43429888, 43507712
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    }
+  ]
+}
