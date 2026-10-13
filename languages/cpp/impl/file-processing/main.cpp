@@ -21,7 +21,9 @@ int main(int, char **argv) {
 
   const std::string *top = nullptr;
   long top_count = -1;
-  for (const auto &[w, c] : freq) {
+  for (const auto &kv : freq) {
+    const std::string &w = kv.first;
+    long c = kv.second;
     if (c > top_count || (c == top_count && w < *top)) {
       top = &w;
       top_count = c;

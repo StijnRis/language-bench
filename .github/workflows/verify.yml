@@ -50,7 +50,7 @@ jobs:
           fi
           lang="${{ inputs.language }}"; ver="${{ inputs.version }}"
           if [ -n "$base" ] && git cat-file -e "$base" 2>/dev/null; then
-            git diff --name-only "$base" HEAD | pnpm -s lb verify-matrix > changed.json
+            git diff --name-only "$base" HEAD | pnpm -s lb verify-matrix --base "$base" > changed.json
           else
             # manual: everything (or the requested languages / versions)
             args=""

@@ -14,7 +14,7 @@ int main(int, char **argv) {
   }
 
   uint64_t checksum = 0;
-  for (const auto &[k, c] : m) checksum += (uint64_t)k * c;
+  for (const auto &kv : m) checksum += (uint64_t)kv.first * kv.second;
 
   uint64_t hits = 0;
   for (uint64_t i = 0; i < n; i++) {

@@ -1,7 +1,8 @@
+import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fromSessionFile, listSessionFiles } from "@lb/core";
-import { dataDir, loadConfig, loadLanguages, loadProblems } from "@lb/core/discover";
+import { dataDir, implDir, loadConfig, loadLanguages, loadProblems } from "@lb/core/discover";
 import { planSessions } from "@lb/core";
 import { ROOT } from "./config";
 import { currentCounts, enumerateCandidates, mergeFragment, runSession, verify, type SessionPlan } from "./session";
@@ -80,27 +81,61 @@ async function main() {
       await runSession(plan, { out: cwdPath(f.out!) });
       break;
     }
-    /* Which (language, version, problems) combinations to verify for a list of changed files (stdin). */
+    /*
+     * Which (language, version, problems) combinations need verifying for a list of changed files
+     * (stdin; --base <sha> lets it see what changed inside language.json):
+     *  - an implementation file: the versions that actually use that file, for that problem
+     *  - language.json: only the added versions if nothing but `versions` changed, else all versions
+     *  - a problem: that problem, every version of every language
+     *  - runner/core/workflow/lockfile: a smoke test, the newest version of every language
+     */
     case "verify-matrix": {
       const changed = fs.readFileSync(0, "utf8").split("\n").map((s) => s.trim()).filter(Boolean);
       const langs = loadLanguages(ROOT);
       const problems = loadProblems(ROOT).map((p) => p.spec.id);
-      const all = changed.some((c) => /^(runner|core)\//.test(c) || c === "pnpm-lock.yaml" || c.startsWith(".github/workflows/verify"));
-      const wanted = new Map<string, Set<string>>();
-      const add = (l: string, p: string | null) => {
-        const set = wanted.get(l) ?? wanted.set(l, new Set()).get(l)!;
-        for (const x of p ? [p] : problems) set.add(x);
+      const wanted = new Map<string, Set<string>>(); // "lang|version" -> problems
+      const add = (language: string, version: string, ps: string[]) => {
+        const set = wanted.get(`${language}|${version}`) ?? wanted.set(`${language}|${version}`, new Set()).get(`${language}|${version}`)!;
+        ps.forEach((p) => set.add(p));
+      };
+      const versionsOf = (id: string) => langs.find((l) => l.spec.id === id)?.spec.versions.map((v) => v.version) ?? [];
+      const showBase = (file: string): any => {
+        if (!f.base) return undefined;
+        const r = spawnSync("git", ["show", `${f.base}:${file}`], { encoding: "utf8", cwd: ROOT });
+        return r.status === 0 ? JSON.parse(r.stdout) : undefined;
       };
       for (const c of changed) {
         let m: RegExpMatchArray | null;
-        if (all) langs.forEach((l) => add(l.spec.id, null));
-        else if ((m = c.match(/^languages\/([^/]+)\/impl\/([^/]+)\//))) add(m[1]!, m[2]!);
-        else if ((m = c.match(/^languages\/([^/]+)\/(language\.json|Dockerfile|app\.csproj)$/))) add(m[1]!, null);
-        else if ((m = c.match(/^problems\/([^/]+)\//))) langs.forEach((l) => add(l.spec.id, m![1]!));
+        if (/^(runner|core)\//.test(c) || c === "pnpm-lock.yaml" || c.startsWith(".github/workflows/verify")) {
+          for (const l of langs) add(l.spec.id, l.spec.versions.find((v) => v.latest)!.version, problems);
+        } else if ((m = c.match(/^languages\/([^/]+)\/impl\/([^/]+)\/(@([^/]+)\/)?/))) {
+          const lang = langs.find((l) => l.spec.id === m![1]);
+          if (!lang) continue;
+          const dir = (v: string) => path.relative(ROOT, implDir(ROOT, lang.spec, m![2]!, v)).split(path.sep).join("/") + "/";
+          // the versions whose chosen folder is the one that changed
+          const touched = lang.spec.versions.map((v) => v.version).filter((v) => c.startsWith(dir(v)));
+          const fallback = touched.length ? touched : m[4] ? [] : versionsOf(lang.spec.id);
+          fallback.forEach((v) => add(lang.spec.id, v, [m![2]!]));
+        } else if ((m = c.match(/^languages\/([^/]+)\/(language\.json|Dockerfile|app\.csproj)$/))) {
+          const id = m[1]!;
+          let vs = versionsOf(id);
+          if (m[2] === "language.json") {
+            const before = showBase(c);
+            const now = JSON.parse(fs.readFileSync(path.join(ROOT, c), "utf8"));
+            if (before && now) {
+              const strip = (x: any) => JSON.stringify({ ...x, versions: undefined });
+              if (strip(before) === strip(now)) vs = vs.filter((v) => !before.versions.some((o: { version: string }) => o.version === v));
+            }
+          }
+          vs.forEach((v) => add(id, v, problems));
+        } else if ((m = c.match(/^problems\/([^/]+)\//))) {
+          for (const l of langs) versionsOf(l.spec.id).forEach((v) => add(l.spec.id, v, [m![1]!]));
+        }
       }
-      // every tracked version of a touched language (a change may affect any of them)
-      const include = [...wanted].flatMap(([language, set]) =>
-        (langs.find((l) => l.spec.id === language)?.spec.versions ?? []).map((v) => ({ language, version: v.version, problems: [...set].join(",") })));
+      const include = [...wanted].map(([k, set]) => {
+        const [language, version] = k.split("|");
+        return { language, version, problems: [...set].join(",") };
+      });
       console.log(JSON.stringify({ include }));
       break;
     }
