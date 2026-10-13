@@ -6,8 +6,8 @@
 
 _Screenshot of the live site, refreshed automatically after every deploy by `.github/workflows/screenshot.yml`._
 
-Transparent speed and memory benchmarks of **C, Rust, Go, Node.js and CPython** on nine workloads
-(N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
+Transparent speed and memory benchmarks of programming languages (see `languages/`) on a set of workloads (see `problems/`;
+N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
 processing, start-up). Results are measured on GitHub Actions, repeated on different days and hardware,
 combined with documented statistics, and published as a static site.
 
@@ -31,7 +31,7 @@ combined with documented statistics, and published as a static site.
 | `core/` | schemas, discovery, statistics (tested) |
 | `web/` | website |
 
-Add a language by adding a `languages/<id>/` folder; add a problem by adding a `problems/<id>/` folder. Nothing else needs registering.
+Add a language by adding a `languages/<id>/` folder (`language.json` with name, colour and build variants, `icon.svg`, `impl/<problem>/`); the site picks up its name, colour, icon and every text that lists languages from there; add a problem by adding a `problems/<id>/` folder. Nothing else needs registering.
 
 ## Commands
 

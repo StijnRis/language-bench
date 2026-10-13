@@ -1,0 +1,39 @@
+{
+  "id": "csharp",
+  "name": "C#",
+  "highlight": "csharp",
+  "website": "https://dotnet.microsoft.com/",
+  "description": "C# on .NET (CoreCLR): compiled to IL, then tiered JIT-compiled with dynamic PGO, with a generational garbage collector.",
+  "color": { "light": "#7c3aed", "dark": "#a78bfa" },
+  "sourceFile": "Program.cs",
+  "image": "mcr.microsoft.com/dotnet/sdk:{version}",
+  "toolVersionCmd": "dotnet --version",
+  "versions": [
+    { "version": "10.0", "latest": true },
+    { "version": "9.0", "latest": false },
+    { "version": "8.0", "latest": false }
+  ],
+  "variants": [
+    {
+      "id": "dotnet-default",
+      "name": "dotnet build -c Release",
+      "description": "Release build, default runtime settings (tiered compilation, dynamic PGO, concurrent workstation GC).",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "dotnet {bin}/app.dll",
+      "default": true
+    },
+    {
+      "id": "dotnet-no-tiering",
+      "name": "DOTNET_TieredCompilation=0",
+      "description": "Every method is fully optimised on its first call: slower start-up, no tier-0 phase.",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.cs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/csharp/app.csproj > $P/app.csproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "DOTNET_TieredCompilation=0 dotnet {bin}/app.dll"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "dotnet/runtime",
+    "pattern": "^v(\\d+\\.0)\\.0$",
+    "url": "https://dotnet.microsoft.com/platform/support/policy/dotnet-core"
+  }
+}

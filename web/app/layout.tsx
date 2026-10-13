@@ -3,22 +3,26 @@ import { Bricolage_Grotesque, Figtree } from "next/font/google";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/Bits";
-import { LangIcon } from "@/components/Icons";
+import { LangIcon, LangSprite } from "@/components/Icons";
 import { getModel, repoUrl, siteUrl } from "@/lib/model";
+import { languageCss, languageList } from "@/lib/text";
 import "./globals.css";
 
 const display = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 const body = Figtree({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
-const description = "Transparent, statistically combined speed and memory benchmarks of C, Rust, Go, Node.js and CPython, measured repeatedly on GitHub Actions. Every number links to its raw repetitions.";
-const shareImage = { url: `${siteUrl}/share.png`, width: 1200, height: 630, alt: "Bar chart comparing the speed of C, Rust, Go, Node.js and Python" };
+const model = getModel();
+const names = languageList(model);
+const description = `Transparent, statistically combined speed and memory benchmarks of ${names}, measured repeatedly on GitHub Actions. Every number links to its raw repetitions.`;
+const shareImage = { url: `${siteUrl}/share.png`, width: 1200, height: 630, alt: `Bar chart comparing the speed of ${names}` };
+const langNames = model.languages.map((l) => l.spec.name);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: "language-bench: programming language speed benchmarks (C, Rust, Go, Node.js, Python)", template: "%s | language-bench" },
+  title: { default: `language-bench: programming language speed benchmarks (${langNames.join(", ")})`, template: "%s | language-bench" },
   description,
   applicationName: "language-bench",
-  keywords: ["programming language benchmark", "language speed comparison", "C vs Rust", "Go vs Node.js", "Python performance", "benchmarks game alternative", "open benchmark data"],
+  keywords: ["programming language benchmark", "language speed comparison", ...langNames.slice(0, -1).map((n, i) => `${n} vs ${langNames[i + 1]}`), ...langNames.map((n) => `${n} performance`), "benchmarks game alternative", "open benchmark data"],
   authors: [{ name: "language-bench", url: repoUrl }],
   alternates: { canonical: siteUrl },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
@@ -34,21 +38,20 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   const m = getModel();
   const dates = m.analysis.benchmarks.map((b) => b.lastDate).sort();
+  const logoLangs = m.languages.slice(0, 5);
   const updated = dates[dates.length - 1]?.slice(0, 10);
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body>
+        <style dangerouslySetInnerHTML={{ __html: languageCss(m) }} />
+        <LangSprite languages={m.languages.map((l) => ({ id: l.spec.id, icon: l.icon }))} />
         <JsonLd data={{ "@context": "https://schema.org", "@type": "Organization", name: "language-bench", url: siteUrl, logo: `${siteUrl}/icon.svg`, sameAs: [repoUrl] }} />
         <header className="site">
           <div className="wrap">
             <Link href="/" className="brand">
               <svg className="logo" viewBox="0 0 64 64" width="24" height="24" aria-hidden="true">
                 <rect width="64" height="64" rx="14" fill="#16181d" />
-                <rect x="10" y="11" width="44" height="7" rx="3.5" fill="#9aa5bb" />
-                <rect x="10" y="21" width="37" height="7" rx="3.5" fill="#fb923c" />
-                <rect x="10" y="31" width="30" height="7" rx="3.5" fill="#22d3ee" />
-                <rect x="10" y="41" width="22" height="7" rx="3.5" fill="#84cc16" />
-                <rect x="10" y="51" width="14" height="7" rx="3.5" fill="#facc15" />
+                {logoLangs.map((l, i) => <rect key={l.spec.id} x="10" y={11 + i * 10} width={[44, 37, 30, 22, 14][i]} height="7" rx="3.5" fill={l.spec.color?.dark ?? "#9aa5bb"} />)}
               </svg>
               language-bench
             </Link>
@@ -79,6 +82,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               <Link href="/languages/">Languages</Link>
               <Link href="/timeline/">Timeline</Link>
               <Link href="/compare/">Head-to-head</Link>
+              <Link href="/sessions/">Sessions</Link>
             </nav>
             <nav aria-label="Project">
               <h2>Project</h2>

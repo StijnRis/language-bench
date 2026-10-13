@@ -3,8 +3,9 @@ import Timeline from "@/components/Timeline";
 import { meta } from "@/lib/meta";
 import { getModel, versionsOf } from "@/lib/model";
 import { overviewSeries } from "@/lib/timeline";
+import { languageList } from "@/lib/text";
 
-export const metadata = meta("Language speed over time", "How C, Rust, Go, Node.js and Python performance changed from release to release.", "/timeline/");
+export const metadata = meta("Language speed over time", `How ${languageList()} performance changed from release to release.`, "/timeline/");
 
 export default function TimelinePage() {
   const m = getModel();

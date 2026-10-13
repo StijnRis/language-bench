@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import { siteUrl } from "./model";
+import { getModel, siteUrl } from "./model";
+import { languageList } from "./text";
 
 export function meta(title: string, description: string, path: string): Metadata {
   const url = `${siteUrl}${path}`;
-  const image = { url: `${siteUrl}/share.png`, width: 1200, height: 630, alt: "Bar chart comparing the speed of C, Rust, Go, Node.js and Python" };
+  const image = { url: `${siteUrl}/share.png`, width: 1200, height: 630, alt: `Bar chart comparing the speed of ${languageList(getModel())}` };
   return {
     title, description,
     alternates: { canonical: url },

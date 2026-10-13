@@ -39,7 +39,7 @@ async function findReleases(src: NonNullable<Language["versionSource"]>): Promis
   for (const line of r.stdout.split("\n")) {
     const tag = line.split("\trefs/tags/")[1];
     const m = tag?.match(re);
-    if (m) out.set(m[1]!, { version: m[1]!, tag });
+    if (m) { const v = m[1]!.replace(/_/g, "."); out.set(v, { version: v, tag }); }
   }
   return [...out.values()];
 }

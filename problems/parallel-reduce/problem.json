@@ -5,7 +5,7 @@
   "description": "Counts primes below 2,000,000 by trial division (odd divisors up to the square root). Numbers are dealt out to 4 workers in an interleaved pattern (worker t takes n where n mod 4 = t) and the partial counts are summed.",
   "pseudocode": "isPrime(n) = n >= 2 and no odd divisor d <= sqrt(n) divides n   (n = 2 is prime, even n > 2 is not)\n\nworker(t):                               # t = 0..3\n    count = 0\n    for n = t; n < 2,000,000; n += 4:\n        if isPrime(n): count++\n    return count\n\nstart 4 workers (threads / processes) running worker(0..3)\nprint sum of their counts",
   "reveals": "Thread creation, scheduling and scaling on a 4-core runner.",
-  "caveat": "Thread count, scheduling and synchronisation matter. Python uses multiprocessing (processes) because of the GIL; Node uses worker_threads. GitHub-hosted runners have 4 vCPUs (public repos) which are hyper-threads.",
+  "caveat": "Thread count, scheduling and synchronisation matter. Python uses multiprocessing (processes) because of the GIL; Node uses worker_threads; Ruby and PHP also use separate processes. GitHub-hosted runners have 4 vCPUs (public repos) which are hyper-threads.",
   "tags": [
     "cpu-bound",
     "concurrency",

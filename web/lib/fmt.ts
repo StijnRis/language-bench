@@ -9,5 +9,5 @@ export const mb = (x: number) => (isFinite(x) ? `${x >= 100 ? x.toFixed(0) : x.t
 export const idx = (x: number) => (isFinite(x) ? `${x >= 100 ? x.toFixed(0) : x >= 10 ? x.toFixed(1) : x.toFixed(2)}×` : "-");
 export const bytes = (n?: number | null) => (n == null ? "-" : n > 1e6 ? `${(n / 1e6).toFixed(1)} MB` : `${(n / 1e3).toFixed(0)} kB`);
 export const day = (iso: string) => iso.slice(0, 10);
-export const LANG_COLOR: Record<string, string> = { c: "var(--c-c)", rust: "var(--c-rust)", go: "var(--c-go)", node: "var(--c-node)", python: "var(--c-python)" };
-export const colorOf = (id: string, i = 0) => LANG_COLOR[id] ?? `hsl(${(i * 67 + 200) % 360} 55% 50%)`;
+/** Language colours are CSS variables --c-<id> generated from languages/<id>/language.json (see layout). */
+export const colorOf = (id: string, i = 0) => `var(--c-${id}, hsl(${(i * 67 + 200) % 360} 55% 50%))`;

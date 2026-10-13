@@ -4,6 +4,7 @@ import { NoData } from "@/components/Bits";
 import { colorOf, idx } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { allTags, compositeIndex, getModel, latestVersion, snapshotCells } from "@/lib/model";
+import { languageList } from "@/lib/text";
 
 export function generateStaticParams() {
   return allTags(getModel()).map((tag) => ({ tag }));
@@ -11,7 +12,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ tag: string }> }) {
   const { tag } = await params;
-  return meta(`${tag} benchmarks: which language is fastest?`, `Aggregate performance of C, Rust, Go, Node.js and Python on ${tag} workloads.`, `/tags/${tag}/`);
+  return meta(`${tag} benchmarks: which language is fastest?`, `Aggregate performance of ${languageList()} on ${tag} workloads.`, `/tags/${tag}/`);
 }
 
 export default async function Tag({ params }: { params: Promise<{ tag: string }> }) {

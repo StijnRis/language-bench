@@ -3,11 +3,12 @@ import { JsonLd, NoData } from "@/components/Bits";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
 import Leaderboard from "@/components/Leaderboard";
 import { meta } from "@/lib/meta";
+import { languageList, languageVs, ranking } from "@/lib/text";
 import { getModel, latestVersion, siteUrl, snapshotCells } from "@/lib/model";
 
 export const metadata = meta(
-  "Programming language speed benchmarks: C vs Rust vs Go vs Node.js vs Python",
-  "Which language is fastest? Compare C, Rust, Go, Node.js and CPython on N-body, binary trees, JSON, hash maps, sorting and more, with confidence intervals from repeated GitHub Actions runs.",
+  `Programming language speed benchmarks: ${languageVs()}`,
+  `Which language is fastest? Compare ${languageList()} on N-body, binary trees, JSON, hash maps, sorting and more, with confidence intervals from repeated GitHub Actions runs.`,
   "/",
 );
 
@@ -15,8 +16,12 @@ export default function Home() {
   const m = getModel();
   const cells = snapshotCells(m);
   const scored = m.problems.filter((p) => p.spec.scored);
+  const order = ranking(m);
+  const fastestAnswer = order.length >= 2
+    ? `Across the benchmark workloads, ${order[0]!.name} is currently the fastest overall, followed by ${order.slice(1, 4).map((r) => r.name).join(", ")}${order.length > 4 ? ` and ${order.length - 4} more` : ""}. The leaderboard above shows the exact multipliers, per task and overall.`
+    : "The leaderboard above shows the exact multipliers per task and overall as soon as measurements are available.";
   const faq = [
-    { q: "Which programming language is the fastest?", a: "Across the benchmark workloads, compiled languages without a garbage collector (C and Rust) are usually fastest, followed by Go, then Node.js, then CPython. The leaderboard above shows the exact multipliers, per task and overall." },
+    { q: "Which programming language is the fastest?", a: fastestAnswer },
     { q: "How are the benchmarks measured?", a: `Each benchmark is a language version, a build setting and a problem. It runs on GitHub Actions in a pinned Docker image with many repetitions. Results from ${m.analysis.sessionCount} sessions on different days and hardware are combined statistically, with machine speed factored out.` },
     { q: "Can I trust these numbers?", a: "Every number links to its source code, build flags, raw repetitions and CI run. Ranges are 95% confidence intervals computed across independent sessions, and all raw data is open in the repository." },
   ];
@@ -36,7 +41,7 @@ export default function Home() {
         </div>
         {m.hasData && (
           <figure className="share">
-            <a href="share.png"><img src="share.png" alt="Bar chart: speed index of C, Rust, Go, Node.js and CPython" width={1200} height={630} /></a>
+            <a href="share.png"><img src="share.png" alt={`Bar chart: speed index of ${languageList(m)}`} width={1200} height={630} /></a>
             <figcaption className="small muted">Right-click to copy or save. Regenerated from the data on every deploy.</figcaption>
           </figure>
         )}

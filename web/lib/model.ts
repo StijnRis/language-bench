@@ -4,6 +4,8 @@ import {
   indexVs,
   MIN_SESSIONS_FOR_FINAL,
   type Analysis,
+  type Measurement,
+  type Session,
   type BenchmarkResult,
 } from "@lb/core";
 import {
@@ -42,6 +44,8 @@ export interface Model {
   languages: LoadedLanguage[];
   problems: LoadedProblem[];
   analysis: Analysis;
+  sessions: Record<string, Session>;
+  measurements: Measurement[];
   byId: Map<string, BenchmarkResult>;
   hasData: boolean;
 }
@@ -53,6 +57,8 @@ export const benchId = (b: { language: string; version: string; variant: string;
 export const benchPath = (b: { language: string; version: string; variant: string; problem: string }) =>
   `/benchmarks/${b.problem}/${b.language}--${b.version}--${b.variant}/`;
 
+export const sessionPath = (id: string) => `/sessions/${id}/`;
+
 let cached: Model | undefined;
 
 export function getModel(): Model {
@@ -63,7 +69,7 @@ export function getModel(): Model {
   const data = loadData(root);
   const analysis = analyze(data.sessions, data.languages, 1000);
   const byId = new Map(analysis.benchmarks.map((b) => [benchId(b), b]));
-  cached = { root, languages, problems, analysis, byId, hasData: analysis.benchmarks.length > 0 };
+  cached = { root, languages, problems, analysis, sessions: data.sessions, measurements: data.languages.flatMap((d) => d.measurements), byId, hasData: analysis.benchmarks.length > 0 };
   return cached;
 }
 

@@ -2,8 +2,9 @@ import Link from "next/link";
 import { meta } from "@/lib/meta";
 import { getModel, latestVersion } from "@/lib/model";
 import { LangIcon } from "@/components/Icons";
+import { languageList } from "@/lib/text";
 
-export const metadata = meta("Languages benchmarked", "C, Rust, Go, Node.js and CPython: versions, compiler flags and runtimes covered by language-bench.", "/languages/");
+export const metadata = meta("Languages benchmarked", `${languageList()}: versions, compiler flags and runtimes covered by language-bench.`, "/languages/");
 
 export default function Languages() {
   const m = getModel();

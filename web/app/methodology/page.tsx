@@ -1,18 +1,20 @@
 import { meta } from "@/lib/meta";
 import { MIN_SESSIONS_FOR_FINAL } from "@lb/core";
-import { getModel, repoUrl } from "@/lib/model";
+import { getModel, latestVersion, repoUrl } from "@/lib/model";
 
 export const metadata = meta("Methodology: how language-bench measures speed", "How benchmarks are run on GitHub Actions, repeated on different days and hardware, corrected for machine speed using overlapping benchmarks and combined statistically.", "/methodology/");
 
 export default function Methodology() {
   const m = getModel();
+  const first = m.languages[0]!;
+  const ex = { name: first.spec.name, version: latestVersion(first), variant: first.spec.variants.find((v) => v.default)!.name };
   return (
     <>
       <h1>Methodology</h1>
       <p className="lead">Everything is meant to be checkable. Every number on this site links to the raw repetitions behind it, the exact source code, the build flags and the CI run that produced them.</p>
 
       <h2>What is a benchmark?</h2>
-      <p>A benchmark is a unique combination of <strong>language version</strong> (for example Python 3.14), <strong>build setting</strong> (compiler, flags, runtime options; for example <code>gcc -O3 -march=native</code>) and <strong>problem</strong> (for example N-body). Each is measured many times:</p>
+      <p>A benchmark is a unique combination of <strong>language version</strong> (for example {ex.name} {ex.version}), <strong>build setting</strong> (compiler, flags, runtime options; for example <code>{ex.variant}</code>) and <strong>problem</strong> (for example {m.problems[0]?.spec.title}). Each is measured many times:</p>
       <ul>
         <li><strong>Session</strong>: one GitHub Actions job on one fresh hosted VM. A session runs <em>many different benchmarks</em> (from all languages), each in the pinned official Docker image of its language. Hardware, kernel, OS image, Docker, hyperfine version and much more are recorded per session.</li>
         <li><strong>Repetition</strong>: one execution inside a session, recorded with <a href="https://github.com/sharkdp/hyperfine">hyperfine</a> 2.x (wall-clock time, user/system CPU time and peak resident memory of every run). The number of repetitions is configurable and bounded by a time budget.</li>
@@ -33,7 +35,7 @@ export default function Methodology() {
       <p>Repetitions in one session share the same VM and are correlated, so <strong>sessions are the independent samples</strong>. Repetitions reduce noise within a session; they do not remove the systematic effect of a particular machine. We handle that effect statistically, without any calibration program:</p>
       <ol>
         <li><strong>Per session</strong>: median, MAD, mean, standard deviation, min and max of the repetitions. Outliers (beyond 3 scaled MADs) are flagged but never removed.</li>
-        <li><strong>Machine factors from overlapping benchmarks</strong>: because the same benchmark is measured in several sessions, the speed difference between two machines is visible. We fit <code>log(time) = benchmark + machine</code> to all sessions simultaneously (alternating least squares). The machine factor says how much slower or faster a session&apos;s VM was than the average machine. This corrects for different CPU models and for slow or fast hosts on a given day. It assumes a machine is uniformly faster or slower across workloads; memory-bound and compute-bound workloads can scale differently, which shows up as residual noise.</li>
+        <li><strong>Machine factors from overlapping benchmarks</strong>: because the same benchmark is measured in several sessions, the speed difference between two machines is visible. Think of it as asking, for every machine, “how much longer does the same program take here than elsewhere?”. Formally, we fit <code>log(time) = benchmark + machine</code> to all sessions simultaneously (alternating least squares): each time is explained as the benchmark&apos;s own difficulty plus a per-machine offset, on a log scale so that offsets become multiplicative factors. The machine factor says how much slower or faster a session&apos;s VM was than the average machine. This corrects for different CPU models and for slow or fast hosts on a given day. It assumes a machine is uniformly faster or slower across workloads; memory-bound and compute-bound workloads can scale differently, which shows up as residual noise.</li>
         <li><strong>Across sessions</strong>: each benchmark&apos;s time on the average machine is the geometric mean of (session median ÷ machine factor). The 95% confidence interval comes from a cluster bootstrap (1000 iterations, deterministic seed) that resamples sessions, then repetitions within each session.</li>
         <li><strong>Index vs fastest</strong> = time of a benchmark divided by the time of the fastest benchmark on the same problem (whichever language, release or build that is, so the baseline is not always C), with a bootstrap interval for the ratio. Composite scores over several problems are geometric means of indices.</li>
         <li><strong>Memory</strong> is the mean over repetitions of hyperfine&apos;s per-run peak resident set size, averaged over sessions.</li>

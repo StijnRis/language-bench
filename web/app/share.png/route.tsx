@@ -1,19 +1,13 @@
 import { ImageResponse } from "next/og";
 import { idx } from "@/lib/fmt";
-import { compositeIndex, getModel, latestVersion, snapshotCells } from "@/lib/model";
+import { getModel, latestVersion } from "@/lib/model";
+import { ranking } from "@/lib/text";
 
 export const dynamic = "force-static";
 
-const COLORS: Record<string, string> = { c: "#8b97ad", rust: "#f26a1b", go: "#14b8d4", node: "#6cc24a", python: "#f2c200" };
-
 export async function GET() {
   const m = getModel();
-  const cells = snapshotCells(m);
-  const rows = m.languages
-    .map((l) => ({ id: l.spec.id, name: l.spec.name, version: latestVersion(l), value: compositeIndex(cells.filter((c) => c.language === l.spec.id && m.problems.find((p) => p.spec.id === c.problem)?.spec.scored)) }))
-    .filter((r) => isFinite(r.value))
-    .sort((a, b) => a.value - b.value);
-  if (rows.length) { const best = rows[0]!.value; for (const r of rows) r.value /= best; }
+  const rows = ranking(m).map((r) => ({ ...r, version: latestVersion(m.languages.find((l) => l.spec.id === r.id)!) }));
   const max = Math.max(...rows.map((r) => r.value), 1);
   const W = 1200, H = 630, labelW = 340, valueW = 140, barMax = W - 2 * 64 - labelW - valueW;
   return new ImageResponse(
@@ -23,12 +17,12 @@ export async function GET() {
         <div style={{ display: "flex", fontSize: 24, color: "#9aa3b2", marginTop: 8 }}>
           Speed index across {m.problems.filter((p) => p.spec.scored).length} workloads (fastest language = 1.0×, shorter is faster)
         </div>
-        <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", gap: 18 }}>
+        <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center", gap: rows.length > 7 ? 8 : 18 }}>
           {rows.map((r) => (
             <div key={r.id} style={{ display: "flex", alignItems: "center" }}>
-              <div style={{ display: "flex", width: labelW, fontSize: 34, fontWeight: 700 }}>{r.name}</div>
-              <div style={{ display: "flex", width: Math.max(14, (r.value / max) * barMax), height: 44, borderRadius: 8, background: COLORS[r.id] ?? "#6ab0ff" }} />
-              <div style={{ display: "flex", marginLeft: 18, fontSize: 34, fontWeight: 700 }}>{idx(r.value)}</div>
+              <div style={{ display: "flex", width: labelW, fontSize: rows.length > 7 ? 26 : 34, fontWeight: 700 }}>{r.name}</div>
+              <div style={{ display: "flex", width: Math.max(14, (r.value / max) * barMax), height: rows.length > 7 ? 28 : 44, borderRadius: 8, background: m.languages.find((l) => l.spec.id === r.id)?.spec.color?.dark ?? "#6ab0ff" }} />
+              <div style={{ display: "flex", marginLeft: 18, fontSize: rows.length > 7 ? 26 : 34, fontWeight: 700 }}>{idx(r.value)}</div>
             </div>
           ))}
         </div>

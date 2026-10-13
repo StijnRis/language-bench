@@ -1,13 +1,14 @@
 import type { MetadataRoute } from "next";
-import { allTags, benchPath, getModel, pairs, siteUrl } from "@/lib/model";
+import { allTags, benchPath, sessionPath, getModel, pairs, siteUrl } from "@/lib/model";
 
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const m = getModel();
   const paths = [
-    "/", "/problems/", "/languages/", "/timeline/", "/compare/", "/methodology/",
+    "/", "/problems/", "/languages/", "/timeline/", "/compare/", "/methodology/", "/sessions/",
     ...m.problems.map((p) => `/problems/${p.spec.id}/`),
+    ...Object.keys(m.sessions).map(sessionPath),
     ...m.languages.flatMap((l) => [`/languages/${l.spec.id}/`]),
     ...allTags(m).map((t) => `/tags/${t}/`),
     ...pairs(m.languages.map((l) => l.spec.id)).map((p) => `/compare/${p}/`),

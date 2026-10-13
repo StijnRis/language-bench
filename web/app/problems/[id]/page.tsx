@@ -5,6 +5,7 @@ import { LangIcon, ProblemIcon } from "@/components/Icons";
 import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { benchPath, defaultVariant, getModel, siteUrl, toCell } from "@/lib/model";
+import { languageVs } from "@/lib/text";
 
 export function generateStaticParams() {
   return getModel().problems.map((p) => ({ id: p.spec.id }));
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const p = getModel().problems.find((x) => x.spec.id === id);
   if (!p) return {};
-  return meta(`${p.spec.title} benchmark: C vs Rust vs Go vs Node.js vs Python`, `${p.spec.summary} Results for every language and compiler setting, with confidence intervals.`, `/problems/${id}/`);
+  return meta(`${p.spec.title} benchmark: ${languageVs()}`, `${p.spec.summary} Results for every language and compiler setting, with confidence intervals.`, `/problems/${id}/`);
 }
 
 export default async function Problem({ params }: { params: Promise<{ id: string }> }) {

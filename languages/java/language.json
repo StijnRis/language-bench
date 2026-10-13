@@ -1,0 +1,39 @@
+{
+  "id": "java",
+  "name": "Java",
+  "highlight": "java",
+  "website": "https://openjdk.org/",
+  "description": "Java on the OpenJDK HotSpot JVM (Eclipse Temurin builds): bytecode with tiered JIT compilation and a generational, mostly concurrent garbage collector.",
+  "color": { "light": "#dc2626", "dark": "#f87171" },
+  "sourceFile": "Main.java",
+  "image": "eclipse-temurin:{version}-jdk",
+  "toolVersionCmd": "java --version | head -n1",
+  "versions": [
+    { "version": "27", "latest": true },
+    { "version": "25", "latest": false },
+    { "version": "23", "latest": false }
+  ],
+  "variants": [
+    {
+      "id": "java-default",
+      "name": "java",
+      "description": "Default JVM flags (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
+      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
+      "run": "java -cp {bin} Main",
+      "default": true
+    },
+    {
+      "id": "java-parallel-gc",
+      "name": "java -XX:+UseParallelGC",
+      "description": "Throughput-oriented collector with less barrier overhead than G1.",
+      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
+      "run": "java -XX:+UseParallelGC -cp {bin} Main"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "openjdk/jdk",
+    "pattern": "^jdk-(\\d*[13579])-ga$",
+    "url": "https://openjdk.org/projects/jdk/"
+  }
+}

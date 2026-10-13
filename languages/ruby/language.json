@@ -1,0 +1,37 @@
+{
+  "id": "ruby",
+  "name": "Ruby",
+  "highlight": "ruby",
+  "website": "https://www.ruby-lang.org/",
+  "description": "The reference CRuby (MRI) interpreter: bytecode VM with a global VM lock and a generational, incremental garbage collector. Optional YJIT compiler.",
+  "color": { "light": "#db2777", "dark": "#f472b6" },
+  "sourceFile": "main.rb",
+  "image": "ruby:{version}",
+  "toolVersionCmd": "ruby --version",
+  "versions": [
+    { "version": "4.0", "latest": true },
+    { "version": "3.4", "latest": false },
+    { "version": "3.3", "latest": false }
+  ],
+  "variants": [
+    {
+      "id": "ruby-default",
+      "name": "ruby",
+      "description": "Default interpreter, JIT off.",
+      "run": "ruby {src}/main.rb",
+      "default": true
+    },
+    {
+      "id": "ruby-yjit",
+      "name": "ruby --yjit",
+      "description": "Enables YJIT, the built-in JIT compiler.",
+      "run": "ruby --yjit {src}/main.rb"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "ruby/ruby",
+    "pattern": "^v(\\d+[._]\\d+)[._]0$",
+    "url": "https://www.ruby-lang.org/en/downloads/branches/"
+  }
+}

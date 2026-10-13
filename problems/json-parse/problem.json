@@ -5,7 +5,7 @@
   "description": "A deterministic generator writes about 19 MB of ASCII JSON (an array of records with ids, names, tags, nested metadata and integer metrics). The program reads the file, parses it, and prints: number of objects, sum of all integer numbers, total length of all string values, number of `true` values and number of `null` values.",
   "pseudocode": "text = read whole file                   # ~19 MB of JSON records\ndata = parse_json(text)\nobjects = ints = strLen = trues = nulls = 0\nwalk(value):\n    object -> objects++, walk every member value\n    array  -> walk every element\n    integer -> ints += value\n    string  -> strLen += length(value)\n    true    -> trues++\n    null    -> nulls++\nwalk(data)\nprint objects, ints, strLen, trues, nulls",
   "reveals": "Parsing and string-processing throughput including allocation of the parsed tree.",
-  "caveat": "Parser library, input size, schema and validation all change the result. Go, Node and Python use their standard-library parsers into a generic tree. Rust and C have no JSON in their standard library, so they use a small hand-written recursive-descent parser that aggregates while parsing (no tree is built), which is less work than the others.",
+  "caveat": "Parser library, input size, schema and validation all change the result. Go, Node, Python, Ruby, PHP and C# use their standard-library parsers (C# a read-only document, the others a generic tree). Rust, C, C++ and Java have no JSON in their standard library, so they use a small hand-written recursive-descent parser that aggregates while parsing (no tree is built), which is less work than the others.",
   "tags": [
     "io-bound",
     "memory-bound",

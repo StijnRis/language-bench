@@ -1,4 +1,4 @@
-import { geoMean, median } from "@lb/core";
+import { MIN_SESSIONS_FOR_FINAL, geoMean, median } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CodeBlock, JsonLd, NoData } from "@/components/Bits";
@@ -6,7 +6,7 @@ import StripPlot from "@/components/StripPlot";
 import { bytes, day, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
-import { benchPath, getModel, repoUrl, reference, siteUrl, sourceOf, toCell } from "@/lib/model";
+import { benchPath, sessionPath, getModel, repoUrl, reference, siteUrl, sourceOf, toCell } from "@/lib/model";
 
 export function generateStaticParams() {
   const bs = [...getModel().byId.values()];
@@ -59,7 +59,7 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
       <p className="small muted"><Link href={`/problems/${b.problem}/`}>{p.spec.title}</Link> › <Link href={`/languages/${b.language}/`}>{l.spec.name}</Link></p>
       <h1 className="with-icons"><ProblemIcon id={b.problem} size={52} /><span>{p.spec.title}<small><LangIcon id={b.language} size={20} /> {l.spec.name} {b.version}</small></span></h1>
       <p className="lead">{v.name}. Index <strong>{idx(c.index)}</strong> vs the fastest ({idx(c.indexLow)}–{idx(c.indexHigh)}), {seconds(c.seconds)} on the average machine, {mb(c.memoryMB)} average memory.
-        {c.provisional && <> <span className="badge warn">provisional: fewer than 3 sessions</span></>} {c.correct ? <span className="badge good">output verified</span> : <span className="badge warn">output differs from expected!</span>}</p>
+        {c.provisional && <> <span className="badge warn">provisional: fewer than {MIN_SESSIONS_FOR_FINAL} sessions</span></>}</p>
 
       <h2>How this number came about</h2>
       <ol className="steps">
@@ -81,19 +81,16 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
       <div className="tablewrap" style={{ marginTop: 12 }}><table>
         <thead><tr><th>Session</th><th>CPU</th><th className="num">Reps</th><th className="num">Median</th><th className="num">MAD</th><th className="num">Machine factor</th><th className="num">Median ÷ factor</th><th>Avg. memory</th><th>Source</th></tr></thead>
         <tbody>{b.sessions.map((s) => (<tr key={s.sessionId}>
-          <td>{day(s.date)}</td><td className="small">{s.cpuModel} ({s.cores} cores)</td><td className="num">{s.summary.n}</td><td className="num">{seconds(s.summary.median)}</td><td className="num">{seconds(s.summary.mad)}</td>
+          <td><Link href={sessionPath(s.sessionId)}>{day(s.date)}</Link></td><td className="small">{s.cpuModel} ({s.cores} cores)</td><td className="num">{s.summary.n}</td><td className="num">{seconds(s.summary.median)}</td><td className="num">{seconds(s.summary.mad)}</td>
           <td className="num">{s.machineFactor.toFixed(3)}×</td><td className="num">{seconds(s.adjustedMedian)}</td><td>{mb(s.meanMemory / 1e6)}</td>
           <td className="small">{s.runUrl ? <a href={s.runUrl}>Actions run</a> : "local"} · <a href={`${repoUrl}/blob/main/data/sessions/${s.sessionId}.json`}>raw data</a> · <a href={`${repoUrl}/tree/${s.repoCommit}`}>commit</a></td></tr>))}</tbody></table></div>
       <ol className="steps" start={6} style={{ counterReset: "s 5", marginTop: 16 }}>
-        <li><strong>Cancelling out the hardware.</strong> Every session ran many different benchmarks, and benchmarks are repeated in later sessions. A benchmark measured on two machines shows how much faster one machine is than the other. From all {nSessionsTotal} sessions at once we fit <code>log(time) = benchmark + machine</code>; the “machine factor” column is how much slower (&gt;1) or faster (&lt;1) each session&apos;s machine is than the average machine: {factors.map((x) => x.toFixed(3)).join(", ")}. {b.linked ? "" : "This benchmark is not yet linked to the main group of sessions by shared benchmarks, so treat it as provisional."}</li>
+        <li><strong>Cancelling out the hardware.</strong> GitHub gives every session a different computer, and some are faster than others, so raw times from different sessions cannot be compared directly. To fix that, every session gets a <em>machine factor</em>: how many times longer programs take on that machine than on the average machine. A factor of 1.2 means “20% slower than average”. We find these factors by looking at benchmarks that ran in several sessions: if the same programs are consistently 20% slower in one session, that machine is 1.2× slower. The factors for this benchmark&apos;s sessions are {factors.map((x) => `${x.toFixed(3)}×`).join(", ")} (click a date in the table above for the session&apos;s details). {b.linked ? "" : "This benchmark is not yet linked to the main group of sessions by shared benchmarks, so treat it as provisional."} <span className="muted">Technically: we fit <code>log(time) = benchmark + machine</code> across all {nSessionsTotal} sessions at once; see the <Link href="/methodology/">methodology</Link>.</span></li>
         <li><strong>Combining sessions.</strong> Sessions, not repetitions, are the independent samples. Each session&apos;s median divided by its machine factor ({adjusted.map((x) => seconds(x)).join(", ")}) is averaged geometrically: <strong>{seconds(b.refSeconds)}</strong> on the average machine. The 95% interval {seconds(b.refLow)}–{seconds(b.refHigh)} comes from a cluster bootstrap that resamples sessions, then repetitions within each.</li>
         <li><strong>Index vs fastest.</strong> {ref ? <>{idx(c.index)} = this time ÷ the time of the fastest entry on the same problem, {ref.language} {ref.version} {ref.variant} ({seconds(ref.refSeconds)}); interval {idx(c.indexLow)}–{idx(c.indexHigh)}.</> : "No reference available."}</li>
         <li><strong>How much was hardware?</strong> Raw session medians differ by a geometric factor of {b.agg.rawSpread.toFixed(3)}; after dividing out the machine factors they differ by {b.agg.adjustedSpread.toFixed(3)}. The overall model leaves {m.analysis.residualSpread.toFixed(3)}× of unexplained noise.</li>
         <li><strong>Memory.</strong> Hyperfine records the peak resident set size of every repetition. We report the average over the repetitions of a session, then over sessions: {mb(c.memoryMB)}.</li>
       </ol>
-
-      <h2>Environment per session</h2>
-      <ul className="small">{b.sessions.map((s) => <li key={s.sessionId}><code>{s.sessionId}</code>: {s.cpuModel}, {s.cores} cores, image {s.imageDigest ?? "?"}</li>)}</ul>
 
       <h2>Reproduce it</h2>
       <pre className="code"><code>git clone {repoUrl}.git && cd language-bench{"\n"}pnpm install{"\n"}{cmd}</code></pre>

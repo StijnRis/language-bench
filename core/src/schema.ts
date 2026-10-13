@@ -25,6 +25,8 @@ export const LanguageSchema = z.object({
   highlight: z.string(),
   website: z.string().url(),
   description: z.string(),
+  /** Brand colour used in charts, per colour scheme. Optional: a generated colour is used when missing. */
+  color: z.object({ light: z.string(), dark: z.string() }).optional(),
   /** File name of the implementation inside languages/<id>/impl/<problem>/ */
   sourceFile: z.string(),
   /** Docker image template. {version} is replaced. */

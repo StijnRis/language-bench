@@ -45,6 +45,8 @@ function subdirs(dir: string): string[] {
 export interface LoadedLanguage {
   spec: Language;
   releases: Releases;
+  /** Inner markup of languages/<id>/icon.svg (64x64 viewBox), if present. */
+  icon?: string;
   dir: string;
 }
 
@@ -61,7 +63,9 @@ export function loadLanguages(root = findRepoRoot()): LoadedLanguage[] {
       throw new Error(`${file}: exactly one version must have latest: true`);
     const relFile = path.join(dir, "releases.json");
     const releases = fs.existsSync(relFile) ? ReleasesSchema.parse(readJson(relFile)) : {};
-    return [{ spec, releases, dir }];
+    const iconFile = path.join(dir, "icon.svg");
+    const icon = fs.existsSync(iconFile) ? fs.readFileSync(iconFile, "utf8").replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>[\s\S]*$/, "").trim() : undefined;
+    return [{ spec, releases, icon, dir }];
   });
 }
 

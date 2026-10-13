@@ -1,0 +1,31 @@
+{
+  "id": "php",
+  "name": "PHP",
+  "highlight": "php",
+  "website": "https://www.php.net/",
+  "description": "The Zend Engine: a bytecode virtual machine with reference counting and a cycle collector, run here through the command-line interpreter.",
+  "color": { "light": "#4f5b93", "dark": "#8892bf" },
+  "sourceFile": "main.php",
+  "image": "php:{version}-cli",
+  "toolVersionCmd": "php --version | head -n1",
+  "versions": [
+    { "version": "8.5", "latest": true },
+    { "version": "8.4", "latest": false },
+    { "version": "8.3", "latest": false }
+  ],
+  "variants": [
+    {
+      "id": "php-default",
+      "name": "php -d memory_limit=-1",
+      "description": "Default interpreter without OPcache or JIT; only the memory limit is lifted.",
+      "run": "php -d memory_limit=-1 {src}/main.php",
+      "default": true
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "php/php-src",
+    "pattern": "^php-(8\\.\\d+)\\.0$",
+    "url": "https://www.php.net/supported-versions.php"
+  }
+}
