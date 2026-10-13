@@ -1,7 +1,8 @@
 import Link from "next/link";
 import ComparePicker from "@/components/ComparePicker";
+import { LangIcon } from "@/components/Icons";
 import { meta } from "@/lib/meta";
-import { getModel, pairs } from "@/lib/model";
+import { getModel } from "@/lib/model";
 
 
 const names = getModel().languages.map((l) => l.spec.name);
@@ -17,10 +18,21 @@ export default function Compare() {
       <p className="lead">Choose two languages to see a side-by-side comparison across all problems.</p>
       <ComparePicker languages={langs} />
       <h2>All comparisons</h2>
-      <ul>{pairs(langs.map((l) => l.id)).map((p) => {
-        const [a, b] = p.split("-vs-").map((id) => langs.find((l) => l.id === id)!.name);
-        return <li key={p}><Link href={`/compare/${p}/`}>{a} vs {b} performance</Link></li>;
-      })}</ul>
+      <p className="muted">Pick a language to see every opponent.</p>
+      <div className="compare-grid">
+        {langs.map((a) => (
+          <section className="card compare-card" key={a.id} aria-labelledby={`cmp-${a.id}`}>
+            <h3 id={`cmp-${a.id}`}><LangIcon id={a.id} size={28} />{a.name}</h3>
+            <div className="tags">
+              {langs.filter((b) => b.id !== a.id).map((b) => (
+                <Link key={b.id} className="tag" href={`/compare/${[a.id, b.id].sort().join("-vs-")}/`} title={`${a.name} vs ${b.name} performance`}>
+                  <LangIcon id={b.id} size={16} />{b.name}
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
     </>
   );
 }

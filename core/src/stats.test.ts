@@ -59,6 +59,35 @@ describe("aggregateSessions", () => {
   });
 });
 
+describe("environment effect", () => {
+  it("learns a workload-specific OS effect shared by all sessions of that OS", () => {
+    const rnd = mulberry32(5);
+    const obs: { bench: string; session: string; y: number; env: string; group: string }[] = [];
+    // sessions s0..s3 on os A, s4..s7 on os B; os B is 30% slower for group "io" only
+    for (let s = 0; s < 8; s++) {
+      const env = s < 4 ? "A" : "B";
+      for (let b = 0; b < 10; b++) {
+        const group = b < 5 ? "cpu" : "io";
+        const bump = env === "B" && group === "io" ? Math.log(1.3) : 0;
+        obs.push({ bench: `b${b}`, session: `s${s}`, env, group, y: Math.log(1 + b) + 0.1 * s + bump + (rnd() - 0.5) * 0.002 });
+      }
+    }
+    const fit = fitHardware(obs);
+    const d = (e: string, g: string) => fit.envEffect.get(`${e}|${g}`)!;
+    // the general shift of OS B is carried by the machine factors; d holds the workload-specific rest
+    const contrast = d("B", "io") - d("A", "io") - (d("B", "cpu") - d("A", "cpu"));
+    expect(contrast).toBeGreaterThan(Math.log(1.3) * 0.8);
+    expect(contrast).toBeLessThan(Math.log(1.3) * 1.05);
+  });
+  it("has no effect with a single environment", () => {
+    const fit = fitHardware([
+      { bench: "a", session: "s1", y: 0, env: "A", group: "g" },
+      { bench: "a", session: "s2", y: 1, env: "A", group: "g" },
+    ]);
+    expect(fit.envEffect.get("A|g")).toBeCloseTo(0, 9);
+  });
+});
+
 const cfg: Config = {
   targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, sessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
   trackedVersionsPerLanguage: 1, maxAttempts: 3, sessionTimeBudgetMinutes: 60, repetitions: { min: 5, max: 10 },

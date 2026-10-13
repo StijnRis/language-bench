@@ -1,4 +1,4 @@
-import { median } from "@lb/core";
+import { environmentOf, median } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
@@ -100,6 +100,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         <dt>Memory</dt><dd>{gib(host.memory?.totalBytes)} total</dd>
         <dt>Kernel</dt><dd><code>{String(host.kernel ?? "-")}</code> ({String(host.arch ?? "")})</dd>
         <dt>CPU governor</dt><dd>{String(host.scalingGovernor ?? "unknown")}</dd>
+        <dt>OS environment</dt><dd>{environmentOf(s)}: sessions on the same OS image share one workload-specific correction (see the <Link href="/methodology/">methodology</Link>)</dd>
         <dt>Runner</dt><dd>{runner.RUNNER_ENVIRONMENT ?? "-"} {runner.RUNNER_OS} {runner.RUNNER_ARCH}, image {runner.ImageOS} {runner.ImageVersion}</dd>
         <dt>Load at start</dt><dd>{String(host.loadAvgStart ?? "-")}</dd>
       </dl>

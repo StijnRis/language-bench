@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NoData } from "@/components/Bits";
-import { colorOf, idx } from "@/lib/fmt";
+import { geoMean } from "@lb/core";
+import { LangIcon } from "@/components/Icons";
+import ResultsTable from "@/components/ResultsTable";
+import { colorOf } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
-import { allTags, compositeIndex, getModel, latestVersion, snapshotCells } from "@/lib/model";
+import { allTags, getModel, latestVersion, snapshotCells } from "@/lib/model";
 import { languageList } from "@/lib/text";
 
 export function generateStaticParams() {
@@ -23,17 +26,22 @@ export default async function Tag({ params }: { params: Promise<{ tag: string }>
   const cells = snapshotCells(m).filter((c) => problems.some((p) => p.spec.id === c.problem));
   const rows = m.languages.map((l) => {
     const mine = cells.filter((c) => c.language === l.spec.id);
-    return { l, idx: compositeIndex(mine), n: mine.length };
-  }).filter((r) => r.n > 0).sort((a, b) => a.idx - b.idx);
+    const sizes = mine.map((c) => c.binarySize).filter((x): x is number => x != null && x > 0);
+    return {
+      id: l.spec.id, color: colorOf(l.spec.id), n: mine.length,
+      seconds: mine.length ? geoMean(mine.map((c) => c.seconds)) : NaN,
+      memoryMB: mine.length ? geoMean(mine.map((c) => c.memoryMB || 1)) : 0,
+      binarySize: sizes.length ? geoMean(sizes) : null,
+      label: <span className="langrow"><LangIcon id={l.spec.id} size={22} /><Link href={`/languages/${l.spec.id}/`}>{l.spec.name}</Link><span className="muted small">{latestVersion(l)}</span></span>,
+    };
+  }).filter((r) => r.n > 0);
   return (
     <>
       <h1>“{tag}” workloads</h1>
-      <p className="lead">Composite speed (geometric mean of the index vs the fastest) over the problems tagged <code>{tag}</code>: {problems.map((p, i) => <span key={p.spec.id}>{i > 0 && ", "}<Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></span>)}.</p>
+      <p className="lead">Speed, memory and binary size (geometric means) over the problems tagged <code>{tag}</code>: {problems.map((p, i) => <span key={p.spec.id}>{i > 0 && ", "}<Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></span>)}.</p>
       {!rows.length ? <NoData /> : (
-        <div className="tablewrap"><table><thead><tr><th>#</th><th>Language</th><th className="num">Composite index (fastest = 1.0×)</th></tr></thead>
-          <tbody>{rows.map((r, i) => <tr key={r.l.spec.id}><td>{i + 1}</td><td><span className="dot" style={{ background: colorOf(r.l.spec.id) }} />{r.l.spec.name} <span className="muted small">{latestVersion(r.l)}</span></td><td className="num"><strong>{idx(r.idx)}</strong></td></tr>)}</tbody></table></div>
+        <ResultsTable rank rows={rows} caption="Geometric mean over the problems of this tag, newest release and default build of each language. Multipliers compare with the best language (lower is better)." />
       )}
-      <p className="small muted">Combine several tags interactively on the <Link href="/">leaderboard</Link>.</p>
     </>
   );
 }

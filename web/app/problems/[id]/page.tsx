@@ -2,7 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData, Tags } from "@/components/Bits";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
-import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
+import ResultsTable from "@/components/ResultsTable";
+import { colorOf, idx } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { benchPath, defaultVariant, getModel, siteUrl, toCell } from "@/lib/model";
 import { languageVs } from "@/lib/text";
@@ -26,8 +27,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
   const rows = m.analysis.benchmarks.filter((b) => b.problem === id).map((b) => toCell(m, b));
   // latest version of each language, all variants
   const latest = new Set(m.languages.map((l) => `${l.spec.id}|${l.spec.versions.find((v) => v.latest)!.version}`));
-  const shown = rows.filter((r) => latest.has(`${r.language}|${r.version}`)).sort((a, b) => a.index - b.index);
-  const max = Math.max(...shown.map((r) => r.index), 1);
+  const shown = rows.filter((r) => latest.has(`${r.language}|${r.version}`));
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "TechArticle", headline: `${p.spec.title} benchmark`, description: p.spec.summary }} />
@@ -45,19 +45,19 @@ export default async function Problem({ params }: { params: Promise<{ id: string
       <p><strong>Caveat:</strong> {p.spec.caveat}</p>
       <h2>Results (newest release of each language)</h2>
       {!shown.length ? <NoData /> : (
-        <div className="tablewrap"><table>
-          <thead><tr><th>Language / build</th><th className="num">Index vs fastest</th><th></th><th className="num">Time (average machine)</th><th className="num">Avg. memory</th><th className="num">Binary</th><th>Sessions</th></tr></thead>
-          <tbody>{shown.map((r) => {
+        <ResultsTable
+          nameHeader="Language / build"
+          rows={shown.map((r) => {
             const l = m.languages.find((x) => x.spec.id === r.language)!;
-            return (<tr key={r.id}>
-              <td><LangIcon id={r.language} size={22} /><Link href={benchPath(r)}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge" style={{ marginLeft: 6 }}>default</span>}</td>
-              <td className="num"><strong>{idx(r.index)}</strong> <span className="muted small">({idx(r.indexLow)}–{idx(r.indexHigh)})</span></td>
-              <td style={{ minWidth: 160, width: "30%" }}><div className="bar" style={{ width: `${Math.max(2, (r.index / max) * 100)}%`, background: colorOf(r.language) }} /></td>
-              <td className="num">{seconds(r.seconds)}</td><td className="num">{mb(r.memoryMB)}</td><td className="num">{bytes(r.binarySize)}</td>
-              <td>{r.sessions} {r.provisional && <span className="badge warn">provisional</span>}</td></tr>);
-          })}</tbody></table></div>
+            return {
+              id: r.id, seconds: r.seconds, memoryMB: r.memoryMB, binarySize: r.binarySize, color: colorOf(r.language), timeMult: r.index,
+              timeTitle: `95% interval vs the fastest entry: ${idx(r.indexLow)}–${idx(r.indexHigh)} (${r.sessions} sessions)`,
+              label: <span className="langrow"><LangIcon id={r.language} size={22} /><Link href={benchPath(r)}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge">default</span>}{r.provisional && <span className="badge warn">provisional</span>}</span>,
+            };
+          })}
+        />
       )}
-      <p className="small muted">Click a row to see the source code, build flags, every session and how the number was computed.</p>
+      <p className="small muted">Click a language to see the source code, build flags, every session and how the number was computed.</p>
     </>
   );
 }

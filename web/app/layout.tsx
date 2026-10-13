@@ -94,8 +94,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             </nav>
           </div>
           <div className="wrap footer-bottom">
-            <span>{m.hasData ? <>{m.analysis.sessionCount} sessions · {m.analysis.benchmarks.length} benchmarks{updated && <> · last measured {updated}</>}</> : "Waiting for the first benchmark session"}</span>
-            <span>MIT licensed · measured on GitHub Actions</span>
+            <span>{m.hasData ? <>{m.analysis.benchmarks.length} benchmarks{updated && <> · last measured {updated}</>}</> : "Waiting for the first benchmark session"}</span>
+            <span>MIT licensed</span>
           </div>
         </footer>
       </body>

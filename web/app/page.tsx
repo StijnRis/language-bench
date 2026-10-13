@@ -35,7 +35,7 @@ export default function Home() {
           <p className="lead">
             {m.languages.map((l, i) => <span key={l.spec.id} className="inline-lang"><LangIcon id={l.spec.id} size={20} />{l.spec.name}{i < m.languages.length - 2 ? ", " : i === m.languages.length - 2 ? " and " : ""}</span>)} measured on {scored.length} workloads. Each benchmark is re-run on
             different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions
-            {m.analysis.cpuModels.length > 0 && <> across {m.analysis.cpuModels.length} CPU model{m.analysis.cpuModels.length === 1 ? "" : "s"}</>}.
+            {m.analysis.cpuModels.length > 0 && <> across {m.analysis.cpuModels.length} CPU model{m.analysis.cpuModels.length === 1 ? "" : "s"}{m.analysis.environments.length > 1 && <> and {m.analysis.environments.length} operating-system images</>}</>}.
             Click through to see exactly how any number came about.
           </p>
         </div>
@@ -67,7 +67,7 @@ export default function Home() {
       </div>
       <h2>How to read these numbers</h2>
       <p className="muted">
-        Times are normalised against a fixed calibration program run on every machine, so sessions on different hardware can be combined.
+        Times are corrected for the speed of the machine (and the OS image) each session happened to run on, so sessions on different hardware can be combined.
         The number in brackets says how many times slower (or heavier) a language is than the best one in that table (1.0×). Hover a single-task value for its 95% confidence interval across sessions. See the <Link href="/methodology/">methodology</Link>.
       </p>
     <h2>Frequently asked questions</h2>

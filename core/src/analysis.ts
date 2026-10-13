@@ -1,5 +1,6 @@
 import {
   aggregateSessions,
+  envKey,
   fitHardware,
   mean,
   median,
@@ -10,6 +11,13 @@ import {
   type RepSummary,
 } from "./stats";
 import { benchmarkKey, extractRuns, type LanguageData, type Session } from "./schema";
+
+/** Software environment of a session: the OS image of the runner. Sessions sharing it share its effect. */
+export function environmentOf(s: Session): string {
+  const r = s.runner as Record<string, string | undefined>;
+  const arch = r.RUNNER_ARCH ?? (s.host as Record<string, any>).arch ?? "";
+  return `${r.ImageOS ?? r.RUNNER_OS ?? "unknown"} ${arch}`.trim();
+}
 
 export interface SessionDetail {
   sessionId: string;
@@ -25,7 +33,11 @@ export interface SessionDetail {
   summary: RepSummary;
   /** how much slower (>1) or faster (<1) this session's machine is than the average machine */
   machineFactor: number;
-  /** session median divided by the machine factor */
+  /** software environment (OS image) of the session */
+  environment: string;
+  /** workload-specific effect of that environment on this problem (multiplier, 1 = none) */
+  envFactor: number;
+  /** session median divided by machine factor and environment factor */
   adjustedMedian: number;
   /** mean over repetitions of the peak resident memory (bytes) */
   meanMemory: number;
@@ -67,6 +79,8 @@ export interface Analysis {
   residualSpread: number;
   /** machine factor per session id */
   machineFactors: Map<string, number>;
+  /** distinct software environments (OS images) seen in the sessions */
+  environments: string[];
   bootstraps: Map<string, number[]>;
 }
 
@@ -85,7 +99,7 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
     }
 
   const obs: Obs[] = [];
-  for (const [k, rows] of groups) for (const r of rows) obs.push({ bench: k, session: r.m.sessionId, y: Math.log(median(r.reps.times)) });
+  for (const [k, rows] of groups) for (const r of rows) obs.push({ bench: k, session: r.m.sessionId, y: Math.log(median(r.reps.times)), env: environmentOf(sessions[r.m.sessionId]!), group: r.m.problem });
   const fit = fitHardware(obs);
   // the main component = the one with the most sessions
   let main = -1;
@@ -98,7 +112,9 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
     const details: SessionDetail[] = rows
       .map(({ m, reps }) => {
         const s = sessions[m.sessionId]!;
+        const environment = environmentOf(s);
         const factor = Math.exp(fit.h.get(m.sessionId) ?? 0);
+        const envFactor = Math.exp(fit.envEffect.get(envKey(environment, m.problem)) ?? 0);
         const summary = summarizeReps(reps.times);
         const image = s.containers?.[m.containerImage] ?? {};
         return {
@@ -114,7 +130,9 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
           memory: reps.memory,
           summary,
           machineFactor: factor,
-          adjustedMedian: summary.median / factor,
+          environment,
+          envFactor,
+          adjustedMedian: summary.median / (factor * envFactor),
           meanMemory: reps.memory.length ? mean(reps.memory) : 0,
           correct: m.correct,
         };
@@ -122,7 +140,7 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
       .sort((a, b) => a.date.localeCompare(b.date));
     const last = rows[rows.length - 1]!.m;
     const { bootstrap, ...agg } = aggregateSessions(
-      details.map((d) => ({ reps: d.reps, logFactor: Math.log(d.machineFactor) })),
+      details.map((d) => ({ reps: d.reps, logFactor: Math.log(d.machineFactor * d.envFactor) })),
       k,
       iterations,
     );
@@ -157,6 +175,7 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
     sessionCount: Object.keys(sessions).length,
     cpuModels: [...new Set(Object.values(sessions).map((s) => s.host.cpu.model))],
     residualSpread: Math.exp(fit.residualSd),
+    environments: [...new Set(Object.values(sessions).map(environmentOf))].sort(),
     machineFactors: new Map([...fit.h].map(([s, v]) => [s, Math.exp(v)])),
     bootstraps,
   };

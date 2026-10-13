@@ -95,6 +95,10 @@ export interface Obs {
   session: string;
   /** natural log of the session median of the benchmark */
   y: number;
+  /** Software environment of the session (OS image); sessions with the same value share an effect. */
+  env?: string;
+  /** Kind of workload (e.g. the problem): the environment effect is estimated per group. */
+  group?: string;
 }
 
 export interface HardwareFit {
@@ -104,19 +108,29 @@ export interface HardwareFit {
   mu: Map<string, number>;
   /** connected component id per session; sessions of different components are not comparable */
   component: Map<string, number>;
+  /** log environment effect, keyed by {@link envKey}(env, group); 0 when only one environment exists */
+  envEffect: Map<string, number>;
   /** residual standard deviation of the model (log units) */
   residualSd: number;
   componentSizes: Map<number, number>;
 }
 
+export const envKey = (env: string, group: string) => `${env}|${group}`;
+
 /**
- * Additive model  log(time[b,s]) = mu[b] + h[s] + noise.
+ * Additive model  log(time[b,s]) = mu[b] + h[s] + d[env(s), group(b)] + noise.
+ * d is the effect of the software environment (e.g. an Ubuntu 24 vs Ubuntu 26 runner image) on a
+ * kind of workload. All sessions with the same environment share it, so it is learned from every
+ * one of them at once. It is shrunk towards 0 (ridge) and centred per group, so a general speed
+ * shift of an environment is carried by the machine factors and only the workload-specific
+ * deviation lands in d.
+ * Base model  log(time[b,s]) = mu[b] + h[s] + noise.
  * Sessions run many benchmarks and share benchmarks with other sessions; a benchmark measured in
  * two sessions reveals the speed difference of the two machines. Fitted by alternating least
  * squares. Within each connected component of the (benchmark, session) graph the mean of h is 0,
  * i.e. times are expressed on the "average machine" of that component.
  */
-export function fitHardware(obs: Obs[], iterations = 400): HardwareFit {
+export function fitHardware(obs: Obs[], iterations = 400, envShrinkage = 3): HardwareFit {
   const parent = new Map<string, string>();
   const find = (x: string): string => {
     let r = x;
@@ -143,15 +157,34 @@ export function fitHardware(obs: Obs[], iterations = 400): HardwareFit {
   }
   const h = new Map<string, number>([...bySession.keys()].map((s) => [s, 0]));
   const mu = new Map<string, number>();
+  const d = new Map<string, number>();
+  const dOf = (o: Obs) => (o.env !== undefined && o.group !== undefined ? (d.get(envKey(o.env, o.group)) ?? 0) : 0);
+  const byEnv = new Map<string, Obs[]>();
+  for (const o of obs) if (o.env !== undefined && o.group !== undefined) (byEnv.get(envKey(o.env, o.group)) ?? byEnv.set(envKey(o.env, o.group), []).get(envKey(o.env, o.group))!).push(o);
 
   const updateMu = () => {
-    for (const [b, os] of byBench) mu.set(b, mean(os.map((o) => o.y - h.get(o.session)!)));
+    for (const [b, os] of byBench) mu.set(b, mean(os.map((o) => o.y - h.get(o.session)! - dOf(o))));
+  };
+  const updateEnv = () => {
+    for (const [k, os] of byEnv) d.set(k, os.reduce((a, o) => a + o.y - mu.get(o.bench)! - h.get(o.session)!, 0) / (os.length + envShrinkage));
+    // centre per group (weighted by observations) so the environments' average effect stays in h
+    const acc = new Map<string, { sum: number; n: number }>();
+    for (const [k, os] of byEnv) {
+      const g = os[0]!.group!;
+      const e = acc.get(g) ?? acc.set(g, { sum: 0, n: 0 }).get(g)!;
+      e.sum += d.get(k)! * os.length;
+      e.n += os.length;
+    }
+    for (const [k, os] of byEnv) {
+      const e = acc.get(os[0]!.group!)!;
+      d.set(k, d.get(k)! - e.sum / e.n);
+    }
   };
   updateMu();
   for (let it = 0; it < iterations; it++) {
     let delta = 0;
     for (const [s, os] of bySession) {
-      const v = mean(os.map((o) => o.y - mu.get(o.bench)!));
+      const v = mean(os.map((o) => o.y - mu.get(o.bench)! - dOf(o)));
       delta = Math.max(delta, Math.abs(v - h.get(s)!));
       h.set(s, v);
     }
@@ -168,14 +201,15 @@ export function fitHardware(obs: Obs[], iterations = 400): HardwareFit {
       h.set(s, v - e.sum / e.n);
     }
     updateMu();
+    updateEnv();
     if (delta < 1e-12) break;
   }
-  const res = obs.map((o) => o.y - mu.get(o.bench)! - h.get(o.session)!);
+  const res = obs.map((o) => o.y - mu.get(o.bench)! - h.get(o.session)! - dOf(o));
   const dof = Math.max(1, obs.length - byBench.size - bySession.size + compId.size);
   const residualSd = Math.sqrt(res.reduce((a, r) => a + r * r, 0) / dof);
   const componentSizes = new Map<number, number>();
   for (const c of compOf.values()) componentSizes.set(c, (componentSizes.get(c) ?? 0) + 1);
-  return { h, mu, component: compOf, residualSd, componentSizes };
+  return { h, mu, component: compOf, envEffect: d, residualSd, componentSizes };
 }
 
 export interface SessionSample {
