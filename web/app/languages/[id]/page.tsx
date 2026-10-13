@@ -2,10 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
 import { LangIcon } from "@/components/Icons";
-import { idx } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
+import ReleaseTable from "@/components/ReleaseTable";
 import Timeline from "@/components/Timeline";
-import { languageSeries } from "@/lib/timeline";
+import { languageSeries, timelineProblems } from "@/lib/timeline";
 import { benchId, benchPath, defaultVariant, getModel, latestVersion, toCell, versionsOf } from "@/lib/model";
 
 export function generateStaticParams() {
@@ -34,21 +34,25 @@ export default async function Language({ params }: { params: Promise<{ id: strin
       <p><a href={l.spec.website}>{l.spec.website}</a></p>
       <h2>Build settings</h2>
       <ul>{l.spec.variants.map((v) => <li key={v.id}><strong>{v.name}</strong>{v.default && " (default)"} – {v.description}<br /><code>{v.build ?? v.run}</code></li>)}</ul>
-      <h2>Index vs fastest, per release (default build, lower = faster)</h2>
+      <h2>Every release (default build)</h2>
       {!has ? <NoData /> : (
-        <div className="tablewrap"><table>
-          <thead><tr><th>Release</th>{scored.map((p) => <th key={p.spec.id} className="num"><Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></th>)}</tr></thead>
-          <tbody>{versionsOf(m, l).map((version) => (
-            <tr key={version}><td><strong>{version}</strong> <span className="muted small">{l.releases[version]?.date}</span></td>
-              {scored.map((p) => {
-                const b = m.byId.get(benchId({ language: id, version, variant: defaultVariant(l), problem: p.spec.id }));
-                return <td key={p.spec.id} className="num">{b ? <Link href={`${benchPath(b)}`}>{idx(toCell(m, b).index)}</Link> : "-"}</td>;
-              })}</tr>))}</tbody></table></div>
+        <ReleaseTable
+          problems={scored.map((p) => ({ id: p.spec.id, title: p.spec.title }))}
+          rows={versionsOf(m, l).map((version) => ({
+            version, date: l.releases[version]?.date,
+            cells: scored.map((p) => {
+              const b = m.byId.get(benchId({ language: id, version, variant: defaultVariant(l), problem: p.spec.id }));
+              if (!b) return null;
+              const c = toCell(m, b);
+              return { href: benchPath(b), seconds: c.seconds, memoryMB: c.memoryMB, binarySize: c.binarySize };
+            }),
+          }))}
+        />
       )}
       <h2>Speed across releases</h2>
-      <p className="muted">Did {l.spec.name} get faster? Every tracked release plotted at its release date, one line per build setting. Choose a problem to compare.</p>
+      <p className="muted">Did {l.spec.name} get faster? Every tracked release plotted at its release date, one line per build setting. Shows time, memory or binary size over all problems by default.</p>
       {!has ? <NoData /> : (
-        <Timeline series={languageSeries(m, l)} problems={scored.map((p) => ({ id: p.spec.id, title: p.spec.title }))}
+        <Timeline series={languageSeries(m, l)} problems={timelineProblems(m)}
           releases={versionsOf(m, l).flatMap((v) => (l.releases[v] ? [{ version: v, ...l.releases[v]! }] : []))} />
       )}
       <h2>Release highlights</h2>

@@ -128,9 +128,9 @@ export function allTags(m: Model): string[] {
   return [...new Set(m.problems.flatMap((p) => p.spec.tags))].sort();
 }
 
-export function sourceOf(m: Model, language: string, problem: string): string | undefined {
+export function sourceOf(m: Model, language: string, problem: string, version?: string): string | undefined {
   const l = m.languages.find((x) => x.spec.id === language);
-  return l ? readSource(m.root, l.spec, problem) : undefined;
+  return l ? readSource(m.root, l.spec, problem, version) : undefined;
 }
 
 export const siteUrl = (process.env.SITE_URL || "https://stijnris.github.io/language-bench").replace(/\/$/, "");

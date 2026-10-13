@@ -16,6 +16,13 @@ export const VariantSchema = z.object({
   default: z.boolean().default(false),
   /** Only benchmark this variant for these versions (default: all). */
   versions: z.array(z.string()).optional(),
+  /** Only benchmark this variant from this version on (dotted numeric compare), e.g. a flag older toolchains do not know. */
+  minVersion: z.string().optional(),
+  /**
+   * Different commands for newer versions. The rule with the highest `minVersion` that is <= the
+   * benchmarked version overrides `build` / `run` (a field left out keeps the value above).
+   */
+  rules: z.array(z.object({ minVersion: z.string(), build: z.string().optional(), run: z.string().optional() })).optional(),
 });
 
 export const LanguageSchema = z.object({
@@ -38,7 +45,8 @@ export const LanguageSchema = z.object({
   variants: z.array(VariantSchema).min(1),
   /**
    * How new releases are found (see runner/src/versions.ts). `versions` above is maintained
-   * automatically from this source: the newest `trackedVersionsPerLanguage` releases are tracked.
+   * automatically from this source: releases newer than the newest tracked one are appended; the
+   * existing list is curated by hand and never rewritten.
    */
   versionSource: z
     .object({
@@ -102,14 +110,14 @@ export const ConfigSchema = z.object({
   targetSessionsPerBenchmark: z.number().int().min(1),
   /** Max benchmarks executed in one session (one session = one VM = many benchmarks). */
   maxBenchmarksPerSession: z.number().int().min(1),
-  /** Sessions started in parallel per workflow round. */
-  sessionsPerRound: z.number().int().min(1),
+  /** Upper bound of sessions (= VMs) started in parallel per workflow round. */
+  maxSessionsPerRound: z.number().int().min(1),
+  /** Lower bound: even a nearly finished round starts this many sessions. */
+  minSessionsPerRound: z.number().int().min(1),
   /** Share of each session spent re-running already measured benchmarks (to calibrate hardware). */
   overlapFraction: z.number().min(0).max(1),
   /** ...but at least this many (when enough measured benchmarks exist). */
   minOverlap: z.number().int().min(0),
-  /** Newest N releases per language are tracked. */
-  trackedVersionsPerLanguage: z.number().int().min(1),
   /** Give up on a benchmark after this many failed attempts. */
   maxAttempts: z.number().int().min(1),
   /** A session stops starting new benchmarks after this long. */

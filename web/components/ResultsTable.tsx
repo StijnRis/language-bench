@@ -1,4 +1,5 @@
-import type { ReactNode } from "react";
+"use client";
+import { useState, type ReactNode } from "react";
 import { bytes, idx, mb, seconds } from "@/lib/fmt";
 
 export interface ResultRow {
@@ -14,67 +15,93 @@ export interface ResultRow {
   timeTitle?: string;
 }
 
-export type ResultMetric = "time" | "memory";
+export type ResultMetric = "time" | "memory" | "size";
+export const METRICS: { id: ResultMetric; label: string }[] = [
+  { id: "time", label: "Time" },
+  { id: "memory", label: "Memory" },
+  { id: "size", label: "Binary size" },
+];
+
+const fmt: Record<ResultMetric, (r: ResultRow) => string> = {
+  time: (r) => seconds(r.seconds),
+  memory: (r) => (r.memoryMB > 0 ? mb(r.memoryMB) : "-"),
+  size: (r) => bytes(r.binarySize),
+};
+const raw: Record<ResultMetric, (r: ResultRow) => number> = {
+  time: (r) => r.seconds,
+  memory: (r) => r.memoryMB,
+  size: (r) => r.binarySize ?? NaN,
+};
 
 /**
- * One table for every "who is fastest" view: time, memory and binary size, each with its value
- * (and, for time and memory, how many times more than the best row). The bar shows the chosen metric.
+ * One table for every "who is best" view. One metric at a time (time, memory or binary size),
+ * chosen above the table; each row shows the value and how many times more than the best row.
  */
 export default function ResultsTable({
   rows,
   nameHeader = "Language",
-  metric = "time",
   caption,
   rank = false,
+  controls,
   empty = "No measurements for this selection yet.",
 }: {
   rows: ResultRow[];
   nameHeader?: string;
-  metric?: ResultMetric;
   caption?: string;
   rank?: boolean;
+  /** extra controls shown left of the metric buttons */
+  controls?: ReactNode;
   empty?: string;
 }) {
-  const finite = (xs: number[]) => xs.filter((x) => isFinite(x) && x > 0);
-  const bestTime = Math.min(...finite(rows.map((r) => r.seconds)));
-  const bestMem = Math.min(...finite(rows.map((r) => r.memoryMB)));
-  const view = rows.map((r) => ({
-    r,
-    tm: r.timeMult ?? r.seconds / bestTime,
-    mm: r.memoryMB > 0 ? r.memoryMB / bestMem : NaN,
-  }));
-  const barOf = (v: (typeof view)[number]) => (metric === "time" ? v.tm : v.mm);
-  const sorted = [...view].sort((a, b) => (isFinite(barOf(a)) ? barOf(a) : Infinity) - (isFinite(barOf(b)) ? barOf(b) : Infinity));
-  const max = Math.max(...sorted.map(barOf).filter(isFinite), 1e-9);
-  const cols = 5 + (rank ? 1 : 0);
+  const [metric, setMetric] = useState<ResultMetric>("time");
+  const valid = (x: number) => isFinite(x) && x > 0;
+  const best = Math.min(...rows.map((r) => raw[metric](r)).filter(valid));
+  const view = rows
+    .map((r) => {
+      const v = raw[metric](r);
+      const mult = metric === "time" && r.timeMult != null ? r.timeMult : valid(v) ? v / best : NaN;
+      return { r, v, mult };
+    })
+    .sort((a, b) => (isFinite(a.mult) ? a.mult : Infinity) - (isFinite(b.mult) ? b.mult : Infinity));
+  const max = Math.max(...view.map((x) => x.mult).filter(isFinite), 1e-9);
+  const label = METRICS.find((t) => t.id === metric)!.label;
+  const missing = metric === "size" ? "no binary (interpreted)" : "-";
   return (
-    <div className="tablewrap">
-      <table>
-        {caption && <caption className="small muted" style={{ textAlign: "left", padding: "8px 12px" }}>{caption}</caption>}
-        <thead>
-          <tr>
-            {rank && <th>#</th>}
-            <th>{nameHeader}</th>
-            <th className="num">Time <span className="muted">(× vs best)</span></th>
-            <th className="num">Memory <span className="muted">(× vs best)</span></th>
-            <th className="num">Binary size</th>
-            <th style={{ minWidth: 140, width: "28%" }}></th>
-          </tr>
-        </thead>
-        <tbody>
-          {sorted.map((v, i) => (
-            <tr key={v.r.id}>
-              {rank && <td>{i + 1}</td>}
-              <td>{v.r.label}</td>
-              <td className="num" title={v.r.timeTitle}><strong>{seconds(v.r.seconds)}</strong> <span className="muted">({idx(v.tm)})</span></td>
-              <td className="num">{v.r.memoryMB > 0 ? <><strong>{mb(v.r.memoryMB)}</strong> <span className="muted">({idx(v.mm)})</span></> : "-"}</td>
-              <td className="num">{bytes(v.r.binarySize)}</td>
-              <td>{isFinite(barOf(v)) && <div className="bar" style={{ width: `${Math.max(2, (barOf(v) / max) * 100)}%`, background: v.r.color }} />}</td>
-            </tr>
+    <div>
+      <div className="controls">
+        {controls}
+        <span role="group" aria-label="Metric">
+          {METRICS.map((t) => (
+            <button key={t.id} className="chip" aria-pressed={metric === t.id} onClick={() => setMetric(t.id)} style={{ marginRight: 6 }}>{t.label}</button>
           ))}
-          {sorted.length === 0 && <tr><td colSpan={cols} className="empty">{empty}</td></tr>}
-        </tbody>
-      </table>
+        </span>
+      </div>
+      <div className="tablewrap">
+        <table>
+          {caption && <caption className="small muted" style={{ textAlign: "left", padding: "8px 12px" }}>{caption} Showing {label.toLowerCase()}.</caption>}
+          <thead>
+            <tr>
+              {rank && <th>#</th>}
+              <th>{nameHeader}</th>
+              <th className="num">{label} <span className="muted">(× vs best)</span></th>
+              <th style={{ minWidth: 140, width: "34%" }}></th>
+            </tr>
+          </thead>
+          <tbody>
+            {view.map((x, i) => (
+              <tr key={x.r.id}>
+                {rank && <td>{i + 1}</td>}
+                <td>{x.r.label}</td>
+                <td className="num" title={metric === "time" ? x.r.timeTitle : undefined}>
+                  {isFinite(x.mult) ? <><strong>{fmt[metric](x.r)}</strong> <span className="muted">({idx(x.mult)})</span></> : <span className="muted small">{missing}</span>}
+                </td>
+                <td>{isFinite(x.mult) && <div className="bar" style={{ width: `${Math.max(2, (x.mult / max) * 100)}%`, background: x.r.color }} />}</td>
+              </tr>
+            ))}
+            {view.length === 0 && <tr><td colSpan={rank ? 4 : 3} className="empty">{empty}</td></tr>}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

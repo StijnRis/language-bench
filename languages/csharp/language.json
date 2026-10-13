@@ -4,14 +4,34 @@
   "highlight": "csharp",
   "website": "https://dotnet.microsoft.com/",
   "description": "C# on .NET (CoreCLR): compiled to IL, then tiered JIT-compiled with dynamic PGO, with a generational garbage collector.",
-  "color": { "light": "#7c3aed", "dark": "#a78bfa" },
+  "color": {
+    "light": "#7c3aed",
+    "dark": "#a78bfa"
+  },
   "sourceFile": "Program.cs",
   "image": "mcr.microsoft.com/dotnet/sdk:{version}",
   "toolVersionCmd": "dotnet --version",
   "versions": [
-    { "version": "10.0", "latest": true },
-    { "version": "9.0", "latest": false },
-    { "version": "8.0", "latest": false }
+    {
+      "version": "10.0",
+      "latest": true
+    },
+    {
+      "version": "9.0",
+      "latest": false
+    },
+    {
+      "version": "8.0",
+      "latest": false
+    },
+    {
+      "version": "7.0",
+      "latest": false
+    },
+    {
+      "version": "6.0",
+      "latest": false
+    }
   ],
   "variants": [
     {
@@ -34,6 +54,7 @@
     "kind": "github-tags",
     "repo": "dotnet/runtime",
     "pattern": "^v(\\d+\\.0)\\.0$",
-    "url": "https://dotnet.microsoft.com/platform/support/policy/dotnet-core"
+    "url": "https://dotnet.microsoft.com/platform/support/policy/dotnet-core",
+    "minVersion": "6.0"
   }
 }

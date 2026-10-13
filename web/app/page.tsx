@@ -39,12 +39,6 @@ export default function Home() {
             Click through to see exactly how any number came about.
           </p>
         </div>
-        {m.hasData && (
-          <figure className="share">
-            <a href="share.png"><img src="share.png" alt={`Bar chart: speed index of ${languageList(m)}`} width={1200} height={630} /></a>
-            <figcaption className="small muted">Right-click to copy or save. Regenerated from the data on every deploy.</figcaption>
-          </figure>
-        )}
       </section>
       {!m.hasData ? <NoData /> : (
         <Leaderboard

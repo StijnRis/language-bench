@@ -1,16 +1,24 @@
 name: verify
 
 # Checks that every implementation still prints exactly problems/<id>/expected.txt.
-# On pull requests / pushes only the changed (language, problem) pairs are built and run.
+# Runs only when something relevant changed (no schedule): on pull requests / pushes only the touched
+# (language, problem) pairs are built and run, for every tracked version of that language. bench.yml
+# starts it for versions that discovery adds (pushes made with GITHUB_TOKEN do not trigger workflows).
+# Manually: everything, or limited with the inputs.
 on:
   pull_request:
     paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
   push:
     branches: [main]
     paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
-  schedule:
-    - cron: "23 4 * * 2" # weekly: every language version, every implementation
   workflow_dispatch:
+    inputs:
+      language:
+        description: "Comma-separated language ids (default: all)"
+        required: false
+      version:
+        description: "Comma-separated versions (default: all tracked)"
+        required: false
 
 permissions:
   contents: read
@@ -40,11 +48,15 @@ jobs:
           else
             base=""
           fi
+          lang="${{ inputs.language }}"; ver="${{ inputs.version }}"
           if [ -n "$base" ] && git cat-file -e "$base" 2>/dev/null; then
             git diff --name-only "$base" HEAD | pnpm -s lb verify-matrix > changed.json
           else
-            # scheduled / manual: everything, every version
-            pnpm -s lb matrix > changed.json
+            # manual: everything (or the requested languages / versions)
+            args=""
+            if [ -n "$lang" ]; then args="$args --language $lang"; fi
+            if [ -n "$ver" ]; then args="$args --version $ver"; fi
+            pnpm -s lb matrix $args > changed.json
           fi
           echo "changed=$(cat changed.json)" >> "$GITHUB_OUTPUT"
 

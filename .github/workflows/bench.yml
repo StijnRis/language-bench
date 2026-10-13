@@ -48,7 +48,7 @@ jobs:
         id: versions
         env:
           GITHUB_TOKEN: ${{ github.token }}
-        run: pnpm -s lb discover-versions
+        run: pnpm -s lb discover-versions | tee changes.json
       - name: Commit new versions
         run: |
           git config user.name "language-bench[bot]"
@@ -56,8 +56,15 @@ jobs:
           git add languages
           if git diff --cached --quiet; then exit 0; fi
           git commit -m "chore: track new language releases"
-          for i in 1 2 3; do git push && exit 0; git pull --rebase; done
-          exit 1
+          pushed=""
+          for i in 1 2 3; do git push && pushed=1 && break; git pull --rebase; done
+          if [ -z "$pushed" ]; then exit 1; fi
+          # a push with GITHUB_TOKEN does not trigger verify.yml, so ask for it: new versions must build first
+          jq -r '.[] | "\(.language) \(.added | join(","))"' changes.json | while read -r language versions; do
+            gh workflow run verify.yml -f language="$language" -f version="$versions"
+          done
+        env:
+          GH_TOKEN: ${{ github.token }}
       - id: sha
         run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
       - name: Plan sessions

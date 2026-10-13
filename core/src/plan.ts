@@ -1,6 +1,17 @@
 import { hashSeed, mulberry32 } from "./stats";
 import type { Config } from "./schema";
 
+/** Compares dotted numeric versions ("1.9" < "1.10"). */
+export const cmpVersion = (a: string, b: string) => {
+  const pa = a.split(".").map(Number);
+  const pb = b.split(".").map(Number);
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const d = (pa[i] ?? 0) - (pb[i] ?? 0);
+    if (d) return d;
+  }
+  return 0;
+};
+
 export interface Candidate {
   key: string;
   language: string;
@@ -31,6 +42,16 @@ export interface Plan {
   total: number;
 }
 
+/**
+ * How many parallel sessions (VMs) a round should use: enough that every benchmark that still
+ * needs data gets a fresh slot in this round, within [minSessionsPerRound, maxSessionsPerRound].
+ */
+export function sessionsFor(remaining: number, cfg: Config): number {
+  const overlap = Math.max(cfg.minOverlap, Math.round(cfg.overlapFraction * cfg.maxBenchmarksPerSession));
+  const freshPerSession = Math.max(1, cfg.maxBenchmarksPerSession - overlap);
+  return Math.min(cfg.maxSessionsPerRound, Math.max(cfg.minSessionsPerRound, Math.ceil(remaining / freshPerSession)));
+}
+
 export const isDone = (c: Counts | undefined, cfg: Config) =>
   (c?.ok ?? 0) >= cfg.targetSessionsPerBenchmark || (c?.failed ?? 0) >= cfg.maxAttempts;
 
@@ -48,7 +69,7 @@ export function planSessions(
   counts: Map<string, Counts>,
   cfg: Config,
   seed: string,
-  sessionCount = cfg.sessionsPerRound,
+  sessionCount?: number,
 ): Plan {
   const rnd = mulberry32(hashSeed(seed));
   const virtual = new Map(candidates.map((c) => [c.key, counts.get(c.key)?.ok ?? 0]));
@@ -56,6 +77,7 @@ export function planSessions(
   const needy = (c: Candidate) =>
     (counts.get(c.key)?.ok ?? 0) < cfg.targetSessionsPerBenchmark && failed(c) < cfg.maxAttempts;
   const remaining = candidates.filter(needy).length;
+  sessionCount ??= sessionsFor(remaining, cfg);
   const shuffle = <T>(xs: T[]) => {
     const a = [...xs];
     for (let i = a.length - 1; i > 0; i--) {

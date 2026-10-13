@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NoData } from "@/components/Bits";
 import { LangIcon } from "@/components/Icons";
-import { colorOf, idx, mb, seconds } from "@/lib/fmt";
+import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { benchId, benchPath, defaultVariant, getModel, latestVersion, pairs } from "@/lib/model";
 
@@ -45,11 +45,17 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
   const winsA = rows.filter((r) => r.ratio < 1).length;
   const memWinner = memRatio < 1 ? a : b;
   const memFactor = memRatio < 1 ? 1 / memRatio : memRatio;
-  const cell = (secs: number, bytes: number, timeBetter: boolean, memBetter: boolean) => (
+  const sizeRows = rows.filter((r) => r.ba.binarySize && r.bb.binarySize);
+  const sizeRatio = sizeRows.length ? geo(sizeRows.map((r) => r.ba.binarySize! / r.bb.binarySize!)) : NaN;
+  const sizeWinner = sizeRatio < 1 ? a : b;
+  const sizeFactor = sizeRatio < 1 ? 1 / sizeRatio : sizeRatio;
+  const cell = (secs: number, memBytes: number, size: number | undefined, timeBetter: boolean, memBetter: boolean, sizeBetter: boolean) => (
     <>
       <span className={timeBetter ? "better" : undefined}>{seconds(secs)}</span>
       {" / "}
-      <span className={memBetter ? "better" : undefined}>{mb(bytes / 1e6)}</span>
+      <span className={memBetter ? "better" : undefined}>{mb(memBytes / 1e6)}</span>
+      {" / "}
+      <span className={sizeBetter ? "better" : undefined}>{size ? bytes(size) : "no binary"}</span>
     </>
   );
   return (
@@ -60,17 +66,19 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
           <div className="verdict-hero">
             <div className="big"><span style={{ color: colorOf(winner.spec.id) }}>{winner.spec.name}</span> is {idx(factor)} faster</div>
             <div className="sub">than {loser.spec.name} overall (geometric mean over {rows.length} problems). {a.spec.name} wins {winsA}, {b.spec.name} wins {rows.length - winsA}.
-              {" "}{memWinner.spec.name} uses {idx(memFactor)} less memory on average.</div>
+              {" "}{memWinner.spec.name} uses {idx(memFactor)} less memory on average.
+              {isFinite(sizeRatio) && <>{" "}{sizeWinner.spec.name} produces {idx(sizeFactor)} smaller binaries.</>}</div>
           </div>
-          <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster. Each cell shows time / memory; the better value is green.</p>
+          <p className="lead">Newest release and default build of each ({a.spec.name} {latestVersion(a)}, {b.spec.name} {latestVersion(b)}), compared problem by problem. “Ratio” is {a.spec.name} time ÷ {b.spec.name} time: below 1.0 means {a.spec.name} is faster. Each cell shows time / memory / binary size; the better value is green.</p>
           <div className="tablewrap"><table>
             <thead><tr><th>Problem</th><th className="num"><LangIcon id={a.spec.id} size={20} />{a.spec.name}</th><th className="num"><LangIcon id={b.spec.id} size={20} />{b.spec.name}</th><th className="num">Ratio (95% CI)</th></tr></thead>
             <tbody>{rows.map((r) => {
               const timeA = r.ratio < 1, memA = r.ba.memoryBytes < r.bb.memoryBytes;
+              const sa = r.ba.binarySize, sb = r.bb.binarySize, sizeA = !!sa && !!sb && sa < sb, sizeB = !!sa && !!sb && sb < sa;
               return (<tr key={r.p.spec.id}>
                 <td><Link href={`/problems/${r.p.spec.id}/`}>{r.p.spec.title}</Link></td>
-                <td className="num"><Link href={`${benchPath(r.ba)}`} className="plain">{cell(r.ba.refSeconds, r.ba.memoryBytes, timeA, memA)}</Link></td>
-                <td className="num"><Link href={`${benchPath(r.bb)}`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, !timeA, !memA)}</Link></td>
+                <td className="num"><Link href={`${benchPath(r.ba)}`} className="plain">{cell(r.ba.refSeconds, r.ba.memoryBytes, sa, timeA, memA, sizeA)}</Link></td>
+                <td className="num"><Link href={`${benchPath(r.bb)}`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, sb, !timeA, !memA, sizeB)}</Link></td>
                 <td className="num">{idx(r.ratio)} <span className="muted small">({idx(r.low)}–{idx(r.high)})</span></td></tr>);
             })}</tbody></table></div>
         </>

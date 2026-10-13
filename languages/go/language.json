@@ -4,7 +4,10 @@
   "highlight": "go",
   "website": "https://go.dev/",
   "description": "Go compiled ahead-of-time by the gc toolchain, with a concurrent garbage collector and goroutines.",
-  "color": { "light": "#0891b2", "dark": "#22d3ee" },
+  "color": {
+    "light": "#0891b2",
+    "dark": "#22d3ee"
+  },
   "sourceFile": "main.go",
   "image": "golang:{version}",
   "toolVersionCmd": "go version",
@@ -18,7 +21,15 @@
       "latest": false
     },
     {
-      "version": "1.25",
+      "version": "1.24",
+      "latest": false
+    },
+    {
+      "version": "1.22",
+      "latest": false
+    },
+    {
+      "version": "1.21",
       "latest": false
     }
   ],
@@ -42,7 +53,8 @@
   "versionSource": {
     "kind": "github-tags",
     "repo": "golang/go",
-    "pattern": "^go(1\\.\\d+)\\.0$",
-    "url": "https://go.dev/doc/devel/release"
+    "pattern": "^go(1\\.\\d+)(?:\\.0)?$",
+    "url": "https://go.dev/doc/devel/release",
+    "minVersion": "1.21"
   }
 }

@@ -19,7 +19,7 @@ export default function Methodology() {
         <li><strong>Session</strong>: one GitHub Actions job on one fresh hosted VM. A session runs <em>many different benchmarks</em> (from all languages), each in the pinned official Docker image of its language. Hardware, kernel, OS image, Docker, hyperfine version and much more are recorded per session.</li>
         <li><strong>Repetition</strong>: one execution inside a session, recorded with <a href="https://github.com/sharkdp/hyperfine">hyperfine</a> 2.x (wall-clock time, user/system CPU time and peak resident memory of every run). The number of repetitions is configurable and bounded by a time budget.</li>
         <li><strong>Scheduling</strong>: the planner always picks the benchmarks with the <em>fewest</em> completed sessions, never the same benchmark twice in one session. A configurable share of every session re-runs already measured benchmarks. New sessions keep being started until every tracked benchmark has the configured number of sessions; then nothing runs until a new language release or build setting appears.</li>
-        <li>New releases are discovered automatically (the newest N releases per language are tracked).</li>
+        <li>New releases are discovered automatically. For every language the first release of every calendar year since its oldest supported release is tracked (one release per year, as long as an official Docker image exists), plus the newest release; this is what the timelines show.</li>
       </ul>
 
       <h2>Fair play</h2>

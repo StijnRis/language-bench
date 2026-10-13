@@ -4,14 +4,54 @@
   "highlight": "ruby",
   "website": "https://www.ruby-lang.org/",
   "description": "The reference CRuby (MRI) interpreter: bytecode VM with a global VM lock and a generational, incremental garbage collector. Optional YJIT compiler.",
-  "color": { "light": "#db2777", "dark": "#f472b6" },
+  "color": {
+    "light": "#db2777",
+    "dark": "#f472b6"
+  },
   "sourceFile": "main.rb",
   "image": "ruby:{version}",
   "toolVersionCmd": "ruby --version",
   "versions": [
-    { "version": "4.0", "latest": true },
-    { "version": "3.4", "latest": false },
-    { "version": "3.3", "latest": false }
+    {
+      "version": "4.0",
+      "latest": true
+    },
+    {
+      "version": "3.4",
+      "latest": false
+    },
+    {
+      "version": "3.3",
+      "latest": false
+    },
+    {
+      "version": "3.2",
+      "latest": false
+    },
+    {
+      "version": "3.1",
+      "latest": false
+    },
+    {
+      "version": "3.0",
+      "latest": false
+    },
+    {
+      "version": "2.7",
+      "latest": false
+    },
+    {
+      "version": "2.6",
+      "latest": false
+    },
+    {
+      "version": "2.5",
+      "latest": false
+    },
+    {
+      "version": "2.4",
+      "latest": false
+    }
   ],
   "variants": [
     {
@@ -25,13 +65,15 @@
       "id": "ruby-yjit",
       "name": "ruby --yjit",
       "description": "Enables YJIT, the built-in JIT compiler.",
-      "run": "ruby --yjit {src}/main.rb"
+      "run": "ruby --yjit {src}/main.rb",
+      "minVersion": "3.1"
     }
   ],
   "versionSource": {
     "kind": "github-tags",
     "repo": "ruby/ruby",
     "pattern": "^v(\\d+[._]\\d+)[._]0$",
-    "url": "https://www.ruby-lang.org/en/downloads/branches/"
+    "url": "https://www.ruby-lang.org/en/downloads/branches/",
+    "minVersion": "2.4"
   }
 }

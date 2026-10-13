@@ -14,7 +14,6 @@ const body = Figtree({ subsets: ["latin"], variable: "--font-body", display: "sw
 const model = getModel();
 const names = languageList(model);
 const description = `Transparent, statistically combined speed and memory benchmarks of ${names}, measured repeatedly on GitHub Actions. Every number links to its raw repetitions.`;
-const shareImage = { url: `${siteUrl}/share.png`, width: 1200, height: 630, alt: `Bar chart comparing the speed of ${names}` };
 const langNames = model.languages.map((l) => l.spec.name);
 
 export const metadata: Metadata = {
@@ -26,8 +25,8 @@ export const metadata: Metadata = {
   authors: [{ name: "language-bench", url: repoUrl }],
   alternates: { canonical: siteUrl },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
-  openGraph: { type: "website", siteName: "language-bench", locale: "en_US", url: siteUrl, title: "How fast is each programming language, really?", description, images: [shareImage] },
-  twitter: { card: "summary_large_image", title: "How fast is each programming language, really?", description, images: [shareImage.url] },
+  openGraph: { type: "website", siteName: "language-bench", locale: "en_US", url: siteUrl, title: "How fast is each programming language, really?", description },
+  twitter: { card: "summary", title: "How fast is each programming language, really?", description },
 };
 
 export const viewport: Viewport = {

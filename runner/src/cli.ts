@@ -37,7 +37,7 @@ async function main() {
     /* Find new language releases and update language.json / releases.json. */
     case "discover-versions": {
       const changes = await discoverVersions(loadConfig(ROOT), f["dry-run"] !== "true");
-      console.log(changes.length ? JSON.stringify(changes, null, 2) : "no new versions");
+      console.log(JSON.stringify(changes, null, 2));
       ghOutput("changed", String(changes.length > 0));
       break;
     }
@@ -52,7 +52,7 @@ async function main() {
     /* Decide what the next sessions run. Writes plans/<n>.json and prints a GitHub matrix. */
     case "plan": {
       const cfg = loadConfig(ROOT);
-      const plan = planSessions(enumerateCandidates(), currentCounts(), cfg, f.seed ?? `${Date.now()}`, f.sessions ? Number(f.sessions) : cfg.sessionsPerRound);
+      const plan = planSessions(enumerateCandidates(), currentCounts(), cfg, f.seed ?? `${Date.now()}`, f.sessions ? Number(f.sessions) : undefined);
       const dir = cwdPath(f.out ?? ".work/plans");
       fs.mkdirSync(dir, { recursive: true });
       const stamp = new Date().toISOString().replace(/[:.]/g, "-");
@@ -80,29 +80,37 @@ async function main() {
       await runSession(plan, { out: cwdPath(f.out!) });
       break;
     }
+    /* Which (language, version, problems) combinations to verify for a list of changed files (stdin). */
     case "verify-matrix": {
       const changed = fs.readFileSync(0, "utf8").split("\n").map((s) => s.trim()).filter(Boolean);
-      const langs = loadLanguages(ROOT).map((l) => l.spec.id);
+      const langs = loadLanguages(ROOT);
       const problems = loadProblems(ROOT).map((p) => p.spec.id);
       const all = changed.some((c) => /^(runner|core)\//.test(c) || c === "pnpm-lock.yaml" || c.startsWith(".github/workflows/verify"));
-      const pairs = new Map<string, Set<string>>();
+      const wanted = new Map<string, Set<string>>();
       const add = (l: string, p: string | null) => {
-        const set = pairs.get(l) ?? pairs.set(l, new Set()).get(l)!;
+        const set = wanted.get(l) ?? wanted.set(l, new Set()).get(l)!;
         for (const x of p ? [p] : problems) set.add(x);
       };
       for (const c of changed) {
         let m: RegExpMatchArray | null;
-        if (all) langs.forEach((l) => add(l, null));
+        if (all) langs.forEach((l) => add(l.spec.id, null));
         else if ((m = c.match(/^languages\/([^/]+)\/impl\/([^/]+)\//))) add(m[1]!, m[2]!);
-        else if ((m = c.match(/^languages\/([^/]+)\/(language\.json|Dockerfile)$/))) add(m[1]!, null);
-        else if ((m = c.match(/^problems\/([^/]+)\//))) langs.forEach((l) => add(l, m![1]!));
+        else if ((m = c.match(/^languages\/([^/]+)\/(language\.json|Dockerfile|app\.csproj)$/))) add(m[1]!, null);
+        else if ((m = c.match(/^problems\/([^/]+)\//))) langs.forEach((l) => add(l.spec.id, m![1]!));
       }
-      console.log(JSON.stringify({ include: [...pairs].map(([language, set]) => ({ language, problems: [...set].join(",") })) }));
+      // every tracked version of a touched language (a change may affect any of them)
+      const include = [...wanted].flatMap(([language, set]) =>
+        (langs.find((l) => l.spec.id === language)?.spec.versions ?? []).map((v) => ({ language, version: v.version, problems: [...set].join(",") })));
+      console.log(JSON.stringify({ include }));
       break;
     }
-    /* All tracked versions of every language (weekly full verification). */
+    /* Tracked versions of the given languages (default: all), optionally only some versions: --language a,b --version 1,2 */
     case "matrix": {
-      const include = loadLanguages(ROOT).flatMap((l) => l.spec.versions.map((v) => ({ language: l.spec.id, version: v.version })));
+      const only = f.language?.split(",");
+      const versions = f.version?.split(",");
+      const include = loadLanguages(ROOT)
+        .filter((l) => !only || only.includes(l.spec.id))
+        .flatMap((l) => l.spec.versions.filter((v) => !versions || versions.includes(v.version)).map((v) => ({ language: l.spec.id, version: v.version })));
       console.log(JSON.stringify({ include }));
       break;
     }

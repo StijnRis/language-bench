@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { colorOf } from "@/lib/fmt";
 import { LangIcon } from "./Icons";
-import ResultsTable, { type ResultMetric } from "./ResultsTable";
+import ResultsTable from "./ResultsTable";
 
 export interface LCell {
   id: string; language: string; version: string; variant: string; problem: string;
@@ -20,7 +20,6 @@ const gm = (xs: number[]) => Math.exp(xs.reduce((a, x) => a + Math.log(x), 0) / 
 
 export default function Leaderboard({ cells, languages, problems }: Props) {
   const [task, setTask] = useState("all");
-  const [metric, setMetric] = useState<ResultMetric>("time");
 
   const rows = useMemo(() => {
     const scored = problems.filter((p) => p.scored);
@@ -49,24 +48,21 @@ export default function Leaderboard({ cells, languages, problems }: Props) {
   }, [cells, languages, problems, task]);
 
   const caption = (task === "all" ? "Geometric mean per task on an average machine" : "Single task on an average machine") +
-    ", with how many times more than the best language in brackets (lower is better). The bar follows the selected metric.";
+    ", with how many times more than the best language in brackets (lower is better).";
 
   return (
-    <div>
-      <div className="controls">
+    <ResultsTable
+      rank
+      rows={rows}
+      caption={caption}
+      controls={
         <label>Task
           <select value={task} onChange={(e) => setTask(e.target.value)}>
             <option value="all">All tasks (composite)</option>
             {problems.map((p) => <option key={p.id} value={p.id}>{p.title}</option>)}
           </select>
         </label>
-        <span role="group" aria-label="Sort and bars by">
-          {([["time", "Time"], ["memory", "Memory"]] as const).map(([k, t]) => (
-            <button key={k} className="chip" aria-pressed={metric === k} onClick={() => setMetric(k)} style={{ marginRight: 6 }}>{t}</button>
-          ))}
-        </span>
-      </div>
-      <ResultsTable rank rows={rows} metric={metric} caption={caption} />
-    </div>
+      }
+    />
   );
 }

@@ -1,7 +1,7 @@
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
-import type { Config, Language } from "@lb/core";
+import { cmpVersion, type Config, type Language } from "@lb/core";
 import { loadLanguages, type LoadedLanguage } from "@lb/core/discover";
 import { ROOT } from "./config";
 
@@ -13,16 +13,6 @@ interface Found {
   tag?: string;
   date?: string;
 }
-
-const cmpVersion = (a: string, b: string) => {
-  const pa = a.split(".").map(Number);
-  const pb = b.split(".").map(Number);
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    const d = (pa[i] ?? 0) - (pb[i] ?? 0);
-    if (d) return d;
-  }
-  return 0;
-};
 
 async function findReleases(src: NonNullable<Language["versionSource"]>): Promise<Found[]> {
   const re = new RegExp(src.pattern);
@@ -53,70 +43,74 @@ async function tagDate(repo: string, tag: string): Promise<string | undefined> {
   return ((await res.json()) as any).commit?.committer?.date?.slice(0, 10);
 }
 
-function imageExists(image: string): boolean {
-  const r = spawnSync("docker", ["manifest", "inspect", image], { stdio: "ignore", timeout: 60_000 });
-  return r.error ? true : r.status === 0; // no docker available: assume yes
+/**
+ * Does the image tag exist? Asks the registries over HTTP (Docker Hub tag API / MCR manifest)
+ * instead of `docker manifest inspect`, which counts against the anonymous pull rate limit.
+ * Throws on anything but a clear yes or no, so a transient error never drops a version.
+ */
+async function imageExists(image: string): Promise<boolean> {
+  const at = image.lastIndexOf(":");
+  const repo = image.slice(0, at), tag = image.slice(at + 1);
+  const mcr = repo.startsWith("mcr.microsoft.com/");
+  const url = mcr
+    ? `https://mcr.microsoft.com/v2/${repo.slice("mcr.microsoft.com/".length)}/manifests/${tag}`
+    : `https://hub.docker.com/v2/repositories/${repo.includes("/") ? repo : "library/" + repo}/tags/${tag}`;
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(url, {
+      method: mcr ? "HEAD" : "GET",
+      headers: mcr ? { accept: "application/vnd.oci.image.index.v1+json, application/vnd.docker.distribution.manifest.list.v2+json, application/vnd.docker.distribution.manifest.v2+json" } : {},
+    });
+    if (res.status === 200) return true;
+    if (res.status === 404) return false;
+    if (attempt >= 3) throw new Error(`${url}: HTTP ${res.status}`);
+    await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
+  }
 }
 
 export interface VersionChange {
   language: string;
-  tracked: string[];
+  /** versions added by this run, newest first */
   added: string[];
 }
 
 /**
- * Looks up the newest releases of every language and rewrites `versions` in language.json
- * (newest `trackedVersionsPerLanguage` releases whose Docker image exists) and adds dates to
- * releases.json. Returns what changed.
+ * Looks for releases that are newer than the newest tracked version of every language and appends
+ * them (when their Docker image exists) to `versions` in language.json, with their date in
+ * releases.json. It never removes or reorders existing versions: the tracked set is curated by hand
+ * (one release per year, see README). Returns what was added.
  */
-export async function discoverVersions(cfg: Config, write = true): Promise<VersionChange[]> {
+export async function discoverVersions(_cfg: Config, write = true): Promise<VersionChange[]> {
   const changes: VersionChange[] = [];
   for (const l of loadLanguages(ROOT)) {
     const src = l.spec.versionSource;
     if (!src) continue;
-    let found: Found[];
+    const newest = l.spec.versions.reduce((m, v) => (cmpVersion(v.version, m) > 0 ? v.version : m), l.spec.versions[0]!.version);
     try {
-      found = (await findReleases(src)).sort((a, b) => cmpVersion(b.version, a.version));
+      const fresh = (await findReleases(src)).filter((f) => cmpVersion(f.version, newest) > 0).sort((a, b) => cmpVersion(b.version, a.version));
+      const added: Found[] = [];
+      for (const f of fresh) {
+        const image = l.spec.image.replace("{version}", f.version);
+        if (await imageExists(image)) added.push(f);
+        else log(`[versions] ${l.spec.id} ${f.version}: image ${image} not available (yet), skipping`);
+      }
+      if (added.length === 0) continue;
+      if (write) {
+        const specFile = path.join(l.dir, "language.json");
+        const raw = JSON.parse(fs.readFileSync(specFile, "utf8"));
+        raw.versions = [...added.map((f) => ({ version: f.version, latest: false })), ...raw.versions].map((v: { version: string; latest: boolean }, i: number) => ({ ...v, latest: i === 0 }));
+        fs.writeFileSync(specFile, JSON.stringify(raw, null, 2) + "\n");
+        const relFile = path.join(l.dir, "releases.json");
+        const rel: LoadedLanguage["releases"] = fs.existsSync(relFile) ? JSON.parse(fs.readFileSync(relFile, "utf8")) : {};
+        for (const f of added) {
+          const date = f.date ?? (f.tag && src.repo ? await tagDate(src.repo, f.tag) : undefined);
+          if (date) rel[f.version] = { date, highlights: [] };
+        }
+        fs.writeFileSync(relFile, JSON.stringify(rel, null, 2) + "\n");
+      }
+      changes.push({ language: l.spec.id, added: added.map((f) => f.version) });
     } catch (e) {
       log(`[versions] ${l.spec.id}: ${e}`);
-      continue;
     }
-    const tracked: Found[] = [];
-    for (const f of found) {
-      if (tracked.length >= cfg.trackedVersionsPerLanguage) break;
-      const image = l.spec.image.replace("{version}", f.version);
-      if (imageExists(image)) tracked.push(f);
-      else log(`[versions] ${l.spec.id} ${f.version}: image ${image} not available (yet), skipping`);
-    }
-    if (tracked.length === 0) continue;
-    const before = l.spec.versions.map((v) => v.version);
-    const after = tracked.map((t) => t.version);
-    const added = after.filter((v) => !before.includes(v));
-    if (!write) {
-      changes.push({ language: l.spec.id, tracked: after, added });
-      continue;
-    }
-    const specFile = path.join(l.dir, "language.json");
-    const raw = JSON.parse(fs.readFileSync(specFile, "utf8"));
-    const newVersions = after.map((v, i) => ({ version: v, latest: i === 0 }));
-    const same = JSON.stringify(raw.versions) === JSON.stringify(newVersions);
-    if (!same) {
-      raw.versions = newVersions;
-      fs.writeFileSync(specFile, JSON.stringify(raw, null, 2) + "\n");
-    }
-    // release dates for the timeline
-    const relFile = path.join(l.dir, "releases.json");
-    const rel: LoadedLanguage["releases"] = fs.existsSync(relFile) ? JSON.parse(fs.readFileSync(relFile, "utf8")) : {};
-    let relChanged = false;
-    for (const t of tracked) {
-      if (rel[t.version]) continue;
-      const date = t.date ?? (t.tag && src.repo ? await tagDate(src.repo, t.tag) : undefined);
-      if (!date) continue;
-      rel[t.version] = { date, highlights: [] };
-      relChanged = true;
-    }
-    if (relChanged) fs.writeFileSync(relFile, JSON.stringify(rel, null, 2) + "\n");
-    if (!same || relChanged) changes.push({ language: l.spec.id, tracked: after, added });
   }
   return changes;
 }

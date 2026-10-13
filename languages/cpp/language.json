@@ -4,43 +4,110 @@
   "highlight": "cpp",
   "website": "https://gcc.gnu.org/",
   "description": "C++ compiled ahead-of-time by g++ (GCC). Zero-cost abstractions and a rich standard library, with RAII-based memory management.",
-  "color": { "light": "#2563eb", "dark": "#60a5fa" },
+  "color": {
+    "light": "#2563eb",
+    "dark": "#60a5fa"
+  },
   "sourceFile": "main.cpp",
   "image": "gcc:{version}",
   "toolVersionCmd": "g++ --version | head -n1",
   "versions": [
-    { "version": "16", "latest": true },
-    { "version": "15", "latest": false },
-    { "version": "14", "latest": false }
+    {
+      "version": "16",
+      "latest": true
+    },
+    {
+      "version": "15",
+      "latest": false
+    },
+    {
+      "version": "14",
+      "latest": false
+    },
+    {
+      "version": "13",
+      "latest": false
+    },
+    {
+      "version": "12",
+      "latest": false
+    },
+    {
+      "version": "11",
+      "latest": false
+    },
+    {
+      "version": "10",
+      "latest": false
+    },
+    {
+      "version": "9",
+      "latest": false
+    },
+    {
+      "version": "8",
+      "latest": false
+    },
+    {
+      "version": "7",
+      "latest": false
+    },
+    {
+      "version": "6",
+      "latest": false
+    },
+    {
+      "version": "5",
+      "latest": false
+    }
   ],
   "variants": [
     {
       "id": "gxx-O3-native",
       "name": "g++ -O3 -march=native",
       "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
-      "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "build": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
       "run": "{bin}",
-      "default": true
+      "default": true,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
     },
     {
       "id": "gxx-O3",
       "name": "g++ -O3",
       "description": "Portable x86-64 baseline, no CPU-specific instructions.",
-      "build": "g++ -std=c++20 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
-      "run": "{bin}"
+      "build": "g++ -std=c++14 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
     },
     {
       "id": "gxx-O2",
       "name": "g++ -O2",
       "description": "The most common release optimisation level.",
-      "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
-      "run": "{bin}"
+      "build": "g++ -std=c++14 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
     }
   ],
   "versionSource": {
     "kind": "github-tags",
     "repo": "gcc-mirror/gcc",
     "pattern": "^releases/gcc-(\\d+)\\.1\\.0$",
-    "url": "https://gcc.gnu.org/releases.html"
+    "url": "https://gcc.gnu.org/releases.html",
+    "minVersion": "5"
   }
 }

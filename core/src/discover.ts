@@ -19,6 +19,7 @@ import {
   type Problem,
   type Releases,
 } from "./schema";
+import { cmpVersion } from "./plan";
 import { loadSessionFiles } from "./store";
 
 export function findRepoRoot(from = process.cwd()): string {
@@ -105,8 +106,24 @@ export function loadConfig(root = findRepoRoot()): Config {
   return ConfigSchema.parse(readJson(path.join(root, "lb.config.json")));
 }
 
+/**
+ * Folder of the implementation to use for a language version. Shared by default
+ * (impl/<problem>/); a folder impl/<problem>/@<minVersion>/ holding the source file replaces it
+ * for that version and newer, so only the files that really differ need a copy.
+ */
+export function implDir(root: string, lang: Language, problem: string, version?: string): string {
+  const base = path.join(root, "languages", lang.id, "impl", problem);
+  if (version) {
+    const overrides = subdirs(base)
+      .filter((d) => d.startsWith("@") && cmpVersion(d.slice(1), version) <= 0 && fs.existsSync(path.join(base, d, lang.sourceFile)))
+      .sort((a, b) => cmpVersion(b.slice(1), a.slice(1)));
+    if (overrides[0]) return path.join(base, overrides[0]);
+  }
+  return base;
+}
+
 /** Source code of one implementation (shown on the site, hashed into measurements). */
-export function readSource(root: string, lang: Language, problem: string): string | undefined {
-  const file = path.join(root, "languages", lang.id, "impl", problem, lang.sourceFile);
+export function readSource(root: string, lang: Language, problem: string, version?: string): string | undefined {
+  const file = path.join(implDir(root, lang, problem, version), lang.sourceFile);
   return fs.existsSync(file) ? fs.readFileSync(file, "utf8") : undefined;
 }

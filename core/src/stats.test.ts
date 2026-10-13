@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { aggregateSessions, fitHardware, geoMean, mad, median, mulberry32, summarizeReps } from "./stats";
 import { analyze } from "./analysis";
-import { planSessions, type Candidate, type Counts } from "./plan";
+import { planSessions, sessionsFor, type Candidate, type Counts } from "./plan";
 import type { Config, LanguageData, Session } from "./schema";
 
 describe("basic stats", () => {
@@ -89,8 +89,8 @@ describe("environment effect", () => {
 });
 
 const cfg: Config = {
-  targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, sessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
-  trackedVersionsPerLanguage: 1, maxAttempts: 3, sessionTimeBudgetMinutes: 60, repetitions: { min: 5, max: 10 },
+  targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, maxSessionsPerRound: 2, minSessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
+  maxAttempts: 3, sessionTimeBudgetMinutes: 60, repetitions: { min: 5, max: 10 },
   budgetSecondsScale: 1, warmupRuns: 1, maxChainedRounds: 10,
 };
 const cands: Candidate[] = Array.from({ length: 30 }, (_, i) => ({ key: `k${i}`, language: "c", version: "1", variant: "v", problem: `p${i}` }));
@@ -108,6 +108,15 @@ describe("planSessions", () => {
     const fresh = plan.sessions.flatMap((s) => s.filter((p) => p.reason !== "overlap").map((p) => p.key));
     expect(new Set(fresh).size).toBe(fresh.length); // disjoint between parallel sessions
     expect(plan.sessions[0]!.some((p) => p.reason === "overlap")).toBe(true);
+  });
+  it("scales the number of sessions with the work that is left", () => {
+    const big = { ...cfg, maxSessionsPerRound: 20, minSessionsPerRound: 2 };
+    // 10 per session, 3 of them overlap -> 7 fresh benchmarks per session
+    expect(sessionsFor(1, big)).toBe(2);
+    expect(sessionsFor(30, big)).toBe(5);
+    expect(sessionsFor(10_000, big)).toBe(20);
+    const counts = new Map<string, Counts>();
+    expect(planSessions(cands, counts, big, "seed").sessions.length).toBe(4); // 10 + 7 + 7 + 6 fresh (later sessions spend 3 slots on overlap)
   });
   it("plans nothing when every benchmark is sufficient", () => {
     const counts = new Map<string, Counts>(cands.map((c) => [c.key, { ok: 3, failed: 0 }]));

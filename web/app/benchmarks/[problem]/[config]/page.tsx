@@ -41,7 +41,7 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
   const { m, b, l, p, v } = r;
   const c = toCell(m, b);
   const ref = reference(m, b.problem);
-  const src = sourceOf(m, b.language, b.problem);
+  const src = sourceOf(m, b.language, b.problem, b.version);
   const factors = b.sessions.map((s) => s.machineFactor);
   const adjusted = b.sessions.map((s) => s.adjustedMedian);
   const args = p.spec.args.join(" ");

@@ -4,6 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import {
   benchmarkKey,
+  cmpVersion,
   fromSessionFile,
   sessionFilePath,
   toSessionFile,
@@ -25,6 +26,7 @@ import {
   loadData,
   loadLanguages,
   loadProblems,
+  implDir,
   readSource,
   type LoadedLanguage,
   type LoadedProblem,
@@ -97,13 +99,18 @@ export function planTasks(
   const tasks: Task[] = [];
   for (const variant of lang.variants) {
     if (variant.versions && !variant.versions.includes(version)) continue;
+    if (variant.minVersion && cmpVersion(version, variant.minVersion) < 0) continue;
     if (filter.variant && variant.id !== filter.variant) continue;
     for (const problem of problems) {
       if (filter.problem && problem.spec.id !== filter.problem) continue;
-      const src = readSource(ROOT, lang, problem.spec.id);
+      const src = readSource(ROOT, lang, problem.spec.id, version);
       if (src === undefined) continue; // no implementation of that problem in this language (yet)
+      const dir = path.relative(ROOT, implDir(ROOT, lang, problem.spec.id, version)).split(path.sep).join("/");
+      const rule = [...(variant.rules ?? [])].filter((r) => cmpVersion(version, r.minVersion) >= 0).sort((a, b) => cmpVersion(b.minVersion, a.minVersion))[0];
+      const buildTpl = rule?.build ?? variant.build;
+      const runTpl = rule?.run ?? variant.run;
       const vars = {
-        src: `/repo/languages/${lang.id}/impl/${problem.spec.id}`,
+        src: `/repo/${dir}`,
         bin: `/work/bin/${lang.id}-${version}-${variant.id}-${problem.spec.id}`,
       };
       const input = problem.spec.input ? `/work/inputs/${problem.spec.input.file}` : "";
@@ -113,11 +120,11 @@ export function planTasks(
         version,
         variant,
         problem,
-        buildCommand: variant.build ? sub(variant.build, vars) : undefined,
-        runCommand: [sub(variant.run, vars), ...args].join(" "),
+        buildCommand: buildTpl ? sub(buildTpl, vars) : undefined,
+        runCommand: [sub(runTpl, vars), ...args].join(" "),
         args,
         bin: vars.bin,
-        sourceFile: `languages/${lang.id}/impl/${problem.spec.id}/${lang.sourceFile}`,
+        sourceFile: `${dir}/${lang.sourceFile}`,
         sourceHash: sha(src).slice(0, 16),
       });
     }
