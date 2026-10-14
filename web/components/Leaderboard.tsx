@@ -1,9 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useUrlState } from "@/lib/useUrlState";
 import { colorOf } from "@/lib/fmt";
 import { LangIcon } from "./Icons";
-import ResultsTable from "./ResultsTable";
+import ResultsTable, { type ResultMetric } from "./ResultsTable";
 
 export interface LCell {
   id: string; language: string; version: string; variant: string; problem: string;
@@ -19,7 +20,10 @@ interface Props {
 const gm = (xs: number[]) => Math.exp(xs.reduce((a, x) => a + Math.log(x), 0) / xs.length);
 
 export default function Leaderboard({ cells, languages, problems }: Props) {
-  const [task, setTask] = useState("all");
+  const [taskRaw, setTask] = useUrlState("task", "all");
+  const [metricRaw, setMetric] = useUrlState("metric", "time");
+  const task = taskRaw === "all" || problems.some((p) => p.id === taskRaw) ? taskRaw : "all";
+  const metric = (["time", "memory", "size"].includes(metricRaw) ? metricRaw : "time") as ResultMetric;
 
   const rows = useMemo(() => {
     const scored = problems.filter((p) => p.scored);
@@ -31,6 +35,7 @@ export default function Leaderboard({ cells, languages, problems }: Props) {
       const single = pick.length === 1 ? pick[0]! : undefined;
       return [{
         id: l.id,
+        name: l.name,
         color: colorOf(l.id),
         seconds: gm(pick.map((c) => c.seconds)),
         memoryMB: gm(pick.map((c) => c.memoryMB || 1)),
@@ -54,6 +59,9 @@ export default function Leaderboard({ cells, languages, problems }: Props) {
     <ResultsTable
       rank
       rows={rows}
+      metric={metric}
+      onMetric={setMetric}
+      csvName={`language-bench-${task}`}
       caption={caption}
       controls={
         <label>Task

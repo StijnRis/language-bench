@@ -1,0 +1,68 @@
+{
+  "id": "julia",
+  "name": "Julia",
+  "highlight": "julia",
+  "website": "https://julialang.org/",
+  "description": "Julia: dynamically typed, compiled just-in-time through LLVM with multiple dispatch, so start-up includes compilation of every method that runs.",
+  "color": {
+    "light": "#0d9488",
+    "dark": "#2dd4bf"
+  },
+  "sourceFile": "main.jl",
+  "image": "julia:{version}",
+  "toolVersionCmd": "julia --version",
+  "versions": [
+    {
+      "version": "1.13",
+      "latest": true
+    },
+    {
+      "version": "1.12",
+      "latest": false
+    },
+    {
+      "version": "1.11",
+      "latest": false
+    },
+    {
+      "version": "1.10",
+      "latest": false
+    },
+    {
+      "version": "1.8",
+      "latest": false
+    },
+    {
+      "version": "1.6",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "julia-default",
+      "name": "julia -t 4",
+      "description": "Default optimisation level (-O2), bounds checks on, four threads for the parallel workload.",
+      "run": "julia --startup-file=no -t 4 {src}/main.jl",
+      "default": true
+    },
+    {
+      "id": "julia-O3",
+      "name": "julia -O3 -t 4",
+      "description": "Highest optimisation level.",
+      "run": "julia --startup-file=no -O3 -t 4 {src}/main.jl"
+    },
+    {
+      "id": "julia-nobounds",
+      "name": "julia -O3 --check-bounds=no -t 4",
+      "description": "Optimisation level 3 and no array bounds checks (unsafe: out-of-bounds accesses are not detected).",
+      "run": "julia --startup-file=no -O3 --check-bounds=no -t 4 {src}/main.jl"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "JuliaLang/julia",
+    "pattern": "^v(1\\.\\d+)\\.0$",
+    "url": "https://julialang.org/downloads/#current_stable_release",
+    "minVersion": "1.6"
+  }
+}

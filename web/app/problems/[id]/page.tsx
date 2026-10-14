@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData, Tags } from "@/components/Bits";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
 import ResultsTable from "@/components/ResultsTable";
 import { colorOf, idx } from "@/lib/fmt";
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const p = getModel().problems.find((x) => x.spec.id === id);
   if (!p) return {};
-  return meta(`${p.spec.title} benchmark: ${languageVs()}`, `${p.spec.summary} Results for every language and compiler setting, with confidence intervals.`, `/problems/${id}/`);
+  return meta(`${p.spec.title} benchmark: ${languageVs()}`, `${p.spec.summary} Results for every language and compiler setting, with confidence intervals.`, `/problems/${id}/`, { kind: "problem", id });
 }
 
 export default async function Problem({ params }: { params: Promise<{ id: string }> }) {
@@ -31,10 +32,7 @@ export default async function Problem({ params }: { params: Promise<{ id: string
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "TechArticle", headline: `${p.spec.title} benchmark`, description: p.spec.summary }} />
-      <JsonLd data={{ "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Problems", item: `${siteUrl}/problems/` },
-        { "@type": "ListItem", position: 2, name: p.spec.title, item: `${siteUrl}/problems/${id}/` },
-      ] }} />
+      <Breadcrumbs trail={[{ name: "Problems", href: "/problems/" }, { name: p.spec.title, href: `/problems/${id}/` }]} />
       <h1 className="with-icons"><ProblemIcon id={id} size={64} /><span>{p.spec.title}</span></h1>
       <p className="lead">{p.spec.summary}</p>
       <p><Tags tags={p.spec.tags} /></p>
@@ -47,10 +45,11 @@ export default async function Problem({ params }: { params: Promise<{ id: string
       {!shown.length ? <NoData /> : (
         <ResultsTable
           nameHeader="Language / build"
+          csvName={`language-bench-${id}`}
           rows={shown.map((r) => {
             const l = m.languages.find((x) => x.spec.id === r.language)!;
             return {
-              id: r.id, seconds: r.seconds, memoryMB: r.memoryMB, binarySize: r.binarySize, color: colorOf(r.language), timeMult: r.index,
+              id: r.id, name: `${l.spec.name} ${r.version} ${r.variant}`, seconds: r.seconds, memoryMB: r.memoryMB, binarySize: r.binarySize, color: colorOf(r.language), timeMult: r.index,
               timeTitle: `95% interval vs the fastest entry: ${idx(r.indexLow)}–${idx(r.indexHigh)} (${r.sessions} sessions)`,
               label: <span className="langrow"><LangIcon id={r.language} size={22} /><Link href={benchPath(r)}>{l.spec.name} {r.version} · {l.spec.variants.find((v) => v.id === r.variant)!.name}</Link>{r.variant === defaultVariant(l) && <span className="badge">default</span>}{r.provisional && <span className="badge warn">provisional</span>}</span>,
             };

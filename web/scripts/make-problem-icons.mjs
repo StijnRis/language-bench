@@ -62,6 +62,23 @@ const GLYPHS = {
     <path d="M26 16 H56 L72 32 V78 a4 4 0 0 1 -4 4 H26 a4 4 0 0 1 -4 -4 V20 a4 4 0 0 1 4 -4 Z" fill="${t.soft}" stroke="${t.ink}" stroke-width="2.5" stroke-linejoin="round"/>
     <path d="M56 16 V32 H72" ${stroke(t, 2.5)}/>
     <rect x="30" y="42" width="32" height="5" rx="2.5" fill="${t.a}"/><rect x="30" y="53" width="24" height="5" rx="2.5" fill="${t.b}"/><rect x="30" y="64" width="30" height="5" rx="2.5" fill="${t.c}"/>`,
+  // two matrices multiplied into a third
+  matmul: (t) => `
+    <g ${stroke(t, 2.5)}><rect x="12" y="30" width="22" height="22" rx="3"/><rect x="40" y="30" width="22" height="22" rx="3"/><rect x="40" y="58" width="22" height="22" rx="3"/></g>
+    <path d="M12 41 H34 M23 30 V52 M40 41 H62 M51 30 V52 M40 69 H62 M51 58 V80" ${stroke(t, 1.5)}/>
+    <rect x="68" y="42" width="16" height="16" rx="3" fill="${t.b}"/><rect x="70" y="44" width="5" height="5" rx="1.5" fill="${t.soft}"/><rect x="77" y="51" width="5" height="5" rx="1.5" fill="${t.soft}"/>
+    <rect x="23" y="41" width="10" height="10" rx="2" fill="${t.a}"/><rect x="40" y="58" width="10" height="10" rx="2" fill="${t.c}"/>`,
+  // stack of pancakes with a spatula
+  fannkuch: (t) => `
+    <rect x="22" y="64" width="46" height="9" rx="4.5" fill="${t.a}"/><rect x="26" y="53" width="38" height="9" rx="4.5" fill="${t.b}"/>
+    <rect x="20" y="42" width="50" height="9" rx="4.5" fill="${t.c}"/><rect x="28" y="31" width="34" height="9" rx="4.5" fill="${t.a}"/>
+    <path d="M76 26 V58 M70 32 L76 24 L82 32" ${stroke(t, 3, t.ink)}/>`,
+  // grid of dots, composites crossed out
+  sieve: (t) => `
+    <circle cx="24" cy="26" r="5" fill="${t.a}"/><circle cx="48" cy="26" r="5" fill="${t.a}"/><circle cx="72" cy="26" r="5" fill="${t.c}"/>
+    <circle cx="24" cy="48" r="5" fill="${t.b}" opacity=".35"/><circle cx="48" cy="48" r="5" fill="${t.b}" opacity=".35"/><circle cx="72" cy="48" r="5" fill="${t.c}"/>
+    <circle cx="24" cy="70" r="5" fill="${t.a}"/><circle cx="48" cy="70" r="5" fill="${t.b}" opacity=".35"/><circle cx="72" cy="70" r="5" fill="${t.b}" opacity=".35"/>
+    <path d="M18 42 L30 54 M42 42 L54 54 M42 64 L54 76 M66 64 L78 76" ${stroke(t, 2.5, t.b)}/>`,
   // stopwatch
   startup: (t) => `
     <circle cx="48" cy="54" r="26" fill="${t.soft}" stroke="${t.ink}" stroke-width="3"/>

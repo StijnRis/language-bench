@@ -1,0 +1,21 @@
+{
+  "id": "fannkuch",
+  "title": "Fannkuch-redux",
+  "summary": "Count pancake flips over all permutations of nine elements.",
+  "description": "Classic Computer Language Benchmarks Game workload: for every permutation of 0..8 (generated in a fixed order) repeatedly reverse the first k+1 elements, where k is the first element, until the first element is 0. Prints an alternating-sign checksum of the flip counts and the maximum number of flips.",
+  "pseudocode": "perm1 = [0, 1, ..., n-1]; count = array of n zeros\nfor each permutation p of perm1 (fixed generation order):\n    flips = 0; q = copy of p\n    while q[0] != 0:\n        reverse q[0..q[0]]                 # prefix of length q[0] + 1\n        flips += 1\n    maxflips = max(maxflips, flips)\n    checksum += flips if permutation index is even else -flips\nprint checksum, maxflips",
+  "reveals": "Tight loops over small integer arrays: indexing cost, bounds checks and branch prediction, with no allocation.",
+  "caveat": "Single-threaded reference algorithm (no per-core splitting of the permutation space). Dominated by small array reads and writes, so interpreters are slowest by a large factor.",
+  "tags": [
+    "cpu-bound",
+    "data-structures"
+  ],
+  "args": [
+    "9"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 60
+}

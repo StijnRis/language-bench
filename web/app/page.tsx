@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { JsonLd, NoData } from "@/components/Bits";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
+import Headline from "@/components/Headline";
 import Leaderboard from "@/components/Leaderboard";
 import { meta } from "@/lib/meta";
 import { languageList, languageVs, ranking } from "@/lib/text";
@@ -40,6 +41,7 @@ export default function Home() {
           </p>
         </div>
       </section>
+      {m.hasData && <Headline />}
       {!m.hasData ? <NoData /> : (
         <Leaderboard
           cells={cells}

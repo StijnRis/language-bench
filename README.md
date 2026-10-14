@@ -8,7 +8,7 @@ _Screenshot of the live site, refreshed automatically after every deploy by `.gi
 
 Transparent speed and memory benchmarks of programming languages (see `languages/`) on a set of workloads (see `problems/`;
 N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
-processing, start-up). Results are measured on GitHub Actions, repeated on different days and hardware,
+processing, start-up, matrix multiply, fannkuch, prime sieve). Results are measured on GitHub Actions, repeated on different days and hardware,
 combined with documented statistics, and published as a static site.
 
 ## How it works
@@ -19,6 +19,9 @@ combined with documented statistics, and published as a static site.
 - **Statistics** (`core/src/stats.ts`): sessions are the independent samples; machine factors fitted from overlapping benchmarks; geometric mean over sessions; cluster-bootstrap 95% CIs.
 - **Automation**: `bench.yml` discovers new language releases, plans sessions from `lb.config.json` (target sessions per benchmark, session size, overlap, ...; the number of parallel sessions scales with the work that is left, up to `maxSessionsPerRound`), runs them, commits the data and re-triggers itself until all tracked benchmarks have enough data.
 - **Site** (`web/`, Next.js static export) computes everything from the raw data at build time; every number links to its sessions, source, flags and CI run.
+  - *Leaderboard / Pick for me*: the task, metric and task weights live in the query string (`?task=sort&metric=memory`, `/pick/?w=sort:5,hashmap:0&mem=50`), so every view is a shareable link; tables export CSV, `/results.csv` has every benchmark, `/badges/<language>.svg` is a README badge.
+  - *Validation* (`/validation/`): how much the same benchmark disagrees across sessions before and after the machine-speed correction.
+  - Share cards are generated at build time (`/og/<kind>/<id>.png`); pages carry JSON-LD (Dataset, FAQ, breadcrumbs).
 
 ## Layout
 
@@ -48,7 +51,9 @@ pnpm lb verify python --version 3.14        # build + check outputs in Docker
 pnpm lb plan                                # what would run next (writes .work/plans)
 pnpm lb session --plan .work/plans/session-1.json --out .work/frag/s1.json --reps 3   # run a session locally (needs Docker)
 pnpm build                                  # static site -> web/out
+# smoke tests (Playwright) against the exported site
+SITE_URL=http://localhost:4173 pnpm build && pnpm --filter @lb/web e2e:install && pnpm --filter @lb/web e2e
 ```
 
-CI: `verify.yml` (changed implementations must print `expected.txt`; runs only when something relevant changed, and `bench.yml` starts it for newly discovered versions; no schedule), `bench.yml` (self-continuing sessions, appends data), `deploy.yml` (GitHub Pages).
+CI: `verify.yml` (changed implementations must print `expected.txt`; runs only when something relevant changed, and `bench.yml` starts it for newly discovered versions; no schedule), `bench.yml` (self-continuing sessions, appends data), `deploy.yml` (GitHub Pages), `e2e.yml` (builds the site and runs the Playwright smoke tests in `web/e2e`).
 Read the [methodology](web/app/methodology/page.tsx) for details and limits.

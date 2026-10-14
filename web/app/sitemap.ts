@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   const m = getModel();
   const paths = [
-    "/", "/problems/", "/languages/", "/timeline/", "/compare/", "/methodology/", "/sessions/",
+    "/", "/problems/", "/languages/", "/timeline/", "/compare/", "/methodology/", "/sessions/", "/pick/", "/validation/",
     ...m.problems.map((p) => `/problems/${p.spec.id}/`),
     ...Object.keys(m.sessions).map(sessionPath),
     ...m.languages.flatMap((l) => [`/languages/${l.spec.id}/`]),

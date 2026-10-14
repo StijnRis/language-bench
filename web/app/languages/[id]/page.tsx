@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
+import Breadcrumbs from "@/components/Breadcrumbs";
 import { LangIcon } from "@/components/Icons";
 import { meta } from "@/lib/meta";
 import ReleaseTable from "@/components/ReleaseTable";
 import Timeline from "@/components/Timeline";
 import { languageSeries, timelineProblems } from "@/lib/timeline";
-import { benchId, benchPath, defaultVariant, getModel, latestVersion, toCell, versionsOf } from "@/lib/model";
+import { benchId, benchPath, defaultVariant, getModel, latestVersion, siteUrl, toCell, versionsOf } from "@/lib/model";
 
 export function generateStaticParams() {
   return getModel().languages.map((l) => ({ id: l.spec.id }));
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const l = getModel().languages.find((x) => x.spec.id === id);
   if (!l) return {};
-  return meta(`${l.spec.name} performance benchmarks`, `How fast is ${l.spec.name}? Results on every benchmark problem, across releases and build settings.`, `/languages/${id}/`);
+  return meta(`${l.spec.name} performance benchmarks`, `How fast is ${l.spec.name}? Results on every benchmark problem, across releases and build settings.`, `/languages/${id}/`, { kind: "language", id });
 }
 
 export default async function Language({ params }: { params: Promise<{ id: string }> }) {
@@ -29,9 +30,13 @@ export default async function Language({ params }: { params: Promise<{ id: strin
   return (
     <>
       <JsonLd data={{ "@context": "https://schema.org", "@type": "TechArticle", headline: `${l.spec.name} performance benchmarks` }} />
+      <Breadcrumbs trail={[{ name: "Languages", href: "/languages/" }, { name: l.spec.name, href: `/languages/${id}/` }]} />
       <h1 className="with-icons"><LangIcon id={id} size={56} /><span>{l.spec.name}</span></h1>
       <p className="lead">{l.spec.description}</p>
       <p><a href={l.spec.website}>{l.spec.website}</a></p>
+      <h2>Badge</h2>
+      <p className="muted small">Show this language&apos;s rank in your README:</p>
+      <code className="snippet">{`![${l.spec.name} on language-bench](${siteUrl}/badges/${id}.svg)`}</code>
       <h2>Build settings</h2>
       <ul>{l.spec.variants.map((v) => <li key={v.id}><strong>{v.name}</strong>{v.default && " (default)"} – {v.description}<br /><code>{v.build ?? v.run}</code></li>)}</ul>
       <h2>Every release (default build)</h2>

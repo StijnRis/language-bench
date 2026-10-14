@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { meta } from "@/lib/meta";
 import { MIN_SESSIONS_FOR_FINAL } from "@lb/core";
 import { getModel, latestVersion, repoUrl } from "@/lib/model";
@@ -40,6 +41,7 @@ export default function Methodology() {
         <li><strong>Across sessions</strong>: each benchmark&apos;s time on the average machine is the geometric mean of (session median ÷ machine factor ÷ OS factor). The 95% confidence interval comes from a cluster bootstrap (1000 iterations, deterministic seed) that resamples sessions, then repetitions within each session.</li>
         <li><strong>Index vs fastest</strong> = time of a benchmark divided by the time of the fastest benchmark on the same problem (whichever language, release or build that is, so the baseline is not always C), with a bootstrap interval for the ratio. Composite scores over several problems are geometric means of indices.</li>
         <li><strong>Memory</strong> is the mean over repetitions of hyperfine&apos;s per-run peak resident set size, averaged over sessions.</li>
+        <li>Does the correction work? The <Link href="/validation/">validation page</Link> shows how much the same benchmark disagrees between sessions before and after it.</li>
         <li>Benchmarks that are not (yet) linked to the main group of sessions through shared benchmarks, or that have fewer than {MIN_SESSIONS_FOR_FINAL} sessions, are labelled <em>provisional</em>.</li>
       </ol>
 

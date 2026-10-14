@@ -4,6 +4,8 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/Bits";
 import { LangIcon, LangSprite } from "@/components/Icons";
+import NavLinks from "@/components/NavLinks";
+import ThemeToggle from "@/components/ThemeToggle";
 import { getModel, repoUrl, siteUrl } from "@/lib/model";
 import { languageCss, languageList } from "@/lib/text";
 import "./globals.css";
@@ -15,6 +17,7 @@ const model = getModel();
 const names = languageList(model);
 const description = `Transparent, statistically combined speed and memory benchmarks of ${names}, measured repeatedly on GitHub Actions. Every number links to its raw repetitions.`;
 const langNames = model.languages.map((l) => l.spec.name);
+const updated = model.analysis.benchmarks.map((b) => b.lastDate).sort().pop()?.slice(0, 10);
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -25,8 +28,8 @@ export const metadata: Metadata = {
   authors: [{ name: "language-bench", url: repoUrl }],
   alternates: { canonical: siteUrl },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 } },
-  openGraph: { type: "website", siteName: "language-bench", locale: "en_US", url: siteUrl, title: "How fast is each programming language, really?", description },
-  twitter: { card: "summary", title: "How fast is each programming language, really?", description },
+  openGraph: { type: "website", siteName: "language-bench", locale: "en_US", url: siteUrl, title: "How fast is each programming language, really?", description, images: [{ url: `${siteUrl}/og/site/home.png`, width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", title: "How fast is each programming language, really?", description, images: [`${siteUrl}/og/site/home.png`] },
 };
 
 export const viewport: Viewport = {
@@ -36,12 +39,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const m = getModel();
-  const dates = m.analysis.benchmarks.map((b) => b.lastDate).sort();
   const logoLangs = m.languages.slice(0, 5);
-  const updated = dates[dates.length - 1]?.slice(0, 10);
-  return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    return (
+    <html lang="en" className={`${display.variable} ${body.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: `try{var t=localStorage.getItem("lb-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}` }} />
+      </head>
       <body>
+        <a href="#main" className="skip">Skip to content</a>
+        <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: "language-bench: programming language benchmark measurements", description: `Repeated speed and memory measurements of ${names} on a set of workloads, measured on GitHub Actions. Includes every raw repetition.`, url: siteUrl, license: "https://opensource.org/license/mit", isAccessibleForFree: true, creator: { "@type": "Organization", name: "language-bench", url: repoUrl }, ...(updated ? { dateModified: updated } : {}), keywords: ["programming languages", "benchmark", "performance", ...langNames], distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${siteUrl}/results.csv` }, { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${repoUrl}/tree/main/data/sessions` }] }} />
         <style dangerouslySetInnerHTML={{ __html: languageCss(m) }} />
         <LangSprite languages={m.languages.map((l) => ({ id: l.spec.id, icon: l.icon }))} />
         <JsonLd data={{ "@context": "https://schema.org", "@type": "Organization", name: "language-bench", url: siteUrl, logo: `${siteUrl}/icon.svg`, sameAs: [repoUrl] }} />
@@ -54,17 +60,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               </svg>
               language-bench
             </Link>
-            <nav aria-label="Main">
-              <Link href="/">Leaderboard</Link>
-              <Link href="/problems/">Problems</Link>
-              <Link href="/languages/">Languages</Link>
-              <Link href="/timeline/">Timeline</Link>
-              <Link href="/compare/">Head-to-head</Link>
-              <Link href="/methodology/">Methodology</Link>
-            </nav>
+            <NavLinks />
+            <ThemeToggle />
           </div>
         </header>
-        <main className="wrap">{children}</main>
+        <main className="wrap" id="main">{children}</main>
         <footer className="site">
           <div className="wrap footer-grid">
             <div className="footer-about">
@@ -77,6 +77,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <nav aria-label="Explore">
               <h2>Explore</h2>
               <Link href="/">Leaderboard</Link>
+              <Link href="/pick/">Pick for me</Link>
               <Link href="/problems/">Problems</Link>
               <Link href="/languages/">Languages</Link>
               <Link href="/timeline/">Timeline</Link>
@@ -86,6 +87,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <nav aria-label="Project">
               <h2>Project</h2>
               <Link href="/methodology/">Methodology</Link>
+              <Link href="/validation/">Validation</Link>
+              <a href={`${siteUrl}/results.csv`}>Results (CSV)</a>
               <a href={repoUrl}>Source on GitHub</a>
               <a href={`${repoUrl}/tree/main/data/sessions`}>Raw data</a>
               <a href={`${repoUrl}/issues`}>Report an issue</a>

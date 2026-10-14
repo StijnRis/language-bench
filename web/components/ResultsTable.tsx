@@ -1,10 +1,13 @@
 "use client";
 import { useState, type ReactNode } from "react";
 import { bytes, idx, mb, seconds } from "@/lib/fmt";
+import ShareBar from "./ShareBar";
 
 export interface ResultRow {
   id: string;
   label: ReactNode;
+  /** plain-text name for CSV export */
+  name?: string;
   seconds: number;
   memoryMB: number;
   binarySize: number | null;
@@ -44,6 +47,9 @@ export default function ResultsTable({
   rank = false,
   controls,
   empty = "No measurements for this selection yet.",
+  metric: metricProp,
+  onMetric,
+  csvName,
 }: {
   rows: ResultRow[];
   nameHeader?: string;
@@ -52,8 +58,15 @@ export default function ResultsTable({
   /** extra controls shown left of the metric buttons */
   controls?: ReactNode;
   empty?: string;
+  /** controlled metric (e.g. mirrored into the URL); uncontrolled when omitted */
+  metric?: ResultMetric;
+  onMetric?: (m: ResultMetric) => void;
+  /** adds copy-link and CSV download under the table */
+  csvName?: string;
 }) {
-  const [metric, setMetric] = useState<ResultMetric>("time");
+  const [local, setLocal] = useState<ResultMetric>("time");
+  const metric = metricProp ?? local;
+  const setMetric = (m: ResultMetric) => (onMetric ? onMetric(m) : setLocal(m));
   const valid = (x: number) => isFinite(x) && x > 0;
   const best = Math.min(...rows.map((r) => raw[metric](r)).filter(valid));
   const view = rows
@@ -102,6 +115,13 @@ export default function ResultsTable({
           </tbody>
         </table>
       </div>
+      {csvName && (
+        <ShareBar csv={() => ({
+          filename: `${csvName}-${metric}.csv`,
+          header: ["rank", "name", label.toLowerCase(), "multiplier_vs_best"],
+          rows: view.map((x, i) => [i + 1, x.r.name ?? x.r.id, isFinite(x.v) ? +x.v.toPrecision(6) : null, isFinite(x.mult) ? +x.mult.toFixed(4) : null]),
+        })} />
+      )}
     </div>
   );
 }

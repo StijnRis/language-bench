@@ -1,0 +1,21 @@
+{
+  "id": "sieve",
+  "title": "Prime sieve",
+  "summary": "Sieve of Eratosthenes up to ten million.",
+  "description": "Marks the composites up to 10,000,000 in a byte array with the classic sieve (inner loop starts at p*p), then prints the number of primes, the largest prime and the sum of all primes.",
+  "pseudocode": "n = 10,000,000\nis_prime = array of n+1 bytes, all 1; is_prime[0] = is_prime[1] = 0\nfor p = 2 while p*p <= n:\n    if is_prime[p]:\n        for m = p*p; m <= n; m += p:\n            is_prime[m] = 0\nprint count of primes, largest prime, sum of primes",
+  "reveals": "Strided memory writes over a ten-megabyte array: cache and memory bandwidth plus loop overhead.",
+  "caveat": "Python and Ruby use their fastest idiom for large byte arrays where one exists (slice assignment in Python; a byte string with setbyte in Ruby and PHP). Other languages use a plain byte or boolean array.",
+  "tags": [
+    "cpu-bound",
+    "memory-bound"
+  ],
+  "args": [
+    "10000000"
+  ],
+  "runs": {
+    "min": 10,
+    "max": 30
+  },
+  "budgetSeconds": 60
+}

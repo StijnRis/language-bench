@@ -1,0 +1,59 @@
+{
+  "id": "dart",
+  "name": "Dart",
+  "highlight": "dart",
+  "website": "https://dart.dev/",
+  "description": "Dart compiled ahead-of-time to a native executable (or run on the JIT VM), with a generational garbage collector and isolates for parallelism.",
+  "color": {
+    "light": "#0ea5e9",
+    "dark": "#38bdf8"
+  },
+  "sourceFile": "main.dart",
+  "image": "dart:{version}",
+  "toolVersionCmd": "dart --version 2>&1",
+  "versions": [
+    {
+      "version": "3.13",
+      "latest": true
+    },
+    {
+      "version": "3.9",
+      "latest": false
+    },
+    {
+      "version": "3.5",
+      "latest": false
+    },
+    {
+      "version": "3.0",
+      "latest": false
+    },
+    {
+      "version": "2.17",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "dart-aot",
+      "name": "dart compile exe",
+      "description": "Ahead-of-time compiled native executable.",
+      "build": "dart compile exe {src}/main.dart -o {bin}",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "dart-jit",
+      "name": "dart (JIT VM)",
+      "description": "Run the source directly on the JIT virtual machine.",
+      "run": "dart {src}/main.dart"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "dart-lang/sdk",
+    "pattern": "^([23]\\.\\d+)\\.0$",
+    "url": "https://dart.dev/get-dart/archive",
+    "minVersion": "2.17"
+  }
+}

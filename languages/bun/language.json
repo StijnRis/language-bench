@@ -1,0 +1,58 @@
+{
+  "id": "bun",
+  "name": "Bun",
+  "highlight": "javascript",
+  "website": "https://bun.sh/",
+  "description": "JavaScript on JavaScriptCore (WebKit) with a tiered JIT, running the same sources as Node.js.",
+  "color": {
+    "light": "#a8734a",
+    "dark": "#e0b48a"
+  },
+  "sourceFile": "main.js",
+  "image": "oven/bun:{version}",
+  "toolVersionCmd": "bun --version",
+  "versions": [
+    {
+      "version": "1.4",
+      "latest": true
+    },
+    {
+      "version": "1.3",
+      "latest": false
+    },
+    {
+      "version": "1.2",
+      "latest": false
+    },
+    {
+      "version": "1.1",
+      "latest": false
+    },
+    {
+      "version": "1.0",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "bun-default",
+      "name": "bun",
+      "description": "Default runtime settings.",
+      "run": "bun {src}/main.js",
+      "default": true
+    },
+    {
+      "id": "bun-smol",
+      "name": "bun --smol",
+      "description": "Prefers lower memory use over speed (more frequent garbage collection).",
+      "run": "bun --smol {src}/main.js"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "oven-sh/bun",
+    "pattern": "^bun-v(1\\.\\d+)\\.0$",
+    "url": "https://bun.sh/blog",
+    "minVersion": "1.0"
+  }
+}

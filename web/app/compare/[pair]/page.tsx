@@ -2,6 +2,8 @@ import { indexVs } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { NoData } from "@/components/Bits";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { JsonLd } from "@/components/Bits";
 import { LangIcon } from "@/components/Icons";
 import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
@@ -22,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ pair: str
   const { a, b } = parse(pair);
   if (!a || !b) return {};
   const year = new Date().getUTCFullYear();
-  return meta(`${a.spec.name} vs ${b.spec.name} performance benchmark ${year}`, `Is ${a.spec.name} faster than ${b.spec.name}? Side-by-side speed and memory on every benchmark problem, with confidence intervals.`, `/compare/${pair}/`);
+  return meta(`${a.spec.name} vs ${b.spec.name} performance benchmark ${year}`, `Is ${a.spec.name} faster than ${b.spec.name}? Side-by-side speed and memory on every benchmark problem, with confidence intervals.`, `/compare/${pair}/`, { kind: "compare", id: pair });
 }
 
 export default async function Pair({ params }: { params: Promise<{ pair: string }> }) {
@@ -60,6 +62,11 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
   );
   return (
     <>
+      <Breadcrumbs trail={[{ name: "Head-to-head", href: "/compare/" }, { name: `${a.spec.name} vs ${b.spec.name}`, href: `/compare/${pair}/` }]} />
+      {rows.length > 0 && <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [
+        { "@type": "Question", name: `Is ${a.spec.name} faster than ${b.spec.name}?`, acceptedAnswer: { "@type": "Answer", text: `Overall, ${winner.spec.name} is ${idx(factor)} faster than ${loser.spec.name} (geometric mean over ${rows.length} benchmark problems). ${a.spec.name} wins ${winsA} problems and ${b.spec.name} wins ${rows.length - winsA}.` } },
+        { "@type": "Question", name: `Does ${a.spec.name} or ${b.spec.name} use less memory?`, acceptedAnswer: { "@type": "Answer", text: `${memWinner.spec.name} uses ${idx(memFactor)} less memory on average.` } },
+      ] }} />}
       <h1 className="with-icons"><LangIcon id={a.spec.id} size={44} /><span>{a.spec.name} vs {b.spec.name}</span><LangIcon id={b.spec.id} size={44} /></h1>
       {!rows.length ? <NoData /> : (
         <>
