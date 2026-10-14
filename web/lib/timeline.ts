@@ -55,3 +55,8 @@ export function languageSeries(m: Model, l: LoadedLanguage): TSeries[] {
 export function overviewSeries(m: Model): TSeries[] {
   return m.languages.flatMap((l) => seriesFor(m, l.spec.id, l.spec.name, l, defaultVariant(l)));
 }
+
+/** Two languages (default variants) for the head-to-head timeline. */
+export function pairSeries(m: Model, a: LoadedLanguage, b: LoadedLanguage): TSeries[] {
+  return [a, b].flatMap((l) => seriesFor(m, l.spec.id, l.spec.name, l, defaultVariant(l)));
+}

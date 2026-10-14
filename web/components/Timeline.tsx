@@ -17,8 +17,10 @@ const valueOf = (p: TPoint, m: Metric): number | null =>
   m === "time" ? p.seconds : m === "memory" ? (p.memoryMB > 0 ? p.memoryMB : null) : p.binarySize && p.binarySize > 0 ? p.binarySize : null;
 const format = (v: number, m: Metric) => (m === "time" ? ms(v) : m === "memory" ? mb(v) : bytes(v));
 
-const W = 900, H = 400, M = { l: 76, r: 150, t: 24, b: 56 };
-const GAP = 15;
+const W = 900, H0 = 400, M = { l: 76, r: 170, t: 24, b: 56 };
+/** vertical room of one end label: name line + value line */
+const GAP = 30;
+const clip = (t: string, n = 22) => (t.length > n ? `${t.slice(0, n - 1)}…` : t);
 
 export default function Timeline({ series, problems, releases = [], note = true }: Props) {
   const [problem, setProblem] = useState(problems[0]?.id ?? "");
@@ -44,6 +46,8 @@ export default function Timeline({ series, problems, releases = [], note = true 
   const pts = shown.flatMap((s) => s.points);
   if (!pts.length) return <div>{controls}<div className="empty card">No data for this selection yet.</div></div>;
 
+  // taller chart when many lines end close together, so their labels never overlap
+  const H = Math.max(H0, M.t + M.b + shown.length * GAP + 8);
   const xs = [...pts.map((p) => +new Date(p.date)), ...releases.map((r) => +new Date(r.date))];
   // pad the date range so points at either end stay inside the plot, even when only one release is measured
   const span = Math.max(Math.max(...xs) - Math.min(...xs), 90 * 864e5), pad = span * 0.04;
@@ -94,8 +98,8 @@ export default function Timeline({ series, problems, releases = [], note = true 
             const c = colorFor(e.s, e.i), ex = X(+new Date(e.last.date));
             return (<g key={e.s.id} opacity={active(e.s.id) ? 1 : 0.2} style={{ cursor: "pointer", transition: "opacity .15s" }} onMouseEnter={() => setFocus(e.s.id)}>
               <line x1={ex + 6} y1={e.y} x2={W - M.r + 8} y2={labelY[k]! - 1} stroke={c} strokeWidth={1} opacity={0.6} />
-              <text x={W - M.r + 12} y={labelY[k]! + 2} style={{ fill: c, fontWeight: 700 }}>{e.s.label}</text>
-              <text x={W - M.r + 12} y={labelY[k]! + 13} style={{ fill: "var(--muted)", fontSize: 11 }}>{format(valueOf(e.last, metric)!, metric)}</text>
+              <text x={W - M.r + 12} y={labelY[k]! + 2} style={{ fill: c, fontWeight: 700 }}><title>{e.s.label}</title>{clip(e.s.label)}</text>
+              <text x={W - M.r + 12} y={labelY[k]! + 14} style={{ fill: "var(--muted)", fontSize: 11 }}>{format(valueOf(e.last, metric)!, metric)}</text>
             </g>);
           })}
         </svg>

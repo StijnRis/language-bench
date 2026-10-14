@@ -5,6 +5,8 @@ import { NoData } from "@/components/Bits";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { JsonLd } from "@/components/Bits";
 import { LangIcon } from "@/components/Icons";
+import Timeline from "@/components/Timeline";
+import { pairSeries, timelineProblems } from "@/lib/timeline";
 import { bytes, colorOf, idx, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { benchId, benchPath, defaultVariant, getModel, latestVersion, pairs } from "@/lib/model";
@@ -88,6 +90,13 @@ export default async function Pair({ params }: { params: Promise<{ pair: string 
                 <td className="num"><Link href={`${benchPath(r.bb)}`} className="plain">{cell(r.bb.refSeconds, r.bb.memoryBytes, sb, !timeA, !memA, sizeB)}</Link></td>
                 <td className="num">{idx(r.ratio)} <span className="muted small">({idx(r.low)}–{idx(r.high)})</span></td></tr>);
             })}</tbody></table></div>
+        </>
+      )}
+      {rows.length > 0 && (
+        <>
+          <h2>Over time</h2>
+          <p className="muted">How both languages changed from release to release (default build). Switch problem or metric above the chart.</p>
+          <Timeline series={pairSeries(m, a, b)} problems={timelineProblems(m)} note={false} />
         </>
       )}
       <p className="small muted">Times are shown for the average machine (see <Link href="/methodology/">methodology</Link>). A ratio whose 95% interval includes 1.0 is not a clear difference.</p>

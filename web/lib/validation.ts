@@ -1,4 +1,5 @@
 import { geoMean } from "@lb/core";
+import { parseLoad, sessionLoad } from "./load";
 import type { Model } from "./model";
 
 export interface Validation {
@@ -12,11 +13,28 @@ export interface Validation {
   explained: number;
   /** histogram of deviations from the benchmark mean, in percent, before and after correction */
   bins: { lo: number; hi: number; raw: number; corrected: number }[];
-  cpus: { model: string; sessions: number; factor: number; min: number; max: number }[];
+  cpus: { model: string; sessions: number; factor: number; min: number; max: number; load?: number }[];
+  load: LoadAnalysis;
   environments: { name: string; sessions: number }[];
   /** the single worst remaining deviation, to be honest about outliers */
   worst?: { key: string; percent: number };
 }
+
+export interface LoadAnalysis {
+  /** measurements (of multi-session benchmarks) that have a load reading */
+  n: number;
+  /** Pearson correlation between load per core and the corrected deviation (log scale) */
+  correlation: number;
+  /** corrected spread over measurements taken at low load only vs all, as geometric factors */
+  spreadLow: number;
+  spreadAll: number;
+  threshold: number;
+  buckets: { label: string; lo: number; hi: number; n: number; rms: number; mean: number }[];
+  /** scatter: load per core (x) vs deviation in percent (y) */
+  points: { x: number; y: number }[];
+}
+
+const LOAD_EDGES = [0, 0.25, 0.5, 1, 1.5, Infinity];
 
 /**
  * How well does the machine correction work? For every benchmark that was measured in several sessions
@@ -59,6 +77,42 @@ export function validate(m: Model): Validation {
   place(raw, "raw");
   place(cor, "corrected");
 
+  // load: the 1-minute load average read just before each benchmark, per core
+  const loadOf = new Map<string, number>();
+  for (const x of m.measurements) {
+    const v = parseLoad(x.loadAvgBefore);
+    if (v !== undefined) loadOf.set(`${x.sessionId}|${x.language}|${x.version}|${x.variant}|${x.problem}`, v);
+  }
+  const lp: { load: number; dev: number }[] = [];
+  for (const b of m.analysis.benchmarks) {
+    if (b.sessions.length < 2) continue;
+    const lc = b.sessions.map((s) => Math.log(s.adjustedMedian));
+    const mc = lc.reduce((a, x) => a + x, 0) / lc.length;
+    b.sessions.forEach((s, i) => {
+      const v = loadOf.get(`${s.sessionId}|${b.key}`);
+      if (v !== undefined && s.cores > 0) lp.push({ load: v / s.cores, dev: lc[i]! - mc });
+    });
+  }
+  const rms = (xs: number[]) => (xs.length ? Math.sqrt(xs.reduce((a, x) => a + x * x, 0) / xs.length) : 0);
+  const avg = (xs: number[]) => (xs.length ? xs.reduce((a, x) => a + x, 0) / xs.length : 0);
+  const mx = avg(lp.map((p) => p.load)), my = avg(lp.map((p) => p.dev));
+  const sxy = lp.reduce((a, p) => a + (p.load - mx) * (p.dev - my), 0);
+  const sxx = lp.reduce((a, p) => a + (p.load - mx) ** 2, 0), syy = lp.reduce((a, p) => a + (p.dev - my) ** 2, 0);
+  const threshold = 1;
+  const load: LoadAnalysis = {
+    n: lp.length,
+    correlation: sxx > 0 && syy > 0 ? sxy / Math.sqrt(sxx * syy) : 0,
+    spreadAll: Math.exp(rms(lp.map((p) => p.dev))),
+    spreadLow: Math.exp(rms(lp.filter((p) => p.load < threshold).map((p) => p.dev))),
+    threshold,
+    buckets: LOAD_EDGES.slice(0, -1).map((lo, i) => {
+      const hi = LOAD_EDGES[i + 1]!;
+      const xs = lp.filter((p) => p.load >= lo && p.load < hi).map((p) => p.dev);
+      return { label: hi === Infinity ? `≥ ${lo}` : `${lo} – ${hi}`, lo, hi, n: xs.length, rms: (Math.exp(rms(xs)) - 1) * 100, mean: (Math.exp(avg(xs)) - 1) * 100 };
+    }),
+    points: lp.map((p) => ({ x: p.load, y: (Math.exp(p.dev) - 1) * 100 })),
+  };
+
   const byCpu = new Map<string, { sessions: Set<string>; factors: number[] }>();
   const sessionInfo = new Map<string, { cpu: string; env: string }>();
   for (const b of m.analysis.benchmarks) for (const s of b.sessions) sessionInfo.set(s.sessionId, { cpu: s.cpuModel, env: s.environment });
@@ -79,8 +133,12 @@ export function validate(m: Model): Validation {
     correctedSpread: Math.exp(corSd),
     explained: rawSd > 0 ? Math.max(0, 1 - (corSd * corSd) / (rawSd * rawSd)) : 0,
     bins,
-    cpus: [...byCpu].map(([model, e]) => ({ model, sessions: e.sessions.size, factor: geoMean(e.factors), min: Math.min(...e.factors), max: Math.max(...e.factors) })).sort((a, b) => a.factor - b.factor),
+    cpus: [...byCpu].map(([model, e]) => {
+      const loads = [...e.sessions].map((id) => sessionLoad(m.measurements.filter((x) => x.sessionId === id), m.sessions[id]?.host.cpu.cores ?? 0)).filter((x): x is number => x !== undefined);
+      return { model, sessions: e.sessions.size, factor: geoMean(e.factors), min: Math.min(...e.factors), max: Math.max(...e.factors), load: loads.length ? avg(loads) : undefined };
+    }).sort((a, b) => a.factor - b.factor),
     environments: [...envs].map(([name, sessions]) => ({ name, sessions })).sort((a, b) => b.sessions - a.sessions),
+    load,
     worst,
   };
 }

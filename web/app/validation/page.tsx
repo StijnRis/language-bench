@@ -3,6 +3,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { NoData } from "@/components/Bits";
 import { meta } from "@/lib/meta";
 import { getModel, repoUrl } from "@/lib/model";
+import LoadScatter from "@/components/LoadScatter";
 import { validate } from "@/lib/validation";
 
 export const metadata = meta(
@@ -55,11 +56,31 @@ export default function Validation() {
             </svg>
           </div>
 
+          <h2>Does machine load matter?</h2>
+          {v.load.n > 0 ? (
+            <>
+              <p className="muted">
+                Before every benchmark the runner records the machine&apos;s 1-minute load average. Dividing by the core count gives the load per core (1.0 = every core busy on average). The scatter plot shows, for every measurement of a benchmark that ran in several sessions, how far its corrected result lies from that benchmark&apos;s mean, against the load at that moment.
+                The correlation is <strong>{v.load.correlation.toFixed(2)}</strong>{Math.abs(v.load.correlation) < 0.1 ? " (practically none)" : Math.abs(v.load.correlation) < 0.3 ? " (weak)" : " (clear)"}; using only measurements below {v.load.threshold} load per core the typical deviation is {pct(v.load.spreadLow)} instead of {pct(v.load.spreadAll)} for all {v.load.n}.
+              </p>
+              <div className="chartwrap">
+                <LoadScatter points={v.load.points} />
+              </div>
+              <div className="tablewrap"><table>
+                <thead><tr><th>Load per core</th><th className="num">Measurements</th><th className="num">Typical deviation</th><th className="num">Mean bias</th></tr></thead>
+                <tbody>{v.load.buckets.map((b) => (
+                  <tr key={b.label}><td>{b.label}</td><td className="num">{b.n}</td><td className="num">{b.n ? `±${b.rms.toFixed(1)}%` : "-"}</td><td className="num muted">{b.n ? `${b.mean >= 0 ? "+" : ""}${b.mean.toFixed(1)}%` : "-"}</td></tr>
+                ))}</tbody>
+              </table></div>
+              <p className="small muted">Caveat: a 1-minute load average also contains the benchmark that ran just before on the same VM, so it measures how busy the machine was, not necessarily outside interference. A positive bias in a bucket means results measured at that load were slower than the benchmark&apos;s mean.</p>
+            </>
+          ) : <p className="muted">No load readings in the recorded sessions yet.</p>}
+
           <h2>Machines seen</h2>
           <div className="tablewrap"><table>
-            <thead><tr><th>CPU model</th><th className="num">Sessions</th><th className="num">Speed factor (geo. mean)</th><th className="num">Range</th></tr></thead>
+            <thead><tr><th>CPU model</th><th className="num">Sessions</th><th className="num">Speed factor (geo. mean)</th><th className="num">Range</th><th className="num">Load / core</th></tr></thead>
             <tbody>{v.cpus.map((c) => (
-              <tr key={c.model}><td>{c.model}</td><td className="num">{c.sessions}</td><td className="num">{c.factor.toFixed(3)}×</td><td className="num muted">{c.min.toFixed(3)}–{c.max.toFixed(3)}×</td></tr>
+              <tr key={c.model}><td>{c.model}</td><td className="num">{c.sessions}</td><td className="num">{c.factor.toFixed(3)}×</td><td className="num muted">{c.min.toFixed(3)}–{c.max.toFixed(3)}×</td><td className="num">{c.load !== undefined ? c.load.toFixed(2) : "-"}</td></tr>
             ))}</tbody>
           </table></div>
           <p className="small muted">Factor &gt; 1 means the machine was slower than the average machine. A CPU model with a narrow range across sessions is evidence that a model explains speed, and not just noise.</p>

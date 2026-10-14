@@ -143,3 +143,30 @@ test("skip link and main navigation are keyboard reachable", async ({ page }) =>
   await expect(page.getByRole("link", { name: "Skip to content" })).toBeFocused();
   await expect(page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Pick for me" })).toHaveAttribute("aria-current", "page");
 });
+
+test("language page shows a working badge preview and per-problem results", async ({ page }) => {
+  await page.goto("/languages/rust/");
+  const img = page.locator(".badge-preview img");
+  await expect(img).toBeVisible();
+  expect(await img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
+  await expect(page.getByRole("heading", { name: "Performance by problem" })).toBeVisible();
+  await expect(page.locator(".lang-hero .stats")).toBeVisible();
+});
+
+test("head-to-head page has a timeline", async ({ page }) => {
+  await page.goto("/compare/c-vs-rust/");
+  await expect(page.getByRole("heading", { name: "Over time" })).toBeVisible();
+  await expect(page.getByRole("img", { name: /per release over time/ })).toBeVisible();
+});
+
+test("sessions are grouped by day and the header does not cover content", async ({ page }) => {
+  await page.goto("/sessions/");
+  await expect(page.getByRole("heading", { name: /^\d{4}-\d{2}-\d{2}/ }).first()).toBeVisible();
+  await expect(page.locator(".session-row").first()).toBeVisible();
+  expect(await page.locator("header.site").evaluate((el) => getComputedStyle(el).position)).not.toBe("sticky");
+});
+
+test("home headline has no confidence meter", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("region", { name: "Summary" })).not.toContainText("Confidence");
+});
