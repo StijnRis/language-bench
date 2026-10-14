@@ -1,0 +1,3489 @@
+{
+  "schemaVersion": 3,
+  "session": {
+    "id": "2026-10-14T11-05-53-045Z-s7",
+    "startedAt": "2026-10-14T11:06:21.450Z",
+    "finishedAt": "2026-10-14T11:15:30.375Z",
+    "durationSeconds": 548.925,
+    "repoCommit": "604e2718c8f22d08d2610ac899e8431dbbd31ad5",
+    "trigger": {
+      "event": "workflow_dispatch",
+      "workflow": "bench",
+      "job": "session",
+      "runId": "38554135081",
+      "runAttempt": "1",
+      "runNumber": "38",
+      "runUrl": "https://github.com/StijnRis/language-bench/actions/runs/38554135081",
+      "repository": "StijnRis/language-bench",
+      "ref": "refs/heads/main",
+      "actor": "github-actions[bot]",
+      "plannedAt": "2026-10-14T11:05:53.046Z",
+      "remainingAtPlanTime": 515,
+      "sessionIndexInRound": 7,
+      "sessionsInRound": 18
+    },
+    "runner": {
+      "githubActions": true,
+      "RUNNER_NAME": "GitHub Actions 1000000838",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64",
+      "RUNNER_ENVIRONMENT": "github-hosted",
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261012.334.1",
+      "RUNNER_TRACKING_ID": "github_b5d27f8b-3446-45f8-9dfe-6a82a2130c12",
+      "hostOs": "linux x64",
+      "hostNode": "v24.21.0"
+    },
+    "host": {
+      "uname": "Linux d0acdf20c43b 6.17.0-1022-azure #22-Ubuntu SMP Mon Jul 27 17:24:03 UTC 2026 x86_64 GNU/Linux",
+      "kernel": "6.17.0-1022-azure",
+      "arch": "x86_64",
+      "cpu": {
+        "model": "AMD EPYC 7763 64-Core Processor",
+        "vendor": "AuthenticAMD",
+        "family": "25",
+        "modelNumber": "1",
+        "stepping": "1",
+        "microcode": "0xffffffff",
+        "cacheSize": "512 KB",
+        "mhzAtStart": "3244.651",
+        "bogomips": "4890.86",
+        "flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm",
+        "cores": 4,
+        "logicalProcessors": 4,
+        "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 48 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               AuthenticAMD\nModel name:                              AMD EPYC 7763 64-Core Processor\nCPU family:                              25\nModel:                                   1\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                1\nBogoMIPS:                                4890.86\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm\nVirtualization:                          AMD-V\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               64 KiB (2 instances)\nL1i cache:                               64 KiB (2 instances)\nL2 cache:                                1 MiB (2 instances)\nL3 cache:                                32 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: No microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n"
+      },
+      "memory": {
+        "totalBytes": 16766414848,
+        "availableBytes": 14871040000,
+        "swapTotalBytes": 3221221376
+      },
+      "cgroup": { "cpuMax": "max 100000", "memoryMax": "max" },
+      "scalingGovernor": "",
+      "smt": "1",
+      "loadAvgStart": "1.08 0.31 0.10 4/337 142",
+      "diskFree": "/dev/root        151263856 63528352  87719120      43% /work",
+      "timezone": "UTC",
+      "loadAvgEnd": "2.17 1.47 0.78 1/605 248"
+    },
+    "tooling": {
+      "hyperfineVersion": "2.0.0",
+      "hyperfineBuild": "hyperfine-v2.0.0-x86_64-unknown-linux-musl",
+      "hyperfineSource": "https://github.com/sharkdp/hyperfine/releases/tag/v2.0.0",
+      "docker": "{\"Client\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"DefaultAPIVersion\":\"1.48\",\"GitCommit\":\"b8034c0\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Context\":\"default\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Components\":[{\"Name\":\"Engine\",\"Version\":\"28.0.4\",\"Details\":{\"ApiVersion\":\"1.48\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Experimental\":\"false\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"KernelVersion\":\"6.17.0-1022-azure\",\"MinAPIVersion\":\"1.24\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.1\",\"Details\":{\"GitCommit\":\"f2551031d7276a770f65f98c9b52e57e7dad07e8\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"MinAPIVersion\":\"1.24\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"KernelVersion\":\"6.17.0-1022-azure\",\"BuildTime\":\"2025-03-25T15:07:16.000000000+00:00\"}}",
+      "node": "v24.21.0"
+    },
+    "containers": {
+      "rust:1.67": {
+        "image": "rust:1.67",
+        "digest": "rust@sha256:aed98ad355d0e8303d057cc4894a7d331010980eb63c7dc46176de82670881dd",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u5) 2.31",
+        "toolVersion": "rustc 1.67.1 (d5a82bbd2 2023-02-07)",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:5": {
+        "image": "gcc:5",
+        "digest": "gcc@sha256:207a4645d46ee2eae62500c6c46b3702a78fbcfc1c6a95054a7cf5247ae19130",
+        "osRelease": "Debian GNU/Linux 8 (jessie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.19-18+deb8u10) 2.19",
+        "toolVersion": "g++ (GCC) 5.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "python:3.9": {
+        "image": "python:3.9",
+        "digest": "python@sha256:da5aee29682d12a6649f51c8d6f15b87deb3e6c524b923c41d0cb3304d07c913",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12) 2.41",
+        "toolVersion": "Python 3.9.25",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:13": {
+        "image": "gcc:13",
+        "digest": "gcc@sha256:b59036579f0622d1b3aa5286aaf2fcef9b9c6f88f31c6762236fc2f136f7f650",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "g++ (GCC) 13.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "node:24": {
+        "image": "node:24",
+        "digest": "node@sha256:3d27e5c11e5786e309ec3e03f93ae536eb36e6e5eb3714d5eb3300a36157add0",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "v24.21.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "oven/bun:1.4": {
+        "image": "oven/bun:1.4",
+        "digest": "oven/bun@sha256:ec06c3b6cea04192ae6770c434f668ca41d343ad19fa6472216c7b48be39c598",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "1.4.3",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "ruby:3.3": {
+        "image": "ruby:3.3",
+        "digest": "ruby@sha256:a91b6ac1b9b18d33812480856e4bc39c5c492ff9c6cc810d916cc3f0cc1d0eab",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [x86_64-linux]",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "dart:3.5": {
+        "image": "dart:3.5",
+        "digest": "dart@sha256:3f3877b9a75a1695dd284151d2dab5787bc6cefd04313b6a8e0bee98230d347b",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u9) 2.36",
+        "toolVersion": "Dart SDK version: 3.5.4 (stable) (Wed Oct 16 16:18:51 2024 +0000) on \"linux_x64\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "julia:1.8": {
+        "image": "julia:1.8",
+        "digest": "julia@sha256:c9c13e38ea7ef6a893b97834e75f00fec4fc07b24072088e1360171cb192ebb0",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u6) 2.31",
+        "toolVersion": "julia version 1.8.5",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "dart:2.17": {
+        "image": "dart:2.17",
+        "digest": "dart@sha256:a2746fd3a4d8b8d6aa95b2c5607ba4199182cfddc042048fd0d2a12f71e5e02f",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u3) 2.31",
+        "toolVersion": "Dart SDK version: 2.17.7 (stable) (Mon Aug 22 10:43:32 2022 +0200) on \"linux_x64\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "julia:1.12": {
+        "image": "julia:1.12",
+        "digest": "julia@sha256:a1fbd9d099a0517bdb70e7471955f09dc92beb822e7a5a74938f7ec8d5682693",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u3) 2.41",
+        "toolVersion": "julia version 1.12.7",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "oven/bun:1.1": {
+        "image": "oven/bun:1.1",
+        "digest": "oven/bun@sha256:d6ad4d3280d3e7e92b793a924105d68766d60b1f36709f4cee11bc8737782621",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u11) 2.31",
+        "toolVersion": "1.1.45",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:6": {
+        "image": "gcc:6",
+        "digest": "gcc@sha256:1cd3cd6a2507024ab2a5aa6962098890cb52d529e72a2db2e310270ac9cba004",
+        "osRelease": "Debian GNU/Linux 8 (jessie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.19-18+deb8u10) 2.19",
+        "toolVersion": "g++ (GCC) 6.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "dart:3.9": {
+        "image": "dart:3.9",
+        "digest": "dart@sha256:9db24325a8df958f4aa64e0880d8254ba304602c1d85ecee326b2c576883cc3a",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12) 2.41",
+        "toolVersion": "Dart SDK version: 3.9.4 (stable) (Tue Sep 30 12:08:50 2025 -0700) on \"linux_x64\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "oven/bun:1.3": {
+        "image": "oven/bun:1.3",
+        "digest": "oven/bun@sha256:e10577f0db68676a7024391c6e5cb4b879ebd17188ab750cf10024a6d700e5c4",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u2) 2.41",
+        "toolVersion": "1.3.14",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "julia:1.13": {
+        "image": "julia:1.13",
+        "digest": "julia@sha256:8b840e57f106b68ae8f8879ca82104f1301e8db061b419358447b881f23a121c",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "julia version 1.13.1",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:12": {
+        "image": "gcc:12",
+        "digest": "gcc@sha256:f6ddfc063e12d8141189d5b5fd1afc64aedc6eb50a6b8876263f9a944fa9f8ca",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "gcc (GCC) 12.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "dart:3.13": {
+        "image": "dart:3.13",
+        "digest": "dart@sha256:8604cbd137b6d67c24f49b916f2aa9b67d71b539576e0178bf161d831c9e344f",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "Dart SDK version: 3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"linux_x64\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "oven/bun:1.0": {
+        "image": "oven/bun:1.0",
+        "digest": "oven/bun@sha256:c105c5584a3c38946689d9df4f7cf76bc0e65e4bea0ab39b885750fab4080915",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u8) 2.31",
+        "toolVersion": "1.0.36",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:9": {
+        "image": "gcc:9",
+        "digest": "gcc@sha256:a9aba821155db99d0800920f27bf3a94ead6f9dedf330a2e2ce38da73f5370e3",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u9) 2.31",
+        "toolVersion": "gcc (GCC) 9.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "node:26": {
+        "image": "node:26",
+        "digest": "node@sha256:32fa97f3363975684b08bf4e8a68a47c7905175cc20275b50b974bbd02aba731",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "v26.11.1",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "eclipse-temurin:22-jdk": {
+        "image": "eclipse-temurin:22-jdk",
+        "digest": "eclipse-temurin@sha256:bafcdba57d6f0435f9834063101b64af8db6c16e5c415a9fa6ddaa9175537905",
+        "osRelease": "Ubuntu 24.04.1 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.39-0ubuntu8.3) 2.39",
+        "toolVersion": "openjdk 22.0.2 2024-07-16",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:10": {
+        "image": "gcc:10",
+        "digest": "gcc@sha256:19b31d0b2b263047b173e4e253d91f199d99c082973f13604d2913252c13309e",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u10) 2.31",
+        "toolVersion": "g++ (GCC) 10.5.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "golang:1.27": {
+        "image": "golang:1.27",
+        "digest": "golang@sha256:820153096fda4de6ac1b7194d12e416b7dd8f4e9a33d17e0345b111b945162d8",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "go version go1.27.2 linux/amd64",
+        "hyperfine": "hyperfine 2.0.0"
+      }
+    },
+    "config": {
+      "targetSessionsPerBenchmark": 3,
+      "maxBenchmarksPerSession": 40,
+      "maxSessionsPerRound": 20,
+      "minSessionsPerRound": 2,
+      "overlapFraction": 0.25,
+      "minOverlap": 4,
+      "maxAttempts": 3,
+      "sessionTimeBudgetMinutes": 240,
+      "repetitions": { "min": 15, "max": 30 },
+      "budgetSecondsScale": 0.5,
+      "warmupRuns": 1,
+      "maxChainedRounds": 30
+    },
+    "plan": [
+      {
+        "key": "dart|3.5|dart-jit|binary-trees",
+        "language": "dart",
+        "version": "3.5",
+        "variant": "dart-jit",
+        "problem": "binary-trees",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|3.9|dart-aot|string-ops",
+        "language": "dart",
+        "version": "3.9",
+        "variant": "dart-aot",
+        "problem": "string-ops",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|3.5|dart-aot|binary-trees",
+        "language": "dart",
+        "version": "3.5",
+        "variant": "dart-aot",
+        "problem": "binary-trees",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "python|3.9|cpython-default|fannkuch",
+        "language": "python",
+        "version": "3.9",
+        "variant": "cpython-default",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.12|julia-O3|file-processing",
+        "language": "julia",
+        "version": "1.12",
+        "variant": "julia-O3",
+        "problem": "file-processing",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "c|9|gcc-O2|sieve",
+        "language": "c",
+        "version": "9",
+        "variant": "gcc-O2",
+        "problem": "sieve",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "c|9|gcc-O3|fannkuch",
+        "language": "c",
+        "version": "9",
+        "variant": "gcc-O3",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "cpp|5|gxx-O3-native|matmul",
+        "language": "cpp",
+        "version": "5",
+        "variant": "gxx-O3-native",
+        "problem": "matmul",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|2.17|dart-aot|matmul",
+        "language": "dart",
+        "version": "2.17",
+        "variant": "dart-aot",
+        "problem": "matmul",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|3.9|dart-aot|fannkuch",
+        "language": "dart",
+        "version": "3.9",
+        "variant": "dart-aot",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.1|bun-default|file-processing",
+        "language": "bun",
+        "version": "1.1",
+        "variant": "bun-default",
+        "problem": "file-processing",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.3|bun-smol|file-processing",
+        "language": "bun",
+        "version": "1.3",
+        "variant": "bun-smol",
+        "problem": "file-processing",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.0|bun-smol|fannkuch",
+        "language": "bun",
+        "version": "1.0",
+        "variant": "bun-smol",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|3.13|dart-aot|parallel-reduce",
+        "language": "dart",
+        "version": "3.13",
+        "variant": "dart-aot",
+        "problem": "parallel-reduce",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "java|22|java-default|sieve",
+        "language": "java",
+        "version": "22",
+        "variant": "java-default",
+        "problem": "sieve",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "cpp|13|gxx-O2|fannkuch",
+        "language": "cpp",
+        "version": "13",
+        "variant": "gxx-O2",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "node|26|node-semi-space-64|fannkuch",
+        "language": "node",
+        "version": "26",
+        "variant": "node-semi-space-64",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.4|bun-default|fannkuch",
+        "language": "bun",
+        "version": "1.4",
+        "variant": "bun-default",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "node|24|node-semi-space-64|sieve",
+        "language": "node",
+        "version": "24",
+        "variant": "node-semi-space-64",
+        "problem": "sieve",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "cpp|5|gxx-O2|fannkuch",
+        "language": "cpp",
+        "version": "5",
+        "variant": "gxx-O2",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "cpp|6|gxx-O3-native|matmul",
+        "language": "cpp",
+        "version": "6",
+        "variant": "gxx-O3-native",
+        "problem": "matmul",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.8|julia-default|hashmap",
+        "language": "julia",
+        "version": "1.8",
+        "variant": "julia-default",
+        "problem": "hashmap",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "ruby|3.3|ruby-yjit|fannkuch",
+        "language": "ruby",
+        "version": "3.3",
+        "variant": "ruby-yjit",
+        "problem": "fannkuch",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.13|julia-nobounds|matmul",
+        "language": "julia",
+        "version": "1.13",
+        "variant": "julia-nobounds",
+        "problem": "matmul",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.8|julia-O3|binary-trees",
+        "language": "julia",
+        "version": "1.8",
+        "variant": "julia-O3",
+        "problem": "binary-trees",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.0|bun-smol|binary-trees",
+        "language": "bun",
+        "version": "1.0",
+        "variant": "bun-smol",
+        "problem": "binary-trees",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.3|bun-default|json-parse",
+        "language": "bun",
+        "version": "1.3",
+        "variant": "bun-default",
+        "problem": "json-parse",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.0|bun-default|string-ops",
+        "language": "bun",
+        "version": "1.0",
+        "variant": "bun-default",
+        "problem": "string-ops",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.4|bun-default|sieve",
+        "language": "bun",
+        "version": "1.4",
+        "variant": "bun-default",
+        "problem": "sieve",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|2.17|dart-aot|json-parse",
+        "language": "dart",
+        "version": "2.17",
+        "variant": "dart-aot",
+        "problem": "json-parse",
+        "reason": "least-measured",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.12|julia-nobounds|hashmap",
+        "language": "julia",
+        "version": "1.12",
+        "variant": "julia-nobounds",
+        "problem": "hashmap",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "dart|3.9|dart-jit|fannkuch",
+        "language": "dart",
+        "version": "3.9",
+        "variant": "dart-jit",
+        "problem": "fannkuch",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.4|bun-default|binary-trees",
+        "language": "bun",
+        "version": "1.4",
+        "variant": "bun-default",
+        "problem": "binary-trees",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "julia|1.8|julia-default|nbody",
+        "language": "julia",
+        "version": "1.8",
+        "variant": "julia-default",
+        "problem": "nbody",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "bun|1.1|bun-smol|matmul",
+        "language": "bun",
+        "version": "1.1",
+        "variant": "bun-smol",
+        "problem": "matmul",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "go|1.27|go-amd64-v3|sieve",
+        "language": "go",
+        "version": "1.27",
+        "variant": "go-amd64-v3",
+        "problem": "sieve",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "c|6|gcc-O2|matmul",
+        "language": "c",
+        "version": "6",
+        "variant": "gcc-O2",
+        "problem": "matmul",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "cpp|10|gxx-O3-native|fannkuch",
+        "language": "cpp",
+        "version": "10",
+        "variant": "gxx-O3-native",
+        "problem": "fannkuch",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "rust|1.67|rustc-O3-lto|sieve",
+        "language": "rust",
+        "version": "1.67",
+        "variant": "rustc-O3-lto",
+        "problem": "sieve",
+        "reason": "overlap",
+        "priorSessions": 2
+      },
+      {
+        "key": "c|12|gcc-O3-native|matmul",
+        "language": "c",
+        "version": "12",
+        "variant": "gcc-O3-native",
+        "problem": "matmul",
+        "reason": "overlap",
+        "priorSessions": 2
+      }
+    ],
+    "order": [
+      "rust|1.67|rustc-O3-lto|sieve",
+      "cpp|5|gxx-O2|fannkuch",
+      "python|3.9|cpython-default|fannkuch",
+      "cpp|13|gxx-O2|fannkuch",
+      "node|24|node-semi-space-64|sieve",
+      "bun|1.4|bun-default|binary-trees",
+      "ruby|3.3|ruby-yjit|fannkuch",
+      "dart|3.5|dart-jit|binary-trees",
+      "julia|1.8|julia-O3|binary-trees",
+      "bun|1.4|bun-default|sieve",
+      "dart|2.17|dart-aot|json-parse",
+      "julia|1.12|julia-O3|file-processing",
+      "bun|1.4|bun-default|fannkuch",
+      "bun|1.1|bun-default|file-processing",
+      "cpp|6|gxx-O3-native|matmul",
+      "dart|2.17|dart-aot|matmul",
+      "dart|3.9|dart-aot|string-ops",
+      "dart|3.9|dart-jit|fannkuch",
+      "bun|1.3|bun-default|json-parse",
+      "bun|1.3|bun-smol|file-processing",
+      "dart|3.9|dart-aot|fannkuch",
+      "cpp|5|gxx-O3-native|matmul",
+      "julia|1.13|julia-nobounds|matmul",
+      "c|12|gcc-O3-native|matmul",
+      "dart|3.13|dart-aot|parallel-reduce",
+      "bun|1.0|bun-default|string-ops",
+      "bun|1.0|bun-smol|binary-trees",
+      "dart|3.5|dart-aot|binary-trees",
+      "julia|1.8|julia-default|hashmap",
+      "c|9|gcc-O3|fannkuch",
+      "node|26|node-semi-space-64|fannkuch",
+      "bun|1.0|bun-smol|fannkuch",
+      "c|9|gcc-O2|sieve",
+      "c|6|gcc-O2|matmul",
+      "java|22|java-default|sieve",
+      "bun|1.1|bun-smol|matmul",
+      "cpp|10|gxx-O3-native|fannkuch",
+      "julia|1.8|julia-default|nbody",
+      "julia|1.12|julia-nobounds|hashmap",
+      "go|1.27|go-amd64-v3|sieve"
+    ],
+    "skipped": []
+  },
+  "variants": {
+    "a18244de109c": {
+      "id": "rustc-O3-lto",
+      "name": "rustc -C opt-level=3 -C codegen-units=1 -C lto",
+      "description": "Single codegen unit with link-time optimisation.",
+      "build": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {src}/main.rs",
+      "run": "{bin}",
+      "default": false
+    },
+    "2d75108a1794": {
+      "id": "gxx-O2",
+      "name": "g++ -O2",
+      "description": "The most common release optimisation level.",
+      "build": "g++ -std=c++14 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "default": false,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
+    },
+    "bc03f06156f3": {
+      "id": "cpython-default",
+      "name": "python3",
+      "description": "Default interpreter.",
+      "run": "python3 {src}/main.py",
+      "default": true
+    },
+    "d24caae747f0": {
+      "id": "node-semi-space-64",
+      "name": "node --max-semi-space-size=64",
+      "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
+      "run": "node --max-semi-space-size=64 {src}/main.js",
+      "default": false
+    },
+    "442dec759248": {
+      "id": "bun-default",
+      "name": "bun",
+      "description": "Default runtime settings.",
+      "run": "bun {src}/main.js",
+      "default": true
+    },
+    "7c72497e5734": {
+      "id": "ruby-yjit",
+      "name": "ruby --yjit",
+      "description": "Enables YJIT, the built-in JIT compiler.",
+      "run": "ruby --yjit {src}/main.rb",
+      "default": false,
+      "minVersion": "3.1"
+    },
+    "874626897595": {
+      "id": "dart-jit",
+      "name": "dart (JIT VM)",
+      "description": "Run the source directly on the JIT virtual machine.",
+      "run": "dart {src}/main.dart",
+      "default": false
+    },
+    "f2f9f0fb9d83": {
+      "id": "julia-O3",
+      "name": "julia -O3 -t 4",
+      "description": "Highest optimisation level.",
+      "run": "julia --startup-file=no -O3 -t 4 {src}/main.jl",
+      "default": false
+    },
+    "4a3a46d3e9ac": {
+      "id": "dart-aot",
+      "name": "dart compile exe",
+      "description": "Ahead-of-time compiled native executable.",
+      "build": "dart compile exe {src}/main.dart -o {bin}",
+      "run": "{bin}",
+      "default": true
+    },
+    "0e12ef4516dc": {
+      "id": "gxx-O3-native",
+      "name": "g++ -O3 -march=native",
+      "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
+      "build": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "run": "{bin}",
+      "default": true,
+      "rules": [
+        {
+          "minVersion": "10",
+          "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+        }
+      ]
+    },
+    "13e5dcb3ca78": {
+      "id": "bun-smol",
+      "name": "bun --smol",
+      "description": "Prefers lower memory use over speed (more frequent garbage collection).",
+      "run": "bun --smol {src}/main.js",
+      "default": false
+    },
+    "443d7c76f9fa": {
+      "id": "julia-nobounds",
+      "name": "julia -O3 --check-bounds=no -t 4",
+      "description": "Optimisation level 3 and no array bounds checks (unsafe: out-of-bounds accesses are not detected).",
+      "run": "julia --startup-file=no -O3 --check-bounds=no -t 4 {src}/main.jl",
+      "default": false
+    },
+    "7edbaa312dc3": {
+      "id": "gcc-O3-native",
+      "name": "gcc -O3 -march=native",
+      "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
+      "build": "gcc -O3 -march=native -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": true
+    },
+    "4a613b769126": {
+      "id": "julia-default",
+      "name": "julia -t 4",
+      "description": "Default optimisation level (-O2), bounds checks on, four threads for the parallel workload.",
+      "run": "julia --startup-file=no -t 4 {src}/main.jl",
+      "default": true
+    },
+    "18d0ab900300": {
+      "id": "gcc-O3",
+      "name": "gcc -O3",
+      "description": "Portable x86-64 baseline, no CPU-specific instructions.",
+      "build": "gcc -O3 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": false
+    },
+    "cada63d52a4a": {
+      "id": "gcc-O2",
+      "name": "gcc -O2",
+      "description": "The most common release optimisation level.",
+      "build": "gcc -O2 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "run": "{bin}",
+      "default": false
+    },
+    "ad7a7a619426": {
+      "id": "java-default",
+      "name": "java",
+      "description": "Default JVM flags (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
+      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
+      "run": "java -cp {bin} Main",
+      "default": true
+    },
+    "d8f786a6baa7": {
+      "id": "go-amd64-v3",
+      "name": "GOAMD64=v3 go build",
+      "description": "Allows AVX2/BMI/FMA instructions on x86-64.",
+      "build": "GOAMD64=v3 go build -o {bin} {src}/main.go",
+      "run": "{bin}",
+      "default": false
+    }
+  },
+  "measurements": [
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "rust",
+      "version": "1.67",
+      "toolVersion": "rustc 1.67.1 (d5a82bbd2 2023-02-07)",
+      "variant": "rustc-O3-lto",
+      "variantSpec": "a18244de109c",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "rust:1.67",
+      "sourceFile": "languages/rust/impl/sieve/main.rs",
+      "sourceHash": "f431c9f55050bcf9",
+      "buildCommand": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o /work/bin/rust-1.67-rustc-O3-lto-sieve /repo/languages/rust/impl/sieve/main.rs",
+      "runCommand": "/work/bin/rust-1.67-rustc-O3-lto-sieve 10000000",
+      "loadAvgBefore": "1.08 0.31 0.10 7/337 157",
+      "buildSeconds": 2.765058993999999,
+      "buildOutput": "",
+      "binarySize": 1741720,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:06:42.902Z",
+      "finishedAt": "2026-10-14T11:06:46.803Z",
+      "loadAvgAfter": "1.07 0.32 0.11 1/331 241",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.033921554, 0.030628568000000002, 0.029059195000000003, 0.028915857000000003,
+          0.028283906, 0.029678022000000002, 0.028176816, 0.029370588000000003,
+          0.028620575000000002, 0.028269509, 0.028152280000000002, 0.028143083000000003,
+          0.029328207000000002, 0.028631817, 0.028561685000000003, 0.029411454000000004, 0.02856436,
+          0.028234764000000002, 0.028264619, 0.02839275, 0.029450607, 0.028424619, 0.028486144,
+          0.029462710000000003, 0.028587774000000003, 0.028513195, 0.028558319000000002,
+          0.029459483, 0.028852789, 0.028383883000000002
+        ],
+        "cpu": [
+          0.033819999999999996, 0.030237999999999998, 0.028947999999999998, 0.028804, 0.028188,
+          0.029556, 0.028049, 0.029219, 0.0285, 0.028152, 0.028027999999999997, 0.028016, 0.029203,
+          0.028484, 0.028432, 0.029293, 0.028443, 0.028097, 0.028100999999999998,
+          0.028274999999999998, 0.029292, 0.028284999999999998, 0.028354999999999998,
+          0.029331999999999997, 0.028453999999999997, 0.028367999999999997, 0.028442999999999996,
+          0.029303, 0.028681, 0.028262999999999996
+        ],
+        "user": [
+          0.030836, 0.028287999999999997, 0.02795, 0.027811, 0.026175, 0.027517999999999997,
+          0.026046, 0.027204, 0.027483, 0.026142, 0.027027, 0.026015, 0.02531, 0.026449999999999998,
+          0.026472, 0.027273, 0.026482, 0.027094, 0.025193999999999998, 0.027266,
+          0.026261999999999997, 0.027274999999999997, 0.0264, 0.027309999999999997,
+          0.026491999999999998, 0.026341999999999997, 0.027462999999999998, 0.026272, 0.026633,
+          0.025339999999999998
+        ],
+        "system": [
+          0.0029839999999999997, 0.00195, 0.000998, 0.000993, 0.002013, 0.002038, 0.002003,
+          0.002015, 0.001017, 0.00201, 0.001001, 0.0020009999999999997, 0.0038929999999999998,
+          0.002034, 0.00196, 0.00202, 0.001961, 0.001003, 0.002907, 0.001009, 0.0030299999999999997,
+          0.00101, 0.0019549999999999997, 0.002022, 0.0019619999999999998, 0.002026, 0.00098,
+          0.003031, 0.002048, 0.002923
+        ],
+        "memory": [
+          11792384, 11755520, 11755520, 11788288, 11788288, 11653120, 11796480, 11862016, 11608064,
+          11649024, 11800576, 11857920, 11603968, 11657216, 11894784, 11677696, 11665408, 11694080,
+          11644928, 11747328, 11563008, 11739136, 11743232, 11898880, 11689984, 11710464, 11751424,
+          11689984, 11722752, 11669504
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "cpp",
+      "version": "5",
+      "toolVersion": "g++ (GCC) 5.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "gcc:5",
+      "sourceFile": "languages/cpp/impl/fannkuch/main.cpp",
+      "sourceHash": "ea65a5cd041ae944",
+      "buildCommand": "g++ -std=c++14 -O2 -ffp-contract=off -o /work/bin/cpp-5-gxx-O2-fannkuch /repo/languages/cpp/impl/fannkuch/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-5-gxx-O2-fannkuch 9",
+      "loadAvgBefore": "1.28 0.40 0.14 1/351 56",
+      "buildSeconds": 0.22258126600000105,
+      "buildOutput": "",
+      "binarySize": 9584,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:07:00.742Z",
+      "finishedAt": "2026-10-14T11:07:01.793Z",
+      "loadAvgAfter": "1.28 0.40 0.14 3/352 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.019218967, 0.019334844, 0.019392242, 0.019549926000000002, 0.019359671000000002,
+          0.019681943, 0.019400747000000003, 0.019366814, 0.019324554, 0.019255896,
+          0.019331268000000002, 0.019663800000000002, 0.019323643, 0.019380670000000003,
+          0.019163394, 0.019288778, 0.019276244, 0.019364079000000003, 0.019488692000000002,
+          0.019286554, 0.019346597, 0.019513678, 0.019512897, 0.019424462, 0.019402181, 0.019509821,
+          0.019496476000000002, 0.019542803, 0.019522255000000002, 0.01934862
+        ],
+        "cpu": [
+          0.019118, 0.019222, 0.019288, 0.019429, 0.019275, 0.019552999999999997, 0.019287,
+          0.019251, 0.019208, 0.019156999999999997, 0.019250999999999997, 0.019502, 0.019237,
+          0.019299999999999998, 0.019081, 0.019205, 0.019178999999999998, 0.019253, 0.019387,
+          0.019188, 0.019207999999999996, 0.019407999999999998, 0.019415, 0.019337,
+          0.019316999999999997, 0.019393, 0.019382, 0.019429, 0.019427999999999997, 0.01926
+        ],
+        "user": [
+          0.018112, 0.0173, 0.019288, 0.018458, 0.019275, 0.018576, 0.019287, 0.016364, 0.019208,
+          0.018149, 0.017325999999999998, 0.019502, 0.017314, 0.019299999999999998, 0.018077,
+          0.017285, 0.019178999999999998, 0.019253, 0.018418, 0.019188, 0.017287999999999998,
+          0.019407999999999998, 0.017474, 0.019337, 0.017386, 0.019393, 0.016475, 0.019429,
+          0.017485999999999998, 0.01926
+        ],
+        "system": [
+          0.001006, 0.0019219999999999999, 0, 0.000971, 0, 0.000977, 0, 0.002887, 0, 0.001008,
+          0.0019249999999999998, 0, 0.001923, 0, 0.001004, 0.0019199999999999998, 0, 0,
+          0.0009689999999999999, 0, 0.0019199999999999998, 0, 0.001941, 0, 0.001931, 0, 0.002907, 0,
+          0.001942, 0
+        ],
+        "memory": [
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536,
+          3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536, 3649536
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "python",
+      "version": "3.9",
+      "toolVersion": "Python 3.9.25",
+      "variant": "cpython-default",
+      "variantSpec": "bc03f06156f3",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "python:3.9",
+      "sourceFile": "languages/python/impl/fannkuch/main.py",
+      "sourceHash": "e183c2b27a6ae6f7",
+      "runCommand": "python3 /repo/languages/python/impl/fannkuch/main.py 9",
+      "loadAvgBefore": "1.51 0.52 0.18 1/363 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:07:18.749Z",
+      "finishedAt": "2026-10-14T11:07:48.304Z",
+      "loadAvgAfter": "1.31 0.57 0.21 3/355 110",
+      "hyperfineArgs": "--runs 24 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          1.120929818, 1.271435001, 1.121389113, 1.10526207, 1.096180208, 1.083848744, 1.124340613,
+          1.145471372, 1.108878699, 1.119718987, 1.11210771, 1.183966781, 1.102920018, 1.119081675,
+          1.139096274, 1.086639016, 1.095432603, 1.277715857, 1.095509525, 1.079301452, 1.122029214,
+          1.123011082, 1.144101228, 1.115259771
+        ],
+        "cpu": [
+          1.1205850000000002, 1.271094, 1.121005, 1.105025, 1.0957400000000002, 1.083441, 1.124,
+          1.14507, 1.108594, 1.119338, 1.111797, 1.1837090000000001, 1.102618, 1.118779, 1.138834,
+          1.086309, 1.0950579999999999, 1.277199, 1.0951179999999998, 1.079025, 1.1217059999999999,
+          1.122714, 1.1438460000000001, 1.1149930000000001
+        ],
+        "user": [
+          1.115587, 1.267094, 1.115005, 1.104025, 1.091741, 1.081441, 1.118006, 1.14507, 1.103596,
+          1.113342, 1.108798, 1.18171, 1.09962, 1.11378, 1.133835, 1.084309, 1.09306, 1.275199,
+          1.094118, 1.074025, 1.119705, 1.117711, 1.141847, 1.110994
+        ],
+        "system": [
+          0.004998, 0.004, 0.006, 0.001, 0.003999, 0.002, 0.005993999999999999, 0, 0.004998,
+          0.005996, 0.002999, 0.001999, 0.002998, 0.004999, 0.004999, 0.002, 0.0019979999999999998,
+          0.002, 0.001, 0.005, 0.0020009999999999997, 0.005003, 0.001999, 0.003999
+        ],
+        "memory": [
+          7688192, 7569408, 7598080, 7606272, 7696384, 7708672, 7577600, 7491584, 7696384, 7696384,
+          7577600, 7458816, 7577600, 7606272, 7663616, 7663616, 7577600, 7634944, 7528448, 7409664,
+          7458816, 7577600, 7626752, 7491584
+        ],
+        "exit": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "cpp",
+      "version": "13",
+      "toolVersion": "g++ (GCC) 13.5.0",
+      "variant": "gxx-O2",
+      "variantSpec": "2d75108a1794",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "gcc:13",
+      "sourceFile": "languages/cpp/impl/fannkuch/main.cpp",
+      "sourceHash": "ea65a5cd041ae944",
+      "buildCommand": "g++ -std=c++20 -O2 -ffp-contract=off -o /work/bin/cpp-13-gxx-O2-fannkuch /repo/languages/cpp/impl/fannkuch/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-13-gxx-O2-fannkuch 9",
+      "loadAvgBefore": "1.45 0.64 0.24 1/373 56",
+      "buildSeconds": 0.4267894620000006,
+      "buildOutput": "",
+      "binarySize": 16696,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:08:06.758Z",
+      "finishedAt": "2026-10-14T11:08:08.080Z",
+      "loadAvgAfter": "1.45 0.64 0.24 3/375 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.021649859, 0.021667602, 0.021579649000000003, 0.02139883, 0.0213508, 0.021407115,
+          0.021338487, 0.021399451, 0.021331845000000002, 0.021341242, 0.021551485000000002,
+          0.021630863, 0.021515788, 0.021570762, 0.021583726, 0.021808916, 0.021502093,
+          0.021606188000000002, 0.021651443000000003, 0.021531628, 0.021590008, 0.02160236,
+          0.021461597000000002, 0.021439666000000003, 0.021459363000000002, 0.021643998,
+          0.021660609, 0.021641122000000002, 0.021572925, 0.021566514000000002
+        ],
+        "cpu": [
+          0.02155, 0.021584, 0.021505999999999997, 0.021319, 0.021282, 0.021328999999999997,
+          0.021266999999999998, 0.021329, 0.021263999999999998, 0.021265, 0.021477999999999997,
+          0.021546, 0.021407000000000002, 0.021474, 0.021450999999999998, 0.021703, 0.021396,
+          0.021485999999999998, 0.021533, 0.021443999999999998, 0.021455000000000002, 0.021514,
+          0.021359, 0.021345, 0.021356, 0.021551999999999998, 0.021541, 0.021519, 0.021484, 0.021456
+        ],
+        "user": [
+          0.020571, 0.019622, 0.021505999999999997, 0.02035, 0.020269, 0.020314,
+          0.021266999999999998, 0.021329, 0.019330999999999997, 0.020253, 0.019525999999999998,
+          0.021546, 0.020434, 0.021474, 0.021450999999999998, 0.020717, 0.021396,
+          0.021485999999999998, 0.020555, 0.021443999999999998, 0.020434, 0.020537, 0.021359,
+          0.021345, 0.021356, 0.020572999999999998, 0.020562, 0.021519, 0.021484, 0.021456
+        ],
+        "system": [
+          0.000979, 0.0019619999999999998, 0, 0.0009689999999999999, 0.001013, 0.001015, 0, 0,
+          0.0019329999999999998, 0.0010119999999999999, 0.001952, 0, 0.0009729999999999999, 0, 0,
+          0.000986, 0, 0, 0.000978, 0, 0.001021, 0.000977, 0, 0, 0, 0.000979, 0.000979, 0, 0, 0
+        ],
+        "memory": [
+          3698688, 3698688, 3649536, 3698688, 3649536, 3690496, 3670016, 3670016, 3698688, 3649536,
+          3698688, 3698688, 3727360, 3690496, 3649536, 3649536, 3649536, 3719168, 3649536, 3649536,
+          3649536, 3670016, 3698688, 3821568, 3727360, 3649536, 3649536, 3719168, 3690496, 3821568
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "node",
+      "version": "24",
+      "toolVersion": "v24.21.0",
+      "variant": "node-semi-space-64",
+      "variantSpec": "d24caae747f0",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "node:24",
+      "sourceFile": "languages/node/impl/sieve/main.js",
+      "sourceHash": "94655a9236cc4329",
+      "runCommand": "node --max-semi-space-size=64 /repo/languages/node/impl/sieve/main.js 10000000",
+      "loadAvgBefore": "1.34 0.63 0.24 1/386 57",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:08:12.655Z",
+      "finishedAt": "2026-10-14T11:08:15.155Z",
+      "loadAvgAfter": "1.39 0.65 0.25 1/387 310",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.072452294, 0.072695137, 0.071949042, 0.07350977, 0.070436915, 0.074492788, 0.072669168,
+          0.07661725, 0.072631419, 0.072506895, 0.07136218500000001, 0.071373486, 0.075233954,
+          0.074101517, 0.074115333, 0.07324166900000001, 0.07226283800000001, 0.073527163,
+          0.07388335900000001, 0.07298963800000001, 0.071811044, 0.073827876, 0.070442345,
+          0.07350437, 0.074322039, 0.07171787, 0.073846169, 0.072089947, 0.072878439, 0.072890894
+        ],
+        "cpu": [
+          0.08028099999999999, 0.080783, 0.08029399999999999, 0.08151, 0.077858, 0.08193,
+          0.08058799999999999, 0.08174599999999999, 0.08060300000000001, 0.080621,
+          0.07943299999999999, 0.079341, 0.08308099999999999, 0.08187499999999999, 0.082174,
+          0.081844, 0.080328, 0.081243, 0.081536, 0.08117100000000001, 0.079704, 0.081839, 0.077716,
+          0.08111299999999999, 0.08212499999999999, 0.079179, 0.081597, 0.07989399999999999,
+          0.08095599999999999, 0.080314
+        ],
+        "user": [
+          0.06896, 0.06682099999999999, 0.06897099999999999, 0.068588, 0.061104, 0.068617, 0.069367,
+          0.06598799999999999, 0.063475, 0.06837499999999999, 0.06636199999999999,
+          0.058996999999999994, 0.07006899999999999, 0.066713, 0.069147, 0.067522, 0.063259,
+          0.068204, 0.06845, 0.068996, 0.06476, 0.0663, 0.06661399999999999, 0.070098,
+          0.06509899999999999, 0.066998, 0.069358, 0.06509899999999999, 0.07009599999999999,
+          0.066259
+        ],
+        "system": [
+          0.011321, 0.013961999999999999, 0.011323, 0.012922, 0.016753999999999998, 0.013313,
+          0.011221, 0.015757999999999998, 0.017128, 0.012246, 0.013071, 0.020343999999999998,
+          0.013012, 0.015162, 0.013026999999999999, 0.014322, 0.017069, 0.013039,
+          0.013085999999999999, 0.012175, 0.014943999999999999, 0.015538999999999999,
+          0.011101999999999999, 0.011014999999999999, 0.017026, 0.012180999999999999, 0.012239,
+          0.014794999999999999, 0.01086, 0.014055
+        ],
+        "memory": [
+          68333568, 68321280, 68276224, 68460544, 68403200, 68210688, 68235264, 68538368, 68554752,
+          68292608, 68337664, 68423680, 68411392, 68268032, 68182016, 68206592, 68227072, 67825664,
+          68243456, 68329472, 68304896, 68124672, 68112384, 68276224, 68321280, 66232320, 68317184,
+          68304896, 68177920, 68190208
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.4",
+      "toolVersion": "1.4.3",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "oven/bun:1.4",
+      "sourceFile": "languages/bun/impl/binary-trees/main.js",
+      "sourceHash": "ba6cebe5f6b88f73",
+      "runCommand": "bun /repo/languages/bun/impl/binary-trees/main.js 14",
+      "loadAvgBefore": "1.28 0.64 0.25 1/396 57",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-14T11:08:19.832Z",
+      "finishedAt": "2026-10-14T11:08:21.578Z",
+      "loadAvgAfter": "1.28 0.64 0.25 1/399 344",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.051736053000000004, 0.047409916, 0.04571817, 0.051416837, 0.053914265,
+          0.054334582000000006, 0.053360798, 0.05522570500000001, 0.052760473, 0.046716656,
+          0.050708277, 0.046534976000000006, 0.044617899, 0.06085627700000001, 0.049904385,
+          0.047931917000000004, 0.056890543, 0.052096472000000005, 0.049139544, 0.046036825,
+          0.050447750000000006, 0.046616659000000005, 0.044947349000000004, 0.045449991,
+          0.044784364, 0.047589246, 0.045643058, 0.048430159, 0.047659535, 0.0538505
+        ],
+        "cpu": [
+          0.06777799999999999, 0.063052, 0.061086999999999995, 0.06667699999999999,
+          0.07081599999999999, 0.072855, 0.069603, 0.070491, 0.067562, 0.06286, 0.06433799999999999,
+          0.065103, 0.060255, 0.07493, 0.068353, 0.059792, 0.074889, 0.06969, 0.064389, 0.062436,
+          0.069363, 0.061659, 0.060782, 0.059616999999999996, 0.061803, 0.06336599999999999,
+          0.062467, 0.068119, 0.065032, 0.069935
+        ],
+        "user": [
+          0.049009, 0.050884, 0.046714, 0.050512999999999995, 0.052071, 0.057017, 0.050621,
+          0.048721999999999994, 0.052659, 0.049464, 0.050263999999999996, 0.047612999999999996,
+          0.04675, 0.060813, 0.052404, 0.044843999999999995, 0.060721, 0.053607999999999996,
+          0.04917, 0.046827, 0.052582, 0.047957, 0.050462, 0.047066, 0.049443, 0.045107999999999995,
+          0.047389, 0.054719, 0.04371, 0.058115
+        ],
+        "system": [
+          0.018768999999999997, 0.012168, 0.014372999999999999, 0.016163999999999998,
+          0.018744999999999998, 0.015837999999999998, 0.018982, 0.021769, 0.014903, 0.013396,
+          0.014074, 0.01749, 0.013505, 0.014117, 0.015948999999999998, 0.014948, 0.014168, 0.016082,
+          0.015219, 0.015609, 0.016781, 0.013701999999999999, 0.01032, 0.012551, 0.01236, 0.018258,
+          0.015078, 0.013399999999999999, 0.021322, 0.011819999999999999
+        ],
+        "memory": [
+          37543936, 38051840, 37208064, 37138432, 38084608, 38117376, 37715968, 37523456, 37556224,
+          38313984, 37920768, 39100416, 38203392, 36782080, 40599552, 38379520, 38203392, 38531072,
+          37810176, 38445056, 38977536, 36724736, 37126144, 36941824, 37785600, 37789696, 38895616,
+          38432768, 38453248, 37335040
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "ruby",
+      "version": "3.3",
+      "toolVersion": "ruby 3.3.12 (2026-07-16 revision 0581089df9) [x86_64-linux]",
+      "variant": "ruby-yjit",
+      "variantSpec": "7c72497e5734",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "ruby:3.3",
+      "sourceFile": "languages/ruby/impl/fannkuch/main.rb",
+      "sourceHash": "1d89f0233d6a79ea",
+      "runCommand": "ruby --yjit /repo/languages/ruby/impl/fannkuch/main.rb 9",
+      "loadAvgBefore": "1.43 0.70 0.28 1/408 57",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:08:36.550Z",
+      "finishedAt": "2026-10-14T11:08:49.018Z",
+      "loadAvgAfter": "1.34 0.72 0.29 1/403 150",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.378942853, 0.38260041100000003, 0.38318872000000004, 0.38605302500000005,
+          0.37803419400000005, 0.390712165, 0.38863937000000004, 0.385652997, 0.381439711,
+          0.381358719, 0.38683608900000005, 0.382582678, 0.386662053, 0.382082342, 0.389689432,
+          0.384586684, 0.386441862, 0.391524113, 0.38799625400000004, 0.386581687,
+          0.38723523800000004, 0.38685973700000004, 0.38750142600000004, 0.382586629, 0.381442029,
+          0.384346118, 0.38479333400000004, 0.384888271, 0.380985195, 0.38259262000000005
+        ],
+        "cpu": [
+          0.37876699999999996, 0.38225699999999996, 0.382939, 0.385805, 0.377808, 0.390543,
+          0.388401, 0.38540699999999994, 0.381264, 0.381172, 0.386636, 0.38229599999999997,
+          0.38646699999999995, 0.38182199999999994, 0.389416, 0.384367, 0.38616199999999995,
+          0.391196, 0.38776499999999997, 0.386326, 0.387045, 0.38662699999999994, 0.387264,
+          0.382372, 0.38122599999999995, 0.384162, 0.384558, 0.384663, 0.38073999999999997, 0.38242
+        ],
+        "user": [
+          0.368747, 0.36824799999999996, 0.37094099999999997, 0.377789, 0.36478099999999997,
+          0.375523, 0.372426, 0.371393, 0.373259, 0.366205, 0.37061, 0.372289, 0.36949099999999996,
+          0.36882899999999996, 0.37543699999999997, 0.371355, 0.37613199999999997,
+          0.37418799999999997, 0.36877699999999997, 0.374316, 0.374044, 0.37260499999999996,
+          0.373255, 0.367397, 0.36921899999999996, 0.364154, 0.374544, 0.370639, 0.367749,
+          0.37143699999999996
+        ],
+        "system": [
+          0.01002, 0.014008999999999999, 0.011998, 0.008015999999999999, 0.013026999999999999,
+          0.015019999999999999, 0.015975, 0.014013999999999999, 0.008005, 0.014967, 0.016026,
+          0.010007, 0.016975999999999998, 0.012993, 0.013979, 0.013012, 0.010029999999999999,
+          0.017008, 0.018987999999999998, 0.01201, 0.013000999999999999, 0.014022,
+          0.014008999999999999, 0.014974999999999999, 0.012007, 0.020007999999999998, 0.010014,
+          0.014024, 0.012990999999999999, 0.010983
+        ],
+        "memory": [
+          13139968, 13209600, 13000704, 13041664, 13250560, 13266944, 13131776, 13279232, 13266944,
+          13189120, 13017088, 13017088, 13266944, 13160448, 13209600, 13312000, 13279232, 13250560,
+          13221888, 13221888, 13139968, 13119488, 13250560, 13041664, 13033472, 13279232, 13189120,
+          13250560, 13176832, 13312000
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.5",
+      "toolVersion": "Dart SDK version: 3.5.4 (stable) (Wed Oct 16 16:18:51 2024 +0000) on \"linux_x64\"",
+      "variant": "dart-jit",
+      "variantSpec": "874626897595",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "dart:3.5",
+      "sourceFile": "languages/dart/impl/binary-trees/main.dart",
+      "sourceHash": "ee384c4ab6bfe650",
+      "runCommand": "dart /repo/languages/dart/impl/binary-trees/main.dart 14",
+      "loadAvgBefore": "1.44 0.76 0.31 1/422 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-14T11:08:58.971Z",
+      "finishedAt": "2026-10-14T11:09:07.538Z",
+      "loadAvgAfter": "1.48 0.78 0.32 1/412 379",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.26447339000000003, 0.260997745, 0.266184429, 0.272115357, 0.30792184, 0.264352589,
+          0.263874088, 0.26259778500000003, 0.253927279, 0.259402413, 0.26201872600000004,
+          0.26554547500000003, 0.27054530000000004, 0.257366107, 0.265281722, 0.259899482,
+          0.265872006, 0.261370208, 0.25372093300000004, 0.258365345, 0.252367163,
+          0.25351469800000004, 0.254412069, 0.25285122800000004, 0.26254362400000003, 0.258152303,
+          0.254741331, 0.25777974000000003, 0.284766752, 0.25818557200000003
+        ],
+        "cpu": [
+          0.49316699999999997, 0.497911, 0.500607, 0.517197, 0.5631069999999999, 0.500089, 0.494312,
+          0.49084399999999995, 0.47763799999999995, 0.48369399999999996, 0.491541, 0.498959,
+          0.505192, 0.48689099999999996, 0.499449, 0.48913399999999996, 0.49997099999999994,
+          0.49164499999999994, 0.48120199999999996, 0.49013, 0.47865399999999997,
+          0.47300699999999996, 0.482542, 0.476441, 0.493334, 0.486951, 0.478106, 0.483905, 0.528818,
+          0.4828
+        ],
+        "user": [
+          0.387918, 0.39114499999999996, 0.399064, 0.406728, 0.45613699999999996, 0.392424,
+          0.39646899999999996, 0.383221, 0.382717, 0.379685, 0.385208, 0.403823, 0.383665, 0.389312,
+          0.383013, 0.39635, 0.39535, 0.39674899999999996, 0.37815899999999997, 0.386681,
+          0.36904699999999996, 0.387281, 0.380525, 0.384818, 0.390681, 0.387928, 0.37333, 0.381289,
+          0.425089, 0.381633
+        ],
+        "system": [
+          0.105249, 0.106766, 0.101543, 0.110469, 0.10697, 0.107665, 0.097843, 0.107623,
+          0.09492099999999999, 0.10400899999999999, 0.106333, 0.095136, 0.121527, 0.097579,
+          0.116436, 0.09278399999999999, 0.10462099999999999, 0.094896, 0.103043, 0.103449,
+          0.109607, 0.085726, 0.102017, 0.091623, 0.102653, 0.099023, 0.104776, 0.102616, 0.103729,
+          0.10116699999999999
+        ],
+        "memory": [
+          180224000, 181473280, 180547584, 180527104, 179638272, 185438208, 180199424, 180871168,
+          180514816, 180060160, 179773440, 180879360, 180711424, 179859456, 180207616, 180383744,
+          179003392, 180269056, 179847168, 180486144, 180379648, 180215808, 180342784, 180387840,
+          180215808, 180199424, 180256768, 180596736, 180228096, 180985856
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.8",
+      "toolVersion": "julia version 1.8.5",
+      "variant": "julia-O3",
+      "variantSpec": "f2f9f0fb9d83",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "julia:1.8",
+      "sourceFile": "languages/julia/impl/binary-trees/main.jl",
+      "sourceHash": "aa91b24dba7fd51d",
+      "runCommand": "julia --startup-file=no -O3 -t 4 /repo/languages/julia/impl/binary-trees/main.jl 14",
+      "loadAvgBefore": "1.42 0.79 0.32 1/434 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-14T11:09:15.204Z",
+      "finishedAt": "2026-10-14T11:09:25.042Z",
+      "loadAvgAfter": "1.57 0.85 0.35 5/424 373",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.30663155400000003, 0.302418442, 0.30028132100000005, 0.306817689, 0.298148049,
+          0.29954325600000004, 0.294451629, 0.302242826, 0.30463574200000004, 0.295232616,
+          0.30113828000000004, 0.30841179900000004, 0.307797221, 0.29779543, 0.306343062,
+          0.29955928200000004, 0.298538811, 0.302741234, 0.303278364, 0.301091641,
+          0.31344362000000003, 0.298010059, 0.30086039000000003, 0.298961503, 0.304303936,
+          0.29577878, 0.295127723, 0.29768661700000004, 0.306552309, 0.31887141500000005
+        ],
+        "cpu": [
+          0.613935, 0.6322749999999999, 0.6289739999999999, 0.636423, 0.627744, 0.628837,
+          0.6229939999999999, 0.624767, 0.633985, 0.624915, 0.627192, 0.637946, 0.637297, 0.627791,
+          0.6364190000000001, 0.628784, 0.628035, 0.6316039999999999, 0.632657, 0.630951, 0.642215,
+          0.627676, 0.630452, 0.6289279999999999, 0.63403, 0.6253879999999999, 0.624323, 0.627069,
+          0.63555, 0.6486379999999999
+        ],
+        "user": [
+          0.235598, 0.238479, 0.24137599999999998, 0.256162, 0.245505, 0.246332,
+          0.23537799999999998, 0.254318, 0.249613, 0.247381, 0.24667299999999998, 0.23725,
+          0.24811599999999998, 0.243924, 0.24201, 0.259509, 0.234626, 0.242466, 0.24588, 0.247994,
+          0.249324, 0.245894, 0.245798, 0.241217, 0.24378999999999998, 0.23365, 0.223047,
+          0.23402599999999998, 0.25882099999999997, 0.25645999999999997
+        ],
+        "system": [
+          0.378337, 0.393796, 0.387598, 0.38026099999999996, 0.382239, 0.382505,
+          0.38761599999999996, 0.370449, 0.384372, 0.377534, 0.380519, 0.400696, 0.389181,
+          0.38386699999999996, 0.394409, 0.36927499999999996, 0.393409, 0.389138, 0.386777,
+          0.382957, 0.392891, 0.381782, 0.384654, 0.387711, 0.39024, 0.391738, 0.40127599999999997,
+          0.393043, 0.376729, 0.39217799999999997
+        ],
+        "memory": [
+          232394752, 230985728, 231522304, 230903808, 232849408, 231337984, 230899712, 232603648,
+          233168896, 231055360, 233046016, 233070592, 230793216, 232710144, 230711296, 230555648,
+          233062400, 231108608, 231497728, 231141376, 233340928, 233123840, 232820736, 233259008,
+          230817792, 230965248, 233226240, 232419328, 231198720, 230903808
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.4",
+      "toolVersion": "1.4.3",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "oven/bun:1.4",
+      "sourceFile": "languages/bun/impl/sieve/main.js",
+      "sourceHash": "94655a9236cc4329",
+      "runCommand": "bun /repo/languages/bun/impl/sieve/main.js 10000000",
+      "loadAvgBefore": "1.57 0.85 0.35 1/424 351",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:09:25.142Z",
+      "finishedAt": "2026-10-14T11:09:27.066Z",
+      "loadAvgAfter": "1.57 0.85 0.35 5/425 508",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.05343334, 0.053676036, 0.052215995, 0.063224072, 0.06978988300000001, 0.070076369,
+          0.053609349, 0.050889425, 0.051957792, 0.051695141, 0.051702142000000006, 0.052022432,
+          0.051934549, 0.051812870000000004, 0.057823186000000006, 0.05298933, 0.051848297,
+          0.057102078, 0.06310033000000001, 0.054938083000000006, 0.059863159000000006,
+          0.052229551000000006, 0.051995632, 0.052311452, 0.051071465, 0.051802501,
+          0.059239072000000004, 0.052246591, 0.051857965000000006, 0.052396252000000004
+        ],
+        "cpu": [
+          0.072295, 0.071431, 0.070689, 0.082071, 0.089334, 0.08911899999999999, 0.071826,
+          0.06940299999999999, 0.07068899999999999, 0.070255, 0.070129, 0.07055199999999999,
+          0.071007, 0.070411, 0.076389, 0.071953, 0.070552, 0.07196, 0.081571, 0.07339399999999999,
+          0.078607, 0.071362, 0.07103999999999999, 0.071313, 0.06994399999999999, 0.070745,
+          0.078065, 0.071392, 0.070912, 0.071108
+        ],
+        "user": [
+          0.057234, 0.058711, 0.057746, 0.066873, 0.074278, 0.079106, 0.064939,
+          0.061356999999999995, 0.059225999999999994, 0.064401, 0.060111, 0.062488999999999996,
+          0.058835, 0.059503, 0.064931, 0.063846, 0.055215, 0.059967, 0.069634, 0.063201,
+          0.06533599999999999, 0.06046, 0.06325499999999999, 0.061269, 0.059952,
+          0.060919999999999995, 0.069058, 0.063348, 0.062691, 0.058918
+        ],
+        "system": [
+          0.015061, 0.012719999999999999, 0.012943, 0.015198, 0.015056, 0.010013, 0.006887,
+          0.008046, 0.011463, 0.005854, 0.010017999999999999, 0.008062999999999999,
+          0.012171999999999999, 0.010908, 0.011458, 0.008107, 0.015337, 0.011993, 0.011937,
+          0.010192999999999999, 0.013271, 0.010902, 0.007784999999999999, 0.010043999999999999,
+          0.009992, 0.009825, 0.009007, 0.008043999999999999, 0.008221, 0.01219
+        ],
+        "memory": [
+          36827136, 36995072, 36945920, 36773888, 36937728, 36827136, 36794368, 36892672, 37023744,
+          36904960, 36741120, 36929536, 36892672, 36913152, 36904960, 37019648, 36683776, 36769792,
+          36888576, 36782080, 36806656, 36945920, 36892672, 36745216, 36986880, 37027840, 36765696,
+          36798464, 36904960, 37003264
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "2.17",
+      "toolVersion": "Dart SDK version: 2.17.7 (stable) (Mon Aug 22 10:43:32 2022 +0200) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "dart:2.17",
+      "sourceFile": "languages/dart/impl/json-parse/main.dart",
+      "sourceHash": "06f7635ec4cd4393",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/json-parse/main.dart -o /work/bin/dart-2.17-dart-aot-json-parse",
+      "runCommand": "/work/bin/dart-2.17-dart-aot-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "1.41 0.84 0.35 1/446 55",
+      "buildSeconds": 2.730162741999986,
+      "buildOutput": "Info: Compiling with sound null safety\nGenerated: /work/bin/dart-2.17-dart-aot-json-parse\n",
+      "binarySize": 5975832,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-14T11:09:36.181Z",
+      "finishedAt": "2026-10-14T11:10:04.406Z",
+      "loadAvgAfter": "1.25 0.85 0.37 1/441 298",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.798412275, 0.798514786, 0.8227420470000001, 0.821753178, 0.808063677, 0.465120611,
+          0.789683558, 0.817937545, 0.7898693750000001, 0.82300636, 0.791778509, 0.7894072860000001,
+          0.8043937400000001, 0.768255396, 0.790229292, 0.8084277000000001, 0.7935412730000001,
+          0.794496579, 0.800084404, 0.7975946500000001, 0.794944478, 0.7977303250000001, 0.81469544,
+          0.80712629, 0.809179918, 0.772969761, 0.824173245, 0.7648491510000001, 0.8104933430000001,
+          0.799016409
+        ],
+        "cpu": [
+          0.9303619999999999, 0.9250419999999999, 0.9048609999999999, 0.9052589999999999,
+          0.9470959999999999, 0.522944, 0.913848, 0.8970619999999999, 0.913067, 0.903465, 0.921612,
+          0.912221, 0.8836809999999999, 0.874751, 0.8982219999999999, 0.885813, 0.9169309999999999,
+          0.92189, 0.9272969999999999, 0.928356, 0.9195099999999999, 0.925001, 0.8949159999999999,
+          0.936248, 0.8879609999999999, 0.8782749999999999, 0.9030619999999999, 0.868302, 0.887997,
+          0.922013
+        ],
+        "user": [
+          0.834915, 0.8249299999999999, 0.8078759999999999, 0.8008839999999999, 0.853791, 0.435452,
+          0.815434, 0.7906989999999999, 0.804298, 0.8095209999999999, 0.824548, 0.831113, 0.798616,
+          0.782883, 0.8020919999999999, 0.777836, 0.814716, 0.819792, 0.8289479999999999, 0.828102,
+          0.818564, 0.8231109999999999, 0.7949259999999999, 0.8324429999999999, 0.7839659999999999,
+          0.7899459999999999, 0.813958, 0.755263, 0.79579, 0.818125
+        ],
+        "system": [
+          0.09544699999999999, 0.10011199999999999, 0.096985, 0.104375, 0.093305, 0.087492,
+          0.098414, 0.106363, 0.10876899999999999, 0.093944, 0.097064, 0.081108, 0.085065,
+          0.09186799999999999, 0.09613, 0.10797699999999999, 0.102215, 0.102098,
+          0.09834899999999999, 0.100254, 0.100946, 0.10189, 0.09999, 0.103805, 0.10399499999999999,
+          0.08832899999999999, 0.089104, 0.113039, 0.092207, 0.103888
+        ],
+        "memory": [
+          239243264, 237232128, 234668032, 235474944, 236847104, 194088960, 236384256, 234119168,
+          237260800, 235208704, 237309952, 236453888, 235073536, 236986368, 237801472, 234708992,
+          237178880, 236613632, 237309952, 236036096, 236937216, 236974080, 237502464, 236236800,
+          235081728, 237133824, 235147264, 237965312, 234180608, 237318144
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.12",
+      "toolVersion": "julia version 1.12.7",
+      "variant": "julia-O3",
+      "variantSpec": "f2f9f0fb9d83",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "julia:1.12",
+      "sourceFile": "languages/julia/impl/file-processing/main.jl",
+      "sourceHash": "2da25fe3d3947d31",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "runCommand": "julia --startup-file=no -O3 -t 4 /repo/languages/julia/impl/file-processing/main.jl /work/inputs/input.csv",
+      "loadAvgBefore": "1.21 0.86 0.38 4/464 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-14T11:10:16.300Z",
+      "finishedAt": "2026-10-14T11:10:39.817Z",
+      "loadAvgAfter": "1.30 0.92 0.41 1/454 437",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.7335896510000001, 0.726269386, 0.732151993, 0.735636034, 0.7299140040000001,
+          0.7167461890000001, 0.7539004920000001, 0.7229656560000001, 0.7251473740000001,
+          0.744812103, 0.736961439, 0.7458081750000001, 0.740140711, 0.719124866,
+          0.7272351730000001, 0.73174549, 0.728826894, 0.7467743640000001, 0.720433544, 0.734203896,
+          0.7196369450000001, 0.724011963, 0.7319634780000001, 0.720795021, 0.723886549,
+          0.728471854, 0.724290862, 0.721518018, 0.7186107850000001, 0.720750423
+        ],
+        "cpu": [
+          1.01309, 1.004492, 1.010328, 1.017923, 1.00681, 0.991553, 1.035308, 1.004874, 0.999849,
+          1.023863, 1.0192620000000001, 1.033138, 1.028775, 0.995493, 1.011854, 1.0111809999999999,
+          1.010317, 1.028353, 1.0048089999999998, 1.01373, 1.006044, 1.014723, 1.008429, 0.999115,
+          1.001697, 1.005141, 1.005171, 0.9994069999999999, 0.9916289999999999, 1.001137
+        ],
+        "user": [
+          0.889528, 0.879567, 0.8884029999999999, 0.894909, 0.891579, 0.884675, 0.917727, 0.893562,
+          0.8848739999999999, 0.901536, 0.89927, 0.9110149999999999, 0.916692, 0.8790239999999999,
+          0.914241, 0.89362, 0.878567, 0.90132, 0.8927799999999999, 0.891886, 0.893814,
+          0.9085449999999999, 0.898925, 0.879462, 0.892053, 0.894883, 0.883521, 0.8845799999999999,
+          0.8769049999999999, 0.886014
+        ],
+        "system": [
+          0.12356199999999999, 0.124925, 0.12192499999999999, 0.123014, 0.115231, 0.106878,
+          0.11758099999999999, 0.111312, 0.114975, 0.12232699999999999, 0.119992, 0.122123,
+          0.11208299999999999, 0.11646899999999999, 0.09761299999999999, 0.117561, 0.13175,
+          0.127033, 0.11202899999999999, 0.121844, 0.11223, 0.106178, 0.10950399999999999, 0.119653,
+          0.10964399999999999, 0.110258, 0.12165, 0.114827, 0.11472399999999999, 0.11512299999999999
+        ],
+        "memory": [
+          341450752, 339423232, 341385216, 338038784, 339705856, 339517440, 339689472, 337416192,
+          343646208, 337416192, 337711104, 337756160, 339677184, 339763200, 337522688, 337297408,
+          337379328, 339517440, 339390464, 339554304, 337453056, 335757312, 339746816, 341667840,
+          337608704, 340078592, 341430272, 341377024, 341872640, 339402752
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.4",
+      "toolVersion": "1.4.3",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "oven/bun:1.4",
+      "sourceFile": "languages/bun/impl/fannkuch/main.js",
+      "sourceHash": "430f25863c153cc5",
+      "runCommand": "bun /repo/languages/bun/impl/fannkuch/main.js 9",
+      "loadAvgBefore": "1.30 0.92 0.41 1/454 515",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:10:39.929Z",
+      "finishedAt": "2026-10-14T11:10:41.343Z",
+      "loadAvgAfter": "1.30 0.92 0.41 2/455 672",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.041589608, 0.035346921, 0.035863232, 0.035801905, 0.044123488, 0.044248348,
+          0.037698313000000004, 0.036464417, 0.042706403000000004, 0.04288501, 0.045018488,
+          0.041133135, 0.035937372, 0.042983173, 0.035792384000000003, 0.035449416000000004,
+          0.035770029, 0.042783209, 0.042551495, 0.041198417, 0.034248334000000005, 0.038427139,
+          0.039229734, 0.042208639, 0.037570665, 0.037231632, 0.037825257, 0.035423043, 0.036697021,
+          0.040200571000000004
+        ],
+        "cpu": [
+          0.063207, 0.05587399999999999, 0.056484, 0.056396999999999996, 0.061052, 0.064692,
+          0.058483999999999994, 0.056906, 0.061248, 0.061519, 0.065819, 0.060836999999999995,
+          0.056479999999999995, 0.061868, 0.056320999999999996, 0.055656, 0.056032, 0.062624,
+          0.060703999999999994, 0.061488999999999995, 0.054862999999999995, 0.059283999999999996,
+          0.056273, 0.059417, 0.054978, 0.058456, 0.058797999999999996, 0.056223999999999996,
+          0.056443, 0.061392999999999996
+        ],
+        "user": [
+          0.057282, 0.051810999999999996, 0.050539, 0.049590999999999996, 0.056048, 0.057831,
+          0.055406, 0.050915999999999996, 0.053216, 0.055566, 0.055847, 0.053855999999999994,
+          0.049544, 0.055783, 0.048685, 0.053556, 0.051116999999999996, 0.054917,
+          0.053737999999999994, 0.057456999999999994, 0.048878, 0.054259999999999996, 0.049239,
+          0.054466, 0.050069999999999996, 0.053585, 0.055704, 0.053158, 0.052412, 0.058272
+        ],
+        "system": [
+          0.005925, 0.004063, 0.005945, 0.0068059999999999996, 0.005004, 0.006861, 0.003078,
+          0.00599, 0.008032, 0.005953, 0.009972, 0.006980999999999999, 0.0069359999999999995,
+          0.006085, 0.0076359999999999996, 0.0021, 0.004915, 0.0077069999999999994, 0.006966,
+          0.004032, 0.005985, 0.005024, 0.0070339999999999995, 0.004951, 0.004908,
+          0.0048709999999999995, 0.003094, 0.0030659999999999997, 0.004031, 0.0031209999999999996
+        ],
+        "memory": [
+          28778496, 28049408, 28471296, 28131328, 28471296, 28082176, 28499968, 28479488, 28344320,
+          28344320, 28139520, 28180480, 28385280, 28205056, 28139520, 28102656, 28241920, 28024832,
+          28467200, 28213248, 28086272, 28172288, 28073984, 28033024, 28110848, 28168192, 28082176,
+          28213248, 28213248, 28286976
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.1",
+      "toolVersion": "1.1.45",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "oven/bun:1.1",
+      "sourceFile": "languages/bun/impl/file-processing/main.js",
+      "sourceHash": "08f8e7ff88e831b4",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "runCommand": "bun /repo/languages/bun/impl/file-processing/main.js /work/inputs/input.csv",
+      "loadAvgBefore": "1.19 0.90 0.41 1/475 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-14T11:10:46.130Z",
+      "finishedAt": "2026-10-14T11:11:03.429Z",
+      "loadAvgAfter": "1.14 0.91 0.42 1/456 309",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.55265118, 0.535856015, 0.53251539, 0.538604944, 0.5383268330000001, 0.542030937,
+          0.535538221, 0.528217355, 0.535176235, 0.535652385, 0.528515968, 0.534723873, 0.543151838,
+          0.547715579, 0.5271532720000001, 0.532085612, 0.5361180600000001, 0.5331475170000001,
+          0.52501217, 0.535012312, 0.540077963, 0.532198794, 0.536502068, 0.530842197, 0.539548099,
+          0.5363486350000001, 0.533268007, 0.532474093, 0.540536224, 0.531233815
+        ],
+        "cpu": [
+          0.578874, 0.563524, 0.558906, 0.566111, 0.5635349999999999, 0.5682339999999999,
+          0.5623819999999999, 0.5544749999999999, 0.560922, 0.5633349999999999, 0.5543079999999999,
+          0.560533, 0.57184, 0.57058, 0.5517839999999999, 0.557848, 0.562676, 0.559025,
+          0.5508759999999999, 0.5610219999999999, 0.564871, 0.5581969999999999, 0.562724, 0.554748,
+          0.565418, 0.562592, 0.5627260000000001, 0.558207, 0.569523, 0.55753
+        ],
+        "user": [
+          0.498892, 0.479744, 0.49344899999999997, 0.492446, 0.48632499999999995,
+          0.49745799999999996, 0.48564799999999997, 0.48101499999999997, 0.482232,
+          0.49165699999999996, 0.48352399999999995, 0.493755, 0.493, 0.500775, 0.47754399999999997,
+          0.48076399999999997, 0.481014, 0.49102199999999996, 0.46574099999999996, 0.491399,
+          0.488025, 0.484909, 0.49563799999999997, 0.48603599999999997, 0.48350299999999996,
+          0.485967, 0.489371, 0.481492, 0.492915, 0.48682899999999996
+        ],
+        "system": [
+          0.079982, 0.08378, 0.065457, 0.073665, 0.07721, 0.07077599999999999, 0.076734, 0.07346,
+          0.07869, 0.07167799999999999, 0.070784, 0.06677799999999999, 0.07884, 0.06980499999999999,
+          0.07424, 0.077084, 0.081662, 0.068003, 0.085135, 0.06962299999999999, 0.076846,
+          0.07328799999999999, 0.06708599999999999, 0.068712, 0.081915, 0.076625, 0.073355,
+          0.07671499999999999, 0.076608, 0.070701
+        ],
+        "memory": [
+          155586560, 155688960, 155856896, 155820032, 155652096, 155963392, 155668480, 155750400,
+          155783168, 155738112, 155779072, 155652096, 155672576, 155373568, 155611136, 155750400,
+          155766784, 155807744, 155705344, 155803648, 155660288, 155947008, 155512832, 155684864,
+          155660288, 155615232, 155791360, 155664384, 155684864, 155611136
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "cpp",
+      "version": "6",
+      "toolVersion": "g++ (GCC) 6.5.0",
+      "variant": "gxx-O3-native",
+      "variantSpec": "0e12ef4516dc",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "gcc:6",
+      "sourceFile": "languages/cpp/impl/matmul/main.cpp",
+      "sourceHash": "ebde8fbcfac2b4f3",
+      "buildCommand": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o /work/bin/cpp-6-gxx-O3-native-matmul /repo/languages/cpp/impl/matmul/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-6-gxx-O3-native-matmul 256",
+      "loadAvgBefore": "1.26 0.95 0.44 2/476 56",
+      "buildSeconds": 0.21860866699996404,
+      "buildOutput": "",
+      "binarySize": 10768,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:11:17.357Z",
+      "finishedAt": "2026-10-14T11:11:17.971Z",
+      "loadAvgAfter": "1.26 0.95 0.44 1/476 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.006039891, 0.006001949, 0.006009734, 0.0059811000000000005, 0.005922190000000001,
+          0.005907142000000001, 0.005963718000000001, 0.005968477000000001, 0.005907222,
+          0.005930576000000001, 0.005910638, 0.005915157000000001, 0.005889809,
+          0.0059267980000000005, 0.0059466960000000004, 0.005993303, 0.005971943,
+          0.006151088000000001, 0.0060098040000000005, 0.005979187, 0.005920187, 0.005942198,
+          0.005830839, 0.005880172, 0.006109851, 0.005900610000000001, 0.005896643, 0.005927771,
+          0.005918363, 0.005905448000000001
+        ],
+        "cpu": [
+          0.005991, 0.005946, 0.005927999999999999, 0.005894, 0.005853, 0.005842, 0.005894,
+          0.005882, 0.005841, 0.005856999999999999, 0.005842, 0.0058189999999999995, 0.005827,
+          0.005859, 0.005869999999999999, 0.005894, 0.005905, 0.006057999999999999,
+          0.005937999999999999, 0.0058839999999999995, 0.0058449999999999995, 0.005857, 0.005778,
+          0.0057989999999999995, 0.006039999999999999, 0.005814, 0.0058319999999999995, 0.005823,
+          0.005829999999999999, 0.005842
+        ],
+        "user": [
+          0.004993, 0.003964, 0.003952, 0.004912, 0.0039019999999999997, 0.003895, 0.004912,
+          0.004902, 0.003894, 0.0039049999999999996, 0.004869, 0.0058189999999999995, 0.004856,
+          0.005859, 0.004892, 0.004912, 0.004921, 0.005049, 0.004948999999999999,
+          0.003922999999999999, 0.003897, 0.004881, 0.004815, 0.004833, 0.005033999999999999,
+          0.0048449999999999995, 0.00486, 0.004853, 0.004859, 0.004674
+        ],
+        "system": [
+          0.000998, 0.001982, 0.001976, 0.000982, 0.0019509999999999998, 0.001947, 0.000982,
+          0.00098, 0.001947, 0.001952, 0.0009729999999999999, 0, 0.000971, 0, 0.000978, 0.000982,
+          0.0009839999999999998, 0.001009, 0.0009889999999999999, 0.001961, 0.0019479999999999999,
+          0.000976, 0.000963, 0.000966, 0.001006, 0.0009689999999999999, 0.000972,
+          0.0009699999999999999, 0.000971, 0.001168
+        ],
+        "memory": [
+          3952640, 3952640, 4014080, 4100096, 4018176, 3919872, 4206592, 4050944, 4157440, 4100096,
+          3964928, 3919872, 3964928, 4136960, 4050944, 4063232, 4083712, 4124672, 4001792, 4222976,
+          3952640, 3964928, 3952640, 4083712, 4100096, 4083712, 4083712, 3977216, 3919872, 4050944
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "2.17",
+      "toolVersion": "Dart SDK version: 2.17.7 (stable) (Mon Aug 22 10:43:32 2022 +0200) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "dart:2.17",
+      "sourceFile": "languages/dart/impl/matmul/main.dart",
+      "sourceHash": "705559a5d1529db4",
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/matmul/main.dart -o /work/bin/dart-2.17-dart-aot-matmul",
+      "runCommand": "/work/bin/dart-2.17-dart-aot-matmul 256",
+      "loadAvgBefore": "1.26 0.95 0.44 2/475 305",
+      "buildSeconds": 2.6753202379999568,
+      "buildOutput": "Info: Compiling with sound null safety\nGenerated: /work/bin/dart-2.17-dart-aot-matmul\n",
+      "binarySize": 5925408,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:11:18.076Z",
+      "finishedAt": "2026-10-14T11:11:21.915Z",
+      "loadAvgAfter": "1.24 0.95 0.44 1/468 530",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.029635056000000003, 0.029854316000000002, 0.029954914000000003, 0.029909799,
+          0.029994148, 0.030115854, 0.030832875000000003, 0.029782492, 0.030371322000000003,
+          0.029790046, 0.030720215000000002, 0.030531001000000002, 0.031089328000000003,
+          0.030383204, 0.030312011000000003, 0.02979259, 0.029628655, 0.030152053,
+          0.030221261000000003, 0.029754379, 0.029517436, 0.029729352, 0.030018924000000002,
+          0.029734812000000003, 0.029966746000000002, 0.029402478000000003, 0.030229247,
+          0.029918215, 0.029921191000000003, 0.030580453
+        ],
+        "cpu": [
+          0.030003000000000002, 0.030228, 0.030317999999999998, 0.030264, 0.030368, 0.030502,
+          0.031233999999999998, 0.030112, 0.030709, 0.030135999999999996, 0.031075999999999996,
+          0.030865999999999998, 0.031452, 0.030756, 0.030634999999999996, 0.03018, 0.029955,
+          0.030485999999999996, 0.030580999999999997, 0.030137999999999998, 0.029876,
+          0.030095999999999998, 0.030363999999999995, 0.030087, 0.030307, 0.029751999999999997,
+          0.030611, 0.030285, 0.030307, 0.030969999999999998
+        ],
+        "user": [
+          0.024003, 0.02519, 0.024255, 0.024003, 0.023038, 0.026435, 0.023174, 0.025093999999999998,
+          0.025591, 0.024109, 0.025061999999999997, 0.025722, 0.023065, 0.025796,
+          0.027465999999999997, 0.024144, 0.022725, 0.027437999999999997, 0.026362999999999998,
+          0.026119999999999997, 0.022905, 0.024270999999999997, 0.023278999999999998, 0.021061,
+          0.024246, 0.022570999999999997, 0.026661999999999998, 0.025064, 0.024246, 0.025809
+        ],
+        "system": [
+          0.006, 0.005038, 0.006063, 0.006261, 0.00733, 0.0040669999999999994, 0.00806, 0.005018,
+          0.005118, 0.006026999999999999, 0.006013999999999999, 0.005144, 0.008387, 0.00496,
+          0.003169, 0.006036, 0.0072299999999999994, 0.003048, 0.0042179999999999995, 0.004018,
+          0.006971, 0.0058249999999999994, 0.007084999999999999, 0.009026, 0.0060609999999999995,
+          0.007181, 0.003949, 0.005221, 0.0060609999999999995, 0.005161
+        ],
+        "memory": [
+          16412672, 16338944, 16875520, 15044608, 16678912, 15167488, 16052224, 16613376, 15749120,
+          16211968, 15962112, 15462400, 15912960, 15749120, 15732736, 18198528, 16584704, 15757312,
+          15712256, 18313216, 16416768, 18526208, 15589376, 18288640, 15233024, 16805888, 15298560,
+          18337792, 15474688, 16076800
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.9",
+      "toolVersion": "Dart SDK version: 3.9.4 (stable) (Tue Sep 30 12:08:50 2025 -0700) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "dart:3.9",
+      "sourceFile": "languages/dart/impl/string-ops/main.dart",
+      "sourceHash": "567be7f170b57339",
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/string-ops/main.dart -o /work/bin/dart-3.9-dart-aot-string-ops",
+      "runCommand": "/work/bin/dart-3.9-dart-aot-string-ops 1000000",
+      "loadAvgBefore": "1.21 0.95 0.45 2/487 55",
+      "buildSeconds": 1.300569457000005,
+      "buildOutput": "Generated: /work/bin/dart-3.9-dart-aot-string-ops\n",
+      "binarySize": 6414384,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-14T11:11:31.377Z",
+      "finishedAt": "2026-10-14T11:11:47.540Z",
+      "loadAvgAfter": "1.45 1.02 0.48 1/478 298",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.455700979, 0.47057080100000004, 0.46191759800000004, 0.46106316, 0.44396592300000004,
+          0.46225391600000004, 0.45855692600000003, 0.464154628, 0.46350008600000003, 0.472133002,
+          0.45250340000000006, 0.45186541900000005, 0.44557362800000005, 0.467990718,
+          0.45670612200000005, 0.450486584, 0.46513924300000004, 0.458974099, 0.46204692300000005,
+          0.44913796300000003, 0.461203216, 0.45497744900000003, 0.456248293, 0.467718344,
+          0.44990748100000005, 0.45501337500000005, 0.454738071, 0.45256250400000003, 0.44795938,
+          0.452497943
+        ],
+        "cpu": [
+          0.5782339999999999, 0.5905549999999999, 0.571526, 0.5637989999999999, 0.548853, 0.580769,
+          0.57658, 0.582222, 0.5752309999999999, 0.587233, 0.574688, 0.5708939999999999, 0.551639,
+          0.58426, 0.550223, 0.5707369999999999, 0.584749, 0.568665, 0.5750679999999999, 0.550905,
+          0.575784, 0.557623, 0.5707800000000001, 0.582078, 0.540611, 0.563893, 0.560642, 0.559786,
+          0.554812, 0.5617
+        ],
+        "user": [
+          0.518106, 0.525273, 0.498202, 0.49531, 0.492178, 0.5184719999999999, 0.49732499999999996,
+          0.500472, 0.49665299999999996, 0.529309, 0.49899299999999996, 0.5030749999999999,
+          0.48556299999999997, 0.519231, 0.486545, 0.5070979999999999, 0.519999, 0.492442,
+          0.5016769999999999, 0.48216699999999996, 0.517196, 0.49421099999999996, 0.507136,
+          0.494313, 0.47589699999999996, 0.49690599999999996, 0.493685, 0.49305, 0.487593,
+          0.48546999999999996
+        ],
+        "system": [
+          0.060127999999999994, 0.06528199999999999, 0.073324, 0.068489, 0.056674999999999996,
+          0.062297, 0.07925499999999999, 0.08175, 0.078578, 0.057923999999999996, 0.075695,
+          0.06781899999999999, 0.066076, 0.065029, 0.063678, 0.063639, 0.06475, 0.076223, 0.073391,
+          0.068738, 0.058587999999999994, 0.063412, 0.06364399999999999, 0.087765, 0.064714,
+          0.06698699999999999, 0.066957, 0.066736, 0.067219, 0.07622999999999999
+        ],
+        "memory": [
+          121622528, 121978880, 120991744, 107438080, 107573248, 120352768, 120696832, 120430592,
+          121741312, 121761792, 121708544, 120696832, 108949504, 121974784, 107233280, 121733120,
+          120946688, 122032128, 120569856, 122613760, 120541184, 109457408, 107614208, 122863616,
+          107413504, 107606016, 107999232, 107646976, 109125632, 108290048
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.9",
+      "toolVersion": "Dart SDK version: 3.9.4 (stable) (Tue Sep 30 12:08:50 2025 -0700) on \"linux_x64\"",
+      "variant": "dart-jit",
+      "variantSpec": "874626897595",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "dart:3.9",
+      "sourceFile": "languages/dart/impl/fannkuch/main.dart",
+      "sourceHash": "07d9519056b6f8b3",
+      "runCommand": "dart /repo/languages/dart/impl/fannkuch/main.dart 9",
+      "loadAvgBefore": "1.45 1.02 0.48 11/478 305",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:11:47.639Z",
+      "finishedAt": "2026-10-14T11:11:55.004Z",
+      "loadAvgAfter": "1.53 1.05 0.50 3/479 590",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.221575832, 0.22469012200000002, 0.22542534800000003, 0.22305020800000003, 0.223517812,
+          0.220337247, 0.21919675500000002, 0.217314166, 0.251508663, 0.22709582,
+          0.21246931100000002, 0.21750407100000002, 0.21434312500000002, 0.23750335200000003,
+          0.241770861, 0.225488706, 0.223022607, 0.232401197, 0.21492640300000002,
+          0.22430059500000002, 0.21797163500000002, 0.22498762900000002, 0.231954562, 0.22415312,
+          0.23418676500000002, 0.221289327, 0.21939524900000001, 0.21430531200000003,
+          0.25437511100000004, 0.21426747100000001
+        ],
+        "cpu": [
+          0.373045, 0.37942699999999996, 0.38061999999999996, 0.37515899999999996, 0.375715,
+          0.370645, 0.358255, 0.36475399999999997, 0.42484, 0.38289, 0.355591, 0.364805, 0.355915,
+          0.4004, 0.409722, 0.37782, 0.37036199999999997, 0.394309, 0.35936, 0.369858,
+          0.36566299999999996, 0.373204, 0.387045, 0.374577, 0.39156199999999997, 0.370124,
+          0.367424, 0.358739, 0.429773, 0.358008
+        ],
+        "user": [
+          0.301846, 0.305148, 0.300436, 0.29404399999999997, 0.304006, 0.302342, 0.285203, 0.289392,
+          0.334512, 0.312172, 0.296493, 0.283626, 0.284134, 0.31790599999999997, 0.320127, 0.295108,
+          0.29967499999999997, 0.310668, 0.289904, 0.299885, 0.292531, 0.30386599999999997,
+          0.311842, 0.30629, 0.312438, 0.291613, 0.301813, 0.289597, 0.351725, 0.282373
+        ],
+        "system": [
+          0.071199, 0.074279, 0.08018399999999999, 0.08111499999999999, 0.071709, 0.068303,
+          0.07305199999999999, 0.075362, 0.09032799999999999, 0.070718, 0.059098, 0.081179,
+          0.071781, 0.082494, 0.089595, 0.082712, 0.070687, 0.083641, 0.06945599999999999, 0.069973,
+          0.073132, 0.069338, 0.07520299999999999, 0.068287, 0.079124, 0.078511, 0.065611, 0.069142,
+          0.07804799999999999, 0.075635
+        ],
+        "memory": [
+          162758656, 162832384, 162689024, 163123200, 163262464, 162566144, 162914304, 163598336,
+          163381248, 162746368, 163110912, 163495936, 163667968, 163201024, 163442688, 164155392,
+          163110912, 163647488, 162881536, 163782656, 163209216, 163217408, 163434496, 162435072,
+          163233792, 163393536, 163287040, 163647488, 162816000, 163622912
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.3",
+      "toolVersion": "1.3.14",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "oven/bun:1.3",
+      "sourceFile": "languages/bun/impl/json-parse/main.js",
+      "sourceHash": "9960a8e686e53cae",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "runCommand": "bun /repo/languages/bun/impl/json-parse/main.js /work/inputs/input.json",
+      "loadAvgBefore": "1.57 1.07 0.51 1/501 57",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-14T11:11:59.370Z",
+      "finishedAt": "2026-10-14T11:12:06.131Z",
+      "loadAvgAfter": "1.53 1.06 0.51 6/492 309",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.21584329600000002, 0.207139866, 0.206420341, 0.20587829900000001, 0.20553848900000002,
+          0.209014053, 0.21080521800000002, 0.20565139400000002, 0.20400157600000002, 0.207524475,
+          0.211215645, 0.212150956, 0.20776856800000001, 0.205453668, 0.20678938800000002,
+          0.20411310200000002, 0.203216853, 0.20029886900000002, 0.20421459500000003, 0.201946438,
+          0.207181484, 0.20532818, 0.204788976, 0.20592706800000002, 0.203567249, 0.200691043,
+          0.199773213, 0.203789885, 0.207836303, 0.20213091500000002
+        ],
+        "cpu": [
+          0.26181299999999996, 0.250573, 0.24818999999999997, 0.24794799999999997, 0.251834,
+          0.25651599999999997, 0.25519899999999995, 0.249297, 0.25059, 0.25165499999999996,
+          0.256338, 0.260837, 0.25160899999999997, 0.252542, 0.249695, 0.24533799999999997,
+          0.24534699999999998, 0.243761, 0.248103, 0.24661299999999997, 0.250588, 0.252173,
+          0.24679099999999998, 0.25289, 0.245326, 0.246611, 0.245325, 0.245472, 0.250709, 0.243456
+        ],
+        "user": [
+          0.215553, 0.19866199999999998, 0.20038299999999998, 0.19409099999999999, 0.197517,
+          0.200403, 0.20355199999999998, 0.201046, 0.19139599999999998, 0.20372099999999999,
+          0.203099, 0.20197099999999998, 0.200281, 0.19980299999999998, 0.199959,
+          0.18980899999999998, 0.201932, 0.191962, 0.208087, 0.18670699999999998, 0.201669,
+          0.201536, 0.18459199999999998, 0.20049899999999998, 0.195653, 0.198492,
+          0.19849999999999998, 0.193526, 0.199383, 0.195379
+        ],
+        "system": [
+          0.046259999999999996, 0.051911, 0.047806999999999995, 0.053856999999999995, 0.054317,
+          0.056112999999999996, 0.051647, 0.048250999999999995, 0.059194, 0.047934,
+          0.053238999999999995, 0.058865999999999995, 0.051328, 0.052738999999999994,
+          0.049735999999999995, 0.055528999999999995, 0.043414999999999995, 0.051799,
+          0.040015999999999996, 0.059905999999999994, 0.048919, 0.050636999999999995, 0.062199,
+          0.052391, 0.049672999999999995, 0.048118999999999995, 0.046825, 0.051946, 0.051326,
+          0.048076999999999995
+        ],
+        "memory": [
+          132038656, 132575232, 132829184, 132558848, 133718016, 133300224, 132755456, 132624384,
+          133455872, 132485120, 132673536, 133222400, 132681728, 133537792, 132493312, 132894720,
+          132739072, 133664768, 132866048, 133750784, 132657152, 133476352, 132460544, 133672960,
+          132751360, 133664768, 133926912, 132874240, 132677632, 132722688
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.3",
+      "toolVersion": "1.3.14",
+      "variant": "bun-smol",
+      "variantSpec": "13e5dcb3ca78",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "oven/bun:1.3",
+      "sourceFile": "languages/bun/impl/file-processing/main.js",
+      "sourceHash": "08f8e7ff88e831b4",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "runCommand": "bun --smol /repo/languages/bun/impl/file-processing/main.js /work/inputs/input.csv",
+      "loadAvgBefore": "1.53 1.06 0.51 1/492 316",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-14T11:12:06.231Z",
+      "finishedAt": "2026-10-14T11:12:23.934Z",
+      "loadAvgAfter": "1.38 1.06 0.52 1/492 569",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.547739187, 0.5509498660000001, 0.5570410170000001, 0.5432242500000001, 0.541273083,
+          0.54675522, 0.549699033, 0.547405264, 0.5466621260000001, 0.544657045, 0.5523803460000001,
+          0.54657687, 0.553147841, 0.548120446, 0.5435230550000001, 0.5476697340000001, 0.555464187,
+          0.555543165, 0.5484259060000001, 0.552958827, 0.548618112, 0.548404546,
+          0.5475373760000001, 0.5533282900000001, 0.554015343, 0.5429823770000001, 0.547319042,
+          0.544056575, 0.545734811, 0.555640657
+        ],
+        "cpu": [
+          0.569227, 0.573108, 0.578542, 0.564838, 0.5623609999999999, 0.5683639999999999, 0.571666,
+          0.5691599999999999, 0.57026, 0.568842, 0.574282, 0.570502, 0.574839, 0.5729110000000001,
+          0.567164, 0.5719489999999999, 0.5798369999999999, 0.5771919999999999, 0.573033,
+          0.5755739999999999, 0.572425, 0.569772, 0.569691, 0.574492, 0.5770829999999999,
+          0.5672259999999999, 0.571402, 0.5683779999999999, 0.570146, 0.577623
+        ],
+        "user": [
+          0.509996, 0.519098, 0.512251, 0.5092639999999999, 0.5017539999999999, 0.5129389999999999,
+          0.506931, 0.5149549999999999, 0.518237, 0.5095459999999999, 0.517354, 0.51145, 0.520571,
+          0.522479, 0.509641, 0.509408, 0.529504, 0.52665, 0.513134, 0.518017, 0.514981,
+          0.5082289999999999, 0.5075069999999999, 0.509761, 0.516075, 0.5049819999999999, 0.512849,
+          0.508126, 0.510236, 0.51735
+        ],
+        "system": [
+          0.059231, 0.054009999999999996, 0.066291, 0.055574, 0.060606999999999994,
+          0.055424999999999995, 0.064735, 0.054204999999999996, 0.052023, 0.059295999999999995,
+          0.056928, 0.059052, 0.054268, 0.050432, 0.057523, 0.062541, 0.050332999999999996,
+          0.050542, 0.059898999999999994, 0.057557, 0.057443999999999995, 0.061543,
+          0.062183999999999996, 0.064731, 0.061008, 0.062243999999999994, 0.058552999999999994,
+          0.060252, 0.05991, 0.060273
+        ],
+        "memory": [
+          138280960, 138231808, 138223616, 138166272, 138543104, 138420224, 138280960, 138158080,
+          138149888, 138223616, 138121216, 138395648, 137834496, 138346496, 138223616, 138289152,
+          138420224, 137928704, 138166272, 137945088, 138289152, 138543104, 138395648, 137981952,
+          138252288, 138420224, 138289152, 138395648, 138551296, 138412032
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.9",
+      "toolVersion": "Dart SDK version: 3.9.4 (stable) (Tue Sep 30 12:08:50 2025 -0700) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "dart:3.9",
+      "sourceFile": "languages/dart/impl/fannkuch/main.dart",
+      "sourceHash": "07d9519056b6f8b3",
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/fannkuch/main.dart -o /work/bin/dart-3.9-dart-aot-fannkuch",
+      "runCommand": "/work/bin/dart-3.9-dart-aot-fannkuch 9",
+      "loadAvgBefore": "1.38 1.06 0.52 1/492 597",
+      "buildSeconds": 1.3196296789999469,
+      "buildOutput": "Generated: /work/bin/dart-3.9-dart-aot-fannkuch\n",
+      "binarySize": 6397328,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:12:24.036Z",
+      "finishedAt": "2026-10-14T11:12:26.387Z",
+      "loadAvgAfter": "1.38 1.06 0.52 1/493 758",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.025799332, 0.025846240000000003, 0.025630036000000002, 0.026655653, 0.025658559,
+          0.025724732, 0.025844035, 0.025854855000000003, 0.025737636, 0.025920619000000002,
+          0.025913686000000002, 0.025945505, 0.026054569000000003, 0.025720505,
+          0.025944202000000003, 0.026303905000000002, 0.025976834, 0.025999416,
+          0.026145810000000002, 0.025831812000000003, 0.025794593, 0.025728690000000002,
+          0.025762042000000002, 0.025548914000000002, 0.025620819000000003, 0.025543984000000002,
+          0.025614587, 0.025698854, 0.025477351000000002, 0.025631147
+        ],
+        "cpu": [
+          0.025781000000000002, 0.02581, 0.025627, 0.026638, 0.025657, 0.025710999999999998,
+          0.025844, 0.025813999999999997, 0.025705, 0.025893, 0.025887, 0.025907, 0.026024,
+          0.025689999999999998, 0.025903, 0.026217999999999998, 0.025948, 0.025942, 0.02612,
+          0.025802, 0.025768, 0.025724999999999998, 0.025776, 0.025561999999999998, 0.025601,
+          0.02554, 0.025594, 0.025646999999999996, 0.025472, 0.02562
+        ],
+        "user": [
+          0.023719, 0.023746, 0.021685, 0.024665, 0.023604999999999998, 0.023733999999999998,
+          0.022862, 0.022836, 0.023728, 0.023902, 0.0229, 0.023915, 0.023021999999999997,
+          0.024662999999999997, 0.024867, 0.026217999999999998, 0.023951999999999998, 0.023947,
+          0.025116, 0.022824999999999998, 0.023785999999999998, 0.023746999999999997, 0.025776,
+          0.022722, 0.023632, 0.024519, 0.021657, 0.024621999999999998, 0.024454, 0.022664
+        ],
+        "system": [
+          0.002062, 0.002064, 0.003942, 0.001973, 0.002052, 0.001977, 0.002982,
+          0.0029779999999999997, 0.001977, 0.0019909999999999997, 0.002987, 0.001992, 0.003002,
+          0.001027, 0.001036, 0, 0.001996, 0.001995, 0.001004, 0.002977, 0.001982,
+          0.0019779999999999997, 0, 0.00284, 0.001969, 0.001021, 0.0039369999999999995,
+          0.0010249999999999999, 0.001018, 0.002956
+        ],
+        "memory": [
+          6582272, 6516736, 6529024, 6373376, 6557696, 6270976, 6410240, 6561792, 6275072, 6557696,
+          6320128, 6516736, 6250496, 6344704, 6430720, 6537216, 6537216, 6275072, 6279168, 6606848,
+          6279168, 6397952, 6438912, 6344704, 6250496, 6492160, 6524928, 6500352, 6565888, 6340608
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "cpp",
+      "version": "5",
+      "toolVersion": "g++ (GCC) 5.5.0",
+      "variant": "gxx-O3-native",
+      "variantSpec": "0e12ef4516dc",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "gcc:5",
+      "sourceFile": "languages/cpp/impl/matmul/main.cpp",
+      "sourceHash": "ebde8fbcfac2b4f3",
+      "buildCommand": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o /work/bin/cpp-5-gxx-O3-native-matmul /repo/languages/cpp/impl/matmul/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-5-gxx-O3-native-matmul 256",
+      "loadAvgBefore": "1.38 1.06 0.52 1/493 142",
+      "buildSeconds": 0.2550101310000173,
+      "buildOutput": "",
+      "binarySize": 13680,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:12:26.490Z",
+      "finishedAt": "2026-10-14T11:12:27.135Z",
+      "loadAvgAfter": "1.38 1.06 0.52 1/493 221",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.005796054, 0.005765166, 0.005688863000000001, 0.0056570940000000005,
+          0.005670990000000001, 0.005765968000000001, 0.005727275, 0.005680007, 0.005678594,
+          0.005675778, 0.005746251, 0.005755268, 0.005703149, 0.005695385000000001,
+          0.005711315000000001, 0.0057344480000000005, 0.0057015370000000004, 0.00561208,
+          0.005682071, 0.005669998000000001, 0.005674286000000001, 0.0058316390000000004,
+          0.006443403, 0.0057939, 0.005712958000000001, 0.005763172, 0.005752101000000001,
+          0.005814267000000001, 0.005722676, 0.005893235
+        ],
+        "cpu": [
+          0.0057209999999999995, 0.005674, 0.0056029999999999995, 0.005592, 0.005599, 0.00567,
+          0.005654, 0.005593, 0.005605, 0.0055899999999999995, 0.005639999999999999,
+          0.005666999999999999, 0.0056229999999999995, 0.00562, 0.005621, 0.005658,
+          0.0056229999999999995, 0.005562, 0.005601999999999999, 0.005587, 0.005604, 0.005755,
+          0.006378, 0.005718, 0.005633, 0.0056819999999999996, 0.005691, 0.005737, 0.005667,
+          0.005809
+        ],
+        "user": [
+          0.004768, 0.003783, 0.0056029999999999995, 0.003728, 0.0037329999999999998, 0.00567,
+          0.005654, 0.0037289999999999997, 0.004671, 0.0055899999999999995, 0.0045119999999999995,
+          0.0037779999999999997, 0.0037489999999999997, 0.00562, 0.004497, 0.0037719999999999997,
+          0.0037489999999999997, 0.005562, 0.0046689999999999995, 0.003725, 0.005604, 0.004796,
+          0.003645, 0.004765, 0.005633, 0.0037879999999999997, 0.0037939999999999996, 0.004781,
+          0.005667, 0.005809
+        ],
+        "system": [
+          0.000953, 0.0018909999999999999, 0, 0.001864, 0.0018659999999999998, 0, 0, 0.001864,
+          0.0009339999999999999, 0, 0.0011279999999999999, 0.0018889999999999998, 0.001874, 0,
+          0.001124, 0.0018859999999999999, 0.001874, 0, 0.0009329999999999999, 0.001862, 0,
+          0.000959, 0.0027329999999999998, 0.000953, 0, 0.0018939999999999999,
+          0.0018969999999999998, 0.0009559999999999999, 0, 0
+        ],
+        "memory": [
+          4071424, 4206592, 4075520, 4001792, 4087808, 4050944, 4042752, 3911680, 4050944, 4075520,
+          4087808, 3960832, 4018176, 3936256, 4050944, 4063232, 4018176, 4042752, 4042752, 4206592,
+          3923968, 4050944, 3923968, 4030464, 3936256, 4063232, 3936256, 4206592, 4042752, 4001792
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.13",
+      "toolVersion": "julia version 1.13.1",
+      "variant": "julia-nobounds",
+      "variantSpec": "443d7c76f9fa",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "julia:1.13",
+      "sourceFile": "languages/julia/impl/matmul/main.jl",
+      "sourceHash": "b2fc64d3edc7dc54",
+      "runCommand": "julia --startup-file=no -O3 --check-bounds=no -t 4 /repo/languages/julia/impl/matmul/main.jl 256",
+      "loadAvgBefore": "1.53 1.10 0.54 4/512 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:12:39.286Z",
+      "finishedAt": "2026-10-14T11:12:48.376Z",
+      "loadAvgAfter": "1.60 1.13 0.56 6/505 404",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.28156258, 0.28017241000000004, 0.279922053, 0.274087538, 0.27734201,
+          0.27614630500000004, 0.276698688, 0.274220956, 0.275698158, 0.289511678,
+          0.27724323500000003, 0.277613898, 0.281208287, 0.276995472, 0.27669746500000003,
+          0.276361016, 0.27668206700000003, 0.277072356, 0.27538368900000004, 0.27749554600000004,
+          0.27774802800000004, 0.28295456, 0.28417335800000004, 0.286942284, 0.280166729,
+          0.278717881, 0.280201725, 0.27896411200000004, 0.282295839, 0.27862726200000004
+        ],
+        "cpu": [
+          0.391155, 0.39095799999999997, 0.38992499999999997, 0.384189, 0.388767,
+          0.38472699999999993, 0.38816199999999995, 0.38344399999999995, 0.387544,
+          0.40228499999999995, 0.38844999999999996, 0.38928799999999997, 0.392841, 0.385052,
+          0.386193, 0.385852, 0.387729, 0.387999, 0.38564299999999996, 0.38747099999999995,
+          0.389173, 0.396022, 0.397213, 0.399567, 0.392881, 0.391092, 0.39247899999999997, 0.391511,
+          0.395432, 0.39165399999999995
+        ],
+        "user": [
+          0.28366199999999997, 0.29372, 0.28540899999999997, 0.283879, 0.29031999999999997,
+          0.28099199999999996, 0.28912099999999996, 0.28013299999999997, 0.282397,
+          0.30296799999999996, 0.280603, 0.286008, 0.289147, 0.283511, 0.275138, 0.281892, 0.287541,
+          0.276713, 0.28599399999999997, 0.27132999999999996, 0.27968699999999996, 0.288473,
+          0.283724, 0.294418, 0.287913, 0.278354, 0.282904, 0.28684, 0.286313, 0.295247
+        ],
+        "system": [
+          0.10749299999999999, 0.09723799999999999, 0.104516, 0.10031, 0.09844699999999999,
+          0.103735, 0.09904099999999999, 0.103311, 0.10514699999999999, 0.09931699999999999,
+          0.107847, 0.10328, 0.103694, 0.10154099999999999, 0.111055, 0.10396, 0.100188, 0.111286,
+          0.099649, 0.116141, 0.109486, 0.10754899999999999, 0.11348899999999999,
+          0.10514899999999999, 0.10496799999999999, 0.11273799999999999, 0.10957499999999999,
+          0.104671, 0.109119, 0.09640699999999999
+        ],
+        "memory": [
+          243630080, 247435264, 245714944, 243605504, 244301824, 243523584, 245415936, 245383168,
+          243408896, 245444608, 243425280, 243552256, 245293056, 245551104, 243679232, 243593216,
+          245526528, 243396608, 243408896, 245379072, 243544064, 245428224, 243531776, 243453952,
+          245690368, 243453952, 243556352, 245583872, 245448704, 243716096
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "c",
+      "version": "12",
+      "toolVersion": "gcc (GCC) 12.5.0",
+      "variant": "gcc-O3-native",
+      "variantSpec": "7edbaa312dc3",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "gcc:12",
+      "sourceFile": "languages/c/impl/matmul/main.c",
+      "sourceHash": "5679c432523c641e",
+      "buildCommand": "gcc -O3 -march=native -ffp-contract=off -o /work/bin/c-12-gcc-O3-native-matmul /repo/languages/c/impl/matmul/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-12-gcc-O3-native-matmul 256",
+      "loadAvgBefore": "1.95 1.22 0.59 1/525 56",
+      "buildSeconds": 0.16537076399999204,
+      "buildOutput": "",
+      "binarySize": 15952,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:12:53.859Z",
+      "finishedAt": "2026-10-14T11:12:54.365Z",
+      "loadAvgAfter": "1.95 1.22 0.59 1/527 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.004289747, 0.004196694, 0.004255905, 0.004164985, 0.004248501, 0.004072873,
+          0.0041892100000000005, 0.004170715, 0.0041656160000000005, 0.004249042000000001,
+          0.004305387, 0.004315927000000001, 0.004148244000000001, 0.004064427000000001,
+          0.004212223, 0.003996891000000001, 0.004121944000000001, 0.004041414,
+          0.0041454890000000005, 0.004027779, 0.0040454010000000006, 0.004034391, 0.00402846,
+          0.004030734, 0.004072161, 0.004038067, 0.004191013, 0.004123057, 0.004041463,
+          0.0040796650000000005
+        ],
+        "cpu": [
+          0.004234, 0.004084, 0.004148, 0.004109, 0.004177, 0.004004, 0.004079999999999999,
+          0.004092999999999999, 0.004104, 0.0041919999999999995, 0.004241, 0.004232,
+          0.0040739999999999995, 0.004012, 0.004144999999999999, 0.003946, 0.0040479999999999995,
+          0.0039889999999999995, 0.004037, 0.003974, 0.0039759999999999995, 0.003981, 0.00394,
+          0.00398, 0.003981, 0.003986, 0.004102, 0.004002, 0.0039900000000000005, 0.003992
+        ],
+        "user": [
+          0.002117, 0.0030629999999999998, 0.004148, 0.0030819999999999997, 0.003133, 0.002002,
+          0.00306, 0.00307, 0.003078, 0.0020959999999999998, 0.002545, 0.004232,
+          0.0030559999999999997, 0.002006, 0.003109, 0.001973, 0.0024289999999999997, 0.002992,
+          0.003028, 0.0029809999999999997, 0.0019879999999999997, 0.002986, 0.0029549999999999997,
+          0.002985, 0.002986, 0.00299, 0.002051, 0.003002, 0.002993, 0.0029939999999999997
+        ],
+        "system": [
+          0.002117, 0.001021, 0, 0.001027, 0.001044, 0.002002, 0.0010199999999999999, 0.001023,
+          0.001026, 0.0020959999999999998, 0.001696, 0, 0.001018, 0.002006, 0.001036, 0.001973,
+          0.001619, 0.000997, 0.001009, 0.000993, 0.0019879999999999997, 0.000995, 0.000985,
+          0.000995, 0.000995, 0.000996, 0.002051, 0.001, 0.000997, 0.000998
+        ],
+        "memory": [
+          3248128, 3231744, 3239936, 3158016, 3248128, 3158016, 3244032, 3158016, 3158016, 3411968,
+          3141632, 3215360, 3387392, 3125248, 3112960, 3125248, 3084288, 3121152, 3244032, 3084288,
+          3133440, 3117056, 3133440, 3305472, 3112960, 3112960, 3264512, 3264512, 3239936, 3280896
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.13",
+      "toolVersion": "Dart SDK version: 3.13.5 (stable) (Tue Sep 29 01:00:52 2026 -0700) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "dart:3.13",
+      "sourceFile": "languages/dart/impl/parallel-reduce/main.dart",
+      "sourceHash": "2a88548b42cff8a6",
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/parallel-reduce/main.dart -o /work/bin/dart-3.13-dart-aot-parallel-reduce",
+      "runCommand": "/work/bin/dart-3.13-dart-aot-parallel-reduce 2000000 4",
+      "loadAvgBefore": "1.81 1.21 0.59 4/534 55",
+      "buildSeconds": 1.4085538330000127,
+      "buildOutput": "Generated: /work/bin/dart-3.13-dart-aot-parallel-reduce\n",
+      "binarySize": 6652784,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "ea49894f77ca19db10e07052ce4a7b77598d59dfdc73307a5f0770eeff1d8f77",
+      "startedAt": "2026-10-14T11:13:05.816Z",
+      "finishedAt": "2026-10-14T11:13:10.626Z",
+      "loadAvgAfter": "1.83 1.22 0.60 2/530 353",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.09859026300000001, 0.099790709, 0.113468315, 0.10443898800000001, 0.09888606900000001,
+          0.098816292, 0.098985892, 0.100157145, 0.09912184, 0.09856347900000001,
+          0.09836892300000001, 0.118197143, 0.09909659200000001, 0.098606573, 0.09907041400000001,
+          0.09933631000000001, 0.098663173, 0.09870239900000001, 0.09854631000000001, 0.098241196,
+          0.098299098, 0.098561535, 0.09783235600000001, 0.098179892, 0.09834280100000001,
+          0.097931869, 0.09818634100000001, 0.09827614600000001, 0.09868272800000001, 0.098400083
+        ],
+        "cpu": [
+          0.19505599999999998, 0.19625199999999998, 0.22445199999999998, 0.207472,
+          0.19594499999999998, 0.19506500000000002, 0.19680899999999998, 0.197843,
+          0.19585599999999997, 0.19513299999999997, 0.195763, 0.233174, 0.1956, 0.195041, 0.195951,
+          0.195913, 0.196079, 0.19561, 0.195895, 0.19464599999999999, 0.19483899999999998,
+          0.19533599999999998, 0.193872, 0.194168, 0.194998, 0.19394599999999998, 0.194298,
+          0.196306, 0.195397, 0.19571
+        ],
+        "user": [
+          0.19204, 0.19424, 0.22144599999999998, 0.207472, 0.19594499999999998, 0.193055,
+          0.19481099999999998, 0.19486099999999998, 0.192843, 0.19211599999999998, 0.193766,
+          0.229154, 0.191609, 0.193041, 0.19395199999999999, 0.194904, 0.192078, 0.192601, 0.192912,
+          0.191652, 0.19184199999999998, 0.193343, 0.19186299999999998, 0.191166, 0.194998,
+          0.19294699999999998, 0.191278, 0.1953, 0.193383, 0.193703
+        ],
+        "system": [
+          0.003016, 0.002012, 0.003006, 0, 0, 0.00201, 0.0019979999999999998, 0.002982, 0.003013,
+          0.0030169999999999997, 0.001997, 0.00402, 0.003991, 0.002, 0.001999, 0.001009, 0.004001,
+          0.003009, 0.002983, 0.0029939999999999997, 0.0029969999999999997, 0.001993, 0.002009,
+          0.003002, 0, 0.0009989999999999999, 0.0030199999999999997, 0.001006,
+          0.0020139999999999997, 0.002007
+        ],
+        "memory": [
+          6586368, 6766592, 6721536, 6729728, 6893568, 6889472, 6586368, 6692864, 6852608, 6725632,
+          6889472, 6873088, 6557696, 6840320, 6537216, 6705152, 6799360, 6623232, 6803456, 6950912,
+          6692864, 6656000, 6746112, 6778880, 6840320, 6754304, 6897664, 6676480, 6717440, 6840320
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.0",
+      "toolVersion": "1.0.36",
+      "variant": "bun-default",
+      "variantSpec": "442dec759248",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "oven/bun:1.0",
+      "sourceFile": "languages/bun/impl/string-ops/main.js",
+      "sourceHash": "ecd45314e0a97aeb",
+      "runCommand": "bun /repo/languages/bun/impl/string-ops/main.js 1000000",
+      "loadAvgBefore": "1.68 1.20 0.60 3/549 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-14T11:13:15.334Z",
+      "finishedAt": "2026-10-14T11:13:30.179Z",
+      "loadAvgAfter": "1.60 1.21 0.61 9/544 310",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.47564205800000003, 0.460672081, 0.464196971, 0.464204622, 0.46266747, 0.457906321,
+          0.463390381, 0.45248965700000005, 0.46093702700000005, 0.45427442500000004, 0.457327229,
+          0.460715052, 0.45627701600000004, 0.44878881000000004, 0.450133123, 0.450997368,
+          0.456758496, 0.463335209, 0.473305385, 0.453929919, 0.449064016, 0.44694903500000005,
+          0.44012064900000003, 0.45433262300000005, 0.458418759, 0.445025457, 0.45734048800000004,
+          0.444805045, 0.45464643800000004, 0.44663100800000005
+        ],
+        "cpu": [
+          0.5132169999999999, 0.4976459999999999, 0.499228, 0.500016, 0.498567, 0.49305299999999996,
+          0.49761799999999995, 0.48909699999999995, 0.497207, 0.49227499999999996,
+          0.49416599999999994, 0.497676, 0.492822, 0.48429999999999995, 0.487809, 0.488028,
+          0.49526699999999996, 0.500671, 0.509361, 0.489039, 0.48589199999999994,
+          0.48481899999999994, 0.47584799999999994, 0.49161, 0.49544999999999995, 0.479322,
+          0.49334199999999995, 0.482575, 0.49171999999999993, 0.481468
+        ],
+        "user": [
+          0.41642199999999996, 0.41944499999999996, 0.412014, 0.424409, 0.41295499999999996,
+          0.42233299999999996, 0.42191599999999996, 0.40959399999999996, 0.427759,
+          0.42936799999999997, 0.42488099999999995, 0.41473, 0.41925199999999996, 0.415691, 0.42771,
+          0.422487, 0.41541799999999995, 0.420927, 0.429679, 0.40888599999999997,
+          0.41633499999999996, 0.42245699999999997, 0.41510199999999997, 0.41979099999999997,
+          0.43005099999999996, 0.416626, 0.42112099999999997, 0.413493, 0.42306099999999996,
+          0.417745
+        ],
+        "system": [
+          0.09679499999999999, 0.07820099999999999, 0.087214, 0.075607, 0.085612,
+          0.07071999999999999, 0.07570199999999999, 0.07950299999999999, 0.069448,
+          0.06290699999999999, 0.069285, 0.08294599999999999, 0.07357, 0.068609, 0.060099, 0.065541,
+          0.079849, 0.079744, 0.079682, 0.080153, 0.069557, 0.062361999999999994,
+          0.060745999999999994, 0.071819, 0.065399, 0.062696, 0.072221, 0.06908199999999999,
+          0.068659, 0.063723
+        ],
+        "memory": [
+          303980544, 306999296, 317812736, 323530752, 314372096, 319066112, 325173248, 311918592,
+          319361024, 306290688, 306450432, 325402624, 306606080, 307605504, 308604928, 306966528,
+          323743744, 323256320, 319119360, 321224704, 310353920, 307716096, 308588544, 325541888,
+          319442944, 310075392, 319918080, 309452800, 325005312, 314716160
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.0",
+      "toolVersion": "1.0.36",
+      "variant": "bun-smol",
+      "variantSpec": "13e5dcb3ca78",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "oven/bun:1.0",
+      "sourceFile": "languages/bun/impl/binary-trees/main.js",
+      "sourceHash": "ba6cebe5f6b88f73",
+      "runCommand": "bun --smol /repo/languages/bun/impl/binary-trees/main.js 14",
+      "loadAvgBefore": "1.60 1.21 0.61 7/543 317",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-14T11:13:30.282Z",
+      "finishedAt": "2026-10-14T11:13:33.542Z",
+      "loadAvgAfter": "1.64 1.22 0.62 6/544 573",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.100243991, 0.09576034, 0.107012652, 0.08040707200000001, 0.09015876, 0.092231805,
+          0.09371288300000001, 0.10233480900000001, 0.10552562300000001, 0.10042284500000001,
+          0.100064815, 0.09960566700000001, 0.10700638100000001, 0.093903339, 0.099064626,
+          0.090292731, 0.090451948, 0.098048828, 0.091586859, 0.089453631, 0.098511662, 0.107297004,
+          0.090383902, 0.089429004, 0.10766819400000001, 0.09048128000000001, 0.094516953,
+          0.094671772, 0.09993225500000001, 0.09520595100000001
+        ],
+        "cpu": [
+          0.144082, 0.136021, 0.14560599999999999, 0.10639699999999999, 0.132213, 0.127153,
+          0.13794399999999998, 0.140901, 0.148421, 0.13988899999999999, 0.14033199999999998,
+          0.140399, 0.14404799999999998, 0.133119, 0.137207, 0.128757, 0.126905,
+          0.13308099999999998, 0.12700899999999998, 0.124112, 0.138368, 0.15237, 0.125622, 0.130161,
+          0.151612, 0.13003199999999998, 0.13386399999999998, 0.13308899999999999,
+          0.13901599999999997, 0.131492
+        ],
+        "user": [
+          0.118977, 0.110039, 0.122442, 0.08211099999999999, 0.10462099999999999,
+          0.10535599999999999, 0.11737399999999999, 0.12014599999999999, 0.125781, 0.115409,
+          0.109275, 0.11162899999999999, 0.126187, 0.10871199999999999, 0.10903099999999999,
+          0.110029, 0.10273299999999999, 0.10350799999999999, 0.106446, 0.098108, 0.103227,
+          0.123292, 0.101464, 0.091224, 0.133845, 0.091719, 0.105392, 0.115104, 0.10306399999999999,
+          0.10976799999999999
+        ],
+        "system": [
+          0.025105, 0.025981999999999998, 0.023164, 0.024286, 0.027592, 0.021797,
+          0.020569999999999998, 0.020755, 0.02264, 0.02448, 0.031056999999999998,
+          0.028769999999999997, 0.017861, 0.024406999999999998, 0.028176, 0.018727999999999998,
+          0.024172, 0.029573, 0.020562999999999998, 0.026004, 0.035141, 0.029078, 0.024158,
+          0.038937, 0.017766999999999998, 0.038313, 0.028471999999999997, 0.017984999999999998,
+          0.035952, 0.021724
+        ],
+        "memory": [
+          96350208, 96272384, 98807808, 95653888, 96169984, 94150656, 94875648, 94609408, 94281728,
+          96550912, 96968704, 96923648, 94289920, 94580736, 94158848, 93892608, 97918976, 102096896,
+          94175232, 95948800, 97992704, 95526912, 96362496, 94171136, 93999104, 92418048, 94027776,
+          92459008, 100171776, 98258944
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "dart",
+      "version": "3.5",
+      "toolVersion": "Dart SDK version: 3.5.4 (stable) (Wed Oct 16 16:18:51 2024 +0000) on \"linux_x64\"",
+      "variant": "dart-aot",
+      "variantSpec": "4a3a46d3e9ac",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "dart:3.5",
+      "sourceFile": "languages/dart/impl/binary-trees/main.dart",
+      "sourceHash": "ee384c4ab6bfe650",
+      "buildCommand": "dart compile exe /repo/languages/dart/impl/binary-trees/main.dart -o /work/bin/dart-3.5-dart-aot-binary-trees",
+      "runCommand": "/work/bin/dart-3.5-dart-aot-binary-trees 14",
+      "loadAvgBefore": "1.64 1.22 0.62 1/544 386",
+      "buildSeconds": 1.4115706800000043,
+      "buildOutput": "Generated: /work/bin/dart-3.5-dart-aot-binary-trees\n",
+      "binarySize": 5645192,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-14T11:13:33.642Z",
+      "finishedAt": "2026-10-14T11:13:36.838Z",
+      "loadAvgAfter": "1.64 1.22 0.62 4/543 606",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.047765093, 0.050471061000000005, 0.050183313, 0.049034696, 0.048850041000000004,
+          0.048285346, 0.049134012000000005, 0.049231394000000005, 0.049209563000000005,
+          0.048289153, 0.049871991000000004, 0.049643013, 0.051242704, 0.05076396800000001,
+          0.049544369000000005, 0.050670243000000004, 0.049190988000000005, 0.049275837,
+          0.049640298000000006, 0.048680123000000006, 0.048086865000000006, 0.048789208,
+          0.046956361, 0.048383930000000006, 0.046564129, 0.046818855, 0.049016142000000006,
+          0.047848800000000004, 0.056358214000000004, 0.048788734
+        ],
+        "cpu": [
+          0.049661, 0.052556, 0.05160999999999999, 0.050953, 0.050849, 0.050158999999999995,
+          0.051014000000000004, 0.050976999999999995, 0.051019999999999996, 0.05018,
+          0.051836999999999994, 0.05190299999999999, 0.053459999999999994, 0.052712999999999996,
+          0.051739999999999994, 0.05264, 0.051043, 0.051239999999999994, 0.051564, 0.050663,
+          0.049934, 0.050557, 0.048747, 0.050233, 0.048343, 0.04867199999999999, 0.050828, 0.049637,
+          0.058178, 0.050880999999999996
+        ],
+        "user": [
+          0.029796999999999997, 0.031143999999999998, 0.032382999999999995, 0.033648,
+          0.027379999999999998, 0.027009, 0.028568, 0.029567, 0.030011999999999997, 0.029518,
+          0.026427, 0.033583999999999996, 0.029699999999999997, 0.028384, 0.028855, 0.032394,
+          0.027084, 0.032151, 0.029907, 0.03412, 0.029553, 0.029491999999999997, 0.03084, 0.031519,
+          0.031528, 0.032448, 0.031892, 0.031403, 0.034907, 0.029511
+        ],
+        "system": [
+          0.019864, 0.021412, 0.019226999999999998, 0.017305, 0.023469, 0.02315, 0.022446, 0.02141,
+          0.021008, 0.020662, 0.02541, 0.018319, 0.02376, 0.024329, 0.022885, 0.020246,
+          0.023958999999999998, 0.019089, 0.021657, 0.016543, 0.020381, 0.021065, 0.017907,
+          0.018713999999999998, 0.016815, 0.016224, 0.018935999999999998, 0.018234, 0.023271,
+          0.02137
+        ],
+        "memory": [
+          43421696, 43421696, 43511808, 43417600, 43294720, 43343872, 43302912, 43495424, 43585536,
+          43290624, 43589632, 43479040, 43307008, 43581440, 43614208, 43536384, 43540480, 43507712,
+          43274240, 43352064, 43548672, 43139072, 43454464, 43405312, 43442176, 43352064, 43503616,
+          43540480, 43401216, 43483136
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.8",
+      "toolVersion": "julia version 1.8.5",
+      "variant": "julia-default",
+      "variantSpec": "4a613b769126",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "julia:1.8",
+      "sourceFile": "languages/julia/impl/hashmap/main.jl",
+      "sourceHash": "06065c8a8fa2d94b",
+      "runCommand": "julia --startup-file=no -t 4 /repo/languages/julia/impl/hashmap/main.jl 1000000",
+      "loadAvgBefore": "1.64 1.22 0.62 2/543 380",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-14T11:13:36.935Z",
+      "finishedAt": "2026-10-14T11:13:47.773Z",
+      "loadAvgAfter": "2.00 1.31 0.66 1/542 697",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.355058929, 0.33890154, 0.335661985, 0.34004021100000004, 0.334833447, 0.323664552,
+          0.32532924, 0.328765509, 0.323407131, 0.350006925, 0.324959883, 0.32416537300000003,
+          0.33003157800000005, 0.33875845800000004, 0.331775333, 0.32841938000000004, 0.34438869,
+          0.33313646500000005, 0.327232876, 0.33014806300000005, 0.334467051, 0.33415266400000004,
+          0.330592763, 0.330306349, 0.333105017, 0.32588426400000003, 0.32572578500000005,
+          0.342933635, 0.34652122100000005, 0.335202084
+        ],
+        "cpu": [
+          0.68391, 0.668576, 0.6656199999999999, 0.6691940000000001, 0.664576, 0.6533899999999999,
+          0.654272, 0.658363, 0.65239, 0.676974, 0.654179, 0.6540569999999999, 0.658814, 0.667276,
+          0.6609659999999999, 0.6575519999999999, 0.673739, 0.66283, 0.655915, 0.659296,
+          0.6637139999999999, 0.6635039999999999, 0.660177, 0.651708, 0.662328, 0.6551130000000001,
+          0.6552119999999999, 0.671831, 0.676178, 0.664824
+        ],
+        "user": [
+          0.295514, 0.282282, 0.272819, 0.277484, 0.269844, 0.26514499999999996,
+          0.26431299999999996, 0.246884, 0.250915, 0.258233, 0.24206599999999998, 0.264221,
+          0.267507, 0.27868899999999996, 0.25423999999999997, 0.256052, 0.27349, 0.25978,
+          0.28540699999999997, 0.262754, 0.2545, 0.26822999999999997, 0.263892, 0.25428, 0.268543,
+          0.249031, 0.263295, 0.263739, 0.28293999999999997, 0.287916
+        ],
+        "system": [
+          0.38839599999999996, 0.38629399999999997, 0.39280099999999996, 0.39171,
+          0.39473199999999997, 0.388245, 0.389959, 0.411479, 0.40147499999999997, 0.418741,
+          0.412113, 0.38983599999999996, 0.39130699999999996, 0.38858699999999996, 0.406726,
+          0.40149999999999997, 0.40024899999999997, 0.40304999999999996, 0.370508, 0.396542,
+          0.40921399999999997, 0.39527399999999996, 0.396285, 0.397428, 0.393785, 0.406082,
+          0.39191699999999996, 0.40809199999999995, 0.393238, 0.37690799999999997
+        ],
+        "memory": [
+          220733440, 220909568, 220434432, 222904320, 221081600, 222826496, 220815360, 221061120,
+          220848128, 222523392, 223023104, 220266496, 220741632, 222470144, 222470144, 220807168,
+          222740480, 220762112, 223150080, 221052928, 220880896, 222486528, 220930048, 220729344,
+          223027200, 222810112, 223236096, 222711808, 223240192, 220667904
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "c",
+      "version": "9",
+      "toolVersion": "gcc (GCC) 9.5.0",
+      "variant": "gcc-O3",
+      "variantSpec": "18d0ab900300",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "gcc:9",
+      "sourceFile": "languages/c/impl/fannkuch/main.c",
+      "sourceHash": "627dad877e92fffe",
+      "buildCommand": "gcc -O3 -ffp-contract=off -o /work/bin/c-9-gcc-O3-fannkuch /repo/languages/c/impl/fannkuch/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-9-gcc-O3-fannkuch 9",
+      "loadAvgBefore": "1.80 1.31 0.67 6/562 56",
+      "buildSeconds": 0.12709458600002108,
+      "buildOutput": "",
+      "binarySize": 16536,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:14:04.730Z",
+      "finishedAt": "2026-10-14T11:14:05.791Z",
+      "loadAvgAfter": "1.80 1.31 0.67 1/562 135",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.022496750000000003, 0.022449041000000003, 0.022395821, 0.022687657,
+          0.022713175000000002, 0.022371366, 0.022435225000000003, 0.022745345, 0.022712583,
+          0.022691594000000002, 0.022489757000000003, 0.022426067, 0.022475480000000003,
+          0.022461013000000002, 0.022527477, 0.022428343, 0.02283377, 0.022447178, 0.022465913,
+          0.022816908, 0.022704628, 0.022584443000000003, 0.022510616, 0.022569466, 0.022528319,
+          0.022497120000000002, 0.022361978, 0.022449492, 0.022477845, 0.022757027000000003
+        ],
+        "cpu": [
+          0.022392, 0.02231, 0.022282, 0.022553999999999998, 0.022595999999999998,
+          0.022258999999999998, 0.022317999999999998, 0.022605999999999998, 0.022587, 0.02257,
+          0.022372, 0.02233, 0.022373, 0.022337, 0.022435999999999998, 0.022295,
+          0.022713999999999998, 0.022326, 0.02233, 0.022684, 0.022574999999999998,
+          0.022480999999999998, 0.022383, 0.022432999999999998, 0.02242, 0.022387,
+          0.022244999999999997, 0.022314999999999998, 0.022348999999999997, 0.022618
+        ],
+        "user": [
+          0.021374999999999998, 0.02231, 0.022282, 0.022553999999999998, 0.021613999999999998,
+          0.022258999999999998, 0.021348, 0.021623999999999997, 0.022587, 0.021589, 0.020427,
+          0.02233, 0.022373, 0.022337, 0.021460999999999997, 0.022295, 0.022713999999999998,
+          0.021311999999999998, 0.02233, 0.022684, 0.022574999999999998, 0.022480999999999998,
+          0.022383, 0.022432999999999998, 0.021446, 0.02137, 0.022244999999999997,
+          0.022314999999999998, 0.021377999999999998, 0.021634999999999998
+        ],
+        "system": [
+          0.001017, 0, 0, 0, 0.000982, 0, 0.0009699999999999999, 0.000982, 0, 0.0009809999999999999,
+          0.001945, 0, 0, 0, 0.000975, 0, 0, 0.001014, 0, 0, 0, 0, 0, 0, 0.0009739999999999999,
+          0.001017, 0, 0, 0.000971, 0.000983
+        ],
+        "memory": [
+          3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000,
+          3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000,
+          3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000, 3584000
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "node",
+      "version": "26",
+      "toolVersion": "v26.11.1",
+      "variant": "node-semi-space-64",
+      "variantSpec": "d24caae747f0",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "node:26",
+      "sourceFile": "languages/node/impl/fannkuch/main.js",
+      "sourceHash": "430f25863c153cc5",
+      "runCommand": "node --max-semi-space-size=64 /repo/languages/node/impl/fannkuch/main.js 9",
+      "loadAvgBefore": "1.74 1.30 0.67 3/577 56",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:14:10.511Z",
+      "finishedAt": "2026-10-14T11:14:12.408Z",
+      "loadAvgAfter": "1.74 1.30 0.67 1/577 309",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.05365774500000001, 0.053562240000000004, 0.05371705500000001, 0.052527149,
+          0.054244612000000005, 0.055250512, 0.052983755, 0.052484114000000005,
+          0.053961563000000004, 0.056686744000000004, 0.055585588000000005, 0.052740083,
+          0.055498556000000004, 0.052572086000000004, 0.053440008000000004, 0.05442111,
+          0.055215837000000004, 0.052010145, 0.051710827, 0.05251552, 0.052716647000000005,
+          0.054669817, 0.054887647000000005, 0.055124908, 0.056097896, 0.053692978,
+          0.053304444000000006, 0.053136571, 0.052466659000000006, 0.052638670000000005
+        ],
+        "cpu": [
+          0.058637999999999996, 0.05856, 0.058603999999999996, 0.05742799999999999, 0.059201,
+          0.061095, 0.057857, 0.05746, 0.058965, 0.06270999999999999, 0.060557,
+          0.057776999999999995, 0.06172, 0.057491, 0.059225, 0.059227, 0.059946, 0.0569, 0.056546,
+          0.057305999999999996, 0.05756699999999999, 0.060493, 0.059758, 0.060238, 0.061097,
+          0.058559999999999994, 0.05824, 0.058029, 0.057165999999999995, 0.057409
+        ],
+        "user": [
+          0.047706, 0.051369, 0.051650999999999996, 0.046147999999999995, 0.050467, 0.054882,
+          0.045887, 0.043347, 0.049970999999999995, 0.050373999999999995, 0.049455,
+          0.047640999999999996, 0.052461999999999995, 0.046588, 0.047993, 0.05133, 0.046958,
+          0.046109, 0.046797, 0.045026, 0.042678999999999995, 0.051419, 0.046811,
+          0.048813999999999996, 0.053085, 0.045871999999999996, 0.047382, 0.049025,
+          0.048139999999999995, 0.048345
+        ],
+        "system": [
+          0.010931999999999999, 0.0071909999999999995, 0.006953, 0.01128, 0.008734, 0.006213,
+          0.01197, 0.014112999999999999, 0.008994, 0.012336, 0.011101999999999999, 0.010136,
+          0.009257999999999999, 0.010903, 0.011231999999999999, 0.007897, 0.012988, 0.010791,
+          0.009748999999999999, 0.01228, 0.014888, 0.009073999999999999, 0.012947, 0.011424,
+          0.008012, 0.012688, 0.010858, 0.009004, 0.009026, 0.009064
+        ],
+        "memory": [
+          55136256, 55128064, 55099392, 57028608, 57012224, 56983552, 57069568, 56946688, 57098240,
+          57073664, 57167872, 57106432, 56971264, 54984704, 54874112, 54935552, 55074816, 54849536,
+          54927360, 55132160, 55132160, 55009280, 57151488, 57008128, 57122816, 57040896, 57110528,
+          57147392, 54992896, 55062528
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.0",
+      "toolVersion": "1.0.36",
+      "variant": "bun-smol",
+      "variantSpec": "13e5dcb3ca78",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "oven/bun:1.0",
+      "sourceFile": "languages/bun/impl/fannkuch/main.js",
+      "sourceHash": "430f25863c153cc5",
+      "runCommand": "bun --smol /repo/languages/bun/impl/fannkuch/main.js 9",
+      "loadAvgBefore": "1.74 1.30 0.67 1/577 580",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:14:12.514Z",
+      "finishedAt": "2026-10-14T11:14:14.648Z",
+      "loadAvgAfter": "1.76 1.32 0.68 1/570 833",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.059441680000000004, 0.059367739, 0.05641328600000001, 0.06249836, 0.055481715,
+          0.05729047600000001, 0.05986364500000001, 0.06141185700000001, 0.057923723, 0.068362381,
+          0.061137005, 0.066180052, 0.062958571, 0.057063420000000004, 0.06805818300000001,
+          0.058325371, 0.058435319000000006, 0.087823808, 0.069812381, 0.059555349, 0.053326256,
+          0.067560823, 0.06991124700000001, 0.061269159000000004, 0.06442705500000001,
+          0.054240535000000006, 0.062612103, 0.056852240000000005, 0.055929929, 0.055779231000000006
+        ],
+        "cpu": [
+          0.083817, 0.084131, 0.08015699999999999, 0.081152, 0.079843, 0.081683, 0.082935,
+          0.08035199999999999, 0.082023, 0.09067199999999999, 0.08436099999999999, 0.089067,
+          0.084726, 0.07992099999999999, 0.09001699999999999, 0.082493, 0.082601,
+          0.10407799999999999, 0.091014, 0.08357799999999999, 0.076322, 0.08281, 0.094246, 0.079282,
+          0.08841399999999999, 0.077876, 0.08569399999999999, 0.080537, 0.078621, 0.079201
+        ],
+        "user": [
+          0.071699, 0.069108, 0.06290799999999999, 0.06412, 0.065694, 0.06973, 0.06473, 0.06387,
+          0.066019, 0.064062, 0.069297, 0.074223, 0.06485199999999999, 0.062160999999999994,
+          0.073651, 0.063609, 0.062455, 0.06466999999999999, 0.076012, 0.06865399999999999,
+          0.063093, 0.066652, 0.07319099999999999, 0.066236, 0.07113799999999999,
+          0.062300999999999995, 0.073737, 0.06422599999999999, 0.063502, 0.065341
+        ],
+        "system": [
+          0.012118, 0.015023, 0.017249, 0.017032, 0.014149, 0.011953, 0.018205, 0.016482, 0.016004,
+          0.026609999999999998, 0.015064, 0.014844, 0.019874, 0.017759999999999998, 0.016366,
+          0.018883999999999998, 0.020146, 0.039408, 0.015002, 0.014924, 0.013229, 0.016158,
+          0.021054999999999997, 0.013045999999999999, 0.017276, 0.015574999999999999,
+          0.011956999999999999, 0.016311, 0.015118999999999999, 0.013859999999999999
+        ],
+        "memory": [
+          63578112, 63016960, 63205376, 62832640, 63004672, 66703360, 71065600, 67072000, 65449984,
+          70885376, 67694592, 64864256, 68116480, 68100096, 69734400, 70590464, 69255168, 69120000,
+          68624384, 67551232, 66957312, 66953216, 65597440, 66228224, 67743744, 68104192, 71806976,
+          69124096, 72314880, 76812288
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "c",
+      "version": "9",
+      "toolVersion": "gcc (GCC) 9.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "gcc:9",
+      "sourceFile": "languages/c/impl/sieve/main.c",
+      "sourceHash": "0d2bc59a2890aac2",
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-9-gcc-O2-sieve /repo/languages/c/impl/sieve/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-9-gcc-O2-sieve 10000000",
+      "loadAvgBefore": "1.76 1.32 0.68 1/570 143",
+      "buildSeconds": 0.10758212999999524,
+      "buildOutput": "",
+      "binarySize": 16528,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:14:14.753Z",
+      "finishedAt": "2026-10-14T11:14:16.308Z",
+      "loadAvgAfter": "1.76 1.32 0.68 1/569 222",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.038927391000000006, 0.038398083, 0.038707682, 0.037956548, 0.038025707000000006,
+          0.038218548000000005, 0.038442385, 0.038574282, 0.038616992, 0.038665302000000006,
+          0.037870957000000004, 0.037883091, 0.039077513, 0.038591905, 0.038729495, 0.038043259,
+          0.038599449, 0.039692813, 0.038639955000000004, 0.038386851, 0.038770489000000005,
+          0.038973919, 0.03881922, 0.038709155, 0.038664500000000004, 0.038431124000000004,
+          0.038480828, 0.03824182, 0.038075790000000005, 0.038004858
+        ],
+        "cpu": [
+          0.038803, 0.038296, 0.038565, 0.037814, 0.037863, 0.038091, 0.038289000000000004,
+          0.038428, 0.03848, 0.038522999999999995, 0.037686, 0.037728, 0.038917,
+          0.038446999999999995, 0.038571, 0.037897, 0.038456, 0.039538000000000004, 0.038499,
+          0.038257, 0.03861099999999999, 0.038815999999999996, 0.038650000000000004,
+          0.03856899999999999, 0.038504, 0.03823, 0.038352, 0.038086, 0.037941, 0.037869999999999994
+        ],
+        "user": [
+          0.035819, 0.034369, 0.033491, 0.033726, 0.03377, 0.034082, 0.032244, 0.032515999999999996,
+          0.033547, 0.032441, 0.034711, 0.034749999999999996, 0.034926, 0.031547, 0.032637,
+          0.033908, 0.037444, 0.036497, 0.033564, 0.03423, 0.033660999999999996, 0.032845, 0.034686,
+          0.033624999999999995, 0.034450999999999996, 0.0332, 0.034315, 0.03508, 0.032949,
+          0.034880999999999995
+        ],
+        "system": [
+          0.0029839999999999997, 0.003927, 0.0050739999999999995, 0.004088, 0.004092999999999999,
+          0.0040089999999999995, 0.006045, 0.005912, 0.004933, 0.006082, 0.0029749999999999998,
+          0.0029779999999999997, 0.003991, 0.0069, 0.005934, 0.0039889999999999995,
+          0.0010119999999999999, 0.003041, 0.004935, 0.004027, 0.0049499999999999995, 0.005971,
+          0.003964, 0.004944, 0.004053, 0.00503, 0.004037, 0.003006, 0.004992, 0.002989
+        ],
+        "memory": [
+          11751424, 11841536, 11751424, 11874304, 11776000, 11788288, 11751424, 11898880, 11726848,
+          11726848, 11649024, 11857920, 11751424, 11870208, 11751424, 11726848, 11751424, 11776000,
+          11776000, 11890688, 11788288, 11870208, 11841536, 11890688, 11751424, 11776000, 11890688,
+          11726848, 11808768, 11890688
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "c",
+      "version": "6",
+      "toolVersion": "g++ (GCC) 6.5.0",
+      "variant": "gcc-O2",
+      "variantSpec": "cada63d52a4a",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "gcc:6",
+      "sourceFile": "languages/c/impl/matmul/main.c",
+      "sourceHash": "5679c432523c641e",
+      "buildCommand": "gcc -O2 -ffp-contract=off -o /work/bin/c-6-gcc-O2-matmul /repo/languages/c/impl/matmul/main.c -lm -lpthread",
+      "runCommand": "/work/bin/c-6-gcc-O2-matmul 256",
+      "loadAvgBefore": "1.76 1.32 0.68 5/569 142",
+      "buildSeconds": 0.10738540299999295,
+      "buildOutput": "",
+      "binarySize": 7928,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:14:16.408Z",
+      "finishedAt": "2026-10-14T11:14:17.150Z",
+      "loadAvgAfter": "1.76 1.32 0.68 3/569 221",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.012876258000000002, 0.012903068, 0.012907746000000001, 0.013006301000000001,
+          0.012959513, 0.012787903000000002, 0.012869866, 0.015499261, 0.019539913000000003,
+          0.013051375, 0.013067165, 0.012912716000000001, 0.012901045000000002, 0.012788654,
+          0.01289314, 0.012818019, 0.012724183, 0.012783384, 0.012735786, 0.012789486000000001,
+          0.012812509000000001, 0.012814853000000001, 0.012815965, 0.012840711000000001,
+          0.012892338000000001, 0.012835933, 0.012810936, 0.012773235, 0.01266881, 0.012718543
+        ],
+        "cpu": [
+          0.012792, 0.012776, 0.012837999999999999, 0.012912, 0.012852999999999998,
+          0.012688999999999999, 0.012754999999999999, 0.015380999999999999, 0.019393, 0.012931,
+          0.012957, 0.0128, 0.012756, 0.012691999999999998, 0.012761999999999999, 0.012738,
+          0.012622999999999999, 0.0127, 0.012610999999999999, 0.012688, 0.01269, 0.012698,
+          0.012695999999999999, 0.012740999999999999, 0.012764999999999999, 0.01273,
+          0.012683999999999999, 0.012679, 0.012589, 0.012619
+        ],
+        "user": [
+          0.010824, 0.011793999999999999, 0.011850999999999999, 0.010926, 0.011864999999999999,
+          0.011713, 0.009812, 0.014355999999999999, 0.018373, 0.011937, 0.011961, 0.011816,
+          0.012756, 0.011715999999999999, 0.009817, 0.012738, 0.010681, 0.010584,
+          0.012610999999999999, 0.012688, 0.009762, 0.010745, 0.010579999999999999, 0.01168,
+          0.011701999999999999, 0.011751, 0.010733, 0.011703999999999999, 0.009684, 0.011568
+        ],
+        "system": [
+          0.0019679999999999997, 0.000982, 0.000987, 0.001986, 0.000988, 0.000976, 0.002943,
+          0.0010249999999999999, 0.0010199999999999999, 0.0009939999999999999, 0.000996,
+          0.0009839999999999998, 0, 0.000976, 0.0029449999999999997, 0, 0.001942, 0.002116, 0, 0,
+          0.002928, 0.0019529999999999999, 0.002116, 0.0010609999999999999, 0.001063, 0.000979,
+          0.0019509999999999998, 0.000975, 0.002905, 0.0010509999999999999
+        ],
+        "memory": [
+          3174400, 3190784, 3092480, 3182592, 3190784, 3076096, 3223552, 3096576, 3223552, 3051520,
+          3235840, 3104768, 3067904, 3235840, 3190784, 3239936, 3108864, 3182592, 3198976, 3051520,
+          3182592, 2953216, 3190784, 3186688, 3186688, 2953216, 3190784, 3006464, 3006464, 3092480
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "java",
+      "version": "22",
+      "toolVersion": "openjdk 22.0.2 2024-07-16",
+      "variant": "java-default",
+      "variantSpec": "ad7a7a619426",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "eclipse-temurin:22-jdk",
+      "sourceFile": "languages/java/impl/sieve/Main.java",
+      "sourceHash": "c949efcaa6d81a06",
+      "buildCommand": "mkdir -p /work/bin/java-22-java-default-sieve && javac -d /work/bin/java-22-java-default-sieve /repo/languages/java/impl/sieve/Main.java",
+      "runCommand": "java -cp /work/bin/java-22-java-default-sieve Main 10000000",
+      "loadAvgBefore": "1.57 1.29 0.68 1/588 72",
+      "buildSeconds": 0.5962486989999889,
+      "buildOutput": "",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:14:23.544Z",
+      "finishedAt": "2026-10-14T11:14:27.287Z",
+      "loadAvgAfter": "1.57 1.29 0.68 1/579 712",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.090037505, 0.088864856, 0.094059285, 0.09731987900000001, 0.093278145, 0.096958053,
+          0.09700979000000001, 0.09768406, 0.09059931, 0.08865800900000001, 0.09154558600000001,
+          0.08498193600000001, 0.09983586200000001, 0.084014159, 0.10349027300000001,
+          0.08579378600000001, 0.08451715200000001, 0.100151824, 0.095051971, 0.102154557,
+          0.086900483, 0.096472897, 0.088784296, 0.08735446300000001, 0.08793382500000001,
+          0.09287402900000001, 0.08487116900000001, 0.087760872, 0.082788187, 0.09128051400000001
+        ],
+        "cpu": [
+          0.11185799999999999, 0.116207, 0.114551, 0.114816, 0.117004, 0.123804, 0.116629, 0.117778,
+          0.111275, 0.10814399999999999, 0.111246, 0.106522, 0.120291, 0.10512799999999999, 0.12075,
+          0.10833999999999999, 0.107041, 0.11813799999999999, 0.117323, 0.12263299999999999,
+          0.108315, 0.11563799999999999, 0.110789, 0.10907599999999999, 0.10973,
+          0.11425899999999999, 0.107518, 0.106941, 0.103751, 0.11047399999999999
+        ],
+        "user": [
+          0.09502999999999999, 0.097008, 0.090005, 0.08832, 0.09665599999999999, 0.100034, 0.089555,
+          0.083842, 0.083962, 0.08995199999999999, 0.093405, 0.088434, 0.098053,
+          0.08109899999999999, 0.096397, 0.08460899999999999, 0.08684499999999999, 0.092823,
+          0.091135, 0.09893099999999999, 0.08623199999999999, 0.09433699999999999, 0.093822,
+          0.088253, 0.077516, 0.08898099999999999, 0.082397, 0.081479, 0.079576, 0.08680099999999999
+        ],
+        "system": [
+          0.016828, 0.019199, 0.024546, 0.026496, 0.020347999999999998, 0.02377,
+          0.027073999999999997, 0.033936, 0.027313, 0.018192, 0.017841, 0.018088,
+          0.022237999999999997, 0.024029, 0.024353, 0.023731, 0.020196, 0.025314999999999997,
+          0.026188, 0.023701999999999997, 0.022083, 0.021301, 0.016967, 0.020822999999999998,
+          0.032214, 0.025278, 0.025120999999999997, 0.025462, 0.024175, 0.023673
+        ],
+        "memory": [
+          56258560, 56307712, 55627776, 56590336, 56426496, 52056064, 52027392, 52015104, 54386688,
+          56610816, 56487936, 56139776, 56008704, 56553472, 56147968, 56651776, 56168448, 54018048,
+          52117504, 54083584, 56811520, 56537088, 56635392, 51769344, 55869440, 55656448, 56467456,
+          56532992, 56311808, 56639488
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "bun",
+      "version": "1.1",
+      "toolVersion": "1.1.45",
+      "variant": "bun-smol",
+      "variantSpec": "13e5dcb3ca78",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "oven/bun:1.1",
+      "sourceFile": "languages/bun/impl/matmul/main.js",
+      "sourceHash": "bacf6af7e48e5b1c",
+      "runCommand": "bun --smol /repo/languages/bun/impl/matmul/main.js 256",
+      "loadAvgBefore": "1.57 1.29 0.68 6/579 316",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-14T11:14:27.388Z",
+      "finishedAt": "2026-10-14T11:14:29.090Z",
+      "loadAvgAfter": "1.60 1.30 0.68 2/583 569",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.049365757, 0.041045552000000006, 0.05114482, 0.042022756, 0.042886412000000006,
+          0.052248905000000005, 0.047477936000000005, 0.045476143000000004, 0.043745268000000004,
+          0.053289098, 0.049258172, 0.048829429, 0.049041358, 0.051206746000000004, 0.043366319,
+          0.044412436, 0.052469176000000006, 0.056227793000000005, 0.047247322, 0.0520759,
+          0.048218620000000004, 0.04453779, 0.044409660000000004, 0.050834963000000004,
+          0.042108937000000006, 0.048936922, 0.052936699000000004, 0.046981546000000006,
+          0.051775474, 0.044525184
+        ],
+        "cpu": [
+          0.060614999999999995, 0.059338, 0.069827, 0.060545999999999996, 0.061621999999999996,
+          0.069855, 0.066243, 0.06393199999999999, 0.062044999999999996, 0.06973199999999999,
+          0.064659, 0.066671, 0.06780499999999999, 0.066762, 0.061819, 0.063233, 0.067949, 0.073351,
+          0.062444, 0.067701, 0.065163, 0.062289, 0.061603, 0.068785, 0.06096, 0.06593299999999999,
+          0.068911, 0.06529299999999999, 0.07005499999999999, 0.06315799999999999
+        ],
+        "user": [
+          0.049314, 0.046846, 0.056478, 0.049013999999999995, 0.049885, 0.056500999999999996,
+          0.055368, 0.044650999999999996, 0.046534, 0.053793999999999995, 0.053545999999999996,
+          0.055389, 0.053276, 0.054437, 0.05484, 0.048178, 0.053536, 0.06443, 0.050996,
+          0.056417999999999996, 0.050053, 0.049637, 0.048256, 0.054828999999999996, 0.048562,
+          0.050718, 0.055129, 0.043869, 0.054268, 0.049474
+        ],
+        "system": [
+          0.011301, 0.012492, 0.013349, 0.011531999999999999, 0.011737, 0.013354, 0.010875,
+          0.019281, 0.015510999999999999, 0.015938, 0.011113, 0.011281999999999999,
+          0.014528999999999999, 0.012325, 0.006979, 0.015054999999999999, 0.014412999999999999,
+          0.008921, 0.011448, 0.011283, 0.01511, 0.012652, 0.013347, 0.013956, 0.012398, 0.015215,
+          0.013781999999999999, 0.021424, 0.015787, 0.013684
+        ],
+        "memory": [
+          55074816, 54575104, 54845440, 54595584, 54632448, 54726656, 54300672, 54153216, 54120448,
+          54120448, 53907456, 54050816, 54222848, 54169600, 54071296, 54243328, 54251520, 54120448,
+          54284288, 54136832, 53657600, 54018048, 54116352, 54108160, 54120448, 54067200, 54153216,
+          53456896, 54251520, 54165504
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "cpp",
+      "version": "10",
+      "toolVersion": "g++ (GCC) 10.5.0",
+      "variant": "gxx-O3-native",
+      "variantSpec": "0e12ef4516dc",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "gcc:10",
+      "sourceFile": "languages/cpp/impl/fannkuch/main.cpp",
+      "sourceHash": "ea65a5cd041ae944",
+      "buildCommand": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o /work/bin/cpp-10-gxx-O3-native-fannkuch /repo/languages/cpp/impl/fannkuch/main.cpp -lpthread",
+      "runCommand": "/work/bin/cpp-10-gxx-O3-native-fannkuch 9",
+      "loadAvgBefore": "1.54 1.30 0.69 4/602 57",
+      "buildSeconds": 0.8855061170000117,
+      "buildOutput": "",
+      "binarySize": 17144,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-14T11:14:45.941Z",
+      "finishedAt": "2026-10-14T11:14:47.865Z",
+      "loadAvgAfter": "1.54 1.30 0.69 7/601 136",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.025714033, 0.025567079000000003, 0.025613826000000003, 0.025897215, 0.025472682,
+          0.025471820000000003, 0.025483612000000003, 0.025848063, 0.025727638,
+          0.025532904000000002, 0.025428168, 0.025510192, 0.025493701, 0.025513609000000003,
+          0.025467322, 0.025579331, 0.025641316, 0.025494262, 0.025486207, 0.025464997000000003,
+          0.025464617000000002, 0.025470278000000002, 0.025486318, 0.025448346,
+          0.025460629000000002, 0.025432366, 0.025475056000000003, 0.025525951,
+          0.025463764000000003, 0.025395898
+        ],
+        "cpu": [
+          0.025598, 0.02546, 0.025504, 0.025782, 0.025386, 0.025367999999999998, 0.025404, 0.025761,
+          0.025633999999999997, 0.025462000000000002, 0.025358, 0.025418999999999997,
+          0.025419999999999998, 0.025391, 0.025376, 0.025493999999999996, 0.025515, 0.025425,
+          0.025398999999999998, 0.025366, 0.025383999999999997, 0.025374999999999998, 0.025404,
+          0.025367999999999998, 0.025365, 0.025337, 0.025394, 0.02544, 0.025368, 0.02531
+        ],
+        "user": [
+          0.024614, 0.02546, 0.024523999999999997, 0.024791, 0.024371, 0.025367999999999998,
+          0.024388, 0.025761, 0.024648999999999997, 0.023504, 0.025358, 0.023464,
+          0.025419999999999998, 0.024415, 0.025376, 0.024513999999999998, 0.025515, 0.024408,
+          0.023445999999999998, 0.024352, 0.023431999999999998, 0.02436, 0.02345,
+          0.024353999999999997, 0.023413999999999997, 0.024324, 0.023441, 0.024423, 0.023417,
+          0.02531
+        ],
+        "system": [
+          0.0009839999999999998, 0, 0.00098, 0.000991, 0.001015, 0, 0.001016, 0, 0.000985, 0.001958,
+          0, 0.0019549999999999997, 0, 0.000976, 0, 0.00098, 0, 0.001017, 0.0019529999999999999,
+          0.001014, 0.001952, 0.001015, 0.001954, 0.001014, 0.0019509999999999998, 0.001013,
+          0.0019529999999999999, 0.001017, 0.0019509999999999998, 0
+        ],
+        "memory": [
+          3026944, 2994176, 3014656, 2994176, 2953216, 2998272, 2961408, 2998272, 3010560, 3063808,
+          2998272, 3014656, 2961408, 2932736, 2961408, 3055616, 2998272, 3063808, 2998272, 2994176,
+          2932736, 2932736, 2953216, 2981888, 3014656, 3072000, 2953216, 3072000, 2994176, 2932736
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.8",
+      "toolVersion": "julia version 1.8.5",
+      "variant": "julia-default",
+      "variantSpec": "4a613b769126",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "julia:1.8",
+      "sourceFile": "languages/julia/impl/nbody/main.jl",
+      "sourceHash": "915356847b04cb53",
+      "runCommand": "julia --startup-file=no -t 4 /repo/languages/julia/impl/nbody/main.jl 1000000",
+      "loadAvgBefore": "1.54 1.30 0.69 5/601 704",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-14T11:14:47.971Z",
+      "finishedAt": "2026-10-14T11:15:00.026Z",
+      "loadAvgAfter": "1.66 1.34 0.72 6/592 1021",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.37256245200000004, 0.37076090100000003, 0.373231342, 0.37510117000000004,
+          0.36325732200000005, 0.36949827100000004, 0.37177950800000004, 0.38194130600000004,
+          0.36600609, 0.36388902300000003, 0.365556192, 0.366618041, 0.36648369000000003,
+          0.366720743, 0.37456658800000003, 0.37082103400000005, 0.36764107700000004,
+          0.36663800500000004, 0.364277446, 0.36382261000000005, 0.375078945, 0.37834648200000004,
+          0.37230601900000004, 0.366216561, 0.376662365, 0.368096395, 0.37886985100000004,
+          0.369819359, 0.380112033, 0.379219462
+        ],
+        "cpu": [
+          0.702304, 0.695178, 0.702349, 0.704396, 0.693317, 0.698426, 0.701457, 0.711465,
+          0.6961029999999999, 0.693403, 0.6948190000000001, 0.696137, 0.695124, 0.695505, 0.704298,
+          0.69997, 0.6971129999999999, 0.696399, 0.693445, 0.692951, 0.703756, 0.7073799999999999,
+          0.7021689999999999, 0.695456, 0.705141, 0.697613, 0.708418, 0.699919, 0.708977,
+          0.7088599999999999
+        ],
+        "user": [
+          0.305674, 0.301674, 0.305292, 0.30933099999999997, 0.29870399999999997, 0.318805,
+          0.310786, 0.32068599999999997, 0.317606, 0.30929599999999996, 0.298495,
+          0.30349899999999996, 0.298046, 0.314683, 0.305112, 0.28831999999999997,
+          0.30209199999999997, 0.303759, 0.302193, 0.296382, 0.301591, 0.316299,
+          0.31110099999999996, 0.305737, 0.296925, 0.304813, 0.309649, 0.323936, 0.31421, 0.320497
+        ],
+        "system": [
+          0.39663, 0.39350399999999996, 0.397057, 0.395065, 0.394613, 0.379621, 0.390671, 0.390779,
+          0.378497, 0.384107, 0.396324, 0.392638, 0.397078, 0.380822, 0.399186, 0.41164999999999996,
+          0.39502099999999996, 0.39264, 0.391252, 0.396569, 0.402165, 0.39108099999999996,
+          0.39106799999999997, 0.389719, 0.40821599999999997, 0.3928, 0.398769, 0.37598299999999996,
+          0.394767, 0.38836299999999996
+        ],
+        "memory": [
+          188948480, 188743680, 188973056, 189100032, 188862464, 188645376, 189063168, 188809216,
+          188882944, 189300736, 188825600, 189009920, 189054976, 188956672, 188661760, 188289024,
+          194191360, 191238144, 189186048, 189083648, 190840832, 191787008, 188256256, 189583360,
+          189431808, 189378560, 189304832, 189145088, 188919808, 190447616
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "julia",
+      "version": "1.12",
+      "toolVersion": "julia version 1.12.7",
+      "variant": "julia-nobounds",
+      "variantSpec": "443d7c76f9fa",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "julia:1.12",
+      "sourceFile": "languages/julia/impl/hashmap/main.jl",
+      "sourceHash": "06065c8a8fa2d94b",
+      "runCommand": "julia --startup-file=no -O3 --check-bounds=no -t 4 /repo/languages/julia/impl/hashmap/main.jl 1000000",
+      "loadAvgBefore": "1.66 1.34 0.72 1/593 444",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "773bc50d9a47039c4761f407d9a74deb637c9d1e795f6ffce8e478c1102c188d",
+      "startedAt": "2026-10-14T11:15:00.131Z",
+      "finishedAt": "2026-10-14T11:15:13.831Z",
+      "loadAvgAfter": "1.51 1.32 0.72 2/592 825",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.430021933, 0.42560768000000004, 0.42120930100000004, 0.41551626, 0.415115271,
+          0.42237573100000003, 0.41675475700000003, 0.41259311600000004, 0.41678650500000003,
+          0.41755447, 0.42035439300000005, 0.42271984500000004, 0.41976084300000005,
+          0.42218955300000005, 0.41813594600000004, 0.42257545300000005, 0.43055990800000005,
+          0.42285654, 0.419006366, 0.419258355, 0.4353749, 0.43513594400000005, 0.430285446,
+          0.43139588500000003, 0.42166664600000003, 0.420355015, 0.420813531, 0.42345597100000004,
+          0.42100012000000003, 0.42208415400000004
+        ],
+        "cpu": [
+          0.5471619999999999, 0.537847, 0.533829, 0.527889, 0.527152, 0.534986, 0.529386, 0.524986,
+          0.529299, 0.529871, 0.534159, 0.536808, 0.532169, 0.534675, 0.530596, 0.535199, 0.54321,
+          0.535371, 0.541319, 0.5316799999999999, 0.547389, 0.554559, 0.542726, 0.543728, 0.53399,
+          0.53272, 0.53343, 0.534786, 0.533165, 0.534493
+        ],
+        "user": [
+          0.418128, 0.423103, 0.41728, 0.409922, 0.41445499999999996, 0.409498, 0.406304, 0.415616,
+          0.40745299999999995, 0.40410999999999997, 0.424713, 0.416848, 0.41690699999999997,
+          0.416303, 0.396221, 0.414892, 0.41893199999999997, 0.415273, 0.408505, 0.405002, 0.42107,
+          0.433614, 0.429409, 0.41834099999999996, 0.40668899999999997, 0.409543, 0.40858,
+          0.40221399999999996, 0.40213499999999996, 0.41284
+        ],
+        "system": [
+          0.12903399999999998, 0.114744, 0.116549, 0.11796699999999999, 0.11269699999999999,
+          0.125488, 0.123082, 0.10937, 0.121846, 0.12576099999999998, 0.109446, 0.11996,
+          0.11526199999999999, 0.11837199999999999, 0.134375, 0.120307, 0.124278, 0.120098,
+          0.132814, 0.12667799999999999, 0.126319, 0.120945, 0.113317, 0.125387, 0.127301, 0.123177,
+          0.12484999999999999, 0.132572, 0.13103, 0.121653
+        ],
+        "memory": [
+          326029312, 326033408, 326213632, 325775360, 326103040, 326295552, 326455296, 326234112,
+          326217728, 326348800, 326045696, 326320128, 326152192, 326172672, 326483968, 326270976,
+          325279744, 326238208, 326406144, 326201344, 327188480, 327389184, 327127040, 326127616,
+          326496256, 326311936, 325857280, 326336512, 326111232, 326529024
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-14T11-05-53-045Z-s7",
+      "language": "go",
+      "version": "1.27",
+      "toolVersion": "go version go1.27.2 linux/amd64",
+      "variant": "go-amd64-v3",
+      "variantSpec": "d8f786a6baa7",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "golang:1.27",
+      "sourceFile": "languages/go/impl/sieve/main.go",
+      "sourceHash": "047ec23158d238e9",
+      "buildCommand": "GOAMD64=v3 go build -o /work/bin/go-1.27-go-amd64-v3-sieve /repo/languages/go/impl/sieve/main.go",
+      "runCommand": "/work/bin/go-1.27-go-amd64-v3-sieve 10000000",
+      "loadAvgBefore": "1.58 1.34 0.74 5/611 64",
+      "buildSeconds": 4.819641510000103,
+      "buildOutput": "",
+      "binarySize": 2359098,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-14T11:15:24.429Z",
+      "finishedAt": "2026-10-14T11:15:30.325Z",
+      "loadAvgAfter": "2.17 1.47 0.78 3/605 875",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.027960653000000002, 0.028783304000000003, 0.028220164000000002, 0.028236102000000003,
+          0.028040376000000002, 0.026216255, 0.028447955, 0.027301684000000003,
+          0.025880147000000003, 0.024459411, 0.028346911000000002, 0.026664022000000002,
+          0.025935901, 0.026660496000000002, 0.027482542000000002, 0.026561070000000003,
+          0.028465337, 0.026966561, 0.028107531, 0.026605964000000003, 0.028964841,
+          0.027384098000000003, 0.024802203000000002, 0.023916046, 0.024740106, 0.027739643,
+          0.027506019000000003, 0.028431577000000003, 0.025853688000000003, 0.026882982000000003
+        ],
+        "cpu": [
+          0.028662999999999998, 0.030143999999999997, 0.029526, 0.029495, 0.02921,
+          0.027549999999999998, 0.02982, 0.028432, 0.026924999999999998, 0.025858999999999997,
+          0.029481, 0.027816999999999998, 0.027150999999999998, 0.028010999999999998,
+          0.028968999999999998, 0.027847, 0.029571999999999998, 0.028138, 0.029650999999999997,
+          0.027894, 0.030566, 0.028739, 0.026493, 0.025436, 0.025927, 0.029193, 0.028782, 0.03013,
+          0.026961999999999996, 0.028343
+        ],
+        "user": [
+          0.026615999999999997, 0.027025999999999998, 0.027417, 0.024738, 0.028236999999999998,
+          0.024599, 0.026625, 0.024641, 0.024770999999999998, 0.021880999999999998, 0.026323,
+          0.026747999999999997, 0.024019, 0.026973999999999998, 0.025973, 0.026816, 0.025757,
+          0.027096, 0.024539, 0.023603, 0.029512, 0.023784, 0.023313999999999998, 0.021367,
+          0.023767, 0.027108, 0.023025999999999998, 0.029054, 0.022147999999999998, 0.025411
+        ],
+        "system": [
+          0.0020469999999999998, 0.0031179999999999997, 0.0021089999999999998, 0.004757,
+          0.0009729999999999999, 0.002951, 0.003195, 0.0037909999999999997, 0.002154, 0.003978,
+          0.0031579999999999998, 0.0010689999999999999, 0.003132, 0.001037, 0.002996, 0.001031,
+          0.003815, 0.001042, 0.005111999999999999, 0.004291, 0.001054, 0.004955, 0.003179,
+          0.004069, 0.00216, 0.002085, 0.005756, 0.001076, 0.004814, 0.0029319999999999997
+        ],
+        "memory": [
+          14348288, 14340096, 16486400, 16318464, 16449536, 16445440, 16310272, 14430208, 14458880,
+          14344192, 16449536, 16220160, 14344192, 16359424, 14446592, 16482304, 14278656, 16482304,
+          16400384, 16510976, 14282752, 16556032, 14422016, 14323712, 14422016, 16465920, 16302080,
+          14405632, 14336000, 14360576
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    }
+  ]
+}
