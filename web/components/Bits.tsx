@@ -5,8 +5,14 @@ export function JsonLd({ data }: { data: unknown }) {
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
 }
 
+/** The same source is shown on every version/variant page that shares it, so highlight it once. */
+const highlighted = new Map<string, Promise<string>>();
+
 export async function CodeBlock({ code, lang }: { code: string; lang: string }) {
-  const html = await codeToHtml(code, { lang, themes: { light: "github-light", dark: "github-dark" }, defaultColor: false });
+  const key = `${lang}\0${code}`;
+  let pending = highlighted.get(key);
+  if (!pending) highlighted.set(key, (pending = codeToHtml(code, { lang, themes: { light: "github-light", dark: "github-dark" }, defaultColor: false })));
+  const html = await pending;
   return <div className="shiki-wrap" dangerouslySetInnerHTML={{ __html: html }} />;
 }
 

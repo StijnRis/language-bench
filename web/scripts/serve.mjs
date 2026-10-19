@@ -13,7 +13,13 @@ const TYPES = {
 };
 
 createServer((req, res) => {
-  const url = new URL(req.url ?? "/", "http://localhost");
+  let url;
+  try {
+    url = new URL(req.url ?? "/", "http://localhost");
+  } catch {
+    res.writeHead(400).end();
+    return;
+  }
   let file = normalize(join(root, decodeURIComponent(url.pathname)));
   if (!file.startsWith(root)) {
     res.writeHead(403).end();

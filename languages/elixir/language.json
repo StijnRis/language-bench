@@ -1,0 +1,66 @@
+{
+  "id": "elixir",
+  "name": "Elixir",
+  "highlight": "elixir",
+  "website": "https://elixir-lang.org/",
+  "description": "Elixir on the Erlang VM (BEAM): immutable data, per-process garbage collection, preemptive lightweight processes and a JIT-compiled emulator. Scripts are compiled in memory on every start.",
+  "color": {
+    "light": "#7e22ce",
+    "dark": "#d8b4fe"
+  },
+  "sourceFile": "main.exs",
+  "image": "elixir:{version}",
+  "toolVersionCmd": "elixir --short-version 2>/dev/null || elixir --version | tail -n1",
+  "versions": [
+    {
+      "version": "1.20",
+      "latest": true
+    },
+    {
+      "version": "1.19",
+      "latest": false
+    },
+    {
+      "version": "1.18",
+      "latest": false
+    },
+    {
+      "version": "1.17",
+      "latest": false
+    },
+    {
+      "version": "1.16",
+      "latest": false
+    },
+    {
+      "version": "1.15",
+      "latest": false
+    },
+    {
+      "version": "1.14",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "elixir-default",
+      "name": "elixir script.exs",
+      "description": "Default BEAM flags: one scheduler per core.",
+      "run": "elixir {src}/main.exs",
+      "default": true
+    },
+    {
+      "id": "elixir-sbt-db",
+      "name": "elixir --erl \"+sbt db\"",
+      "description": "Schedulers bound to cores (default binding), which can reduce migration noise for the parallel workload.",
+      "run": "elixir --erl \"+sbt db\" {src}/main.exs"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "elixir-lang/elixir",
+    "pattern": "^v(1\\.\\d+)\\.0$",
+    "url": "https://elixir-lang.org/blog/",
+    "minVersion": "1.14"
+  }
+}

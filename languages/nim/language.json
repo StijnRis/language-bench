@@ -1,0 +1,52 @@
+{
+  "id": "nim",
+  "name": "Nim",
+  "highlight": "nim",
+  "website": "https://nim-lang.org/",
+  "description": "Nim compiles to C and then to native code: Python-like syntax, static types, and reference-counted memory management (ARC/ORC) by default since 2.0 instead of a tracing collector.",
+  "color": {
+    "light": "#a16207",
+    "dark": "#fcd34d"
+  },
+  "sourceFile": "main.nim",
+  "image": "nimlang/nim:{version}",
+  "toolVersionCmd": "nim --version | head -n1",
+  "versions": [
+    {
+      "version": "2.2",
+      "latest": true
+    },
+    {
+      "version": "2.0",
+      "latest": false
+    },
+    {
+      "version": "1.6",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "nim-release",
+      "name": "nim c -d:release",
+      "description": "Optimised C backend build with the default memory manager of the version (ORC from Nim 2.0, refc before).",
+      "build": "nim c -d:release --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {src}/main.nim",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "nim-danger",
+      "name": "nim c -d:danger",
+      "description": "Also removes bounds, overflow and nil checks (unsafe: errors are no longer detected).",
+      "build": "nim c -d:danger --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {src}/main.nim",
+      "run": "{bin}"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "nim-lang/Nim",
+    "pattern": "^v(\\d+\\.\\d*[02468])\\.0$",
+    "url": "https://nim-lang.org/blog/",
+    "minVersion": "1.6"
+  }
+}

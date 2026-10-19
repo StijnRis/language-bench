@@ -6,7 +6,7 @@
 
 _Screenshot of the live site, refreshed automatically after every deploy by `.github/workflows/screenshot.yml`._
 
-Transparent speed and memory benchmarks of programming languages (see `languages/`) on a set of workloads (see `problems/`;
+Transparent speed and memory benchmarks of 22 programming languages (C, C++, Rust, Go, Java, C#, F#, Dart, Julia, Node.js, Bun, Deno, Python, PyPy, Ruby, PHP, Perl, Lua, Haskell, OCaml, Nim, Elixir; see `languages/`) on a set of workloads (see `problems/`;
 N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
 processing, start-up, matrix multiply, fannkuch, prime sieve). Results are measured on GitHub Actions, repeated on different days and hardware,
 combined with documented statistics, and published as a static site.
@@ -41,6 +41,10 @@ Add a language by adding a `languages/<id>/` folder (`language.json` with name, 
 - `versions` in `language.json` is curated by hand: about one release per year, as far back as the benchmark sources compile. `discover-versions` only appends releases that are newer than the newest tracked one (it never removes or rewrites entries).
 - **Different flags per version:** a variant has `build`/`run` plus optional `rules: [{ "minVersion": "10", "build": "..." }]`. The rule with the highest `minVersion` that is <= the benchmarked version overrides the fields it lists (example: C++ uses `-std=c++14` before gcc 10 and `-std=c++20` from gcc 10). `minVersion` on the variant itself skips the variant on older versions (example: `ruby --yjit` from 3.1).
 - **Different code per version:** `impl/<problem>/main.ext` is shared by all versions. To use another file from some version on, add `impl/<problem>/@<minVersion>/main.ext` (for example `impl/sort/@1.23/main.go`); the highest `@` folder that is <= the version wins, so only files that really differ are copied. `{src}` in the commands points to the chosen folder, and the site shows the source that was actually used.
+
+## Build speed
+
+`pnpm build` computes the statistics once (`web/scripts/warm-cache.ts`, bootstrap loop on typed arrays) and caches them in `web/.cache/` keyed by the data files and statistics code, so the Next.js workers read them instead of recomputing; per-cell intervals and highlighted sources are memoised. A full static export takes about a minute.
 
 ## Commands
 
