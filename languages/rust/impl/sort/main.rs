@@ -1,23 +1,16 @@
-use std::env;
+pub type Instance = Vec<i32>;
+pub type Output = Vec<i32>;
 
-fn main() {
-    let n: usize = env::args().nth(1).unwrap().parse().unwrap();
-    let mut x: u64 = 1;
-    let mut a: Vec<i32> = Vec::with_capacity(n);
-    for _ in 0..n {
-        x = x * 48271 % 2147483647;
-        a.push(x as i32);
-    }
-
+pub fn setup(_args: &[String]) {}
+pub fn decode(data: &[u8]) -> Instance {
+    data.chunks_exact(4).map(|c| i32::from_le_bytes([c[0], c[1], c[2], c[3]])).collect()
+}
+pub fn solve(mut a: Instance) -> Output {
     a.sort_unstable();
-
-    let mut checksum: u64 = 0;
-    for (i, v) in a.iter().enumerate() {
-        checksum = (checksum + i as u64 * *v as u64) % 1000000007;
+    a
+}
+pub fn emit(out: &Output, sink: &mut dyn FnMut(i64)) {
+    for &v in out {
+        sink(v as i64);
     }
-
-    println!("first={}", a[0]);
-    println!("last={}", a[n - 1]);
-    println!("median={}", a[n / 2]);
-    println!("checksum={}", checksum);
 }

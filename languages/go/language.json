@@ -38,7 +38,7 @@
       "id": "go-default",
       "name": "go build",
       "description": "Default toolchain settings (GOAMD64=v1).",
-      "build": "go build -o {bin} {src}/main.go",
+      "build": "mkdir -p {bin}.d && cp {harness}/harness.go {bin}.d/harness.go && cp {src}/main.go {bin}.d/problem.go && go build -o {bin} {bin}.d/harness.go {bin}.d/problem.go",
       "run": "{bin}",
       "default": true
     },
@@ -46,7 +46,7 @@
       "id": "go-amd64-v3",
       "name": "GOAMD64=v3 go build",
       "description": "Allows AVX2/BMI/FMA instructions on x86-64.",
-      "build": "GOAMD64=v3 go build -o {bin} {src}/main.go",
+      "build": "mkdir -p {bin}.d && cp {harness}/harness.go {bin}.d/harness.go && cp {src}/main.go {bin}.d/problem.go && GOAMD64=v3 go build -o {bin} {bin}.d/harness.go {bin}.d/problem.go",
       "run": "{bin}"
     }
   ],

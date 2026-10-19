@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"os"
 	"strconv"
 	"sync"
 )
+
+var nArg, workersArg = 2000000, 4
 
 func isPrime(n int) bool {
 	if n < 2 {
@@ -25,17 +25,24 @@ func isPrime(n int) bool {
 	return true
 }
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
-	workers, _ := strconv.Atoi(os.Args[2])
+func Setup(args []string) {
+	if len(args) > 1 {
+		nArg, _ = strconv.Atoi(args[0])
+		workersArg, _ = strconv.Atoi(args[1])
+	}
+}
 
-	counts := make([]int, workers)
+func Decode(data []byte) any { return nil }
+
+func Solve(inst any) any {
+	n, workers := nArg, workersArg
+	counts := make([]int64, workers)
 	var wg sync.WaitGroup
 	for t := 0; t < workers; t++ {
 		wg.Add(1)
 		go func(t int) {
 			defer wg.Done()
-			c := 0
+			var c int64
 			for i := t; i < n; i += workers {
 				if isPrime(i) {
 					c++
@@ -45,10 +52,11 @@ func main() {
 		}(t)
 	}
 	wg.Wait()
-
-	total := 0
+	var total int64
 	for _, c := range counts {
 		total += c
 	}
-	fmt.Printf("primes=%d\n", total)
+	return []int64{total}
 }
+
+func Emit(res any, sink func(int64)) { sink(res.([]int64)[0]) }

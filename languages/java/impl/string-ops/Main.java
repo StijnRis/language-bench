@@ -1,37 +1,27 @@
 import java.nio.charset.StandardCharsets;
+import java.util.function.LongConsumer;
 
-public class Main {
-    static final String[] VOCAB = {
-        "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-        "über", "résumé", "привет", "мир",
-        "код", "日本語", "世界", "速度", "hello", "world",
-    };
+final class Problem {
+    static void setup(String[] args) {}
 
-    public static void main(String[] args) {
-        int n = Integer.parseInt(args[0]);
-        long x = 1;
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < n; i++) {
-            x = x * 48271 % 2147483647;
-            if (i > 0) sb.append(' ');
-            sb.append(VOCAB[(int) (x % VOCAB.length)]);
-        }
-        String text = sb.toString();
+    static Object decode(byte[] data) { return new String(data, StandardCharsets.UTF_8); }
 
+    static Object solve(Object inst) {
+        String text = (String) inst;
         long bytes = text.getBytes(StandardCharsets.UTF_8).length;
         long codepoints = text.codePointCount(0, text.length());
-        long words = text.split(" ").length;
-
+        long spaces = 0;
+        for (int i = 0; i < text.length(); i++) if (text.charAt(i) == ' ') spaces++;
         long needle = 0;
         for (int p = text.indexOf("er"); p != -1; p = text.indexOf("er", p + 2)) needle++;
-
         long checksum = 0;
-        for (byte b : text.replace(' ', '_').getBytes(StandardCharsets.UTF_8)) checksum += b & 0xFF;
-
-        System.out.println("bytes=" + bytes);
-        System.out.println("codepoints=" + codepoints);
-        System.out.println("words=" + words);
-        System.out.println("needle=" + needle);
-        System.out.println("checksum=" + checksum);
+        for (byte b : text.replace(' ', '_').getBytes(StandardCharsets.UTF_8)) checksum += b & 0xff;
+        return new long[] {bytes, codepoints, spaces + 1, needle, checksum};
     }
+
+    static void emit(Object res, LongConsumer sink) {
+        for (long v : (long[]) res) sink.accept(v);
+    }
+
+    static void release(Object inst, Object res) {}
 }

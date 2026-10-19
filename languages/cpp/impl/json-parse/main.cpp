@@ -1,9 +1,8 @@
 // C++ has no JSON parser in its standard library: a small recursive-descent parser that aggregates
 // while parsing (it does not build a tree).
-#include <cstdio>
-#include <fstream>
-#include <iterator>
-#include <string>
+#include <cstddef>
+#include <cstdint>
+#include <vector>
 
 static const unsigned char *s;
 static size_t i;
@@ -87,15 +86,17 @@ static void value() {
   }
 }
 
-int main(int, char **argv) {
-  std::ifstream in(argv[1], std::ios::binary);
-  std::string buf((std::istreambuf_iterator<char>(in)), std::istreambuf_iterator<char>());
-  s = reinterpret_cast<const unsigned char *>(buf.c_str());
-  value();
-  std::printf("objects=%ld\n", objects);
-  std::printf("int_sum=%lld\n", int_sum);
-  std::printf("string_length=%ld\n", str_len);
-  std::printf("true=%ld\n", trues);
-  std::printf("null=%ld\n", nulls);
-  return 0;
+void lb_setup(int, char **) {}
+void *lb_decode(const unsigned char *data, size_t) {
+  s = data;  // the bytes of the harness buffer, NUL terminated
+  return const_cast<unsigned char *>(data);
 }
+void *lb_solve(void *) {
+  i = 0; objects = str_len = trues = nulls = 0; int_sum = 0;
+  value();
+  return new std::vector<int64_t>{objects, int_sum, str_len, trues, nulls};
+}
+void lb_emit(void *res, void (*sink)(int64_t)) {
+  for (int64_t v : *static_cast<std::vector<int64_t> *>(res)) sink(v);
+}
+void lb_release(void *, void *res) { delete static_cast<std::vector<int64_t> *>(res); }

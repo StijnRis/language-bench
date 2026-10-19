@@ -252,7 +252,7 @@ static void gen_strings(Sink *s, i64 seed) {
     put_str(s, w); total += strlen(w);
   }
   if (total > STR_LEN) { fprintf(stderr, "lbgen: string instance longer than STR_LEN\n"); exit(3); }
-  static const char spaces[256] = "                                                                                                                                                                                                                                                               ";
+  char spaces[256]; memset(spaces, ' ', sizeof spaces);
   for (size_t left = STR_LEN - total; left;) { size_t k = left < 256 ? left : 256; put(s, spaces, k); left -= k; }
 }
 static void ref_strings(const unsigned char *d, size_t n, Words *out) {
@@ -310,8 +310,9 @@ static void json_body(Sink *s, i64 seed, JStats *st) {
 }
 typedef struct { Sink *inner; size_t n; } Count;
 static void count_put(void *ctx, const void *p, size_t n) { Count *c = ctx; c->n += n; put(c->inner, p, n); }
-static const char SPACES[256] = "                                                                                                                                                                                                                                                               ";
+static char SPACES[256];
 static void gen_json_stats(Sink *s, i64 seed, JStats *st) {
+  memset(SPACES, ' ', sizeof SPACES);
   put_len(s, JSON_LEN);
   Count c = {s, 0}; Sink cs = {&c, count_put};
   json_body(&cs, seed, st);

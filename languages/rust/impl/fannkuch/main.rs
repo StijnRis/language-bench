@@ -1,13 +1,21 @@
-use std::env;
+use std::sync::atomic::{AtomicU64, Ordering};
 
-fn main() {
-    let n: usize = env::args().nth(1).unwrap().parse().unwrap();
+static N: AtomicU64 = AtomicU64::new(9);
+pub type Instance = ();
+pub type Output = [i64; 2];
+
+pub fn setup(args: &[String]) {
+    if let Some(a) = args.first() {
+        N.store(a.parse().unwrap(), Ordering::Relaxed);
+    }
+}
+pub fn decode(_data: &[u8]) -> Instance {}
+pub fn solve(_: Instance) -> Output {
+    let n = N.load(Ordering::Relaxed) as usize;
     let mut perm1: Vec<usize> = (0..n).collect();
     let mut perm = vec![0usize; n];
     let mut count = vec![0usize; n];
-    let mut maxflips = 0i64;
-    let mut checksum = 0i64;
-    let mut permcount = 0u64;
+    let (mut maxflips, mut permcount, mut checksum) = (0i64, 0i64, 0i64);
     let mut r = n;
     loop {
         while r != 1 {
@@ -21,7 +29,7 @@ fn main() {
             if k == 0 {
                 break;
             }
-            perm[..k + 1].reverse();
+            perm[..=k].reverse();
             flips += 1;
         }
         if flips > maxflips {
@@ -30,9 +38,7 @@ fn main() {
         checksum += if permcount % 2 == 0 { flips } else { -flips };
         loop {
             if r == n {
-                println!("checksum={}", checksum);
-                println!("maxflips={}", maxflips);
-                return;
+                return [checksum, maxflips];
             }
             let p0 = perm1[0];
             for i in 0..r {
@@ -46,5 +52,10 @@ fn main() {
             r += 1;
         }
         permcount += 1;
+    }
+}
+pub fn emit(out: &Output, sink: &mut dyn FnMut(i64)) {
+    for &v in out {
+        sink(v);
     }
 }

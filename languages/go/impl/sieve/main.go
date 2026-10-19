@@ -1,32 +1,40 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+import "strconv"
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
-	s := make([]bool, n+1)
-	for i := 2; i <= n; i++ {
-		s[i] = true
+var nArg = 10000000
+
+func Setup(args []string) {
+	if len(args) > 0 {
+		nArg, _ = strconv.Atoi(args[0])
 	}
+}
+
+func Decode(data []byte) any { return nil }
+
+func Solve(inst any) any {
+	n := nArg
+	composite := make([]bool, n+1)
 	for p := 2; p*p <= n; p++ {
-		if s[p] {
+		if !composite[p] {
 			for m := p * p; m <= n; m += p {
-				s[m] = false
+				composite[m] = true
 			}
 		}
 	}
-	count, last := 0, 0
-	var sum int64
+	var count, last, sum int64
 	for i := 2; i <= n; i++ {
-		if s[i] {
+		if !composite[i] {
 			count++
-			last = i
+			last = int64(i)
 			sum += int64(i)
 		}
 	}
-	fmt.Printf("count=%d\nlast=%d\nsum=%d\n", count, last, sum)
+	return []int64{count, last, sum}
+}
+
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int64) {
+		sink(v)
+	}
 }

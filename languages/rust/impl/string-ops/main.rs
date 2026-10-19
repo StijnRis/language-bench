@@ -1,27 +1,18 @@
-use std::env;
+// Rust strings are UTF-8: len() is the byte length, chars() iterates code points.
+pub type Instance = String;
+pub type Output = [i64; 5];
 
-const VOCAB: [&str; 20] = [
-    "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-    "über", "résumé", "привет", "мир",
-    "код", "日本語", "世界", "速度", "hello", "world",
-];
-
-fn main() {
-    let n: usize = env::args().nth(1).unwrap().parse().unwrap();
-    let mut x: u64 = 1;
-    let mut words: Vec<&str> = Vec::with_capacity(n);
-    for _ in 0..n {
-        x = x * 48271 % 2147483647;
-        words.push(VOCAB[(x % VOCAB.len() as u64) as usize]);
-    }
-    let text = words.join(" ");
-
+pub fn setup(_args: &[String]) {}
+pub fn decode(data: &[u8]) -> Instance {
+    String::from_utf8(data.to_vec()).unwrap()
+}
+pub fn solve(text: Instance) -> Output {
     let replaced = text.replace(' ', "_");
     let checksum: u64 = replaced.bytes().map(|b| b as u64).sum();
-
-    println!("bytes={}", text.len());
-    println!("codepoints={}", text.chars().count());
-    println!("words={}", text.split(' ').count());
-    println!("needle={}", text.matches("er").count());
-    println!("checksum={}", checksum);
+    [text.len() as i64, text.chars().count() as i64, text.bytes().filter(|&b| b == b' ').count() as i64 + 1, text.matches("er").count() as i64, checksum as i64]
+}
+pub fn emit(out: &Output, sink: &mut dyn FnMut(i64)) {
+    for &v in out {
+        sink(v);
+    }
 }

@@ -1,21 +1,28 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+import "strconv"
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
+var nArg = 9
+
+func Setup(args []string) {
+	if len(args) > 0 {
+		nArg, _ = strconv.Atoi(args[0])
+	}
+}
+
+func Decode(data []byte) any { return nil }
+
+func Solve(inst any) any {
+	n := nArg
 	perm1 := make([]int, n)
 	perm := make([]int, n)
 	count := make([]int, n)
 	for i := range perm1 {
 		perm1[i] = i
 	}
-	maxflips, permcount, r := 0, 0, n
-	checksum := 0
+	maxflips, permcount := 0, 0
+	var checksum int64
+	r := n
 	for {
 		for r != 1 {
 			count[r-1] = r
@@ -33,19 +40,16 @@ func main() {
 			maxflips = flips
 		}
 		if permcount%2 == 0 {
-			checksum += flips
+			checksum += int64(flips)
 		} else {
-			checksum -= flips
+			checksum -= int64(flips)
 		}
 		for {
 			if r == n {
-				fmt.Printf("checksum=%d\nmaxflips=%d\n", checksum, maxflips)
-				return
+				return []int64{checksum, int64(maxflips)}
 			}
 			p0 := perm1[0]
-			for i := 0; i < r; i++ {
-				perm1[i] = perm1[i+1]
-			}
+			copy(perm1[:r], perm1[1:r+1])
 			perm1[r] = p0
 			count[r]--
 			if count[r] > 0 {
@@ -54,5 +58,11 @@ func main() {
 			r++
 		}
 		permcount++
+	}
+}
+
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int64) {
+		sink(v)
 	}
 }

@@ -1,10 +1,8 @@
 /* Java has no JSON parser in its standard library: a small recursive-descent parser that aggregates
  * while parsing (it does not build a tree). */
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.function.LongConsumer;
 
-public class Main {
+final class Problem {
     static byte[] s;
     static int i;
     static long objects, strLen, trues, nulls, intSum;
@@ -84,15 +82,21 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        byte[] data = Files.readAllBytes(Path.of(args[0]));
-        s = new byte[data.length + 1];
-        System.arraycopy(data, 0, s, 0, data.length);
+    static void setup(String[] args) {}
+
+    static Object decode(byte[] data) { return data; }
+
+    static Object solve(Object inst) {
+        byte[] data = (byte[]) inst;
+        s = java.util.Arrays.copyOf(data, data.length + 1);
+        i = 0; objects = strLen = trues = nulls = intSum = 0;
         value();
-        System.out.println("objects=" + objects);
-        System.out.println("int_sum=" + intSum);
-        System.out.println("string_length=" + strLen);
-        System.out.println("true=" + trues);
-        System.out.println("null=" + nulls);
+        return new long[] {objects, intSum, strLen, trues, nulls};
     }
+
+    static void emit(Object res, LongConsumer sink) {
+        for (long v : (long[]) res) sink.accept(v);
+    }
+
+    static void release(Object inst, Object res) {}
 }

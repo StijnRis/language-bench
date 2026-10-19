@@ -1,32 +1,35 @@
-use std::env;
+pub struct Instance {
+    n: usize,
+    a: Vec<f64>,
+    b: Vec<f64>,
+}
+pub type Output = Vec<f64>;
 
-fn main() {
-    let n: usize = env::args().nth(1).unwrap().parse().unwrap();
-    let mut a = vec![0f64; n * n];
-    let mut b = vec![0f64; n * n];
-    let mut c = vec![0f64; n * n];
-    for i in 0..n {
-        for j in 0..n {
-            a[i * n + j] = ((i * 31 + j * 17) % 10 + 1) as f64;
-            b[i * n + j] = ((i * 13 + j * 7) % 10) as f64 - 4.0;
-        }
-    }
-
+pub fn setup(_args: &[String]) {}
+pub fn decode(data: &[u8]) -> Instance {
+    let n = i32::from_le_bytes([data[0], data[1], data[2], data[3]]) as usize;
+    let f = |off: usize| -> Vec<f64> {
+        data[off..off + n * n * 8].chunks_exact(8).map(|c| f64::from_le_bytes([c[0], c[1], c[2], c[3], c[4], c[5], c[6], c[7]])).collect()
+    };
+    Instance { n, a: f(4), b: f(4 + n * n * 8) }
+}
+pub fn solve(inst: Instance) -> Output {
+    let n = inst.n;
+    let mut c = vec![0.0f64; n * n];
     for i in 0..n {
         for k in 0..n {
-            let aik = a[i * n + k];
-            let brow = &b[k * n..(k + 1) * n];
+            let aik = inst.a[i * n + k];
+            let brow = &inst.b[k * n..(k + 1) * n];
             let crow = &mut c[i * n..(i + 1) * n];
             for j in 0..n {
                 crow[j] += aik * brow[j];
             }
         }
     }
-
-    let trace: f64 = (0..n).map(|i| c[i * n + i]).sum();
-    let sum: f64 = c.iter().sum();
-    println!("trace={}", trace as i64);
-    println!("sum={}", sum as i64);
-    println!("c00={}", c[0] as i64);
-    println!("clast={}", c[n * n - 1] as i64);
+    c
+}
+pub fn emit(out: &Output, sink: &mut dyn FnMut(i64)) {
+    for &v in out {
+        sink((v + if v < 0.0 { -0.5 } else { 0.5 }) as i64);
+    }
 }

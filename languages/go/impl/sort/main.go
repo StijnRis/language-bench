@@ -1,30 +1,28 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"encoding/binary"
 	"slices"
-	"strconv"
 )
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
-	var x int64 = 1
-	a := make([]int32, n)
+func Setup(args []string) {}
+
+func Decode(data []byte) any {
+	a := make([]int32, len(data)/4)
 	for i := range a {
-		x = x * 48271 % 2147483647
-		a[i] = int32(x)
+		a[i] = int32(binary.LittleEndian.Uint32(data[4*i:]))
 	}
+	return a
+}
 
+func Solve(inst any) any {
+	a := inst.([]int32)
 	slices.Sort(a)
+	return a
+}
 
-	var checksum int64
-	for i, v := range a {
-		checksum = (checksum + int64(i)*int64(v)) % 1000000007
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int32) {
+		sink(int64(v))
 	}
-
-	fmt.Printf("first=%d\n", a[0])
-	fmt.Printf("last=%d\n", a[n-1])
-	fmt.Printf("median=%d\n", a[n/2])
-	fmt.Printf("checksum=%d\n", checksum)
 }

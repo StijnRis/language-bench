@@ -66,13 +66,13 @@
       "id": "gxx-O3-native",
       "name": "g++ -O3 -march=native",
       "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
-      "build": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "build": "g++ -std=c++14 -O3 -march=native -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread",
       "run": "{bin}",
       "default": true,
       "rules": [
         {
           "minVersion": "10",
-          "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+          "build": "g++ -std=c++20 -O3 -march=native -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread"
         }
       ]
     },
@@ -80,12 +80,12 @@
       "id": "gxx-O3",
       "name": "g++ -O3",
       "description": "Portable x86-64 baseline, no CPU-specific instructions.",
-      "build": "g++ -std=c++14 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "build": "g++ -std=c++14 -O3 -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread",
       "run": "{bin}",
       "rules": [
         {
           "minVersion": "10",
-          "build": "g++ -std=c++20 -O3 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+          "build": "g++ -std=c++20 -O3 -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread"
         }
       ]
     },
@@ -93,12 +93,12 @@
       "id": "gxx-O2",
       "name": "g++ -O2",
       "description": "The most common release optimisation level.",
-      "build": "g++ -std=c++14 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread",
+      "build": "g++ -std=c++14 -O2 -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread",
       "run": "{bin}",
       "rules": [
         {
           "minVersion": "10",
-          "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {src}/main.cpp -lpthread"
+          "build": "g++ -std=c++20 -O2 -ffp-contract=off -o {bin} {harness}/harness.cpp {src}/main.cpp -lpthread"
         }
       ]
     }
