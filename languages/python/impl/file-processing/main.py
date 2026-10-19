@@ -1,7 +1,12 @@
-import sys
+def setup(args):
+    pass
 
 
-def main(path):
+def decode(data):
+    return data.decode()  # path of the file
+
+
+def solve(path):
     lines = 0
     total = 0
     freq = {}
@@ -11,12 +16,10 @@ def main(path):
             lines += 1
             total += int(value)
             freq[word] = freq.get(word, 0) + 1
-
     top = min(freq.items(), key=lambda kv: (-kv[1], kv[0]))
-    print(f"lines={lines}")
-    print(f"sum={total}")
-    print(f"distinct={len(freq)}")
-    print(f"top={top[0]} {top[1]}")
+    return lines, total, len(freq), top[1], top[0]
 
 
-main(sys.argv[1])
+def emit(res):
+    lines, total, distinct, count, word = res
+    return [lines, total, distinct, count, len(word)] + list(word.encode("ascii"))

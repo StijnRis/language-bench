@@ -42,14 +42,14 @@
       "id": "node-default",
       "name": "node",
       "description": "Default flags.",
-      "run": "node {src}/main.js",
+      "run": "node {harness}/harness.js {src}/main.js",
       "default": true
     },
     {
       "id": "node-semi-space-64",
       "name": "node --max-semi-space-size=64",
       "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
-      "run": "node --max-semi-space-size=64 {src}/main.js"
+      "run": "node --max-semi-space-size=64 {harness}/harness.js {src}/main.js"
     }
   ],
   "versionSource": {

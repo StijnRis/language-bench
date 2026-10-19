@@ -1,5 +1,16 @@
-import sys
-from multiprocessing import Pool
+import multiprocessing
+
+N, WORKERS = 2000000, 4
+
+
+def setup(args):
+    global N, WORKERS
+    if len(args) > 1:
+        N, WORKERS = int(args[0]), int(args[1])
+
+
+def decode(data):
+    return None
 
 
 def is_prime(n):
@@ -22,9 +33,12 @@ def count(args):
     return sum(1 for i in range(t, n, workers) if is_prime(i))
 
 
-if __name__ == "__main__":
-    n = int(sys.argv[1])
-    workers = int(sys.argv[2])
-    with Pool(workers) as pool:
-        parts = pool.map(count, [(n, workers, t) for t in range(workers)])
-    print(f"primes={sum(parts)}")
+def solve(_):
+    # processes (the GIL); fork explicitly: the default start method differs between versions and platforms
+    with multiprocessing.get_context("fork").Pool(WORKERS) as pool:
+        parts = pool.map(count, [(N, WORKERS, t) for t in range(WORKERS)])
+    return (sum(parts),)
+
+
+def emit(res):
+    return res

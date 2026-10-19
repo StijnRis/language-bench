@@ -1,11 +1,16 @@
 import json
-import sys
 
 
-def main(path):
-    with open(path, "rb") as f:
-        doc = json.load(f)
+def setup(args):
+    pass
 
+
+def decode(data):
+    return data  # the bytes are parsed inside solve
+
+
+def solve(data):
+    doc = json.loads(data)
     objects = 0
     int_sum = 0
     str_len = 0
@@ -27,12 +32,8 @@ def main(path):
             nulls += 1
         elif isinstance(v, int):
             int_sum += v
-
-    print(f"objects={objects}")
-    print(f"int_sum={int_sum}")
-    print(f"string_length={str_len}")
-    print(f"true={trues}")
-    print(f"null={nulls}")
+    return objects, int_sum, str_len, trues, nulls
 
 
-main(sys.argv[1])
+def emit(res):
+    return res
