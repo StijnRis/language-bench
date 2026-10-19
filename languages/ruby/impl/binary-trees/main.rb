@@ -1,26 +1,43 @@
-# Binary trees, after the Computer Language Benchmarks Game. A node is a two-element array.
+# Binary trees, after the Computer Language Benchmarks Game.
+module Problem
+  @depth = 14
 
-def make_tree(d)
-  d == 0 ? [nil, nil] : [make_tree(d - 1), make_tree(d - 1)]
+  def self.setup(args)
+    @depth = args[0].to_i unless args.empty?
+  end
+
+  def self.decode(data)
+    nil
+  end
+
+  def self.make_tree(d)
+    return [nil, nil] if d == 0
+    d -= 1
+    [make_tree(d), make_tree(d)]
+  end
+
+  def self.check_tree(node)
+    left, right = node
+    return 1 if left.nil?
+    1 + check_tree(left) + check_tree(right)
+  end
+
+  def self.solve(_)
+    min_depth = 4
+    max_depth = [min_depth + 2, @depth].max
+    out = [check_tree(make_tree(max_depth + 1))]
+    long_lived = make_tree(max_depth)
+    (min_depth..max_depth).step(2) do |depth|
+      iterations = 1 << (max_depth - depth + min_depth)
+      check = 0
+      iterations.times { check += check_tree(make_tree(depth)) }
+      out << iterations << check
+    end
+    out << check_tree(long_lived)
+    out
+  end
+
+  def self.emit(r)
+    r
+  end
 end
-
-def check(t)
-  t[0] ? 1 + check(t[0]) + check(t[1]) : 1
-end
-
-n = ARGV[0].to_i
-min_depth = 4
-max_depth = n > min_depth + 2 ? n : min_depth + 2
-stretch = max_depth + 1
-
-puts "stretch tree of depth #{stretch}\t check: #{check(make_tree(stretch))}"
-long_lived = make_tree(max_depth)
-
-min_depth.step(max_depth, 2) do |depth|
-  iterations = 1 << (max_depth - depth + min_depth)
-  sum = 0
-  iterations.times { sum += check(make_tree(depth)) }
-  puts "#{iterations}\t trees of depth #{depth}\t check: #{sum}"
-end
-
-puts "long lived tree of depth #{max_depth}\t check: #{check(long_lived)}"

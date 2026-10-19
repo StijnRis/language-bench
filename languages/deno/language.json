@@ -34,14 +34,14 @@
       "id": "deno-default",
       "name": "deno run",
       "description": "Default V8 flags; all permissions granted.",
-      "run": "deno run -A --no-check {src}/main.ts",
+      "run": "deno run -A --no-check {harness}/harness.ts {src}/main.ts",
       "default": true
     },
     {
       "id": "deno-semi-space-64",
       "name": "deno run --v8-flags=--max-semi-space-size=64",
       "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
-      "run": "deno run -A --no-check --v8-flags=--max-semi-space-size=64 {src}/main.ts"
+      "run": "deno run -A --no-check --v8-flags=--max-semi-space-size=64 {harness}/harness.ts {src}/main.ts"
     }
   ],
   "versionSource": {

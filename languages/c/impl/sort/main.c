@@ -1,5 +1,5 @@
+/* sort: the instance is the int32 array of the harness buffer, sorted in place with qsort. */
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 static int cmp(const void *a, const void *b) {
@@ -7,24 +7,11 @@ static int cmp(const void *a, const void *b) {
   return (x > y) - (x < y);
 }
 
-int main(int argc, char **argv) {
-  long n = atol(argv[1]);
-  uint64_t x = 1;
-  int32_t *a = malloc(n * sizeof *a);
-  for (long i = 0; i < n; i++) {
-    x = x * 48271 % 2147483647;
-    a[i] = (int32_t)x;
-  }
+typedef struct { int32_t *a; size_t n; } Array;
+static Array arr;
 
-  qsort(a, n, sizeof *a, cmp);
-
-  uint64_t checksum = 0;
-  for (long i = 0; i < n; i++) checksum = (checksum + (uint64_t)i * (uint64_t)a[i]) % 1000000007;
-
-  printf("first=%d\n", a[0]);
-  printf("last=%d\n", a[n - 1]);
-  printf("median=%d\n", a[n / 2]);
-  printf("checksum=%llu\n", (unsigned long long)checksum);
-  free(a);
-  return 0;
-}
+void lb_setup(int argc, char **argv) { (void)argc; (void)argv; }
+void *lb_decode(const unsigned char *data, size_t len) { arr.a = (int32_t *)data; arr.n = len / 4; return &arr; }
+void *lb_solve(void *inst) { Array *a = inst; qsort(a->a, a->n, sizeof(int32_t), cmp); return a; }
+void lb_emit(void *res, void (*sink)(int64_t)) { Array *a = res; for (size_t i = 0; i < a->n; i++) sink(a->a[i]); }
+void lb_release(void *inst, void *res) { (void)inst; (void)res; }

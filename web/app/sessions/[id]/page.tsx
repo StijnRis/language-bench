@@ -1,4 +1,4 @@
-import { environmentOf, median } from "@lb/core";
+import { environmentOf } from "@lb/core";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { JsonLd, NoData } from "@/components/Bits";
@@ -32,18 +32,20 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
   if (!s) notFound();
   const factor = m.analysis.machineFactors.get(id);
   const ms = m.measurements.filter((x) => x.sessionId === id);
-  const ok = ms.filter((x) => x.status === "ok" && x.runs?.wall.length);
+  const ok = ms.filter((x) => x.status === "ok" && (x.runs?.wall.length || x.kernel?.durations.length));
   const failed = ms.length - ok.length;
   const t = s.trigger as Record<string, string | number | undefined>;
   const runner = s.runner as Record<string, string | undefined>;
   const host = s.host as Record<string, any>;
   const rows = ms.map((x) => {
-    const wall = x.runs?.wall ?? [];
-    const med = wall.length ? median(wall) : NaN;
-    const mem = x.runs?.memory.length ? x.runs.memory.reduce((a, c) => a + c, 0) / x.runs.memory.length : NaN;
+    const b = m.byId.get(benchId(x));
+    // the session's value under the benchmark's primary metric (warm kernel time, or end-to-end where there is no kernel run)
+    const d = x.status === "ok" ? b?.sessions.find((y) => y.sessionId === id) : undefined;
+    const med = d ? d.summary.median : NaN;
+    const mem = d && d.meanMemory > 0 ? d.meanMemory : NaN;
     return {
-      x, med, mem, reps: wall.length,
-      b: m.byId.get(benchId(x)),
+      x, med, mem, reps: d ? (d.iterations ?? d.summary.n) : 0, d,
+      b,
       l: m.languages.find((y) => y.spec.id === x.language),
       p: m.problems.find((y) => y.spec.id === x.problem),
       adj: factor ? med / factor : NaN,
@@ -113,7 +115,7 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         {t.runUrl && <><dt>CI run</dt><dd><a href={String(t.runUrl)}>{String(t.runUrl).replace("https://github.com/", "")}</a></dd></>}
         <dt>Code version</dt><dd><a href={`${repoUrl}/tree/${s.repoCommit}`}><code>{s.repoCommit.slice(0, 10)}</code></a></dd>
         <dt>Raw data</dt><dd><a href={`${repoUrl}/blob/main/data/sessions/${id}.json`}>data/sessions/{id}.json</a></dd>
-        <dt>Timing tool</dt><dd>hyperfine {String((s.tooling as Record<string, string>).hyperfineVersion ?? "?")}</dd>
+        <dt>Timing</dt><dd>in-process kernel loops of the language harnesses; hyperfine {String((s.tooling as Record<string, string>).hyperfineVersion ?? "?")} for the end-to-end runs</dd>
         <dt>Why these benchmarks</dt><dd>{[...reasons].map(([r, n]) => `${n} ${reasonText[r] ?? r}`).join(", ") || "-"}</dd>
       </dl>
 
@@ -123,14 +125,14 @@ export default async function SessionPage({ params }: { params: Promise<{ id: st
         <tbody>{images.map((c) => (<tr key={c.image}><td><code>{c.image}</code></td><td className="small">{c.toolVersion}</td><td className="small">{c.osRelease}</td><td className="small"><code>{c.digest}</code></td></tr>))}</tbody></table></div>
 
       <h2>Measurements in this session</h2>
-      <p className="small muted">In the order they ran (randomised). “Median ÷ factor” is the time converted to the average machine.</p>
+      <p className="small muted">In the order they ran (randomised). The median is the warm kernel time (end-to-end for the start-up task); “÷ factor” converts it to the average machine. Cold is the first iteration; end-to-end is process start to exit.</p>
       <div className="tablewrap"><table>
-        <thead><tr><th>Problem</th><th>Language / build</th><th className="num">Reps</th><th className="num">Median</th><th className="num">Median ÷ factor</th><th className="num">Avg. memory</th><th>Output</th></tr></thead>
+        <thead><tr><th>Problem</th><th>Language / build</th><th className="num">Iterations</th><th className="num">Median (warm kernel)</th><th className="num">÷ factor</th><th className="num">Cold</th><th className="num">End-to-end</th><th className="num">Avg. memory</th><th>Output</th></tr></thead>
         <tbody>{rows.map((r) => (<tr key={mkey(r.x)}>
           <td><span className="langrow"><ProblemIcon id={r.x.problem} size={24} />{r.p?.spec.title ?? r.x.problem}</span></td>
           <td><span className="langrow"><LangIcon id={r.x.language} size={20} />{r.b ? <Link href={benchPath(r.b)}>{r.l?.spec.name ?? r.x.language} {r.x.version} · {r.x.variant}</Link> : <>{r.l?.spec.name ?? r.x.language} {r.x.version} · {r.x.variant}</>}</span></td>
-          <td className="num">{r.reps || "-"}</td><td className="num">{seconds(r.med)}</td><td className="num">{seconds(r.adj)}</td><td className="num">{isFinite(r.mem) ? mb(r.mem / 1e6) : "-"}</td>
-          <td>{r.x.status !== "ok" ? <span className="badge warn">failed</span> : r.x.correct ? <span className="badge good">correct</span> : <span className="badge warn">incorrect</span>}</td></tr>))}</tbody></table></div>
+          <td className="num">{r.reps || "-"}</td><td className="num">{seconds(r.med)}</td><td className="num">{seconds(r.adj)}</td><td className="num">{r.d?.cold ? seconds(r.d.cold) : "-"}</td><td className="num">{r.d?.e2e ? seconds(r.d.e2e) : "-"}</td><td className="num">{isFinite(r.mem) ? mb(r.mem / 1e6) : "-"}</td>
+          <td>{r.x.status !== "ok" ? <span className="badge warn">{r.x.status === "incomplete" ? "timeout" : "failed"}</span> : r.x.correct ? <span className="badge good">correct</span> : <span className="badge warn">incorrect</span>}</td></tr>))}</tbody></table></div>
       {s.skipped.length > 0 && <p className="small muted">{s.skipped.length} planned benchmark{s.skipped.length === 1 ? " was" : "s were"} skipped (time budget or build failure).</p>}
     </>
   );

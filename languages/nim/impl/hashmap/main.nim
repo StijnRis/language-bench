@@ -1,23 +1,27 @@
-import std/[os, strutils, tables]
+import std/tables
 
-let n = parseInt(paramStr(1))
-var x = 1
-template next(): int =
-  x = x * 48271 mod 2147483647
-  x
+type
+  Instance* = tuple[keys, lookups: seq[int32]]
+  Result* = array[3, int]
 
-var m = initTable[int, int]()
-let half = n div 2
-for _ in 1 .. n:
-  inc m.mgetOrPut(next() mod half, 0)
+proc setup*(args: seq[string]) = discard
 
-var checksum = 0
-for k, c in m: checksum += k * c
+proc decode*(data: string): Instance =
+  let n = data.len div 8
+  result.keys = newSeq[int32](n)
+  result.lookups = newSeq[int32](n)
+  if n > 0:
+    copyMem(addr result.keys[0], unsafeAddr data[0], n * 4)
+    copyMem(addr result.lookups[0], unsafeAddr data[n * 4], n * 4)
 
-var hits = 0
-for _ in 1 .. n:
-  hits += m.getOrDefault(next() mod n, 0)
+proc solve*(inst: var Instance): Result =
+  var m = initTable[int32, int]()
+  for k in inst.keys: inc m.mgetOrPut(k, 0)
+  var checksum = 0
+  for k, c in m: checksum += int(k) * c
+  var hits = 0
+  for k in inst.lookups: hits += m.getOrDefault(k, 0)
+  [m.len, checksum, hits]
 
-echo "distinct=", m.len
-echo "checksum=", checksum
-echo "hits=", hits
+proc emit*(r: Result, sink: proc (w: int)) =
+  for w in r: sink(w)

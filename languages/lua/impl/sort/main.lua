@@ -1,19 +1,13 @@
-local n = tonumber(arg[1])
-local x = 1
-local a = {}
-for i = 1, n do
-  x = x * 48271 % 2147483647
-  a[i] = x
+local P = {}
+function P.setup() end
+function P.decode(data)
+  local t, unpack, pos = {}, string.unpack, 1
+  for i = 1, #data // 4 do t[i], pos = unpack("<i4", data, pos) end
+  return t
 end
-
-table.sort(a)
-
-local checksum = 0
-for i = 1, n do
-  checksum = (checksum + (i - 1) * a[i]) % 1000000007
+function P.solve(a)
+  table.sort(a)
+  return a
 end
-
-print("first=" .. a[1])
-print("last=" .. a[n])
-print("median=" .. a[n // 2 + 1])
-print("checksum=" .. checksum)
+function P.emit(a) return a end
+return P

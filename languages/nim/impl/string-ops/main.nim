@@ -1,25 +1,17 @@
-import std/[os, strutils, unicode]
+import std/[strutils, unicode]
 
-const vocab = [
-  "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-  "über", "résumé", "привет", "мир",
-  "код", "日本語", "世界", "速度", "hello", "world",
-]
+type
+  Instance* = string
+  Result* = array[5, int]
 
-let n = parseInt(paramStr(1))
-var x = 1
-var words = newSeq[string](n)
-for i in 0 ..< n:
-  x = x * 48271 mod 2147483647
-  words[i] = vocab[x mod vocab.len]
-let text = words.join(" ")
+proc setup*(args: seq[string]) = discard
+proc decode*(data: string): Instance = data
 
-let encoded = text.replace(' ', '_')
-var checksum = 0
-for c in encoded: checksum += int(c)
+proc solve*(text: var Instance): Result =
+  let encoded = text.replace(' ', '_')
+  var checksum = 0
+  for c in encoded: checksum += int(c)
+  [text.len, text.runeLen, text.count(' ') + 1, text.count("er"), checksum]
 
-echo "bytes=", text.len
-echo "codepoints=", text.runeLen
-echo "words=", text.count(' ') + 1
-echo "needle=", text.count("er")
-echo "checksum=", checksum
+proc emit*(r: Result, sink: proc (w: int)) =
+  for w in r: sink(w)

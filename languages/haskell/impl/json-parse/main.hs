@@ -1,11 +1,12 @@
 {-# LANGUAGE BangPatterns #-}
 -- GHC ships no JSON library (aeson is not a boot package), so this is a small recursive-descent parser.
+module Problem (problem) where
+
+import Contract
+import Control.Exception (evaluate)
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Char8 as BC
 import qualified Data.ByteString.Unsafe as BU
-import Data.Char (chr, digitToInt)
 import Data.Word (Word8)
-import System.Environment (getArgs)
 
 data Value
   = Obj [Value]
@@ -87,14 +88,14 @@ walk st@(Stats o i l t n) (v : rest) = case v of
   Bool False -> walk st rest
   Null -> walk (Stats o i l t (n + 1)) rest
 
-main :: IO ()
-main = do
-  [path] <- getArgs
-  s <- B.readFile path
-  let (doc, _) = parseValue s 0
-      Stats objects intSum strLen trues nulls = walk (Stats 0 0 0 0 0) [doc]
-  putStrLn ("objects=" ++ show objects)
-  putStrLn ("int_sum=" ++ show intSum)
-  putStrLn ("string_length=" ++ show strLen)
-  putStrLn ("true=" ++ show trues)
-  putStrLn ("null=" ++ show nulls)
+problem :: Problem
+problem =
+  Problem
+    { pSetup = \_ -> return ()
+    , pDecode = return -- the bytes are parsed inside solve
+    , pSolve = \s -> do
+        let (doc, _) = parseValue s 0
+            !(Stats objects intSum strLen trues nulls) = walk (Stats 0 0 0 0 0) [doc]
+        evaluate [objects, intSum, strLen, trues, nulls]
+    , pEmit = \r sink -> mapM_ sink r
+    }

@@ -1,13 +1,11 @@
 // Binary trees, after the Computer Language Benchmarks Game.
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+import "strconv"
 
 type Node struct{ left, right *Node }
+
+var depthArg = 14
 
 func makeTree(d int) *Node {
 	if d == 0 {
@@ -16,30 +14,40 @@ func makeTree(d int) *Node {
 	return &Node{makeTree(d - 1), makeTree(d - 1)}
 }
 
-func (n *Node) check() int {
+func (n *Node) check() int64 {
 	if n.left == nil {
 		return 1
 	}
 	return 1 + n.left.check() + n.right.check()
 }
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
+func Setup(args []string) {
+	if len(args) > 0 {
+		depthArg, _ = strconv.Atoi(args[0])
+	}
+}
+
+func Decode(data []byte) any { return nil }
+
+func Solve(inst any) any {
 	minDepth := 4
-	maxDepth := max(minDepth+2, n)
+	maxDepth := max(minDepth+2, depthArg)
 	stretch := maxDepth + 1
-
-	fmt.Printf("stretch tree of depth %d\t check: %d\n", stretch, makeTree(stretch).check())
+	out := []int64{makeTree(stretch).check()}
 	longLived := makeTree(maxDepth)
-
 	for depth := minDepth; depth <= maxDepth; depth += 2 {
-		iterations := 1 << (maxDepth - depth + minDepth)
-		sum := 0
-		for i := 0; i < iterations; i++ {
+		iterations := int64(1) << (maxDepth - depth + minDepth)
+		var sum int64
+		for i := int64(0); i < iterations; i++ {
 			sum += makeTree(depth).check()
 		}
-		fmt.Printf("%d\t trees of depth %d\t check: %d\n", iterations, depth, sum)
+		out = append(out, iterations, sum)
 	}
+	return append(out, longLived.check())
+}
 
-	fmt.Printf("long lived tree of depth %d\t check: %d\n", maxDepth, longLived.check())
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int64) {
+		sink(v)
+	}
 }

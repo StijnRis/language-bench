@@ -1,8 +1,14 @@
-module Program
+module Problem
 
-[<EntryPoint>]
-let main argv =
-    let n = int argv.[0]
+let mutable nArg = 9
+
+let setup (args: string[]) =
+    if args.Length > 0 then nArg <- int args.[0]
+
+let decode (data: byte[]) : obj = null
+
+let solve (inst: obj) : obj =
+    let n = nArg
     let perm1 = Array.init n id
     let perm = Array.zeroCreate<int> n
     let count = Array.zeroCreate<int> n
@@ -34,8 +40,6 @@ let main argv =
         let mutable searching = true
         while searching && not fin do
             if r = n then
-                printfn "checksum=%d" checksum
-                printfn "maxflips=%d" maxflips
                 fin <- true
             else
                 let p0 = perm1.[0]
@@ -45,4 +49,10 @@ let main argv =
                 count.[r] <- count.[r] - 1
                 if count.[r] > 0 then searching <- false else r <- r + 1
         permcount <- permcount + 1
-    0
+    box [| checksum; int64 maxflips |]
+
+let emit (res: obj) (sink: int64 -> unit) =
+    for v in unbox<int64[]> res do
+        sink v
+
+let release (inst: obj) (res: obj) = ()

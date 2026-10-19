@@ -1,6 +1,6 @@
 /* C has no JSON parser in its standard library: a small recursive-descent parser that aggregates
  * while parsing (it does not build a tree). */
-#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 static const unsigned char *s;
@@ -86,22 +86,16 @@ static void value(void) {
   }
 }
 
-int main(int argc, char **argv) {
-  FILE *f = fopen(argv[1], "rb");
-  fseek(f, 0, SEEK_END);
-  long size = ftell(f);
-  fseek(f, 0, SEEK_SET);
-  unsigned char *buf = malloc(size + 1);
-  if (fread(buf, 1, size, f) != (size_t)size) return 1;
-  buf[size] = 0;
-  fclose(f);
-  s = buf;
+static int64_t out[5];
+
+void lb_setup(int argc, char **argv) { (void)argc; (void)argv; }
+void *lb_decode(const unsigned char *data, size_t len) { (void)len; s = data; return (void *)data; }
+void *lb_solve(void *inst) {
+  (void)inst;
+  i = 0; objects = str_len = trues = nulls = 0; int_sum = 0;
   value();
-  printf("objects=%ld\n", objects);
-  printf("int_sum=%lld\n", int_sum);
-  printf("string_length=%ld\n", str_len);
-  printf("true=%ld\n", trues);
-  printf("null=%ld\n", nulls);
-  free(buf);
-  return 0;
+  out[0] = objects; out[1] = int_sum; out[2] = str_len; out[3] = trues; out[4] = nulls;
+  return out;
 }
+void lb_emit(void *res, void (*sink)(int64_t)) { int64_t *o = res; for (int k = 0; k < 5; k++) sink(o[k]); }
+void lb_release(void *inst, void *res) { (void)inst; (void)res; }

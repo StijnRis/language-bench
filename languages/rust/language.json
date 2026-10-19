@@ -42,7 +42,7 @@
       "id": "rustc-O3",
       "name": "rustc -C opt-level=3",
       "description": "Equivalent to cargo build --release with the default codegen settings.",
-      "build": "rustc --edition 2021 -C opt-level=3 -o {bin} {src}/main.rs",
+      "build": "mkdir -p {bin}.d && cp {harness}/harness.rs {bin}.d/main.rs && cp {src}/main.rs {bin}.d/problem.rs && rustc --edition 2021 -C opt-level=3 -o {bin} {bin}.d/main.rs",
       "run": "{bin}",
       "default": true
     },
@@ -50,14 +50,14 @@
       "id": "rustc-O3-native",
       "name": "rustc -C opt-level=3 -C target-cpu=native",
       "description": "Optimised for the benchmark CPU.",
-      "build": "rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o {bin} {src}/main.rs",
+      "build": "mkdir -p {bin}.d && cp {harness}/harness.rs {bin}.d/main.rs && cp {src}/main.rs {bin}.d/problem.rs && rustc --edition 2021 -C opt-level=3 -C target-cpu=native -o {bin} {bin}.d/main.rs",
       "run": "{bin}"
     },
     {
       "id": "rustc-O3-lto",
       "name": "rustc -C opt-level=3 -C codegen-units=1 -C lto",
       "description": "Single codegen unit with link-time optimisation.",
-      "build": "rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {src}/main.rs",
+      "build": "mkdir -p {bin}.d && cp {harness}/harness.rs {bin}.d/main.rs && cp {src}/main.rs {bin}.d/problem.rs && rustc --edition 2021 -C opt-level=3 -C codegen-units=1 -C lto -o {bin} {bin}.d/main.rs",
       "run": "{bin}"
     }
   ],

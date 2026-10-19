@@ -99,25 +99,31 @@ contains
   end subroutine
 end module
 
-program json_parse
-  use json
+
+module problem
+  use lb_hash
+  use json, only: s, pos, objects, int_sum, str_len, trues, nulls, parse_value
   implicit none
-  character(len=512) :: path
-  integer :: u
-  integer(8) :: size_bytes
+contains
+  subroutine lb_setup()
+  end subroutine
 
-  call get_command_argument(1, path)
-  open(newunit=u, file=trim(path), access='stream', form='unformatted', status='old', action='read')
-  inquire(unit=u, size=size_bytes)
-  allocate(character(len=size_bytes) :: s)
-  read(u) s
-  close(u)
+  subroutine lb_decode(data)
+    character(len=*), intent(in) :: data
+    s = data
+  end subroutine
 
-  call parse_value()
+  subroutine lb_solve()
+    pos = 1
+    objects = 0; int_sum = 0; str_len = 0; trues = 0; nulls = 0
+    call parse_value()
+  end subroutine
 
-  write(*, '(a,i0)') 'objects=', objects
-  write(*, '(a,i0)') 'int_sum=', int_sum
-  write(*, '(a,i0)') 'string_length=', str_len
-  write(*, '(a,i0)') 'true=', trues
-  write(*, '(a,i0)') 'null=', nulls
-end program
+  subroutine lb_emit()
+    call lb_sink(objects); call lb_sink(int_sum); call lb_sink(str_len); call lb_sink(trues); call lb_sink(nulls)
+  end subroutine
+
+  subroutine lb_release()
+    deallocate(s)
+  end subroutine
+end module

@@ -1,5 +1,8 @@
 # Julia has no JSON parser in its standard library: a small recursive-descent parser that aggregates
 # while parsing (it does not build a tree).
+setup(args) = nothing
+decode(data::Vector{UInt8}) = data   # the bytes are parsed inside solve
+
 mutable struct State
     s::Vector{UInt8}
     i::Int
@@ -98,16 +101,10 @@ function value!(p::State)
     return
 end
 
-function main()
-    data = read(ARGS[1])
-    push!(data, 0x00)
+function solve(data::Vector{UInt8})
     p = State(data, 1, 0, 0, 0, 0, 0)
     value!(p)
-    println("objects=", p.objects)
-    println("int_sum=", p.intSum)
-    println("string_length=", p.strLen)
-    println("true=", p.trues)
-    println("null=", p.nulls)
+    return [p.objects, p.intSum, p.strLen, p.trues, p.nulls]
 end
 
-main()
+emit(r) = r

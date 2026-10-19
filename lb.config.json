@@ -1,14 +1,25 @@
 {
   "targetSessionsPerBenchmark": 3,
-  "maxBenchmarksPerSession": 40,
-  "maxSessionsPerRound": 20,
+  "maxBenchmarksPerSession": 100,
+  "maxSessionsPerRound": 40,
   "minSessionsPerRound": 2,
   "overlapFraction": 0.25,
   "minOverlap": 4,
   "maxAttempts": 3,
-  "sessionTimeBudgetMinutes": 240,
-  "repetitions": { "min": 15, "max": 30 },
-  "budgetSecondsScale": 0.5,
+  "sessionTimeBudgetMinutes": 300,
+  "repetitions": {
+    "min": 3,
+    "max": 10
+  },
+  "budgetSecondsScale": 1,
   "warmupRuns": 1,
-  "maxChainedRounds": 30
+  "maxChainedRounds": 30,
+  "kernel": {
+    "budgetSeconds": 10,
+    "minIterations": 3,
+    "timeoutSeconds": 120,
+    "warmupSeconds": 2,
+    "checkedIterations": 20,
+    "sampleMillis": 5
+  }
 }

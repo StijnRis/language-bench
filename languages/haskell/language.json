@@ -42,7 +42,7 @@
       "id": "ghc-O2",
       "name": "ghc -O2 -threaded",
       "description": "Optimising build with the threaded runtime (needed for the parallel workload; default heap settings).",
-      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "build": "mkdir -p {bin}.o {bin}.src && cp {harness}/Contract.hs {harness}/Harness.hs {bin}.src/ && cp {src}/main.hs {bin}.src/Problem.hs && cd {bin}.src && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} Harness.hs",
       "run": "{bin}",
       "default": true
     },
@@ -50,7 +50,7 @@
       "id": "ghc-O2-A64m",
       "name": "ghc -O2 -threaded +RTS -A64m",
       "description": "Same binary, 64 MB allocation area: fewer minor collections for allocation-heavy code.",
-      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "build": "mkdir -p {bin}.o {bin}.src && cp {harness}/Contract.hs {harness}/Harness.hs {bin}.src/ && cp {src}/main.hs {bin}.src/Problem.hs && cd {bin}.src && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} Harness.hs",
       "run": "{bin} +RTS -A64m -RTS"
     }
   ],

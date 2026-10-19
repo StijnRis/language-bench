@@ -1,17 +1,23 @@
 import 'dart:typed_data';
 
-void main(List<String> args) {
-  final n = int.parse(args[0]);
-  final a = Float64List(n * n);
-  final b = Float64List(n * n);
-  final c = Float64List(n * n);
-  for (var i = 0; i < n; i++) {
-    for (var j = 0; j < n; j++) {
-      a[i * n + j] = ((i * 31 + j * 17) % 10 + 1).toDouble();
-      b[i * n + j] = ((i * 13 + j * 7) % 10 - 4).toDouble();
-    }
-  }
+void setup(List<String> args) {}
 
+Object? decode(Uint8List data) {
+  final view = ByteData.sublistView(data);
+  final n = view.getInt32(0, Endian.little);
+  final a = Float64List(n * n), b = Float64List(n * n);
+  for (var i = 0; i < n * n; i++) {
+    a[i] = view.getFloat64(4 + 8 * i, Endian.little);
+    b[i] = view.getFloat64(4 + 8 * (n * n + i), Endian.little);
+  }
+  return [n, a, b];
+}
+
+Object? solve(Object? inst) {
+  final l = inst as List;
+  final n = l[0] as int;
+  final a = l[1] as Float64List, b = l[2] as Float64List;
+  final c = Float64List(n * n);
   for (var i = 0; i < n; i++) {
     for (var k = 0; k < n; k++) {
       final aik = a[i * n + k];
@@ -20,16 +26,10 @@ void main(List<String> args) {
       }
     }
   }
+  return c;
+}
 
-  var trace = 0.0, sum = 0.0;
-  for (var i = 0; i < n; i++) {
-    trace += c[i * n + i];
-  }
-  for (var i = 0; i < c.length; i++) {
-    sum += c[i];
-  }
-  print('trace=${trace.toInt()}');
-  print('sum=${sum.toInt()}');
-  print('c00=${c[0].toInt()}');
-  print('clast=${c[n * n - 1].toInt()}');
+List<int> emit(Object? res) {
+  final c = res as Float64List;
+  return List<int>.generate(c.length, (i) => (c[i] + 0.5).floor());
 }

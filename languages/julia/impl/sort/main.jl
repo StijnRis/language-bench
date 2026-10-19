@@ -1,23 +1,10 @@
-function main()
-    n = parse(Int, ARGS[1])
-    x = Int64(1)
-    a = Vector{Int32}(undef, n)
-    for i in 1:n
-        x = x * 48271 % 2147483647
-        a[i] = Int32(x)
-    end
+setup(args) = nothing
 
+decode(data::Vector{UInt8}) = Vector{Int32}(reinterpret(Int32, data))
+
+function solve(a::Vector{Int32})
     sort!(a)
-
-    checksum = Int64(0)
-    for i in 1:n
-        checksum = (checksum + Int64(i - 1) * a[i]) % 1000000007
-    end
-
-    println("first=", a[1])
-    println("last=", a[n])
-    println("median=", a[n ÷ 2 + 1])
-    println("checksum=", checksum)
+    return a
 end
 
-main()
+emit(a::Vector{Int32}) = a

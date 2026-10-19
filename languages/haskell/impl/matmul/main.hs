@@ -1,38 +1,43 @@
 {-# LANGUAGE BangPatterns #-}
-import Control.Monad (forM_)
-import Data.Array.Base (unsafeRead, unsafeWrite)
-import Data.Array.IO (IOUArray, newArray)
-import System.Environment (getArgs)
+module Problem (problem) where
 
-main :: IO ()
-main = do
-  [arg] <- getArgs
-  let n = read arg :: Int
-  a <- newArray (0, n * n - 1) 0 :: IO (IOUArray Int Double)
-  b <- newArray (0, n * n - 1) 0 :: IO (IOUArray Int Double)
-  c <- newArray (0, n * n - 1) 0 :: IO (IOUArray Int Double)
-  forM_ [0 .. n - 1] $ \i -> forM_ [0 .. n - 1] $ \j -> do
-    unsafeWrite a (i * n + j) (fromIntegral ((i * 31 + j * 17) `mod` 10 + 1))
-    unsafeWrite b (i * n + j) (fromIntegral ((i * 13 + j * 7) `mod` 10 - 4))
-  forM_ [0 .. n - 1] $ \i -> forM_ [0 .. n - 1] $ \k -> do
-    aik <- unsafeRead a (i * n + k)
-    let inner !j
-          | j == n = return ()
-          | otherwise = do
-              bkj <- unsafeRead b (k * n + j)
-              cij <- unsafeRead c (i * n + j)
-              unsafeWrite c (i * n + j) (cij + aik * bkj)
-              inner (j + 1)
-    inner 0
-  let sumRange :: Int -> Int -> Int -> Double -> IO Double
-      sumRange !lo !hi !step !acc
-        | lo >= hi = return acc
-        | otherwise = unsafeRead c lo >>= \v -> sumRange (lo + step) hi step (acc + v)
-  trace <- sumRange 0 (n * n) (n + 1) 0
-  total <- sumRange 0 (n * n) 1 0
-  c00 <- unsafeRead c 0
-  clast <- unsafeRead c (n * n - 1)
-  putStrLn ("trace=" ++ show (truncate trace :: Int))
-  putStrLn ("sum=" ++ show (truncate total :: Int))
-  putStrLn ("c00=" ++ show (truncate c00 :: Int))
-  putStrLn ("clast=" ++ show (truncate clast :: Int))
+import Contract
+import Control.Exception (evaluate)
+import Control.Monad (forM_)
+import Data.Array.Base (unsafeAt, unsafeRead, unsafeWrite)
+import Data.Array.IO (IOUArray, newArray)
+import Data.Array.Unboxed (UArray, listArray)
+import Data.Array.Unsafe (unsafeFreeze)
+import qualified Data.ByteString as B
+import qualified Data.ByteString.Unsafe as BU
+import Data.Bits (shiftL, (.|.))
+import Data.Int (Int32)
+import Data.Word (Word64)
+import GHC.Float (castWord64ToDouble)
+
+le64 :: B.ByteString -> Int -> Double
+le64 b off = castWord64ToDouble (foldr (\k acc -> (acc `shiftL` 8) .|. fromIntegral (BU.unsafeIndex b (off + k))) (0 :: Word64) [0 .. 7])
+
+problem :: Problem
+problem =
+  Problem
+    { pSetup = \_ -> return ()
+    , pDecode = \dat -> do
+        let n = fromIntegral (foldr (\k acc -> (acc `shiftL` 8) .|. fromIntegral (BU.unsafeIndex dat k)) (0 :: Int32) [0 .. 3]) :: Int
+            mk off = listArray (0, n * n - 1) [le64 dat (4 + 8 * (off + i)) | i <- [0 .. n * n - 1]] :: UArray Int Double
+        evaluate (n, mk 0, mk (n * n))
+    , pSolve = \(n, a, b) -> do
+        c <- newArray (0, n * n - 1) 0 :: IO (IOUArray Int Double)
+        forM_ [0 .. n - 1] $ \i -> forM_ [0 .. n - 1] $ \k -> do
+          let !aik = unsafeAt a (i * n + k)
+              inner !j
+                | j == n = return ()
+                | otherwise = do
+                    cij <- unsafeRead c (i * n + j)
+                    unsafeWrite c (i * n + j) (cij + aik * unsafeAt b (k * n + j))
+                    inner (j + 1)
+          inner 0
+        r <- unsafeFreeze c :: IO (UArray Int Double)
+        evaluate (n, r)
+    , pEmit = \(n, c) sink -> forM_ [0 .. n * n - 1] $ \i -> sink (floor (unsafeAt c i + 0.5))
+    }

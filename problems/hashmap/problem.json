@@ -2,20 +2,20 @@
   "id": "hashmap",
   "title": "Hash map",
   "summary": "One million inserts/updates and one million lookups in a hash map.",
-  "description": "Keys come from the MINSTD pseudo-random generator (x = x*48271 mod 2^31-1). Phase 1 counts occurrences of 1,000,000 keys drawn from 500,000 values; phase 2 looks up 1,000,000 further keys. Prints the number of distinct keys, a checksum and the number of hits.",
-  "pseudocode": "x = seed\nnext() = x = x * 48271 mod (2^31 - 1)\n\ncounts = empty hash map\nrepeat 1,000,000 times:                  # phase 1: insert / count\n    key = next() mod 500,000\n    counts[key] += 1\n\nhits = 0\nrepeat 1,000,000 times:                  # phase 2: lookup\n    key = next() mod 500,000\n    if key in counts: hits += 1\n\nprint size(counts), checksum(counts), hits",
+  "description": "Each iteration receives 1,000,000 keys to count (drawn from 500,000 values) and 1,000,000 keys to look up (MINSTD, seed = iteration). The timed part fills a hash map with the counts, computes a checksum over it and looks up all keys; it returns the number of distinct keys, the checksum and the number of hits.",
+  "pseudocode": "insert_keys, lookup_keys = decode(instance)      # untimed\nstart timer\ncounts = empty hash map\nfor key in insert_keys: counts[key] += 1\nchecksum = sum over (key, c) of key * c\nhits = sum over lookup_keys of counts.get(key, 0)\nstop timer\nhash (size(counts), checksum, hits)",
   "reveals": "Insertion, lookup and hashing speed of the standard hash map.",
   "caveat": "Key distribution and hash implementation dominate. Standard-library maps are used as they ship: Rust's default SipHash is deliberately DoS-resistant and slower; C has no standard map so a simple open-addressing table is hand-written; C++ uses std::unordered_map, Java HashMap, C# Dictionary, Ruby Hash and PHP arrays.",
   "tags": [
     "memory-bound",
     "data-structures"
   ],
-  "args": [
-    "1000000"
-  ],
+  "args": [],
   "runs": {
-    "min": 10,
-    "max": 30
+    "min": 3,
+    "max": 10
   },
-  "budgetSeconds": 60
+  "budgetSeconds": 30,
+  "kind": "kernel",
+  "instance": "stream"
 }

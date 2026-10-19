@@ -1,18 +1,25 @@
-int n = int.Parse(args[0]);
-long x = 1;
-int[] a = new int[n];
-for (int i = 0; i < n; i++)
+public static class Problem
 {
-    x = x * 48271 % 2147483647;
-    a[i] = (int)x;
+    public static void Setup(string[] args) { }
+
+    public static object Decode(byte[] data)
+    {
+        var a = new int[data.Length / 4];
+        Buffer.BlockCopy(data, 0, a, 0, data.Length);
+        return a;
+    }
+
+    public static object Solve(object inst)
+    {
+        var a = (int[])inst;
+        Array.Sort(a);
+        return a;
+    }
+
+    public static void Emit(object res, Action<long> sink)
+    {
+        foreach (int v in (int[])res) sink(v);
+    }
+
+    public static void Release(object inst, object res) { }
 }
-
-Array.Sort(a);
-
-long checksum = 0;
-for (int i = 0; i < n; i++) checksum = (checksum + (long)i * a[i]) % 1000000007L;
-
-Console.WriteLine($"first={a[0]}");
-Console.WriteLine($"last={a[n - 1]}");
-Console.WriteLine($"median={a[n / 2]}");
-Console.WriteLine($"checksum={checksum}");

@@ -1,19 +1,21 @@
-module Program
+module Problem
 
-[<EntryPoint>]
-let main argv =
-    let n = int argv.[0]
-    let mutable x = 1L
-    let a = Array.zeroCreate<int> n
-    for i in 0 .. n - 1 do
-        x <- x * 48271L % 2147483647L
-        a.[i] <- int x
+open System
+
+let setup (args: string[]) = ()
+
+let decode (data: byte[]) : obj =
+    let a = Array.zeroCreate<int> (data.Length / 4)
+    Buffer.BlockCopy(data, 0, a, 0, data.Length)
+    box a
+
+let solve (inst: obj) : obj =
+    let a = unbox<int[]> inst
     System.Array.Sort(a)
-    let mutable checksum = 0L
-    for i in 0 .. n - 1 do
-        checksum <- (checksum + int64 i * int64 a.[i]) % 1000000007L
-    printfn "first=%d" a.[0]
-    printfn "last=%d" a.[n - 1]
-    printfn "median=%d" a.[n / 2]
-    printfn "checksum=%d" checksum
-    0
+    box a
+
+let emit (res: obj) (sink: int64 -> unit) =
+    for v in unbox<int[]> res do
+        sink (int64 v)
+
+let release (inst: obj) (res: obj) = ()

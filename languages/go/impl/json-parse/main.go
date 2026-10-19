@@ -1,10 +1,6 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"os"
-)
+import "encoding/json"
 
 var objects, trues, nulls, strLen int64
 var intSum float64
@@ -33,19 +29,22 @@ func walk(v any) {
 	}
 }
 
-func main() {
-	data, err := os.ReadFile(os.Args[1])
-	if err != nil {
-		panic(err)
-	}
+func Setup(args []string) {}
+
+func Decode(data []byte) any { return data }
+
+func Solve(inst any) any {
+	objects, trues, nulls, strLen, intSum = 0, 0, 0, 0, 0
 	var doc any
-	if err := json.Unmarshal(data, &doc); err != nil {
+	if err := json.Unmarshal(inst.([]byte), &doc); err != nil {
 		panic(err)
 	}
 	walk(doc)
-	fmt.Printf("objects=%d\n", objects)
-	fmt.Printf("int_sum=%d\n", int64(intSum))
-	fmt.Printf("string_length=%d\n", strLen)
-	fmt.Printf("true=%d\n", trues)
-	fmt.Printf("null=%d\n", nulls)
+	return []int64{objects, int64(intSum), strLen, trues, nulls}
+}
+
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int64) {
+		sink(v)
+	}
 }

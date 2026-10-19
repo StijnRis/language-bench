@@ -24,7 +24,7 @@ export function NoData() {
   return (
     <div className="card empty">
       <strong>No benchmark sessions have been recorded yet.</strong>
-      <p>The first scheduled GitHub Actions run will publish real measurements here. Everything on this page is computed from raw repetitions in <code>data/</code>.</p>
+      <p>The first scheduled GitHub Actions run will publish real measurements here. Everything on this page is computed from raw iterations in <code>data/</code>.</p>
     </div>
   );
 }

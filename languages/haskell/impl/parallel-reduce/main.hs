@@ -1,7 +1,15 @@
 {-# LANGUAGE BangPatterns #-}
+module Problem (problem) where
+
+import Contract
 import Control.Concurrent (forkIO, newEmptyMVar, putMVar, setNumCapabilities, takeMVar)
 import Control.Exception (evaluate)
-import System.Environment (getArgs)
+import Data.IORef
+import System.IO.Unsafe (unsafePerformIO)
+
+{-# NOINLINE paramsRef #-}
+paramsRef :: IORef (Int, Int)
+paramsRef = unsafePerformIO (newIORef (2000000, 4))
 
 isPrime :: Int -> Bool
 isPrime n
@@ -22,12 +30,16 @@ countPrimes n workers t = go t 0
       | i >= n = acc
       | otherwise = go (i + workers) (if isPrime i then acc + 1 else acc)
 
-main :: IO ()
-main = do
-  [a, b] <- getArgs
-  let n = read a :: Int
-      workers = read b :: Int
-  setNumCapabilities workers
-  vars <- mapM (\t -> do v <- newEmptyMVar; _ <- forkIO (evaluate (countPrimes n workers t) >>= putMVar v); return v) [0 .. workers - 1]
-  parts <- mapM takeMVar vars
-  putStrLn ("primes=" ++ show (sum parts))
+problem :: Problem
+problem =
+  Problem
+    { pSetup = \args -> case args of (a : b : _) -> writeIORef paramsRef (read a, read b); _ -> return ()
+    , pDecode = \_ -> return ()
+    , pSolve = \() -> do
+        (n, workers) <- readIORef paramsRef
+        setNumCapabilities workers
+        vars <- mapM (\t -> do v <- newEmptyMVar; _ <- forkIO (evaluate (countPrimes n workers t) >>= putMVar v); return v) [0 .. workers - 1]
+        parts <- mapM takeMVar vars
+        return [sum parts]
+    , pEmit = \r sink -> mapM_ sink r
+    }

@@ -1,15 +1,15 @@
-n = ARGV[0].to_i
-x = 1
-a = Array.new(n) do
-  x = x * 48271 % 2147483647
+module Problem
+  def self.setup(args); end
+
+  def self.decode(data)
+    data.unpack("l<*")
+  end
+
+  def self.solve(a)
+    a.sort! # Array#sort! on plain integers: quicksort in C
+  end
+
+  def self.emit(a)
+    a
+  end
 end
-
-a.sort!
-
-checksum = 0
-a.each_with_index { |v, i| checksum = (checksum + i * v) % 1000000007 }
-
-puts "first=#{a[0]}"
-puts "last=#{a[n - 1]}"
-puts "median=#{a[n / 2]}"
-puts "checksum=#{checksum}"

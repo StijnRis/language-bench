@@ -6,7 +6,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 import { LangIcon, ProblemIcon } from "@/components/Icons";
 import ReleaseTable from "@/components/ReleaseTable";
 import Timeline from "@/components/Timeline";
-import { colorOf, idx, mb, seconds } from "@/lib/fmt";
+import { colorOf, idx, logBar, mb, seconds } from "@/lib/fmt";
 import { meta } from "@/lib/meta";
 import { benchId, benchPath, defaultVariant, getModel, latestVersion, siteUrl, snapshotCells, toCell, versionsOf } from "@/lib/model";
 import { ranking } from "@/lib/text";
@@ -83,7 +83,7 @@ export default async function Language({ params }: { params: Promise<{ id: strin
                 <td><span className="langrow"><ProblemIcon id={p.spec.id} size={26} /><Link href={`/problems/${p.spec.id}/`}>{p.spec.title}</Link></span></td>
                 <td className="num">{b ? <Link href={benchPath(b)}>{seconds(c.seconds)}</Link> : seconds(c.seconds)}</td>
                 <td className="num"><strong>{idx(c.index)}</strong></td>
-                <td><div className="bar" style={{ width: `${Math.max(2, (c.index / maxIdx) * 100)}%`, background: colorOf(id) }} /></td>
+                <td><div className="bar" style={{ width: `${logBar(c.index, maxIdx)}%`, background: colorOf(id) }} /></td>
                 <td className="num">{rank === 1 ? <span className="badge good">#1</span> : <>#{rank}<span className="muted small"> / {of}</span></>}</td>
                 <td className="num muted">{c.memoryMB > 0 ? mb(c.memoryMB) : "-"}</td>
               </tr>
@@ -95,13 +95,14 @@ export default async function Language({ params }: { params: Promise<{ id: strin
       {at >= 0 && (
         <>
           <h2>Compare with other languages</h2>
+          <p className="small muted">How fast each language is relative to {l.spec.name} (composite over all tasks).</p>
           <div className="compare-chips">
             {order.filter((r) => r.id !== id).map((r) => {
               const ratio = r.value / order[at]!.value; // >1: this language is faster
               return (
                 <Link key={r.id} href={pairPath(id, r.id)} className="card chip-card">
                   <LangIcon id={r.id} size={26} />
-                  <span><strong>{r.name}</strong><br /><span className="small muted">{Math.abs(ratio - 1) < 0.02 ? "about equal" : ratio > 1 ? `${l.spec.name} ${ratio.toFixed(ratio >= 10 ? 0 : 1)}× faster` : `${r.name} ${(1 / ratio).toFixed(1 / ratio >= 10 ? 0 : 1)}× faster`}</span></span>
+                  <span><strong>{r.name}</strong><br /><span className="small muted">{Math.abs(ratio - 1) < 0.02 ? "about equal" : ratio > 1 ? `${ratio.toFixed(ratio >= 10 ? 0 : 1)}× slower` : `${(1 / ratio).toFixed(1 / ratio >= 10 ? 0 : 1)}× faster`}</span></span>
                 </Link>
               );
             })}

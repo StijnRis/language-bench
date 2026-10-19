@@ -1,26 +1,24 @@
+package Problem;
 use strict;
 use warnings;
 
-my $n = $ARGV[0];
-my $x = 1;
-my %m;
-my $half = int($n / 2);
-for (1 .. $n) {
-    $x = $x * 48271 % 2147483647;
-    $m{$x % $half}++;
+sub setup { }
+sub decode {
+    my ($data) = @_;
+    my @a = unpack("l<*", $data);
+    my $n = @a / 2;
+    return [[@a[0 .. $n - 1]], [@a[$n .. $#a]]];
 }
-
-my $checksum = 0;
-while (my ($k, $c) = each %m) {
-    $checksum += $k * $c;
+sub solve {
+    my ($inst) = @_;
+    my ($keys, $lookups) = @$inst;
+    my %m;
+    $m{$_}++ for @$keys;
+    my $checksum = 0;
+    while (my ($k, $c) = each %m) { $checksum += $k * $c; }
+    my $hits = 0;
+    $hits += $m{$_} // 0 for @$lookups;
+    return [scalar(keys %m), $checksum, $hits];
 }
-
-my $hits = 0;
-for (1 .. $n) {
-    $x = $x * 48271 % 2147483647;
-    $hits += $m{$x % $n} // 0;
-}
-
-print "distinct=", scalar(keys %m), "\n";
-print "checksum=$checksum\n";
-print "hits=$hits\n";
+sub emit { my ($r) = @_; return $r; }
+1;

@@ -2,8 +2,8 @@
   "id": "file-processing",
   "title": "File processing",
   "summary": "Stream a 49 MB CSV and aggregate it.",
-  "description": "A deterministic generator writes a 49 MB CSV (`id,word,value`). The program reads the file line by line, sums the value column and counts word frequencies, then prints line count, sum, distinct words and the most frequent word (ties broken alphabetically).",
-  "pseudocode": "sum = lines = 0\nfreq = empty hash map\nfor each line in file:                   # 49 MB CSV: id,word,value\n    (id, word, value) = split(line, \",\")\n    sum += int(value)\n    freq[word] += 1\n    lines++\nbest = word with highest freq (ties: alphabetically first)\nprint lines, sum, size(freq), best",
+  "description": "Before each iteration a fresh ~49 MB CSV file (id,word,value; 1,900,000 lines, a Zipf-like word distribution) is written to tmpfs, so the timed part measures reading and aggregating from memory, not disk speed. It streams the file once and returns the number of lines, the sum of the values, the number of distinct words and the most frequent word with its count.",
+  "pseudocode": "path = decode(instance)               # generator wrote a new file to tmpfs, untimed\nstart timer\nfor each line in file:\n    split into id, word, value\n    lines += 1; sum += value; counts[word] += 1\ntop = word with max count (ties: smallest word)\nstop timer\ndelete the file",
   "reveals": "End-to-end I/O, buffering and per-line overhead.",
   "caveat": "Results depend on page cache, filesystem, storage and buffering. The file is generated once before the measurements and sits in the page cache, so this is mostly a CPU/parse test, not disk speed.",
   "tags": [
@@ -11,16 +11,12 @@
     "strings",
     "data-structures"
   ],
-  "args": [
-    "{input}"
-  ],
-  "input": {
-    "generator": "generate.mjs",
-    "file": "input.csv"
-  },
+  "args": [],
   "runs": {
-    "min": 10,
-    "max": 30
+    "min": 3,
+    "max": 10
   },
-  "budgetSeconds": 90
+  "budgetSeconds": 30,
+  "kind": "kernel",
+  "instance": "file"
 }

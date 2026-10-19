@@ -1,28 +1,15 @@
-import sys
-
-VOCAB = [
-    "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-    "über", "résumé", "привет", "мир",
-    "код", "日本語", "世界", "速度", "hello", "world",
-]
+def setup(args):
+    pass
 
 
-def main(n):
-    x = 1
-    words = []
-    for _ in range(n):
-        x = x * 48271 % 2147483647
-        words.append(VOCAB[x % len(VOCAB)])
-    text = " ".join(words)
+def decode(data):
+    return data.decode("utf-8")
 
+
+def solve(text):
     encoded = text.replace(" ", "_").encode("utf-8")
-    checksum = sum(encoded)
-
-    print(f"bytes={len(text.encode('utf-8'))}")
-    print(f"codepoints={len(text)}")
-    print(f"words={len(text.split(' '))}")
-    print(f"needle={text.count('er')}")
-    print(f"checksum={checksum}")
+    return len(text.encode("utf-8")), len(text), text.count(" ") + 1, text.count("er"), sum(encoded)
 
 
-main(int(sys.argv[1]))
+def emit(res):
+    return res

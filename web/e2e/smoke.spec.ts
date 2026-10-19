@@ -82,6 +82,15 @@ test("leaderboard task and metric live in the URL and survive a reload", async (
   await expect(page.getByRole("button", { name: "Memory", exact: true })).toHaveAttribute("aria-pressed", "true");
 });
 
+test("leaderboard time basis (warm, cold, end-to-end) lives in the URL", async ({ page }) => {
+  await page.goto("/");
+  await page.locator("label", { hasText: /^Time/ }).locator("select").selectOption("e2e");
+  await expect(page).toHaveURL(/basis=e2e/);
+  await expect(page.getByText("end-to-end: process start to exit", { exact: false }).first()).toBeVisible();
+  await page.reload();
+  await expect(page.locator("label", { hasText: /^Time/ }).locator("select")).toHaveValue("e2e");
+});
+
 test("leaderboard offers CSV download and link copy", async ({ page }) => {
   await page.goto("/");
   const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download CSV" }).click()]);

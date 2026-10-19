@@ -1,26 +1,34 @@
-import sys
+import math
+from array import array
 
-n = int(sys.argv[1])
-a = [[float((i * 31 + j * 17) % 10 + 1) for j in range(n)] for i in range(n)]
-b = [[float((i * 13 + j * 7) % 10 - 4) for j in range(n)] for i in range(n)]
-c = [[0.0] * n for _ in range(n)]
 
-for i in range(n):
-    ci = c[i]
-    ai = a[i]
-    for k in range(n):
-        aik = ai[k]
-        bk = b[k]
-        for j in range(n):
-            ci[j] += aik * bk[j]
+def setup(args):
+    pass
 
-trace = 0.0
-total = 0.0
-for i in range(n):
-    trace += c[i][i]
-    for v in c[i]:
-        total += v
-print("trace=%d" % trace)
-print("sum=%d" % total)
-print("c00=%d" % c[0][0])
-print("clast=%d" % c[n - 1][n - 1])
+
+def decode(data):
+    n = int.from_bytes(data[:4], "little")
+    flat = array("d")
+    flat.frombytes(data[4 : 4 + 16 * n * n])
+    vals = flat.tolist()
+    a = [vals[i * n : (i + 1) * n] for i in range(n)]
+    b = [vals[n * n + i * n : n * n + (i + 1) * n] for i in range(n)]
+    return n, a, b
+
+
+def solve(inst):
+    n, a, b = inst
+    c = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        ci = c[i]
+        ai = a[i]
+        for k in range(n):
+            aik = ai[k]
+            bk = b[k]
+            for j in range(n):
+                ci[j] += aik * bk[j]
+    return c
+
+
+def emit(c):
+    return [math.floor(v + 0.5) for row in c for v in row]

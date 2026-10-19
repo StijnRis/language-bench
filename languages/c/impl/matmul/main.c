@@ -1,32 +1,32 @@
-#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
-int main(int argc, char **argv) {
-  int n = atoi(argv[1]);
-  double *a = malloc((size_t)n * n * sizeof *a);
-  double *b = malloc((size_t)n * n * sizeof *b);
-  double *c = calloc((size_t)n * n, sizeof *c);
-  for (int i = 0; i < n; i++)
-    for (int j = 0; j < n; j++) {
-      a[i * n + j] = (double)((i * 31 + j * 17) % 10 + 1);
-      b[i * n + j] = (double)((i * 13 + j * 7) % 10 - 4);
-    }
+static int n;
+static const double *a, *b;
+static double *c;
 
+void lb_setup(int argc, char **argv) { (void)argc; (void)argv; }
+void *lb_decode(const unsigned char *data, size_t len) {
+  (void)len;
+  int32_t m; memcpy(&m, data, 4); n = m;
+  a = (const double *)(data + 4); b = a + (size_t)n * n;   /* the harness buffer is 16-byte aligned, +4 is not: copy */
+  double *ac = malloc(2 * (size_t)n * n * sizeof(double)); memcpy(ac, data + 4, 2 * (size_t)n * n * sizeof(double));
+  a = ac; b = ac + (size_t)n * n;
+  return ac;
+}
+void *lb_solve(void *inst) {
+  (void)inst;
+  c = calloc((size_t)n * n, sizeof(double));
   for (int i = 0; i < n; i++)
     for (int k = 0; k < n; k++) {
-      double aik = a[i * n + k];
-      for (int j = 0; j < n; j++) c[i * n + j] += aik * b[k * n + j];
+      double aik = a[(size_t)i * n + k];
+      for (int j = 0; j < n; j++) c[(size_t)i * n + j] += aik * b[(size_t)k * n + j];
     }
-
-  double trace = 0, sum = 0;
-  for (int i = 0; i < n; i++) trace += c[i * n + i];
-  for (long i = 0; i < (long)n * n; i++) sum += c[i];
-  printf("trace=%lld\n", (long long)trace);
-  printf("sum=%lld\n", (long long)sum);
-  printf("c00=%lld\n", (long long)c[0]);
-  printf("clast=%lld\n", (long long)c[(long)n * n - 1]);
-  free(a);
-  free(b);
-  free(c);
-  return 0;
+  return c;
 }
+void lb_emit(void *res, void (*sink)(int64_t)) {
+  double *r = res;
+  for (size_t i = 0; i < (size_t)n * n; i++) sink((int64_t)(r[i] + (r[i] < 0 ? -0.5 : 0.5)));
+}
+void lb_release(void *inst, void *res) { free(inst); free(res); }

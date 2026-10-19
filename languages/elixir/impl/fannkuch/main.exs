@@ -1,13 +1,19 @@
 # Immutable data is the wrong tool for in-place permutations, so the three arrays are :atomics
 # (the BEAM's mutable integer arrays, 1-based).
-defmodule Fannkuch do
-  def run(n) do
+defmodule Problem do
+  def setup([n | _]), do: String.to_integer(n)
+  def setup(_), do: 9
+  def decode(_p, _data), do: nil
+
+  def solve(n, _inst) do
     perm1 = :atomics.new(n, signed: true)
     perm = :atomics.new(n, signed: true)
     count = :atomics.new(n, signed: true)
     for i <- 0..(n - 1), do: :atomics.put(perm1, i + 1, i)
     outer(n, n, perm1, perm, count, 0, 0, 0)
   end
+
+  def emit(words), do: words
 
   defp fill(1, _count), do: 1
 
@@ -48,12 +54,8 @@ defmodule Fannkuch do
     checksum = if rem(permcount, 2) == 0, do: checksum + f, else: checksum - f
 
     case advance(r, n, perm1, count) do
-      :done ->
-        IO.puts("checksum=#{checksum}")
-        IO.puts("maxflips=#{maxflips}")
-
-      r ->
-        outer(r, n, perm1, perm, count, maxflips, permcount + 1, checksum)
+      :done -> [checksum, maxflips]
+      r -> outer(r, n, perm1, perm, count, maxflips, permcount + 1, checksum)
     end
   end
 
@@ -69,6 +71,3 @@ defmodule Fannkuch do
     if c > 0, do: r, else: advance(r + 1, n, perm1, count)
   end
 end
-
-[arg] = System.argv()
-Fannkuch.run(String.to_integer(arg))

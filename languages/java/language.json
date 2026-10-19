@@ -50,16 +50,16 @@
       "id": "java-default",
       "name": "java",
       "description": "Default JVM flags (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
-      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
-      "run": "java -cp {bin} Main",
+      "build": "mkdir -p {bin} {bin}.src && cp {harness}/Harness.java {bin}.src/Harness.java && cp {src}/Main.java {bin}.src/Problem.java && javac -d {bin} {bin}.src/Harness.java {bin}.src/Problem.java",
+      "run": "java -cp {bin} Harness",
       "default": true
     },
     {
       "id": "java-parallel-gc",
       "name": "java -XX:+UseParallelGC",
       "description": "Throughput-oriented collector with less barrier overhead than G1.",
-      "build": "mkdir -p {bin} && javac -d {bin} {src}/Main.java",
-      "run": "java -XX:+UseParallelGC -cp {bin} Main"
+      "build": "mkdir -p {bin} {bin}.src && cp {harness}/Harness.java {bin}.src/Harness.java && cp {src}/Main.java {bin}.src/Problem.java && javac -d {bin} {bin}.src/Harness.java {bin}.src/Problem.java",
+      "run": "java -XX:+UseParallelGC -cp {bin} Harness"
     }
   ],
   "versionSource": {

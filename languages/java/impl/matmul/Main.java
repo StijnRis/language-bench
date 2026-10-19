@@ -1,25 +1,35 @@
-public class Main {
-    public static void main(String[] args) {
-        int n = Integer.parseInt(args[0]);
-        double[] a = new double[n * n], b = new double[n * n], c = new double[n * n];
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < n; j++) {
-                a[i * n + j] = (i * 31 + j * 17) % 10 + 1;
-                b[i * n + j] = (i * 13 + j * 7) % 10 - 4;
-            }
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.function.LongConsumer;
 
+final class Problem {
+    static void setup(String[] args) {}
+
+    static Object decode(byte[] data) {
+        ByteBuffer b = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
+        int n = b.getInt();
+        double[] a = new double[n * n], c = new double[n * n];
+        b.asDoubleBuffer().get(a);
+        b.position(4 + n * n * 8);
+        b.asDoubleBuffer().get(c);
+        return new double[][] {a, c, {n}};
+    }
+
+    static Object solve(Object inst) {
+        double[][] in = (double[][]) inst;
+        int n = (int) in[2][0];
+        double[] a = in[0], b = in[1], c = new double[n * n];
         for (int i = 0; i < n; i++)
             for (int k = 0; k < n; k++) {
                 double aik = a[i * n + k];
                 for (int j = 0; j < n; j++) c[i * n + j] += aik * b[k * n + j];
             }
-
-        double trace = 0, sum = 0;
-        for (int i = 0; i < n; i++) trace += c[i * n + i];
-        for (double v : c) sum += v;
-        System.out.println("trace=" + (long) trace);
-        System.out.println("sum=" + (long) sum);
-        System.out.println("c00=" + (long) c[0]);
-        System.out.println("clast=" + (long) c[n * n - 1]);
+        return c;
     }
+
+    static void emit(Object res, LongConsumer sink) {
+        for (double v : (double[]) res) sink.accept((long) Math.floor(v + 0.5));
+    }
+
+    static void release(Object inst, Object res) {}
 }

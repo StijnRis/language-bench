@@ -2,8 +2,8 @@
   "id": "json-parse",
   "title": "JSON parsing",
   "summary": "Parse a 19 MB JSON document and aggregate its fields.",
-  "description": "A deterministic generator writes about 19 MB of ASCII JSON (an array of records with ids, names, tags, nested metadata and integer metrics). The program reads the file, parses it, and prints: number of objects, sum of all integer numbers, total length of all string values, number of `true` values and number of `null` values.",
-  "pseudocode": "text = read whole file                   # ~19 MB of JSON records\ndata = parse_json(text)\nobjects = ints = strLen = trues = nulls = 0\nwalk(value):\n    object -> objects++, walk every member value\n    array  -> walk every element\n    integer -> ints += value\n    string  -> strLen += length(value)\n    true    -> trues++\n    null    -> nulls++\nwalk(data)\nprint objects, ints, strLen, trues, nulls",
+  "description": "Each iteration receives a different ~19 MB ASCII JSON document of 90,000 records (padded with whitespace to a fixed length) as raw bytes. The timed part parses it and walks the document, returning the number of objects, the sum of all integers, the total length of all string values, and the numbers of true and null values.",
+  "pseudocode": "bytes = instance                       # untimed\nstart timer\ndoc = parse_json(bytes)\nwalk doc iteratively:\n    objects += 1 for every object; int_sum += every integer\n    string_length += length of every string value (not keys)\n    count true and null\nstop timer",
   "reveals": "Parsing and string-processing throughput including allocation of the parsed tree.",
   "caveat": "Parser library, input size, schema and validation all change the result. Go, Node, Python, Ruby, PHP and C# use their standard-library parsers (C# a read-only document, the others a generic tree). Rust, C, C++ and Java have no JSON in their standard library, so they use a small hand-written recursive-descent parser that aggregates while parsing (no tree is built), which is less work than the others. Lua, OCaml, Haskell and Elixir have no JSON parser in their standard library and use a small hand-written parser; Perl uses the core JSON::PP (pure Perl); Nim uses std/json. Scala builds a value tree with its own parser, Fortran tallies while parsing, and R tokenises each line with one regular expression (base R has no parser).",
   "tags": [
@@ -12,16 +12,12 @@
     "serialization",
     "strings"
   ],
-  "args": [
-    "{input}"
-  ],
-  "input": {
-    "generator": "generate.mjs",
-    "file": "input.json"
-  },
+  "args": [],
   "runs": {
-    "min": 10,
-    "max": 30
+    "min": 3,
+    "max": 10
   },
-  "budgetSeconds": 90
+  "budgetSeconds": 30,
+  "kind": "kernel",
+  "instance": "stream"
 }

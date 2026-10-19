@@ -1,19 +1,16 @@
-VOCAB = %w[
-  the quick brown fox jumps over lazy dog naïve café
-  über résumé привет мир
-  код 日本語 世界 速度 hello world
-].freeze
+module Problem
+  def self.setup(args); end
 
-n = ARGV[0].to_i
-x = 1
-words = Array.new(n) do
-  x = x * 48271 % 2147483647
-  VOCAB[x % VOCAB.size]
+  def self.decode(data)
+    data.force_encoding("UTF-8")
+  end
+
+  def self.solve(text)
+    checksum = text.tr(" ", "_").each_byte.sum
+    [text.bytesize, text.length, text.count(" ") + 1, text.scan("er").length, checksum]
+  end
+
+  def self.emit(r)
+    r
+  end
 end
-text = words.join(" ")
-
-puts "bytes=#{text.bytesize}"
-puts "codepoints=#{text.length}"
-puts "words=#{text.split(" ", -1).size}"
-puts "needle=#{text.scan("er").size}"
-puts "checksum=#{text.tr(" ", "_").bytes.sum}"

@@ -1,27 +1,25 @@
-object Main {
-  def main(args: Array[String]): Unit = {
-    val n = args(0).toInt
-    var x = 1L
-    val a = new Array[Int](n)
-    var i = 0
-    while (i < n) {
-      x = x * 48271 % 2147483647
-      a(i) = x.toInt
-      i += 1
-    }
+import java.nio.{ByteBuffer, ByteOrder}
 
-    java.util.Arrays.sort(a) // what scala.util.Sorting and Array.sorted call for primitive arrays
+object Problem {
+  def setup(args: Array[String]): Unit = ()
 
-    var checksum = 0L
-    i = 0
-    while (i < n) {
-      checksum = (checksum + i.toLong * a(i)) % 1000000007L
-      i += 1
-    }
-
-    println(s"first=${a(0)}")
-    println(s"last=${a(n - 1)}")
-    println(s"median=${a(n / 2)}")
-    println(s"checksum=$checksum")
+  def decode(data: Array[Byte]): Any = {
+    val a = new Array[Int](data.length / 4)
+    ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).asIntBuffer().get(a)
+    a
   }
+
+  def solve(inst: Any): Any = {
+    val a = inst.asInstanceOf[Array[Int]]
+    java.util.Arrays.sort(a) // what scala.util.Sorting and Array.sorted call for primitive arrays
+    a
+  }
+
+  def emit(res: Any, sink: Long => Unit): Unit = {
+    val a = res.asInstanceOf[Array[Int]]
+    var i = 0
+    while (i < a.length) { sink(a(i)); i += 1 }
+  }
+
+  def release(inst: Any, res: Any): Unit = ()
 }

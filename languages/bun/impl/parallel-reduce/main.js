@@ -10,21 +10,28 @@ function isPrime(n) {
 }
 
 if (isMainThread) {
-  const n = parseInt(process.argv[2], 10);
-  const workers = parseInt(process.argv[3], 10);
-  let total = 0;
-  let done = 0;
-  for (let t = 0; t < workers; t++) {
-    const w = new Worker(__filename, { workerData: { n, workers, t } });
-    w.on("message", (c) => {
-      total += c;
-      if (++done === workers) console.log(`primes=${total}`);
+  let n = 2000000, workers = 4;
+  exports.setup = (args) => {
+    if (args.length > 1) {
+      n = parseInt(args[0], 10);
+      workers = parseInt(args[1], 10);
+    }
+  };
+  exports.decode = () => null;
+  // one Worker per share, started inside the timed region (thread creation is part of the workload)
+  exports.solve = () =>
+    new Promise((resolve, reject) => {
+      let total = 0, done = 0;
+      for (let t = 0; t < workers; t++) {
+        const w = new Worker(__filename, { workerData: { n, workers, t } });
+        w.on("message", (c) => {
+          total += c;
+          if (++done === workers) resolve([total]);
+        });
+        w.on("error", reject);
+      }
     });
-    w.on("error", (e) => {
-      console.error(e);
-      process.exit(1);
-    });
-  }
+  exports.emit = (r) => r;
 } else {
   const { n, workers, t } = workerData;
   let count = 0;

@@ -1,4 +1,7 @@
-object Main {
+object Problem {
+  var nArg = 2000000L
+  var workersArg = 4
+
   def isPrime(n: Long): Boolean = {
     if (n < 2) return false
     if (n < 4) return true
@@ -11,9 +14,13 @@ object Main {
     true
   }
 
-  def main(args: Array[String]): Unit = {
-    val n = args(0).toLong
-    val workers = args(1).toInt
+  def setup(args: Array[String]): Unit = if (args.length > 1) { nArg = args(0).toLong; workersArg = args(1).toInt }
+
+  def decode(data: Array[Byte]): Any = null
+
+  def solve(inst: Any): Any = {
+    val n = nArg
+    val workers = workersArg
     val counts = new Array[Long](workers)
     val threads = Array.tabulate(workers) { id =>
       val t = new Thread(() => {
@@ -29,6 +36,10 @@ object Main {
       t
     }
     threads.foreach(_.join())
-    println(s"primes=${counts.sum}")
+    Array(counts.sum)
   }
+
+  def emit(res: Any, sink: Long => Unit): Unit = sink(res.asInstanceOf[Array[Long]](0))
+
+  def release(inst: Any, res: Any): Unit = ()
 }

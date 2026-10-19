@@ -1,4 +1,14 @@
 import 'dart:isolate';
+import 'dart:typed_data';
+
+var nArg = 2000000, workersArg = 4;
+
+void setup(List<String> args) {
+  if (args.length > 1) {
+    nArg = int.parse(args[0]);
+    workersArg = int.parse(args[1]);
+  }
+}
 
 bool isPrime(int n) {
   if (n < 2) return false;
@@ -22,18 +32,20 @@ void worker(List<Object> msg) {
   send.send(count);
 }
 
-Future<void> main(List<String> args) async {
-  final n = int.parse(args[0]);
-  final workers = int.parse(args[1]);
+Object? decode(Uint8List data) => null;
+
+// one Isolate per share, started inside the timed region (an isolate has its own heap and thread)
+Future<Object?> solve(Object? inst) async {
   final port = ReceivePort();
-  for (var t = 0; t < workers; t++) {
-    await Isolate.spawn(worker, <Object>[port.sendPort, n, workers, t]);
+  for (var t = 0; t < workersArg; t++) {
+    await Isolate.spawn(worker, <Object>[port.sendPort, nArg, workersArg, t]);
   }
-  var total = 0;
-  var done = 0;
+  var total = 0, done = 0;
   await for (final c in port) {
     total += c as int;
-    if (++done == workers) port.close();
+    if (++done == workersArg) port.close();
   }
-  print('primes=$total');
+  return <int>[total];
 }
+
+List<int> emit(Object? res) => res as List<int>;

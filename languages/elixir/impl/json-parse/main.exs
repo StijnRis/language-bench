@@ -1,6 +1,6 @@
 # Elixir ships a JSON module only from 1.18 and Jason is a Hex package, so this is a small
 # recursive-descent parser written with binary pattern matching.
-defmodule JsonParse do
+defmodule JsonDoc do
   def skip(<<c, rest::binary>>) when c in [?\s, ?\n, ?\r, ?\t], do: skip(rest)
   def skip(bin), do: bin
 
@@ -58,17 +58,17 @@ defmodule JsonParse do
   def walk([true | rest], {o, i, l, t, n}), do: walk(rest, {o, i, l, t + 1, n})
   def walk([false | rest], stats), do: walk(rest, stats)
   def walk([nil | rest], {o, i, l, t, n}), do: walk(rest, {o, i, l, t, n + 1})
-
-  def run(path) do
-    {doc, _} = path |> File.read!() |> value()
-    {objects, int_sum, str_len, trues, nulls} = walk([doc], {0, 0, 0, 0, 0})
-    IO.puts("objects=#{objects}")
-    IO.puts("int_sum=#{int_sum}")
-    IO.puts("string_length=#{str_len}")
-    IO.puts("true=#{trues}")
-    IO.puts("null=#{nulls}")
-  end
 end
 
-[path] = System.argv()
-JsonParse.run(path)
+defmodule Problem do
+  def setup(_args), do: nil
+  def decode(_p, data), do: data
+
+  def solve(_p, data) do
+    {doc, _} = JsonDoc.value(data)
+    {objects, int_sum, str_len, trues, nulls} = JsonDoc.walk([doc], {0, 0, 0, 0, 0})
+    [objects, int_sum, str_len, trues, nulls]
+  end
+
+  def emit(words), do: words
+end

@@ -1,6 +1,19 @@
-import std/[os, strutils]
+import std/strutils
 
-type Job = tuple[n, workers, t: int, res: ptr int]
+type
+  Job = tuple[n, workers, t: int, res: ptr int]
+  Instance* = int
+  Result* = int
+
+var n = 2000000
+var workers = 4
+
+proc setup*(args: seq[string]) =
+  if args.len > 1:
+    n = parseInt(args[0])
+    workers = parseInt(args[1])
+
+proc decode*(data: string): Instance = 0
 
 proc isPrime(n: int): bool =
   if n < 2: return false
@@ -20,14 +33,12 @@ proc worker(job: Job) {.thread.} =
     i += job.workers
   job.res[] = count
 
-let n = parseInt(paramStr(1))
-let workers = parseInt(paramStr(2))
-var results = newSeq[int](workers)
-var threads = newSeq[Thread[Job]](workers)
-for t in 0 ..< workers:
-  createThread(threads[t], worker, (n, workers, t, addr results[t]))
-joinThreads(threads)
+proc solve*(inst: var Instance): Result =
+  var results = newSeq[int](workers)
+  var threads = newSeq[Thread[Job]](workers)
+  for t in 0 ..< workers:
+    createThread(threads[t], worker, (n, workers, t, addr results[t]))
+  joinThreads(threads)
+  for c in results: result += c
 
-var total = 0
-for c in results: total += c
-echo "primes=", total
+proc emit*(r: Result, sink: proc (w: int)) = sink(r)

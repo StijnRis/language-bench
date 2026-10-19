@@ -83,10 +83,13 @@ final class Parser(s: Array[Byte]) {
   }
 }
 
-object Main {
-  def main(args: Array[String]): Unit = {
-    val doc = new Parser(Files.readAllBytes(Paths.get(args(0)))).parseValue()
+object Problem {
+  def setup(args: Array[String]): Unit = ()
 
+  def decode(data: Array[Byte]): Any = data // the bytes are parsed inside solve
+
+  def solve(inst: Any): Any = {
+    val doc = new Parser(inst.asInstanceOf[Array[Byte]]).parseValue()
     var objects = 0L; var intSum = 0L; var strLen = 0L; var trues = 0L; var nulls = 0L
     val stack = scala.collection.mutable.ArrayBuffer[Value](doc)
     while (stack.nonEmpty) {
@@ -99,11 +102,10 @@ object Main {
         case Null     => nulls += 1
       }
     }
-
-    println(s"objects=$objects")
-    println(s"int_sum=$intSum")
-    println(s"string_length=$strLen")
-    println(s"true=$trues")
-    println(s"null=$nulls")
+    Array(objects, intSum, strLen, trues, nulls)
   }
+
+  def emit(res: Any, sink: Long => Unit): Unit = res.asInstanceOf[Array[Long]].foreach(v => sink(v))
+
+  def release(inst: Any, res: Any): Unit = ()
 }

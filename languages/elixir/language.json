@@ -46,14 +46,14 @@
       "id": "elixir-default",
       "name": "elixir script.exs",
       "description": "Default BEAM flags: one scheduler per core.",
-      "run": "elixir {src}/main.exs",
+      "run": "elixir {harness}/harness.exs {src}/main.exs",
       "default": true
     },
     {
       "id": "elixir-sbt-db",
       "name": "elixir --erl \"+sbt db\"",
       "description": "Schedulers bound to cores (default binding), which can reduce migration noise for the parallel workload.",
-      "run": "elixir --erl \"+sbt db\" {src}/main.exs"
+      "run": "elixir --erl \"+sbt db\" {harness}/harness.exs {src}/main.exs"
     }
   ],
   "versionSource": {

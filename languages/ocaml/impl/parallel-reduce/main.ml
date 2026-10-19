@@ -1,5 +1,16 @@
 (* Workers are processes (Unix.fork + a pipe each), like the Python, Ruby, PHP and Perl versions:
    it works unchanged on every OCaml version. *)
+type instance = unit
+type result = int list
+
+let n = ref 2000000
+let workers = ref 4
+
+let setup args =
+  if Array.length args > 1 then (n := int_of_string args.(0); workers := int_of_string args.(1))
+
+let decode _ = ()
+
 let is_prime n =
   if n < 2 then false
   else if n < 4 then true
@@ -13,8 +24,8 @@ let is_prime n =
     !prime
   end
 
-let () =
-  let n = int_of_string Sys.argv.(1) and workers = int_of_string Sys.argv.(2) in
+let solve () : result =
+  let n = !n and workers = !workers in
   let readers =
     List.init workers (fun t ->
         let rd, wr = Unix.pipe () in
@@ -30,7 +41,7 @@ let () =
             let oc = Unix.out_channel_of_descr wr in
             output_string oc (string_of_int !count ^ "\n");
             close_out oc;
-            exit 0
+            Unix._exit 0
         | _ ->
             Unix.close wr;
             rd)
@@ -45,4 +56,6 @@ let () =
       0 readers
   in
   for _ = 1 to workers do ignore (Unix.wait ()) done;
-  Printf.printf "primes=%d\n" total
+  [ total ]
+
+let emit (r : result) sink = List.iter sink r

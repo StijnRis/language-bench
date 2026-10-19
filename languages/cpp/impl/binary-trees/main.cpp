@@ -1,12 +1,13 @@
 // Binary trees, after the Computer Language Benchmarks Game (plain new/delete, no arena).
-#include <cstdio>
+#include <cstddef>
+#include <cstdint>
 #include <cstdlib>
+#include <vector>
 
-struct Node {
-  Node *left, *right;
-};
+namespace {
+struct Node { Node *left, *right; };
 
-static Node *make_tree(int d) {
+Node *make_tree(int d) {
   Node *n = new Node;
   if (d == 0) {
     n->left = n->right = nullptr;
@@ -16,41 +17,38 @@ static Node *make_tree(int d) {
   }
   return n;
 }
-
-static long check(const Node *n) { return n->left == nullptr ? 1 : 1 + check(n->left) + check(n->right); }
-
-static void free_tree(Node *n) {
-  if (n->left) {
-    free_tree(n->left);
-    free_tree(n->right);
-  }
+long check(const Node *n) { return n->left == nullptr ? 1 : 1 + check(n->left) + check(n->right); }
+void free_tree(Node *n) {
+  if (n->left) { free_tree(n->left); free_tree(n->right); }
   delete n;
 }
+int depth_arg = 14;
+}  // namespace
 
-int main(int, char **argv) {
-  int n = std::atoi(argv[1]);
-  int min_depth = 4;
-  int max_depth = n > min_depth + 2 ? n : min_depth + 2;
-  int stretch = max_depth + 1;
-
+void lb_setup(int argc, char **argv) { if (argc > 0) depth_arg = std::atoi(argv[0]); }
+void *lb_decode(const unsigned char *, size_t) { return nullptr; }
+void *lb_solve(void *) {
+  int min_depth = 4, max_depth = depth_arg > min_depth + 2 ? depth_arg : min_depth + 2, stretch = max_depth + 1;
+  auto *out = new std::vector<int64_t>;
   Node *t = make_tree(stretch);
-  std::printf("stretch tree of depth %d\t check: %ld\n", stretch, check(t));
+  out->push_back(check(t));
   free_tree(t);
-
   Node *long_lived = make_tree(max_depth);
-
   for (int depth = min_depth; depth <= max_depth; depth += 2) {
-    long iterations = 1L << (max_depth - depth + min_depth);
-    long sum = 0;
+    long iterations = 1L << (max_depth - depth + min_depth), sum = 0;
     for (long i = 0; i < iterations; i++) {
       Node *tt = make_tree(depth);
       sum += check(tt);
       free_tree(tt);
     }
-    std::printf("%ld\t trees of depth %d\t check: %ld\n", iterations, depth, sum);
+    out->push_back(iterations);
+    out->push_back(sum);
   }
-
-  std::printf("long lived tree of depth %d\t check: %ld\n", max_depth, check(long_lived));
+  out->push_back(check(long_lived));
   free_tree(long_lived);
-  return 0;
+  return out;
 }
+void lb_emit(void *res, void (*sink)(int64_t)) {
+  for (int64_t v : *static_cast<std::vector<int64_t> *>(res)) sink(v);
+}
+void lb_release(void *, void *res) { delete static_cast<std::vector<int64_t> *>(res); }

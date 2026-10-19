@@ -5,7 +5,7 @@ import { fromSessionFile, listSessionFiles } from "@lb/core";
 import { dataDir, implDir, loadConfig, loadLanguages, loadProblems } from "@lb/core/discover";
 import { planSessions } from "@lb/core";
 import { ROOT } from "./config";
-import { currentCounts, enumerateCandidates, mergeFragment, runSession, verify, type SessionPlan } from "./session";
+import { conformance, currentCounts, enumerateCandidates, mergeFragment, runSession, verify, type SessionPlan } from "./session";
 import { discoverVersions } from "./versions";
 
 const [cmd, ...rest] = process.argv.slice(2);
@@ -78,6 +78,7 @@ async function main() {
     case "session": {
       const plan: SessionPlan = JSON.parse(fs.readFileSync(cwdPath(f.plan!), "utf8"));
       if (f.reps) plan.config.repetitions = { min: Number(f.reps), max: Number(f.reps) };
+      if (f.budget) plan.config.kernel = { ...plan.config.kernel, budgetSeconds: Number(f.budget), warmupSeconds: Number(f.budget) / 5 }; // shorter kernel loops for tests (warm-up scaled with them)
       await runSession(plan, { out: cwdPath(f.out!) });
       break;
     }
@@ -106,8 +107,11 @@ async function main() {
       };
       for (const c of changed) {
         let m: RegExpMatchArray | null;
-        if (/^(runner|core)\//.test(c) || c === "pnpm-lock.yaml" || c.startsWith(".github/workflows/verify")) {
+        if (/^(runner|core|tools|harness)\//.test(c) || c === "pnpm-lock.yaml" || c.startsWith(".github/workflows/verify")) {
           for (const l of langs) add(l.spec.id, l.spec.versions.find((v) => v.latest)!.version, problems);
+        } else if ((m = c.match(/^languages\/([^/]+)\/harness\//))) {
+          // a harness is part of every benchmark of its language: every tracked version, every problem
+          versionsOf(m[1]!).forEach((v) => add(m![1]!, v, problems));
         } else if ((m = c.match(/^languages\/([^/]+)\/impl\/([^/]+)\/(@([^/]+)\/)?/))) {
           const lang = langs.find((l) => l.spec.id === m![1]);
           if (!lang) continue;
@@ -150,7 +154,12 @@ async function main() {
       break;
     }
     case "verify": {
-      const ok = verify({ language: f.language ?? pos[0]!, version: f.version, variant: f.variant, problems: f.problems?.split(",") });
+      const ok = await verify({ language: f.language ?? pos[0]!, version: f.version, variant: f.variant, problems: f.problems?.split(","), iterations: f.iterations ? Number(f.iterations) : undefined });
+      process.exit(ok ? 0 : 1);
+    }
+    /* Does the harness of a language follow harness/CONTRACT.md? Builds it with the conformance problem. */
+    case "conformance": {
+      const ok = await conformance({ language: f.language ?? pos[0]!, version: f.version });
       process.exit(ok ? 0 : 1);
     }
     /* Append session fragments written by `session --out` to data/. */
@@ -176,7 +185,7 @@ async function main() {
       break;
     }
     default:
-      console.error("usage: lb <list|discover-versions|status|plan|session|verify|verify-matrix|matrix|merge|validate> [--flags]");
+      console.error("usage: lb <list|discover-versions|status|plan|session|verify|conformance|verify-matrix|matrix|merge|validate> [--flags]");
       process.exit(2);
   }
 }

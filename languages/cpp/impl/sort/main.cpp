@@ -1,26 +1,21 @@
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
-#include <cstdio>
-#include <cstdlib>
+#include <cstring>
 #include <vector>
 
-int main(int, char **argv) {
-  long n = std::atol(argv[1]);
-  uint64_t x = 1;
-  std::vector<int32_t> a(n);
-  for (long i = 0; i < n; i++) {
-    x = x * 48271 % 2147483647;
-    a[i] = (int32_t)x;
-  }
-
-  std::sort(a.begin(), a.end());
-
-  uint64_t checksum = 0;
-  for (long i = 0; i < n; i++) checksum = (checksum + (uint64_t)i * (uint64_t)a[i]) % 1000000007;
-
-  std::printf("first=%d\n", a[0]);
-  std::printf("last=%d\n", a[n - 1]);
-  std::printf("median=%d\n", a[n / 2]);
-  std::printf("checksum=%llu\n", (unsigned long long)checksum);
-  return 0;
+void lb_setup(int, char **) {}
+void *lb_decode(const unsigned char *data, size_t len) {
+  auto *a = new std::vector<int32_t>(len / 4);
+  std::memcpy(a->data(), data, len);
+  return a;
 }
+void *lb_solve(void *inst) {
+  auto *a = static_cast<std::vector<int32_t> *>(inst);
+  std::sort(a->begin(), a->end());
+  return a;
+}
+void lb_emit(void *res, void (*sink)(int64_t)) {
+  for (int32_t v : *static_cast<std::vector<int32_t> *>(res)) sink(v);
+}
+void lb_release(void *inst, void *) { delete static_cast<std::vector<int32_t> *>(inst); }

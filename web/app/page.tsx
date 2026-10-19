@@ -25,8 +25,8 @@ export default function Home() {
     : "The leaderboard above shows the exact multipliers per task and overall as soon as measurements are available.";
   const faq = [
     { q: "Which programming language is the fastest?", a: fastestAnswer },
-    { q: "How are the benchmarks measured?", a: `Each benchmark is a language version, a build setting and a problem. It runs on GitHub Actions in a pinned Docker image with many repetitions. Results from ${m.analysis.sessionCount} sessions on different days and hardware are combined statistically, with machine speed factored out.` },
-    { q: "Can I trust these numbers?", a: "Every number links to its source code, build flags, raw repetitions and CI run. Ranges are 95% confidence intervals computed across independent sessions, and all raw data is open in the repository." },
+    { q: "How are the benchmarks measured?", a: `Each benchmark is a language version, a build setting and a problem. It runs on GitHub Actions in a pinned Docker image: the language's harness solves a fresh instance over and over for ten seconds and times only the solving, so start-up and input parsing do not count (end-to-end and cold times are reported too). Results from ${m.analysis.sessionCount} sessions on different days and hardware are combined statistically, with machine speed factored out.` },
+    { q: "Can I trust these numbers?", a: "Every number links to its source code, build flags, raw iterations and CI run. Ranges are 95% confidence intervals computed across independent sessions, and all raw data is open in the repository." },
   ];
   return (
     <>
@@ -34,7 +34,7 @@ export default function Home() {
       <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }} />
       <section className="hero">
         <div>
-          <h1>How fast is each programming language, really?</h1>
+          <h1>Programming language benchmarks</h1>
           <p className="lead">
             {m.languages.map((l, i) => <span key={l.spec.id} className="inline-lang"><LangIcon id={l.spec.id} size={20} />{l.spec.name}{i < m.languages.length - 2 ? ", " : i === m.languages.length - 2 ? " and " : ""}</span>)} measured on {scored.length} workloads. Each benchmark is re-run on
             different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions
@@ -51,7 +51,7 @@ export default function Home() {
       )}
       {!m.hasData ? <NoData /> : (
         <Leaderboard
-          cells={cells}
+          cells={cells.map((c) => ({ ...c, t: { warm: c.by.warm?.seconds ?? null, cold: c.by.cold?.seconds ?? null, e2e: c.by.e2e?.seconds ?? null } }))}
           languages={m.languages.map((l) => ({ id: l.spec.id, name: l.spec.name, version: latestVersion(l) }))}
           problems={m.problems.map((p) => ({ id: p.spec.id, title: p.spec.title, scored: p.spec.scored }))}
         />

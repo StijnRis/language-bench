@@ -15,7 +15,7 @@ const body = Figtree({ subsets: ["latin"], variable: "--font-body", display: "sw
 
 const model = getModel();
 const names = languageList(model);
-const description = `Transparent, statistically combined speed and memory benchmarks of ${names}, measured repeatedly on GitHub Actions. Every number links to its raw repetitions.`;
+const description = `Transparent, statistically combined speed and memory benchmarks of ${names}, measured repeatedly on GitHub Actions. Every number links to its raw iterations.`;
 const langNames = model.languages.map((l) => l.spec.name);
 const updated = model.analysis.benchmarks.map((b) => b.lastDate).sort().pop()?.slice(0, 10);
 
@@ -47,7 +47,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <a href="#main" className="skip">Skip to content</a>
-        <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: "language-bench: programming language benchmark measurements", description: `Repeated speed and memory measurements of ${names} on a set of workloads, measured on GitHub Actions. Includes every raw repetition.`, url: siteUrl, license: "https://opensource.org/license/mit", isAccessibleForFree: true, creator: { "@type": "Organization", name: "language-bench", url: repoUrl }, ...(updated ? { dateModified: updated } : {}), keywords: ["programming languages", "benchmark", "performance", ...langNames], distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${siteUrl}/results.csv` }, { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${repoUrl}/tree/main/data/sessions` }] }} />
+        <JsonLd data={{ "@context": "https://schema.org", "@type": "Dataset", name: "language-bench: programming language benchmark measurements", description: `Repeated speed and memory measurements of ${names} on a set of workloads, measured on GitHub Actions. Includes every raw iteration.`, url: siteUrl, license: "https://opensource.org/license/mit", isAccessibleForFree: true, creator: { "@type": "Organization", name: "language-bench", url: repoUrl }, ...(updated ? { dateModified: updated } : {}), keywords: ["programming languages", "benchmark", "performance", ...langNames], distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${siteUrl}/results.csv` }, { "@type": "DataDownload", encodingFormat: "application/json", contentUrl: `${repoUrl}/tree/main/data/sessions` }] }} />
         <style dangerouslySetInnerHTML={{ __html: languageCss(m) }} />
         <LangSprite languages={m.languages.map((l) => ({ id: l.spec.id, icon: l.icon }))} />
         <JsonLd data={{ "@context": "https://schema.org", "@type": "Organization", name: "language-bench", url: siteUrl, logo: `${siteUrl}/icon.svg`, sameAs: [repoUrl] }} />
@@ -69,7 +69,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="wrap footer-grid">
             <div className="footer-about">
               <Link href="/" className="brand">language-bench</Link>
-              <p>Open, statistically grounded speed and memory benchmarks of programming languages. Every number links to its source code, flags and raw repetitions.</p>
+              <p>Open, statistically grounded speed and memory benchmarks of programming languages. Every number links to its source code, flags and raw iterations.</p>
               <p className="footer-langs" aria-label="Languages benchmarked">
                 {m.languages.map((l) => <Link key={l.spec.id} href={`/languages/${l.spec.id}/`} title={l.spec.name}><LangIcon id={l.spec.id} size={24} /></Link>)}
               </p>

@@ -1,10 +1,25 @@
 ! Binary trees, after the Computer Language Benchmarks Game.
-module trees
+module problem
+  use lb_hash
   implicit none
   type node
     type(node), pointer :: l => null(), r => null()
   end type
+  integer :: depth_arg = 14
+  integer(8), allocatable :: words(:)
+  integer :: nw
 contains
+  subroutine lb_setup()
+    character(len=32) :: arg
+    integer :: st
+    call get_command_argument(1, arg, status=st)
+    if (st == 0) read(arg, *) depth_arg
+  end subroutine
+
+  subroutine lb_decode(data)
+    character(len=*), intent(in) :: data
+  end subroutine
+
   recursive function make(d) result(t)
     integer, intent(in) :: d
     type(node), pointer :: t
@@ -22,45 +37,50 @@ contains
     if (associated(t%l)) c = 1 + check(t%l) + check(t%r)
   end function
 
-  recursive subroutine release(t)
+  recursive subroutine free_tree(t)
     type(node), pointer :: t
     if (associated(t%l)) then
-      call release(t%l)
-      call release(t%r)
+      call free_tree(t%l)
+      call free_tree(t%r)
     end if
     deallocate(t)
   end subroutine
-end module
 
-program binary_trees
-  use trees
-  implicit none
-  character(len=32) :: arg
-  integer :: n, min_depth, max_depth, stretch, depth
-  integer(8) :: iterations, i, total
-  type(node), pointer :: t, long_lived
-
-  call get_command_argument(1, arg)
-  read(arg, *) n
-  min_depth = 4
-  max_depth = max(min_depth + 2, n)
-  stretch = max_depth + 1
-
-  t => make(stretch)
-  write(*, '(a,i0,a,i0)') 'stretch tree of depth ', stretch, achar(9)//' check: ', check(t)
-  call release(t)
-  long_lived => make(max_depth)
-
-  do depth = min_depth, max_depth, 2
-    iterations = ishft(1_8, max_depth - depth + min_depth)
-    total = 0
-    do i = 1, iterations
-      t => make(depth)
-      total = total + check(t)
-      call release(t)
+  subroutine lb_solve()
+    integer :: min_depth, max_depth, d
+    integer(8) :: iterations, i, total
+    type(node), pointer :: t, long_lived
+    min_depth = 4
+    max_depth = max(min_depth + 2, depth_arg)
+    allocate(words(2 + 2 * ((max_depth - min_depth) / 2 + 1)))
+    nw = 0
+    t => make(max_depth + 1)
+    nw = nw + 1; words(nw) = check(t)
+    call free_tree(t)
+    long_lived => make(max_depth)
+    do d = min_depth, max_depth, 2
+      iterations = ishft(1_8, max_depth - d + min_depth)
+      total = 0
+      do i = 1, iterations
+        t => make(d)
+        total = total + check(t)
+        call free_tree(t)
+      end do
+      nw = nw + 1; words(nw) = iterations
+      nw = nw + 1; words(nw) = total
     end do
-    write(*, '(i0,a,i0,a,i0)') iterations, achar(9)//' trees of depth ', depth, achar(9)//' check: ', total
-  end do
+    nw = nw + 1; words(nw) = check(long_lived)
+    call free_tree(long_lived)
+  end subroutine
 
-  write(*, '(a,i0,a,i0)') 'long lived tree of depth ', max_depth, achar(9)//' check: ', check(long_lived)
-end program
+  subroutine lb_emit()
+    integer :: i
+    do i = 1, nw
+      call lb_sink(words(i))
+    end do
+  end subroutine
+
+  subroutine lb_release()
+    deallocate(words)
+  end subroutine
+end module

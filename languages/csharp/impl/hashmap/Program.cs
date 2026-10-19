@@ -1,24 +1,34 @@
-ulong n = ulong.Parse(args[0]);
-ulong x = 1;
-var m = new Dictionary<uint, uint>();
-
-for (ulong i = 0; i < n; i++)
+public static class Problem
 {
-    x = x * 48271 % 2147483647;
-    uint k = (uint)(x % (n / 2));
-    m[k] = m.GetValueOrDefault(k) + 1;
+    public static void Setup(string[] args) { }
+
+    public static object Decode(byte[] data)
+    {
+        int n = data.Length / 8;
+        var keys = new uint[n];
+        var lookups = new uint[n];
+        Buffer.BlockCopy(data, 0, keys, 0, n * 4);
+        Buffer.BlockCopy(data, n * 4, lookups, 0, n * 4);
+        return new uint[][] { keys, lookups };
+    }
+
+    public static object Solve(object inst)
+    {
+        var io = (uint[][])inst;
+        var m = new Dictionary<uint, uint>();
+        foreach (uint k in io[0]) m[k] = m.GetValueOrDefault(k) + 1;
+        ulong checksum = 0;
+        foreach (var (k, c) in m) checksum += (ulong)k * c;
+        ulong hits = 0;
+        foreach (uint k in io[1])
+            if (m.TryGetValue(k, out uint c)) hits += c;
+        return new long[] { m.Count, (long)checksum, (long)hits };
+    }
+
+    public static void Emit(object res, Action<long> sink)
+    {
+        foreach (long v in (long[])res) sink(v);
+    }
+
+    public static void Release(object inst, object res) { }
 }
-
-ulong checksum = 0;
-foreach (var (k, c) in m) checksum += (ulong)k * c;
-
-ulong hits = 0;
-for (ulong i = 0; i < n; i++)
-{
-    x = x * 48271 % 2147483647;
-    if (m.TryGetValue((uint)(x % n), out uint c)) hits += c;
-}
-
-Console.WriteLine($"distinct={m.Count}");
-Console.WriteLine($"checksum={checksum}");
-Console.WriteLine($"hits={hits}");

@@ -58,14 +58,14 @@
       "id": "ruby-default",
       "name": "ruby",
       "description": "Default interpreter, JIT off.",
-      "run": "ruby {src}/main.rb",
+      "run": "ruby {harness}/harness.rb {src}/main.rb",
       "default": true
     },
     {
       "id": "ruby-yjit",
       "name": "ruby --yjit",
       "description": "Enables YJIT, the built-in JIT compiler.",
-      "run": "ruby --yjit {src}/main.rb",
+      "run": "ruby --yjit {harness}/harness.rb {src}/main.rb",
       "minVersion": "3.1"
     }
   ],

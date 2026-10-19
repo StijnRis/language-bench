@@ -1,10 +1,7 @@
 // Rust has no JSON parser in its standard library: this is a small recursive-descent parser that
 // aggregates while parsing (it does not build a tree).
-use std::env;
-use std::fs;
-
 #[derive(Default)]
-struct Stats {
+pub struct Stats {
     objects: u64,
     int_sum: i64,
     str_len: u64,
@@ -122,13 +119,20 @@ impl<'a> Parser<'a> {
     }
 }
 
-fn main() {
-    let data = fs::read(env::args().nth(1).unwrap()).unwrap();
+pub type Instance = Vec<u8>;
+pub type Output = [i64; 5];
+
+pub fn setup(_args: &[String]) {}
+pub fn decode(data: &[u8]) -> Instance {
+    data.to_vec()
+}
+pub fn solve(data: Instance) -> Output {
     let mut p = Parser { s: &data, i: 0, st: Stats::default() };
     p.value();
-    println!("objects={}", p.st.objects);
-    println!("int_sum={}", p.st.int_sum);
-    println!("string_length={}", p.st.str_len);
-    println!("true={}", p.st.trues);
-    println!("null={}", p.st.nulls);
+    [p.st.objects as i64, p.st.int_sum, p.st.str_len as i64, p.st.trues as i64, p.st.nulls as i64]
+}
+pub fn emit(out: &Output, sink: &mut dyn FnMut(i64)) {
+    for &v in out {
+        sink(v);
+    }
 }

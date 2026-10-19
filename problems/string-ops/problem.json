@@ -2,19 +2,20 @@
   "id": "string-ops",
   "title": "String operations",
   "summary": "Build, scan and transform a 6.5 MB multilingual string.",
-  "description": "Builds a text of 1,000,000 words drawn from an ASCII + Latin + Cyrillic + CJK vocabulary, then counts bytes, Unicode code points, words and occurrences of a needle, and computes a checksum after replacing spaces. No locale-dependent case mapping is used so results are identical everywhere.",
+  "description": "Each iteration receives a 6.7 MB UTF-8 text of 1,000,000 words drawn from an ASCII + Latin + Cyrillic + CJK vocabulary (padded with spaces to a fixed length; the words depend on the iteration). The text is decoded into the language's own string type untimed; the timed part counts bytes, Unicode code points, words (spaces + 1) and non-overlapping occurrences of a needle, and computes a checksum after replacing spaces. No locale-dependent case mapping is used.",
   "reveals": "Allocation, copying and Unicode handling costs.",
   "caveat": "ASCII vs multilingual data changes results; strings are UTF-8 in C/C++/Go/Rust/Ruby/PHP but UTF-16 in Node, Java and C#, and code-point arrays in Python, so code-point counting is intrinsically different work.",
   "tags": [
     "memory-bound",
     "strings"
   ],
-  "args": [
-    "1000000"
-  ],
+  "args": [],
   "runs": {
-    "min": 10,
-    "max": 30
+    "min": 3,
+    "max": 10
   },
-  "budgetSeconds": 60
+  "budgetSeconds": 30,
+  "kind": "kernel",
+  "instance": "stream",
+  "pseudocode": "text = decode(instance)               # UTF-8 -> native string, untimed\nstart timer\nbytes      = length of text in UTF-8\ncodepoints = number of Unicode code points\nwords      = number of spaces + 1\nneedle     = non-overlapping occurrences of \"er\"\nchecksum   = sum of the UTF-8 bytes of text with ' ' replaced by '_'\nstop timer"
 }

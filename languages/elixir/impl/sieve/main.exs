@@ -1,13 +1,17 @@
 # :atomics is the BEAM's mutable array (1-based): index i + 1 holds the flag of the number i.
-defmodule Sieve do
-  def run(n) do
+defmodule Problem do
+  def setup([n | _]), do: String.to_integer(n)
+  def setup(_), do: 10_000_000
+  def decode(_p, _data), do: nil
+
+  def solve(n, _inst) do
     s = :atomics.new(n + 1, signed: false)
     outer(2, n, s)
     {count, last, sum} = tally(2, n, s, 0, 0, 0)
-    IO.puts("count=#{count}")
-    IO.puts("last=#{last}")
-    IO.puts("sum=#{sum}")
+    [count, last, sum]
   end
+
+  def emit(words), do: words
 
   defp outer(p, n, _s) when p * p > n, do: :ok
 
@@ -31,6 +35,3 @@ defmodule Sieve do
       else: tally(i + 1, n, s, count, last, sum)
   end
 end
-
-[arg] = System.argv()
-Sieve.run(String.to_integer(arg))

@@ -1,36 +1,40 @@
 package main
 
-import (
-	"fmt"
-	"os"
-	"strconv"
-)
+import "encoding/binary"
 
-func main() {
-	n, _ := strconv.Atoi(os.Args[1])
-	var x int64 = 1
-	next := func() int64 {
-		x = x * 48271 % 2147483647
-		return x
-	}
+type hashInstance struct{ keys, lookups []uint32 }
 
-	m := make(map[int64]int64)
-	half := int64(n / 2)
+func Setup(args []string) {}
+
+func Decode(data []byte) any {
+	n := len(data) / 8
+	in := hashInstance{make([]uint32, n), make([]uint32, n)}
 	for i := 0; i < n; i++ {
-		m[next()%half]++
+		in.keys[i] = binary.LittleEndian.Uint32(data[4*i:])
+		in.lookups[i] = binary.LittleEndian.Uint32(data[4*(n+i):])
 	}
+	return in
+}
 
+func Solve(inst any) any {
+	in := inst.(hashInstance)
+	m := make(map[uint32]int64)
+	for _, k := range in.keys {
+		m[k]++
+	}
 	var checksum int64
 	for k, c := range m {
-		checksum += k * c
+		checksum += int64(k) * c
 	}
-
 	var hits int64
-	for i := 0; i < n; i++ {
-		hits += m[next()%int64(n)]
+	for _, k := range in.lookups {
+		hits += m[k]
 	}
+	return []int64{int64(len(m)), checksum, hits}
+}
 
-	fmt.Printf("distinct=%d\n", len(m))
-	fmt.Printf("checksum=%d\n", checksum)
-	fmt.Printf("hits=%d\n", hits)
+func Emit(res any, sink func(int64)) {
+	for _, v := range res.([]int64) {
+		sink(v)
+	}
 }

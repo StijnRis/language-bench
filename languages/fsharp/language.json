@@ -38,7 +38,7 @@
       "id": "fsharp-default",
       "name": "dotnet build -c Release",
       "description": "Release build, default runtime settings (tiered compilation, dynamic PGO, concurrent workstation GC).",
-      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {harness}/Harness.fs $P/ && cp {src}/Program.fs $P/Problem.fs && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
       "run": "dotnet {bin}/app.dll",
       "default": true
     },
@@ -46,7 +46,7 @@
       "id": "fsharp-no-tiering",
       "name": "DOTNET_TieredCompilation=0",
       "description": "Every method is fully optimised on its first call: slower start-up, no tier-0 phase.",
-      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {harness}/Harness.fs $P/ && cp {src}/Program.fs $P/Problem.fs && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
       "run": "DOTNET_TieredCompilation=0 dotnet {bin}/app.dll"
     }
   ],

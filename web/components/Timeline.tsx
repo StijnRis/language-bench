@@ -18,8 +18,8 @@ const valueOf = (p: TPoint, m: Metric): number | null =>
 const format = (v: number, m: Metric) => (m === "time" ? ms(v) : m === "memory" ? mb(v) : bytes(v));
 
 const W = 900, H0 = 400, M = { l: 76, r: 170, t: 24, b: 56 };
-/** vertical room of one end label: name line + value line */
-const GAP = 30;
+/** vertical room of one end label (the value is in the tooltip) */
+const GAP = 15;
 const clip = (t: string, n = 22) => (t.length > n ? `${t.slice(0, n - 1)}…` : t);
 
 export default function Timeline({ series, problems, releases = [], note = true }: Props) {
@@ -99,7 +99,6 @@ export default function Timeline({ series, problems, releases = [], note = true 
             return (<g key={e.s.id} opacity={active(e.s.id) ? 1 : 0.2} style={{ cursor: "pointer", transition: "opacity .15s" }} onMouseEnter={() => setFocus(e.s.id)}>
               <line x1={ex + 6} y1={e.y} x2={W - M.r + 8} y2={labelY[k]! - 1} stroke={c} strokeWidth={1} opacity={0.6} />
               <text x={W - M.r + 12} y={labelY[k]! + 2} style={{ fill: c, fontWeight: 700 }}><title>{e.s.label}</title>{clip(e.s.label)}</text>
-              <text x={W - M.r + 12} y={labelY[k]! + 14} style={{ fill: "var(--muted)", fontSize: 11 }}>{format(valueOf(e.last, metric)!, metric)}</text>
             </g>);
           })}
         </svg>

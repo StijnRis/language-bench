@@ -1,6 +1,6 @@
 # N-body simulation, after the Computer Language Benchmarks Game.
 # Bodies are immutable tuples {x, y, z, vx, vy, vz, mass}; every step builds the next state.
-defmodule NBody do
+defmodule NBodySim do
   @solar_mass 4 * :math.pi() * :math.pi()
   @days 365.24
 
@@ -82,8 +82,19 @@ defmodule NBody do
   def advance(bodies, steps, dt), do: advance(move(velocities(bodies, dt), dt), steps - 1, dt)
 end
 
-[arg] = System.argv()
-bodies = NBody.offset_momentum(NBody.bodies())
-IO.puts(:erlang.float_to_binary(NBody.energy(bodies), decimals: 9))
-bodies = NBody.advance(bodies, String.to_integer(arg), 0.01)
-IO.puts(:erlang.float_to_binary(NBody.energy(bodies), decimals: 9))
+
+defmodule Problem do
+  def setup([steps | _]), do: String.to_integer(steps)
+  def setup(_), do: 1_000_000
+
+  def decode(_steps, data), do: for(<<x::float-little-64, y::float-little-64, z::float-little-64, vx::float-little-64, vy::float-little-64, vz::float-little-64, m::float-little-64 <- data>>, do: {x, y, z, vx, vy, vz, m})
+
+  def solve(steps, bodies) do
+    bodies = NBodySim.offset_momentum(bodies)
+    e0 = NBodySim.energy(bodies)
+    e1 = NBodySim.energy(NBodySim.advance(bodies, steps, 0.01))
+    {e0, e1}
+  end
+
+  def emit({e0, e1}), do: [trunc(Float.floor(e0 * 1.0e9 + 0.5)), trunc(Float.floor(e1 * 1.0e9 + 0.5))]
+end
