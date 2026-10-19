@@ -30,7 +30,7 @@
       "id": "nim-release",
       "name": "nim c -d:release",
       "description": "Optimised C backend build with the default memory manager of the version (ORC from Nim 2.0, refc before).",
-      "build": "nim c -d:release --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {src}/main.nim",
+      "build": "mkdir -p {bin}.src && cp {harness}/harness.nim {bin}.src/ && cp {src}/main.nim {bin}.src/problem.nim && nim c -d:release --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {bin}.src/harness.nim",
       "run": "{bin}",
       "default": true
     },
@@ -38,7 +38,7 @@
       "id": "nim-danger",
       "name": "nim c -d:danger",
       "description": "Also removes bounds, overflow and nil checks (unsafe: errors are no longer detected).",
-      "build": "nim c -d:danger --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {src}/main.nim",
+      "build": "mkdir -p {bin}.src && cp {harness}/harness.nim {bin}.src/ && cp {src}/main.nim {bin}.src/problem.nim && nim c -d:danger --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {bin}.src/harness.nim",
       "run": "{bin}"
     }
   ],

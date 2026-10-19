@@ -1,25 +1,28 @@
-import std/[os, strutils]
+type
+  Instance* = tuple[n: int, a, b: seq[float64]]
+  Result* = tuple[n: int, c: seq[float64]]
 
-let n = parseInt(paramStr(1))
-var a = newSeq[float64](n * n)
-var b = newSeq[float64](n * n)
-var c = newSeq[float64](n * n)
-for i in 0 ..< n:
-  for j in 0 ..< n:
-    a[i * n + j] = float64((i * 31 + j * 17) mod 10 + 1)
-    b[i * n + j] = float64((i * 13 + j * 7) mod 10 - 4)
+proc setup*(args: seq[string]) = discard
 
-for i in 0 ..< n:
-  for k in 0 ..< n:
-    let aik = a[i * n + k]
-    for j in 0 ..< n:
-      c[i * n + j] += aik * b[k * n + j]
+proc decode*(data: string): Instance =
+  var n32: int32
+  copyMem(addr n32, unsafeAddr data[0], 4)
+  let n = int(n32)
+  result.n = n
+  result.a = newSeq[float64](n * n)
+  result.b = newSeq[float64](n * n)
+  copyMem(addr result.a[0], unsafeAddr data[4], n * n * 8)
+  copyMem(addr result.b[0], unsafeAddr data[4 + n * n * 8], n * n * 8)
 
-var trace = 0.0
-var total = 0.0
-for i in 0 ..< n: trace += c[i * n + i]
-for v in c: total += v
-echo "trace=", int(trace)
-echo "sum=", int(total)
-echo "c00=", int(c[0])
-echo "clast=", int(c[n * n - 1])
+proc solve*(inst: var Instance): Result =
+  let n = inst.n
+  var c = newSeq[float64](n * n)
+  for i in 0 ..< n:
+    for k in 0 ..< n:
+      let aik = inst.a[i * n + k]
+      for j in 0 ..< n:
+        c[i * n + j] += aik * inst.b[k * n + j]
+  (n, c)
+
+proc emit*(r: Result, sink: proc (w: int)) =
+  for v in r.c: sink(int(v + 0.5) - (if v + 0.5 < 0 and float(int(v + 0.5)) != v + 0.5: 1 else: 0))

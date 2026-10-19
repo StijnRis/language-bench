@@ -186,7 +186,7 @@ export class LocalContainer implements Container {
     return cmd
       .replace(/\/usr\/local\/bin\/lbgen/g, toolPath("lbgen"))
       .replace(/(^|[\s'"=])\/repo(?=\/|$|[\s'"])/g, `$1${ROOT}`)
-      .replace(/(^|[\s'"=])\/work(?=\/|$|[\s'"])/g, `$1${this.workDir}`);
+      .replace(/(^|[\s'"=:])\/work(?=\/|$|[\s'"])/g, `$1${this.workDir}`);
   }
 
   exec(cmd: string, opts: ExecOptions = {}): ExecResult {

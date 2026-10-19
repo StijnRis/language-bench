@@ -1,19 +1,18 @@
-import std/[algorithm, os, strutils]
+import std/algorithm
 
-let n = parseInt(paramStr(1))
-var x = 1
-var a = newSeq[int32](n)
-for i in 0 ..< n:
-  x = x * 48271 mod 2147483647
-  a[i] = int32(x)
+type
+  Instance* = seq[int32]
+  Result* = seq[int32]
 
-a.sort()
+proc setup*(args: seq[string]) = discard
 
-var checksum = 0
-for i in 0 ..< n:
-  checksum = (checksum + i * int(a[i])) mod 1000000007
+proc decode*(data: string): Instance =
+  result = newSeq[int32](data.len div 4)
+  if result.len > 0: copyMem(addr result[0], unsafeAddr data[0], result.len * 4)
 
-echo "first=", a[0]
-echo "last=", a[n - 1]
-echo "median=", a[n div 2]
-echo "checksum=", checksum
+proc solve*(a: var Instance): Result =
+  a.sort()
+  a
+
+proc emit*(r: Result, sink: proc (w: int)) =
+  for v in r: sink(int(v))
