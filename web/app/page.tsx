@@ -34,7 +34,7 @@ export default function Home() {
       <JsonLd data={{ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }} />
       <section className="hero">
         <div>
-          <h1>How fast is each programming language, really?</h1>
+          <h1>Programming language benchmarks</h1>
           <p className="lead">
             {m.languages.map((l, i) => <span key={l.spec.id} className="inline-lang"><LangIcon id={l.spec.id} size={20} />{l.spec.name}{i < m.languages.length - 2 ? ", " : i === m.languages.length - 2 ? " and " : ""}</span>)} measured on {scored.length} workloads. Each benchmark is re-run on
             different days and different hardware; the numbers below combine {m.analysis.sessionCount} independent sessions

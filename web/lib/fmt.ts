@@ -11,3 +11,6 @@ export const bytes = (n?: number | null) => (n == null ? "-" : n > 1e6 ? `${(n /
 export const day = (iso: string) => iso.slice(0, 10);
 /** Language colours are CSS variables --c-<id> generated from languages/<id>/language.json (see layout). */
 export const colorOf = (id: string, i = 0) => `var(--c-${id}, hsl(${(i * 67 + 200) % 360} 55% 50%))`;
+
+/** Bar length (percent) on a log scale: 1x is a short stub, the largest multiple fills the cell. */
+export const logBar = (x: number, max: number) => Math.max(2, ((Math.log(x) + 0.25) / (Math.log(Math.max(max, 1.01)) + 0.25)) * 100);

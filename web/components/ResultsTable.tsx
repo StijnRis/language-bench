@@ -1,6 +1,6 @@
 "use client";
 import { useState, type ReactNode } from "react";
-import { bytes, idx, mb, seconds } from "@/lib/fmt";
+import { bytes, idx, logBar, mb, seconds } from "@/lib/fmt";
 import ShareBar from "./ShareBar";
 
 export interface ResultRow {
@@ -91,7 +91,7 @@ export default function ResultsTable({
       </div>
       <div className="tablewrap">
         <table>
-          {caption && <caption className="small muted" style={{ textAlign: "left", padding: "8px 12px" }}>{caption} Showing {label.toLowerCase()}.</caption>}
+          {caption && <caption className="small muted" style={{ textAlign: "left", padding: "8px 12px" }}>{caption} Showing {label.toLowerCase()}; bars use a log scale.</caption>}
           <thead>
             <tr>
               {rank && <th>#</th>}
@@ -108,7 +108,7 @@ export default function ResultsTable({
                 <td className="num" title={metric === "time" ? x.r.timeTitle : undefined}>
                   {isFinite(x.mult) ? <><strong>{fmt[metric](x.r)}</strong> <span className="muted">({idx(x.mult)})</span></> : <span className="muted small">{missing}</span>}
                 </td>
-                <td>{isFinite(x.mult) && <div className="bar" style={{ width: `${Math.max(2, (x.mult / max) * 100)}%`, background: x.r.color }} />}</td>
+                <td>{isFinite(x.mult) && <div className="bar" style={{ width: `${logBar(x.mult, max)}%`, background: x.r.color }} />}</td>
               </tr>
             ))}
             {view.length === 0 && <tr><td colSpan={rank ? 4 : 3} className="empty">{empty}</td></tr>}
