@@ -1,5 +1,8 @@
-defmodule FileProcessing do
-  def run(path) do
+defmodule Problem do
+  def setup(_args), do: nil
+  def decode(_p, path), do: path
+
+  def solve(_p, path) do
     {lines, total, freq} =
       path
       |> File.read!()
@@ -18,12 +21,8 @@ defmodule FileProcessing do
         if c > tc or (c == tc and w < tw), do: {w, c}, else: {tw, tc}
       end)
 
-    IO.puts("lines=#{lines}")
-    IO.puts("sum=#{total}")
-    IO.puts("distinct=#{map_size(freq)}")
-    IO.puts("top=#{top} #{top_count}")
+    [lines, total, map_size(freq), top_count, byte_size(top)] ++ :binary.bin_to_list(top)
   end
-end
 
-[path] = System.argv()
-FileProcessing.run(path)
+  def emit(words), do: words
+end

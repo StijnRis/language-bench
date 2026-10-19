@@ -1,28 +1,17 @@
-defmodule HashMap do
-  defp next(x), do: rem(x * 48271, 2_147_483_647)
+defmodule Problem do
+  def setup(_args), do: nil
 
-  defp build(0, x, m, _half), do: {x, m}
-
-  defp build(i, x, m, half) do
-    x = next(x)
-    build(i - 1, x, Map.update(m, rem(x, half), 1, &(&1 + 1)), half)
+  def decode(_p, data) do
+    n = div(byte_size(data), 8)
+    {for(<<v::signed-little-32 <- binary_part(data, 0, n * 4)>>, do: v), for(<<v::signed-little-32 <- binary_part(data, n * 4, n * 4)>>, do: v)}
   end
 
-  defp probe(0, _x, _m, _n, hits), do: hits
-
-  defp probe(i, x, m, n, hits) do
-    x = next(x)
-    probe(i - 1, x, m, n, hits + Map.get(m, rem(x, n), 0))
-  end
-
-  def run(n) do
-    {x, m} = build(n, 1, %{}, div(n, 2))
+  def solve(_p, {keys, lookups}) do
+    m = Enum.reduce(keys, %{}, fn k, m -> Map.update(m, k, 1, &(&1 + 1)) end)
     checksum = Enum.reduce(m, 0, fn {k, c}, acc -> acc + k * c end)
-    IO.puts("distinct=#{map_size(m)}")
-    IO.puts("checksum=#{checksum}")
-    IO.puts("hits=#{probe(n, x, m, n, 0)}")
+    hits = Enum.reduce(lookups, 0, fn k, acc -> acc + Map.get(m, k, 0) end)
+    [map_size(m), checksum, hits]
   end
-end
 
-[arg] = System.argv()
-HashMap.run(String.to_integer(arg))
+  def emit(r), do: r
+end
