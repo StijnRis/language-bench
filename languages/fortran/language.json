@@ -38,7 +38,7 @@
       "id": "gfortran-O3",
       "name": "gfortran -O3 -fopenmp",
       "description": "Optimised build with OpenMP (needed for the parallel workload).",
-      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -fopenmp -o {bin} {src}/main.f90",
+      "build": "mkdir -p {bin}.mod && cp {harness}/lb_hash.f90 {harness}/harness.f90 {bin}.mod/ && cp {src}/main.f90 {bin}.mod/problem.f90 && cd {bin}.mod && gfortran -O3 -fopenmp -o {bin} lb_hash.f90 problem.f90 harness.f90",
       "run": "{bin}",
       "default": true
     },
@@ -46,7 +46,7 @@
       "id": "gfortran-O3-native",
       "name": "gfortran -O3 -march=native -fopenmp",
       "description": "Optimised for the benchmark CPU.",
-      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -march=native -fopenmp -o {bin} {src}/main.f90",
+      "build": "mkdir -p {bin}.mod && cp {harness}/lb_hash.f90 {harness}/harness.f90 {bin}.mod/ && cp {src}/main.f90 {bin}.mod/problem.f90 && cd {bin}.mod && gfortran -O3 -march=native -fopenmp -o {bin} lb_hash.f90 problem.f90 harness.f90",
       "run": "{bin}"
     }
   ],

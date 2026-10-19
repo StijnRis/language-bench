@@ -51,31 +51,36 @@ contains
   end subroutine
 end module
 
-program sort_bench
+
+module problem
+  use lb_hash
   use quick
   implicit none
-  character(len=32) :: arg
-  integer :: n, i
-  integer(8) :: x, checksum
   integer(4), allocatable :: a(:)
+contains
+  subroutine lb_setup()
+  end subroutine
 
-  call get_command_argument(1, arg)
-  read(arg, *) n
-  allocate(a(n))
-  x = 1
-  do i = 1, n
-    x = mod(x * 48271_8, 2147483647_8)
-    a(i) = int(x, 4)
-  end do
+  subroutine lb_decode(data)
+    character(len=*), intent(in) :: data
+    integer :: n
+    n = len(data) / 4
+    allocate(a(n))
+    a = transfer(data(1:4 * n), a)
+  end subroutine
 
-  call qsort(a, 1, n)
+  subroutine lb_solve()
+    call qsort(a, 1, size(a))
+  end subroutine
 
-  checksum = 0
-  do i = 1, n
-    checksum = mod(checksum + int(i - 1, 8) * int(a(i), 8), 1000000007_8)
-  end do
-  write(*, '(a,i0)') 'first=', a(1)
-  write(*, '(a,i0)') 'last=', a(n)
-  write(*, '(a,i0)') 'median=', a(n / 2 + 1)
-  write(*, '(a,i0)') 'checksum=', checksum
-end program
+  subroutine lb_emit()
+    integer :: i
+    do i = 1, size(a)
+      call lb_sink(int(a(i), 8))
+    end do
+  end subroutine
+
+  subroutine lb_release()
+    deallocate(a)
+  end subroutine
+end module

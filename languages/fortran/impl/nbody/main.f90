@@ -1,40 +1,51 @@
 ! N-body simulation, after the Computer Language Benchmarks Game.
-program nbody
+module problem
+  use lb_hash
   implicit none
   integer, parameter :: nb = 5
-  real(8), parameter :: pi = 3.141592653589793d0, solar_mass = 4.0d0 * pi * pi, days = 365.24d0
+  real(8), parameter :: pi = 3.141592653589793d0, solar_mass = 4.0d0 * pi * pi
   real(8) :: x(nb), y(nb), z(nb), vx(nb), vy(nb), vz(nb), m(nb)
-  real(8) :: px, py, pz
-  character(len=32) :: arg
-  integer :: steps, s
-
-  x = [0.0d0, 4.84143144246472090d+00, 8.34336671824457987d+00, 1.28943695621391310d+01, 1.53796971148509165d+01]
-  y = [0.0d0, -1.16032004402742839d+00, 4.12479856412430479d+00, -1.51111514016986312d+01, -2.59193146099879641d+01]
-  z = [0.0d0, -1.03622044471123109d-01, -4.03523417114321381d-01, -2.23307578892655734d-01, 1.79258772950371181d-01]
-  vx = [0.0d0, 1.66007664274403694d-03, -2.76742510726862411d-03, 2.96460137564761618d-03, 2.68067772490389322d-03] * days
-  vy = [0.0d0, 7.69901118419740425d-03, 4.99852801234917238d-03, 2.37847173959480950d-03, 1.62824170038242295d-03] * days
-  vz = [0.0d0, -6.90460016972063023d-05, 2.30417297573763929d-05, -2.96589568540237556d-05, -9.51592254519715870d-05] * days
-  m = [1.0d0, 9.54791938424326609d-04, 2.85885980666130812d-04, 4.36624404335156298d-05, 5.15138902046611451d-05] * solar_mass
-
-  px = sum(vx * m); py = sum(vy * m); pz = sum(vz * m)
-  vx(1) = -px / solar_mass
-  vy(1) = -py / solar_mass
-  vz(1) = -pz / solar_mass
-
-  call get_command_argument(1, arg)
-  read(arg, *) steps
-  call show(energy())
-  do s = 1, steps
-    call advance(0.01d0)
-  end do
-  call show(energy())
-
+  real(8) :: e0, e1
+  integer :: steps = 1000000
 contains
-  subroutine show(e)
-    real(8), intent(in) :: e
-    character(len=32) :: buf
-    write(buf, '(F16.9)') e
-    write(*, '(a)') trim(adjustl(buf))
+  subroutine lb_setup()
+    character(len=32) :: arg
+    integer :: st
+    call get_command_argument(1, arg, status=st)
+    if (st == 0) read(arg, *) steps
+  end subroutine
+
+  subroutine lb_decode(data)
+    character(len=*), intent(in) :: data
+    real(8) :: v(35)
+    integer :: b
+    v = transfer(data(1:280), v)
+    do b = 1, nb
+      x(b) = v(7 * b - 6); y(b) = v(7 * b - 5); z(b) = v(7 * b - 4)
+      vx(b) = v(7 * b - 3); vy(b) = v(7 * b - 2); vz(b) = v(7 * b - 1); m(b) = v(7 * b)
+    end do
+  end subroutine
+
+  subroutine lb_solve()
+    real(8) :: px, py, pz
+    integer :: s
+    px = sum(vx * m); py = sum(vy * m); pz = sum(vz * m)
+    vx(1) = -px / solar_mass
+    vy(1) = -py / solar_mass
+    vz(1) = -pz / solar_mass
+    e0 = energy()
+    do s = 1, steps
+      call advance(0.01d0)
+    end do
+    e1 = energy()
+  end subroutine
+
+  subroutine lb_emit()
+    call lb_sink(floor(e0 * 1.0d9 + 0.5d0, 8))
+    call lb_sink(floor(e1 * 1.0d9 + 0.5d0, 8))
+  end subroutine
+
+  subroutine lb_release()
   end subroutine
 
   function energy() result(e)
@@ -69,4 +80,4 @@ contains
     y = y + dt * vy
     z = z + dt * vz
   end subroutine
-end program
+end module

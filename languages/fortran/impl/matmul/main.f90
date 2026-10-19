@@ -1,36 +1,53 @@
-! Arrays are column-major, so they are stored transposed (a(k,i) = A[i][k]) to keep the inner loop contiguous.
-program matmul_bench
+! Arrays are column-major, so the row-major input reshapes to the transposed matrices (a(k,i) = A[i][k]):
+! the inner loop over j is contiguous.
+module problem
+  use lb_hash
   implicit none
-  character(len=32) :: arg
-  integer :: n, i, j, k
+  integer :: n
   real(8), allocatable :: a(:, :), b(:, :), c(:, :)
-  real(8) :: aik, trace, total
+contains
+  subroutine lb_setup()
+  end subroutine
 
-  call get_command_argument(1, arg)
-  read(arg, *) n
-  allocate(a(n, n), b(n, n), c(n, n))
-  do i = 0, n - 1
-    do j = 0, n - 1
-      a(j + 1, i + 1) = real(mod(i * 31 + j * 17, 10) + 1, 8)
-      b(j + 1, i + 1) = real(mod(i * 13 + j * 7, 10) - 4, 8)
-    end do
-  end do
-  c = 0.0d0
-  do i = 1, n
-    do k = 1, n
-      aik = a(k, i)
-      do j = 1, n
-        c(j, i) = c(j, i) + aik * b(j, k)
+  subroutine lb_decode(data)
+    character(len=*), intent(in) :: data
+    integer(4) :: n4
+    real(8), allocatable :: flat(:)
+    n4 = transfer(data(1:4), n4)
+    n = n4
+    allocate(flat(n * n))
+    flat = transfer(data(5:4 + 8 * n * n), flat)
+    allocate(a(n, n), b(n, n))
+    a = reshape(flat, [n, n])
+    flat = transfer(data(5 + 8 * n * n:4 + 16 * n * n), flat)
+    b = reshape(flat, [n, n])
+    allocate(c(n, n))
+  end subroutine
+
+  subroutine lb_solve()
+    integer :: i, j, k
+    real(8) :: aik
+    c = 0.0d0
+    do i = 1, n
+      do k = 1, n
+        aik = a(k, i)
+        do j = 1, n
+          c(j, i) = c(j, i) + aik * b(j, k)
+        end do
       end do
     end do
-  end do
-  trace = 0.0d0
-  do i = 1, n
-    trace = trace + c(i, i)
-  end do
-  total = sum(c)
-  write(*, '(a,i0)') 'trace=', int(trace, 8)
-  write(*, '(a,i0)') 'sum=', int(total, 8)
-  write(*, '(a,i0)') 'c00=', int(c(1, 1), 8)
-  write(*, '(a,i0)') 'clast=', int(c(n, n), 8)
-end program
+  end subroutine
+
+  subroutine lb_emit()
+    integer :: i, j
+    do i = 1, n
+      do j = 1, n
+        call lb_sink(floor(c(j, i) + 0.5d0, 8))
+      end do
+    end do
+  end subroutine
+
+  subroutine lb_release()
+    deallocate(a, b, c)
+  end subroutine
+end module
