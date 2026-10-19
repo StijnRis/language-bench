@@ -1,32 +1,40 @@
+package Problem;
 use strict;
 use warnings;
 
-my $n = $ARGV[0];
-my (@a, @b, @c);
-for my $i (0 .. $n - 1) {
-    $a[$i] = [map { ($i * 31 + $_ * 17) % 10 + 1.0 } 0 .. $n - 1];
-    $b[$i] = [map { ($i * 13 + $_ * 7) % 10 - 4.0 } 0 .. $n - 1];
-    $c[$i] = [(0.0) x $n];
-}
-
-for my $i (0 .. $n - 1) {
-    my $ci = $c[$i];
-    my $ai = $a[$i];
-    for my $k (0 .. $n - 1) {
-        my $aik = $ai->[$k];
-        my $bk = $b[$k];
-        for my $j (0 .. $n - 1) {
-            $ci->[$j] += $aik * $bk->[$j];
-        }
+sub setup { }
+sub decode {
+    my ($data) = @_;
+    my $n = unpack("l<", $data);
+    my @vals = unpack("x4 d<*", $data);
+    my (@a, @b);
+    for my $i (0 .. $n - 1) {
+        push @a, [@vals[$i * $n .. $i * $n + $n - 1]];
+        push @b, [@vals[$n * $n + $i * $n .. $n * $n + $i * $n + $n - 1]];
     }
+    return [$n, \@a, \@b];
 }
-
-my ($trace, $total) = (0.0, 0.0);
-for my $i (0 .. $n - 1) {
-    $trace += $c[$i][$i];
-    $total += $_ for @{ $c[$i] };
+sub solve {
+    my ($inst) = @_;
+    my ($n, $a, $b) = @$inst;
+    my @c;
+    for my $i (0 .. $n - 1) {
+        my @ci = (0.0) x $n;
+        my $ai = $a->[$i];
+        for my $k (0 .. $n - 1) {
+            my $aik = $ai->[$k];
+            my $bk = $b->[$k];
+            for my $j (0 .. $n - 1) {
+                $ci[$j] += $aik * $bk->[$j];
+            }
+        }
+        push @c, \@ci;
+    }
+    return \@c;
 }
-printf "trace=%d\n", $trace;
-printf "sum=%d\n", $total;
-printf "c00=%d\n", $c[0][0];
-printf "clast=%d\n", $c[$n - 1][$n - 1];
+sub emit {
+    my ($c) = @_;
+    return [map { my $v = $_; map { int(floor_($_)) } @$v } @$c];
+}
+sub floor_ { my ($x) = @_; my $i = int($x); return $i > $x ? $i - 1 : $i; }
+1;

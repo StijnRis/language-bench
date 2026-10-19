@@ -1,32 +1,40 @@
-local n = tonumber(arg[1])
-local a, b, c = {}, {}, {}
-for i = 1, n do
-  local ai, bi, ci = {}, {}, {}
-  for j = 1, n do
-    ai[j] = ((i - 1) * 31 + (j - 1) * 17) % 10 + 1.0
-    bi[j] = ((i - 1) * 13 + (j - 1) * 7) % 10 - 4.0
-    ci[j] = 0.0
+local P = {}
+function P.setup() end
+function P.decode(data)
+  local n = string.unpack("<i4", data)
+  local a, b, unpack, pos = {}, {}, string.unpack, 5
+  for i = 1, n do
+    local row = {}
+    for j = 1, n do row[j], pos = unpack("<d", data, pos) end
+    a[i] = row
   end
-  a[i], b[i], c[i] = ai, bi, ci
+  for i = 1, n do
+    local row = {}
+    for j = 1, n do row[j], pos = unpack("<d", data, pos) end
+    b[i] = row
+  end
+  return { n, a, b }
 end
-
-for i = 1, n do
-  local ci, ai = c[i], a[i]
-  for k = 1, n do
-    local aik, bk = ai[k], b[k]
-    for j = 1, n do
-      ci[j] = ci[j] + aik * bk[j]
+function P.solve(inst)
+  local n, a, b = inst[1], inst[2], inst[3]
+  local c = {}
+  for i = 1, n do
+    local ci, ai = {}, a[i]
+    for j = 1, n do ci[j] = 0.0 end
+    for k = 1, n do
+      local aik, bk = ai[k], b[k]
+      for j = 1, n do ci[j] = ci[j] + aik * bk[j] end
     end
+    c[i] = ci
   end
+  return c
 end
-
-local trace, total = 0.0, 0.0
-for i = 1, n do
-  trace = trace + c[i][i]
-  local ci = c[i]
-  for j = 1, n do total = total + ci[j] end
+function P.emit(c)
+  local out, floor = {}, math.floor
+  for i = 1, #c do
+    local row = c[i]
+    for j = 1, #row do out[#out + 1] = floor(row[j] + 0.5) end
+  end
+  return out
 end
-print(string.format("trace=%d", math.tointeger(trace)))
-print(string.format("sum=%d", math.tointeger(total)))
-print(string.format("c00=%d", math.tointeger(c[1][1])))
-print(string.format("clast=%d", math.tointeger(c[n][n])))
+return P
