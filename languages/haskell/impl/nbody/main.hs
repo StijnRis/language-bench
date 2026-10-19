@@ -1,27 +1,31 @@
 -- N-body simulation, after the Computer Language Benchmarks Game.
 {-# LANGUAGE BangPatterns #-}
+module Problem (problem) where
+
+import Contract
 import Control.Monad (forM_, when)
 import Data.Array.Base (unsafeRead, unsafeWrite)
 import Data.Array.IO (IOUArray, newListArray)
-import System.Environment (getArgs)
-import Text.Printf (printf)
+import Data.Bits (shiftL, (.|.))
+import qualified Data.ByteString as B
+import qualified Data.ByteString.Unsafe as BU
+import Data.IORef
+import Data.Word (Word64)
+import GHC.Float (castWord64ToDouble)
+import System.IO.Unsafe (unsafePerformIO)
 
-solarMass, days :: Double
+{-# NOINLINE stepsRef #-}
+stepsRef :: IORef Int
+stepsRef = unsafePerformIO (newIORef 1000000)
+
+solarMass :: Double
 solarMass = 4 * pi * pi
-days = 365.24
-
--- body i: x y z vx vy vz mass at 7*i .. 7*i+6
-initial :: [Double]
-initial =
-  [ 0, 0, 0, 0, 0, 0, solarMass
-  , 4.84143144246472090e+00, -1.16032004402742839e+00, -1.03622044471123109e-01, 1.66007664274403694e-03 * days, 7.69901118419740425e-03 * days, -6.90460016972063023e-05 * days, 9.54791938424326609e-04 * solarMass
-  , 8.34336671824457987e+00, 4.12479856412430479e+00, -4.03523417114321381e-01, -2.76742510726862411e-03 * days, 4.99852801234917238e-03 * days, 2.30417297573763929e-05 * days, 2.85885980666130812e-04 * solarMass
-  , 1.28943695621391310e+01, -1.51111514016986312e+01, -2.23307578892655734e-01, 2.96460137564761618e-03 * days, 2.37847173959480950e-03 * days, -2.96589568540237556e-05 * days, 4.36624404335156298e-05 * solarMass
-  , 1.53796971148509165e+01, -2.59193146099879641e+01, 1.79258772950371181e-01, 2.68067772490389322e-03 * days, 1.62824170038242295e-03 * days, -9.51592254519715870e-05 * days, 5.15138902046611451e-05 * solarMass
-  ]
 
 nb :: Int
 nb = 5
+
+le64 :: B.ByteString -> Int -> Double
+le64 b off = castWord64ToDouble (foldr (\k acc -> (acc `shiftL` 8) .|. fromIntegral (BU.unsafeIndex b (off + k))) (0 :: Word64) [0 .. 7])
 
 energy :: IOUArray Int Double -> IO Double
 energy s = go 0 0
@@ -31,8 +35,7 @@ energy s = go 0 0
       | i == nb = return e
       | otherwise = do
           vx <- rd (7 * i + 3); vy <- rd (7 * i + 4); vz <- rd (7 * i + 5); m <- rd (7 * i + 6)
-          let e1 = e + 0.5 * m * (vx * vx + vy * vy + vz * vz)
-          e2 <- inner i (i + 1) e1
+          e2 <- inner i (i + 1) (e + 0.5 * m * (vx * vx + vy * vy + vz * vz))
           go (i + 1) e2
     inner !i !j !e
       | j == nb = return e
@@ -61,16 +64,21 @@ advance s dt = do
     rd = unsafeRead s
     upd k f = unsafeRead s k >>= unsafeWrite s k . f
 
-main :: IO ()
-main = do
-  [arg] <- getArgs
-  let steps = read arg :: Int
-  s <- newListArray (0, 7 * nb - 1) initial :: IO (IOUArray Int Double)
-  let momentum k = sum <$> mapM (\i -> (*) <$> unsafeRead s (7 * i + 3 + k) <*> unsafeRead s (7 * i + 6)) [0 .. nb - 1]
-  forM_ [0, 1, 2] $ \k -> do
-    p <- momentum k
-    unsafeWrite s (3 + k) (negate p / solarMass)
-  energy s >>= printf "%.9f\n"
-  let loop !i = when (i < steps) $ advance s 0.01 >> loop (i + 1)
-  loop 0
-  energy s >>= printf "%.9f\n"
+problem :: Problem
+problem =
+  Problem
+    { pSetup = \args -> case args of (a : _) -> writeIORef stepsRef (read a); _ -> return ()
+    , pDecode = \dat -> newListArray (0, 7 * nb - 1) [le64 dat (8 * i) | i <- [0 .. 7 * nb - 1]] :: IO (IOUArray Int Double)
+    , pSolve = \s -> do
+        steps <- readIORef stepsRef
+        let momentum k = sum <$> mapM (\i -> (*) <$> unsafeRead s (7 * i + 3 + k) <*> unsafeRead s (7 * i + 6)) [0 .. nb - 1]
+        forM_ [0, 1, 2] $ \k -> do
+          p <- momentum k
+          unsafeWrite s (3 + k) (negate p / solarMass)
+        !e0 <- energy s
+        let loop !i = when (i < steps) $ advance s 0.01 >> loop (i + 1)
+        loop 0
+        !e1 <- energy s
+        return (e0, e1)
+    , pEmit = \(e0, e1) sink -> sink (floor (e0 * 1e9 + 0.5)) >> sink (floor (e1 * 1e9 + 0.5))
+    }
