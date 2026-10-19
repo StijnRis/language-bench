@@ -1,6 +1,9 @@
-module Program
+module Problem
 
 open System.Threading
+
+let mutable nArg = 2000000L
+let mutable workersArg = 4
 
 let isPrime (n: int64) =
     if n < 2L then false
@@ -14,10 +17,16 @@ let isPrime (n: int64) =
             d <- d + 2L
         prime
 
-[<EntryPoint>]
-let main argv =
-    let n = int64 argv.[0]
-    let workers = int argv.[1]
+let setup (args: string[]) =
+    if args.Length > 1 then
+        nArg <- int64 args.[0]
+        workersArg <- int args.[1]
+
+let decode (data: byte[]) : obj = null
+
+let solve (inst: obj) : obj =
+    let n = nArg
+    let workers = workersArg
     let counts = Array.zeroCreate<int64> workers
     let threads =
         Array.init workers (fun id ->
@@ -33,5 +42,8 @@ let main argv =
             t)
     for t in threads do
         t.Join()
-    printfn "primes=%d" (Array.sum counts)
-    0
+    box [| Array.sum counts |]
+
+let emit (res: obj) (sink: int64 -> unit) = sink (unbox<int64[]> res).[0]
+
+let release (inst: obj) (res: obj) = ()

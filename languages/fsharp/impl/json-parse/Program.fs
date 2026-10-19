@@ -1,10 +1,12 @@
-module Program
+module Problem
 
-open System.IO
 open System.Text.Json
 
-[<EntryPoint>]
-let main argv =
+let setup (args: string[]) = ()
+
+let decode (data: byte[]) : obj = box data // the bytes are parsed inside solve
+
+let solve (inst: obj) : obj =
     // objects, int sum, string length, trues, nulls
     let c = Array.zeroCreate<int64> 5
     let rec walk (v: JsonElement) =
@@ -21,12 +23,12 @@ let main argv =
         | JsonValueKind.True -> c.[3] <- c.[3] + 1L
         | JsonValueKind.Null -> c.[4] <- c.[4] + 1L
         | _ -> ()
-    let data = File.ReadAllBytes(argv.[0])
-    use doc = JsonDocument.Parse(data)
+    use doc = JsonDocument.Parse(unbox<byte[]> inst)
     walk doc.RootElement
-    printfn "objects=%d" c.[0]
-    printfn "int_sum=%d" c.[1]
-    printfn "string_length=%d" c.[2]
-    printfn "true=%d" c.[3]
-    printfn "null=%d" c.[4]
-    0
+    box c
+
+let emit (res: obj) (sink: int64 -> unit) =
+    for v in unbox<int64[]> res do
+        sink v
+
+let release (inst: obj) (res: obj) = ()

@@ -1,16 +1,19 @@
-module Program
+module Problem
 
 open System
 open System.Collections.Generic
 open System.IO
 open System.Text
 
-[<EntryPoint>]
-let main argv =
+let setup (args: string[]) = ()
+
+let decode (data: byte[]) : obj = box (Encoding.UTF8.GetString data) // path of the file
+
+let solve (inst: obj) : obj =
     let freq = Dictionary<string, int>()
     let mutable lines = 0L
     let mutable total = 0L
-    use reader = new StreamReader(argv.[0], Encoding.Latin1, false, 1 <<< 16)
+    use reader = new StreamReader(unbox<string> inst, Encoding.Latin1, false, 1 <<< 16)
     let mutable line = reader.ReadLine()
     while not (isNull line) do
         let c1 = line.IndexOf(',')
@@ -28,8 +31,14 @@ let main argv =
         if kv.Value > topCount || (kv.Value = topCount && String.CompareOrdinal(kv.Key, top) < 0) then
             top <- kv.Key
             topCount <- kv.Value
-    printfn "lines=%d" lines
-    printfn "sum=%d" total
-    printfn "distinct=%d" freq.Count
-    printfn "top=%s %d" top topCount
-    0
+    let out = List<int64>()
+    out.AddRange [ lines; total; int64 freq.Count; int64 topCount; int64 top.Length ]
+    for ch in top do
+        out.Add(int64 ch)
+    box out
+
+let emit (res: obj) (sink: int64 -> unit) =
+    for v in unbox<List<int64>> res do
+        sink v
+
+let release (inst: obj) (res: obj) = ()
