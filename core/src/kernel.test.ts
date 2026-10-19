@@ -51,9 +51,8 @@ describe("warmDurations", () => {
   it("drops the iterations that start within the warm-up window", () => {
     expect(warmDurations([1, 1, 1, 1, 1], 2)).toEqual([1, 1, 1]);
   });
-  it("falls back to everything but the first iteration", () => {
-    expect(warmDurations([5, 4, 3], 100)).toEqual([4, 3]);
-    expect(warmDurations([5], 100)).toEqual([5]);
+  it("throws when no iteration is warm instead of guessing", () => {
+    expect(() => warmDurations([5, 4, 3], 100)).toThrow(/no iteration starts after the first 100 s/);
   });
 });
 

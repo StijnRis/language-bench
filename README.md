@@ -65,4 +65,4 @@ SITE_URL=http://localhost:4173 pnpm build && pnpm --filter @lb/web e2e:install &
 ```
 
 CI: `verify.yml` (harness conformance, and changed implementations must reproduce the reference results; runs only when something relevant changed, and `bench.yml` starts it for newly discovered versions; no schedule), `bench.yml` (self-continuing sessions, appends data), `deploy.yml` (GitHub Pages), `e2e.yml` (builds the site and runs the Playwright smoke tests in `web/e2e`).
-Read the [methodology](web/app/methodology/page.tsx) for details and limits.
+See `AGENTS.md` for the working agreements (commit to main, clean-break migrations, no fallbacks, loud errors). Read the [methodology](web/app/methodology/page.tsx) for details and limits.

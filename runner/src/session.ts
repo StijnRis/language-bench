@@ -385,6 +385,7 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
         variant: pick.variant,
         variantSpec: task.variant as unknown as Record<string, unknown>,
         problem: pick.problem,
+        kind: task.problem.spec.kind,
         args: task.args,
         containerImage: image,
         sourceFile: task.sourceFile,

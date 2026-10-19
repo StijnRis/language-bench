@@ -47,8 +47,8 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
   const kernel = b.metric === "warm";
   const metricName = METRIC_LABEL[b.metric];
   const refSeconds = ref?.byMetric[b.metric]?.score;
-  const warmupSeconds = (m.sessions[firstSessionId(b)]?.config as Record<string, any> | undefined)?.kernel?.warmupSeconds ?? 2;
-  const kernelCfg = (m.sessions[firstSessionId(b)]?.config as Record<string, any> | undefined)?.kernel ?? { budgetSeconds: 10, minIterations: 3 };
+  const kernelCfg = (m.sessions[firstSessionId(b)]!.config as { kernel: { budgetSeconds: number; minIterations: number; warmupSeconds: number; checkedIterations: number } }).kernel;
+  const warmupSeconds = kernelCfg.warmupSeconds;
   const src = sourceOf(m, b.language, b.problem, b.version);
   const factors = b.sessions.map((s) => s.machineFactor);
   const adjusted = b.sessions.map((s) => s.adjustedMedian);
@@ -73,7 +73,7 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
       <h2>How this number came about</h2>
       <ol className="steps">
         <li><strong>The task.</strong> {p.spec.description} {kernel
-          ? <>Every iteration gets a new, never reused instance from the deterministic generator <a href={`${repoUrl}/blob/main/tools/lbgen.c`}>lbgen</a>{p.spec.instance === "none" ? " (this task has no instance: every iteration runs the same workload)" : p.spec.instance === "file" ? " (written to tmpfs as a CSV file before each iteration)" : " (streamed to the program on standard input)"}. A separate check compares an order-sensitive hash of the complete result of {kernelCfg.checkedIterations ?? 20} iterations with the generator&apos;s reference; this was {c.correct ? "the case in every session" : "NOT the case in at least one session"}.</>
+          ? <>Every iteration gets a new, never reused instance from the deterministic generator <a href={`${repoUrl}/blob/main/tools/lbgen.c`}>lbgen</a>{p.spec.instance === "none" ? " (this task has no instance: every iteration runs the same workload)" : p.spec.instance === "file" ? " (written to tmpfs as a CSV file before each iteration)" : " (streamed to the program on standard input)"}. A separate check compares an order-sensitive hash of the complete result of {kernelCfg.checkedIterations} iterations with the generator&apos;s reference; this was {c.correct ? "the case in every session" : "NOT the case in at least one session"}.</>
           : <>The program is started as <code>{b.runCommand}</code>. Its output must equal <a href={`${repoUrl}/blob/main/problems/${b.problem}/expected.txt`}>expected.txt</a> exactly; this was {c.correct ? "the case in every session" : "NOT the case in at least one session"}.</>}</li>
         <li><strong>The environment.</strong> A fresh GitHub-hosted VM per session runs the pinned Docker image <code>{firstSession.imageDigest ?? "(digest not recorded)"}</code> containing <code>{b.toolVersion}</code>. Hardware, kernel and glibc of every session are listed below.</li>
         <li><strong>The source.</strong> Exactly this code (hash <code>{b.sourceHash}</code>, in git at the commit of each session) is the kernel: it only decodes the instance and solves it. It is built together with the language&apos;s one <a href={`${repoUrl}/tree/main/languages/${b.language}/harness`}>harness</a>, which owns the clock, the loop and the output:</li>
@@ -84,16 +84,16 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
           <dl className="kv" style={{ marginTop: 6 }}>
             {b.buildCommand && <><dt>build</dt><dd><code>{b.buildCommand}</code></dd></>}
             <dt>run</dt><dd><code>{b.runCommand}</code></dd>
-            {kernel && <><dt>kernel loop</dt><dd>The harness reads and decodes an instance (untimed), times only <code>solve</code> with the language&apos;s monotonic clock, and repeats until the summed kernel time reaches {kernelCfg.budgetSeconds ?? 10} s (at least {kernelCfg.minIterations ?? 3} iterations, no other cap). The first iteration is the <em>cold</em> time; the <em>warm</em> time is the median of the iterations after the first {warmupSeconds} s of kernel time. Memory is read from the container&apos;s cgroup by a sampler outside the process.</dd></>}
+            {kernel && <><dt>kernel loop</dt><dd>The harness reads and decodes an instance (untimed), times only <code>solve</code> with the language&apos;s monotonic clock, and repeats until the summed kernel time reaches {kernelCfg.budgetSeconds} s (at least {kernelCfg.minIterations} iterations, no other cap). The first iteration is the <em>cold</em> time; the <em>warm</em> time is the median of the iterations after the first {warmupSeconds} s of kernel time. Memory is read from the container&apos;s cgroup by a sampler outside the process.</dd></>}
             <dt>end-to-end</dt><dd><code>hyperfine</code> runs the same binary for exactly one iteration (process start to exit, with the instance read from a file) and records wall-clock time and peak resident memory{kernel ? "; reported next to the kernel time" : ""}.</dd>
             <dt>binary size</dt><dd>{bytes(b.binarySize)}</dd></dl></li>
         <li><strong>Many sessions, many iterations.</strong> The benchmark was measured in {b.sessions.length} independent session{b.sessions.length === 1 ? "" : "s"} between {day(b.firstDate)} and {day(b.lastDate)}, on {b.cpuModels.length} CPU model{b.cpuModels.length === 1 ? "" : "s"}. Within a session the execution order of all benchmarks was randomised. Each dot below is one {kernel ? "warm kernel iteration (at most 100 evenly spaced ones per session are shown)" : "repetition"}; the black bar is the session median; orange dots are flagged outliers (kept in the data).</li>
       </ol>
-      <StripPlot rows={b.sessions.map((s) => ({ label: `${day(s.date)} · ${s.cpuModel.replace(/\(R\)|\(TM\)|CPU|Processor/g, "").replace(/\s+/g, " ").trim().slice(0, 28)}`, sub: `${kernel ? `${s.iterations ?? s.summary.n} iterations` : `${s.summary.n} reps`} · median ${seconds(s.summary.median)}`, reps: s.reps, median: s.summary.median, outliers: s.summary.outliers }))} />
+      <StripPlot rows={b.sessions.map((s) => ({ label: `${day(s.date)} · ${s.cpuModel.replace(/\(R\)|\(TM\)|CPU|Processor/g, "").replace(/\s+/g, " ").trim().slice(0, 28)}`, sub: `${kernel ? `${s.iterations} iterations` : `${s.summary.n} reps`} · median ${seconds(s.summary.median)}`, reps: s.reps, median: s.summary.median, outliers: s.summary.outliers }))} />
       {kernel && b.sessions.some((s) => s.curve) && (<>
         <h3 style={{ marginTop: 20 }}>Warm-up curve</h3>
         <p className="small muted">Kernel time of every iteration in order, one line per session (log axis; orange dot: the cold first iteration). Just-in-time and garbage-collected runtimes need a while to settle; compiled languages are flat from the start.</p>
-        <WarmupCurve rows={b.sessions.flatMap((s) => (s.curve ? [{ label: day(s.date), curve: s.curve, iterations: s.iterations ?? s.curve.length }] : []))} />
+        <WarmupCurve rows={b.sessions.flatMap((s) => (s.curve ? [{ label: day(s.date), curve: s.curve, iterations: s.iterations! }] : []))} />
       </>)}
       <div className="tablewrap" style={{ marginTop: 12 }}><table>
         <thead><tr><th>Session</th><th>CPU</th>{kernel ? <><th className="num">Iterations</th><th className="num">Cold</th><th className="num">Warm median</th><th className="num">End-to-end</th></> : <><th className="num">Reps</th><th className="num">Median</th><th className="num">MAD</th></>}<th className="num">Machine factor</th><th className="num">{kernel ? "Warm" : "Median"} ÷ factor</th><th>Avg. / peak memory</th><th>Source</th></tr></thead>

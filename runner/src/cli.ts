@@ -78,7 +78,7 @@ async function main() {
     case "session": {
       const plan: SessionPlan = JSON.parse(fs.readFileSync(cwdPath(f.plan!), "utf8"));
       if (f.reps) plan.config.repetitions = { min: Number(f.reps), max: Number(f.reps) };
-      if (f.budget) plan.config.kernel = { ...plan.config.kernel, budgetSeconds: Number(f.budget) }; // shorter kernel loops for tests
+      if (f.budget) plan.config.kernel = { ...plan.config.kernel, budgetSeconds: Number(f.budget), warmupSeconds: Number(f.budget) / 5 }; // shorter kernel loops for tests (warm-up scaled with them)
       await runSession(plan, { out: cwdPath(f.out!) });
       break;
     }

@@ -33,6 +33,20 @@ const runsOf = (t: number, mem: number, n: number) => {
   return { wall, cpu: wall, user: wall, system: col(() => 0), memory: col(() => Math.round(mem * noise(0.03))), exit: col(() => 0) };
 };
 
+/** Kernel loop of ~10 s: a cold first iteration that decays to the warm time (slower start for managed runtimes). */
+const kernelOf = (t: number, mem: number, jit: boolean) => {
+  const n = Math.max(3, Math.min(300, Math.ceil(10 / t)));
+  const durations = Array.from({ length: n }, (_, i) => Math.round(t * noise(0.03) * (1 + (jit ? 2.5 : 0.3) * Math.exp(-i / 3)) * 1e9) / 1e9);
+  let at = 0;
+  const starts = durations.map((d) => { const x = at; at += d; return Math.round(x * 1e9) / 1e9; });
+  return {
+    clock: "fixture", budgetSeconds: 10, iterations: n, kernelSeconds: Math.round(at * 1e9) / 1e9, reason: "budget" as const, durations, starts,
+    checked: Math.min(n, 20), matched: Math.min(n, 20),
+    memory: { avgBytes: Math.round(mem * noise(0.03)), peakBytes: Math.round(mem * 1.4), runAvgBytes: Math.round(mem * 1.1), samples: Math.round(at * 200) },
+    flags: [] as string[],
+  };
+};
+
 const langs = loadLanguages(root);
 const problems = loadProblems(root);
 const sessions: Record<string, Session> = {};
@@ -55,17 +69,20 @@ for (let s = 0; s < 8; s++) {
   const started = new Date(Date.UTC(2026, 8, 1 + s * 3)).toISOString();
   sessions[id] = {
     id, startedAt: started, finishedAt: started, durationSeconds: 3600, repoCommit: "fixture", trigger: {}, runner: {},
-    host: { cpu: { model: cpu.model, cores: 4 } }, tooling: { hyperfineVersion: "2.0.0" }, containers: {}, config: {}, plan: [], order: [], skipped: [],
+    host: { cpu: { model: cpu.model, cores: 4 } }, tooling: { hyperfineVersion: "2.0.0" }, containers: {}, config: { kernel: { warmupSeconds: 2 } }, plan: [], order: [], skipped: [],
   };
   // each session runs a random ~55% of all benchmarks, always including the first 30 (overlap)
   all.forEach((b, i) => {
     if (i >= 30 && rnd() > 0.55) return;
     const t = (base[b.l.spec.id]?.[b.p.spec.id] ?? 1) * (1 + b.age * 0.06) * (b.variant.default ? 1 : 1.05 + (b.variant.id.length % 3) * 0.04) * speed;
+    const kernel = b.p.spec.kind === "kernel";
+    const mem = 10e6 * (1 + rnd());
     (bySession.get(id) ?? bySession.set(id, []).get(id)!).push({
       sessionId: id, language: b.l.spec.id, version: b.version, toolVersion: `${b.l.spec.name} ${b.version} (fixture)`, variant: b.variant.id,
-      variantSpec: b.variant as never, problem: b.p.spec.id, args: [], containerImage: b.l.spec.image.replace("{version}", b.version), sourceFile: "fixture",
+      variantSpec: b.variant as never, problem: b.p.spec.id, kind: b.p.spec.kind, args: [], containerImage: b.l.spec.image.replace("{version}", b.version), sourceFile: "fixture",
       sourceHash: "fixture", runCommand: b.variant.run, buildCommand: b.variant.build, status: "ok", correct: true, startedAt: started, finishedAt: started,
-      runs: runsOf(t, 10e6 * (1 + rnd()), 12),
+      runs: runsOf(kernel ? t * 1.2 + 0.03 : t, mem, 12),
+      ...(kernel ? { kernel: kernelOf(t, mem, ["node", "python", "java", "julia"].includes(b.l.spec.id)) } : {}),
     });
   });
 }

@@ -8,7 +8,7 @@ import ResultsTable, { type ResultMetric } from "./ResultsTable";
 
 export interface LCell {
   id: string; language: string; version: string; variant: string; problem: string;
-  seconds: number; cold: number | null; e2e: number | null; index: number; indexLow: number; indexHigh: number; memoryMB: number;
+  t: { warm: number | null; cold: number | null; e2e: number | null }; index: number; indexLow: number; indexHigh: number; memoryMB: number;
   binarySize: number | null; sessions: number; provisional: boolean;
 }
 interface Props {
@@ -31,7 +31,8 @@ export default function Leaderboard({ cells, languages, problems }: Props) {
     const scored = problems.filter((p) => p.scored);
     return languages.flatMap((l) => {
       const mine = cells.filter((c) => c.language === l.id);
-      const pick = task === "all" ? mine.filter((c) => scored.some((p) => p.id === c.problem)) : mine.filter((c) => c.problem === task);
+      // a problem without data under this basis (the start-up task has no kernel time) is not ranked under it
+      const pick = (task === "all" ? mine.filter((c) => scored.some((p) => p.id === c.problem)) : mine.filter((c) => c.problem === task)).filter((c) => c.t[basis] != null);
       if (!pick.length) return [];
       const sizes = pick.map((c) => c.binarySize).filter((x): x is number => x != null && x > 0);
       const single = pick.length === 1 ? pick[0]! : undefined;
@@ -39,7 +40,7 @@ export default function Leaderboard({ cells, languages, problems }: Props) {
         id: l.id,
         name: l.name,
         color: colorOf(l.id),
-        seconds: gm(pick.map((c) => (basis === "cold" ? c.cold : basis === "e2e" ? c.e2e : null) ?? c.seconds)),
+        seconds: gm(pick.map((c) => c.t[basis]!)),
         memoryMB: gm(pick.map((c) => c.memoryMB || 1)),
         binarySize: sizes.length ? gm(sizes) : null,
         timeTitle: single && basis === "warm" ? `95% interval vs the fastest entry: ${single.indexLow.toFixed(2)}×–${single.indexHigh.toFixed(2)}× (${single.sessions} sessions)` : undefined,

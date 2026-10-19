@@ -6,7 +6,7 @@ import { useUrlState } from "@/lib/useUrlState";
 import { LangIcon } from "./Icons";
 import ShareBar from "./ShareBar";
 
-type Cell = { language: string; problem: string; index: number; indexCold: number; indexE2e: number; memoryMB: number };
+type Cell = { language: string; problem: string; idx: { warm: number | null; cold: number | null; e2e: number | null }; memoryMB: number };
 type Problem = { id: string; title: string; tags: string[] };
 interface Props {
   cells: Cell[];
@@ -33,7 +33,7 @@ export default function Picker({ cells, languages, problems }: Props) {
   const [memRaw, setMem] = useUrlState("mem", "0");
   const [basisRaw, setBasis] = useUrlState("basis", "warm");
   const basis = basisRaw === "cold" || basisRaw === "e2e" ? basisRaw : "warm";
-  const speedOf = (c: Cell) => (basis === "cold" ? c.indexCold : basis === "e2e" ? c.indexE2e : c.index);
+  const speedOf = (c: Cell) => c.idx[basis];
   const w = useMemo(() => parseWeights(raw, problems), [raw, problems]);
   const mem = Math.max(0, Math.min(100, Math.round(+memRaw || 0))) / 100;
   const setW = (next: Record<string, number>) => setRaw(encodeWeights(next));
@@ -58,11 +58,11 @@ export default function Picker({ cells, languages, problems }: Props) {
     const list = languages.flatMap((l) => {
       const mine = active.flatMap((p) => {
         const c = cells.find((x) => x.language === l.id && x.problem === p.id);
-        return c ? [{ p, c }] : [];
+        return c && speedOf(c) != null ? [{ p, c }] : [];
       });
       if (!mine.length) return [];
       const weights = mine.map((x) => w[x.p.id]!);
-      const time = gm(mine.map((x) => speedOf(x.c)), weights);
+      const time = gm(mine.map((x) => speedOf(x.c)!), weights);
       const memory = gm(mine.map((x) => (x.c.memoryMB > 0 ? x.c.memoryMB / minMem[x.p.id]! : 1)), weights);
       return [{ l, time, memory, score: Math.pow(time, 1 - mem) * Math.pow(memory, mem), covered: mine.length, total: active.length }];
     });

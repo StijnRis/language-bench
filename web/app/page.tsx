@@ -51,7 +51,7 @@ export default function Home() {
       )}
       {!m.hasData ? <NoData /> : (
         <Leaderboard
-          cells={cells.map((c) => ({ ...c, cold: c.by.cold?.seconds ?? null, e2e: c.by.e2e?.seconds ?? null }))}
+          cells={cells.map((c) => ({ ...c, t: { warm: c.by.warm?.seconds ?? null, cold: c.by.cold?.seconds ?? null, e2e: c.by.e2e?.seconds ?? null } }))}
           languages={m.languages.map((l) => ({ id: l.spec.id, name: l.spec.name, version: latestVersion(l) }))}
           problems={m.problems.map((p) => ({ id: p.spec.id, title: p.spec.title, scored: p.spec.scored }))}
         />

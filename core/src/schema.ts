@@ -234,6 +234,8 @@ export const MeasurementSchema = z
     variant: z.string(),
     variantSpec: z.record(z.any()),
     problem: z.string(),
+    /** kernel: has a kernel loop and an end-to-end run; startup: end-to-end run only */
+    kind: z.enum(["kernel", "startup"]),
     args: z.array(z.string()),
     containerImage: z.string(),
     sourceFile: z.string(),

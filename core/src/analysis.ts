@@ -34,19 +34,26 @@ function thin(xs: number[], max: number): number[] {
   return out;
 }
 
-export const warmupSecondsOf = (s: Session): number => {
-  const k = (s.config as Record<string, any> | undefined)?.kernel;
-  return typeof k?.warmupSeconds === "number" ? k.warmupSeconds : 2;
-};
+export function warmupSecondsOf(s: Session): number {
+  const w = (s.config as { kernel?: { warmupSeconds?: unknown } }).kernel?.warmupSeconds;
+  if (typeof w !== "number") throw new Error(`session ${s.id}: config.kernel.warmupSeconds is missing; the session file is not in the current format`);
+  return w;
+}
 
-/** Repetition times of one measurement under a metric (undefined: the measurement has no such data). */
-export function repsOf(m: Measurement, metric: Metric, warmupSeconds: number): number[] | undefined {
+const where = (m: Measurement) => `${m.language} ${m.version} ${m.variant} ${m.problem} (session ${m.sessionId})`;
+
+/** The metrics a measurement has: kernel problems have all three, the start-up problem only end-to-end. */
+export const metricsOf = (m: Pick<Measurement, "kind">): Metric[] => (m.kind === "kernel" ? METRICS : ["e2e"]);
+
+/** Iteration times of one measurement under a metric. Throws when the measurement lacks the data its kind requires. */
+export function repsOf(m: Measurement, metric: Metric, warmupSeconds: number): number[] {
   if (metric === "e2e") {
-    const t = m.runs ? extractRuns(m.runs).times : [];
-    return t.length ? t : undefined;
+    if (!m.runs || m.runs.wall.length === 0) throw new Error(`${where(m)}: no end-to-end runs`);
+    return extractRuns(m.runs).times;
   }
+  if (m.kind !== "kernel") throw new Error(`${where(m)}: a ${m.kind} problem has no ${metric} time`);
   const d = m.kernel?.durations;
-  if (!d || d.length === 0) return undefined;
+  if (!d || d.length === 0) throw new Error(`${where(m)}: no kernel iterations recorded`);
   return metric === "cold" ? [coldSeconds(d)] : warmDurations(d, warmupSeconds);
 }
 
@@ -76,7 +83,7 @@ export interface SessionDetail {
   cold?: number;
   warm?: number;
   /** median end-to-end time (seconds) */
-  e2e?: number;
+  e2e: number;
   /** kernel time of the iterations in order (thinned to 120 points), for the warm-up curve */
   curve?: number[];
   /** peak memory during the kernel loop (bytes) */
@@ -162,17 +169,17 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
     for (const m of d.measurements) {
       if (m.status !== "ok" || !sessions[m.sessionId]) continue;
       const warmup = warmupSecondsOf(sessions[m.sessionId]!);
-      if (!repsOf(m, "warm", warmup) && !repsOf(m, "e2e", warmup)) continue;
+      for (const metric of metricsOf(m)) repsOf(m, metric, warmup); // validates the data
       const k = benchmarkKey(m);
       (groups.get(k) ?? groups.set(k, []).get(k)!).push({ m, warmup });
     }
-  /** warm for benchmarks that have kernel data, end-to-end otherwise (the start-up problem, old data) */
-  const primaryOf = (rows: Row[]): Metric => (rows.every((r) => repsOf(r.m, "warm", r.warmup)) ? "warm" : "e2e");
+  /** warm kernel time for kernel problems, end-to-end for the start-up problem */
+  const primaryOf = (rows: Row[]): Metric => (rows[0]!.m.kind === "kernel" ? "warm" : "e2e");
 
   const obs: Obs[] = [];
   for (const [k, rows] of groups) {
     const metric = primaryOf(rows);
-    for (const r of rows) obs.push({ bench: k, session: r.m.sessionId, y: Math.log(median(repsOf(r.m, metric, r.warmup)!)), env: environmentOf(sessions[r.m.sessionId]!), group: r.m.problem });
+    for (const r of rows) obs.push({ bench: k, session: r.m.sessionId, y: Math.log(median(repsOf(r.m, metric, r.warmup))), env: environmentOf(sessions[r.m.sessionId]!), group: r.m.problem });
   }
   const fit = fitHardware(obs);
   // the main component = the one with the most sessions
@@ -190,12 +197,13 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
         const environment = environmentOf(s);
         const factor = Math.exp(fit.h.get(m.sessionId) ?? 0);
         const envFactor = Math.exp(fit.envEffect.get(envKey(environment, m.problem)) ?? 0);
-        const reps = repsOf(m, metric, warmup)!;
+        const reps = repsOf(m, metric, warmup);
         const summary = summarizeReps(reps);
         const image = s.containers?.[m.containerImage] ?? {};
         const kd = m.kernel?.durations;
         const e2e = repsOf(m, "e2e", warmup);
-        const km = m.kernel?.memory;
+        const mem = m.kernel?.memory;
+        if (m.kind === "kernel" && !mem) throw new Error(`${where(m)}: no memory samples`);
         const runMemory = m.runs ? extractRuns(m.runs).memory : [];
         return {
           sessionId: m.sessionId,
@@ -212,15 +220,15 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
           iterations: kd?.length,
           cold: kd?.length ? coldSeconds(kd) : undefined,
           warm: kd?.length ? median(warmDurations(kd, warmup)) : undefined,
-          e2e: e2e ? median(e2e) : undefined,
+          e2e: median(e2e),
           curve: kd?.length ? thin(kd, CURVE_POINTS) : undefined,
-          peakMemory: km?.peakBytes,
+          peakMemory: mem?.peakBytes,
           flags: m.kernel?.flags ?? [],
           machineFactor: factor,
           environment,
           envFactor,
           adjustedMedian: summary.median / (factor * envFactor),
-          meanMemory: metric === "warm" && km ? km.avgBytes : runMemory.length ? mean(runMemory) : 0,
+          meanMemory: mem ? mem.avgBytes : mean(runMemory),
           correct: m.correct,
         };
       })
@@ -229,13 +237,11 @@ export function analyze(sessions: Record<string, Session>, datas: LanguageData[]
     const byMetric: BenchmarkResult["byMetric"] = {};
     let primary!: Omit<Aggregate, "bootstrap">;
     for (const metricName of METRICS) {
-      const samples = rows.flatMap(({ m, warmup }) => {
-        const reps = repsOf(m, metricName, warmup);
-        if (!reps) return [];
+      if (!metricsOf(last).includes(metricName)) continue;
+      const samples = rows.map(({ m, warmup }) => {
         const d = details.find((x) => x.sessionId === m.sessionId)!;
-        return [{ reps: thin(reps, MAX_REPS), logFactor: Math.log(d.machineFactor * d.envFactor) }];
+        return { reps: thin(repsOf(m, metricName, warmup), MAX_REPS), logFactor: Math.log(d.machineFactor * d.envFactor) };
       });
-      if (samples.length === 0) continue;
       const { bootstrap, ...agg } = aggregateSessions(samples, metricName === metric ? k : `${metricName}|${k}`, iterations);
       bootstraps.set(bootKey(metricName, k), bootstrap);
       byMetric[metricName] = { score: agg.score, low: agg.ciLow, high: agg.ciHigh, sessions: agg.sessions };

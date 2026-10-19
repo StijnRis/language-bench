@@ -10,7 +10,7 @@ const session = (id: string): Session =>
 
 const meas = (sessionId: string, language: string, durations: number[] | undefined, wall: number[]): Measurement =>
   ({
-    sessionId, language, version: "1", toolVersion: "1", variant: "v", variantSpec: {}, problem: "p", args: [], containerImage: "i", sourceFile: "m", sourceHash: "h",
+    sessionId, language, version: "1", toolVersion: "1", variant: "v", variantSpec: {}, problem: "p", kind: durations ? "kernel" : "startup", args: [], containerImage: "i", sourceFile: "m", sourceHash: "h",
     runCommand: "r", status: "ok", correct: true, startedAt: "", finishedAt: "",
     runs: { wall, cpu: wall, user: wall, system: wall, memory: wall.map(() => 1e6), exit: wall.map(() => 0) },
     kernel: durations && { clock: "c", budgetSeconds: 10, iterations: durations.length, kernelSeconds: 1, reason: "budget", durations, starts: [], checked: 1, matched: 1, flags: [], memory: { avgBytes: 5e6, peakBytes: 9e6, runAvgBytes: 4e6, samples: 10 } },
@@ -25,7 +25,7 @@ describe("metrics", () => {
     const w = repsOf(m, "warm", 1)!;
     expect(w.every((x) => x === 0.1)).toBe(true);
   });
-  it("analyses kernel data under every metric and falls back to end-to-end without it", () => {
+  it("analyses kernel problems under every metric and the start-up problem end-to-end only", () => {
     const sessions = { s1: session("s1"), s2: session("s2"), s3: session("s3") };
     const a: LanguageData = { language: "a", measurements: ["s1", "s2", "s3"].map((s) => meas(s, "a", warm, [2, 2.1])) } as LanguageData;
     const b: LanguageData = { language: "b", measurements: ["s1", "s2", "s3"].map((s) => meas(s, "b", undefined, [1, 1.1])) } as LanguageData;
@@ -41,5 +41,11 @@ describe("metrics", () => {
     expect(rb.metric).toBe("e2e");
     expect(rb.byMetric.warm).toBeUndefined();
     expect(indexVs(an, ra, ra).index).toBe(1);
+  });
+  it("rejects a kernel measurement without kernel data instead of guessing", () => {
+    const bad = meas("s1", "a", warm, [2]);
+    delete (bad as { kernel?: unknown }).kernel;
+    const d: LanguageData = { language: "a", measurements: [bad] } as LanguageData;
+    expect(() => analyze({ s1: session("s1") }, [d], 10)).toThrow(/no kernel iterations recorded/);
   });
 });

@@ -133,8 +133,8 @@ export function warmDurations(durations: number[], warmupSeconds: number): numbe
     if (cum >= warmupSeconds) warm.push(d);
     cum += d;
   }
-  if (warm.length) return warm;
-  return durations.length > 1 ? durations.slice(1) : durations.slice();
+  if (warm.length === 0) throw new Error(`no iteration starts after the first ${warmupSeconds} s of kernel time (${durations.length} iterations, ${cum.toFixed(2)} s in total)`);
+  return warm;
 }
 
 export const coldSeconds = (durations: number[]) => durations[0]!;
