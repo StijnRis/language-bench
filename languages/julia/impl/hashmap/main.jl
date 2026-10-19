@@ -1,28 +1,26 @@
-function main()
-    n = parse(Int, ARGS[1])
-    x = Int64(1)
-    m = Dict{Int64,Int64}()
-    half = n ÷ 2
-    for _ in 1:n
-        x = x * 48271 % 2147483647
-        k = x % half
-        m[k] = get(m, k, 0) + 1
-    end
+setup(args) = nothing
 
-    checksum = Int64(0)
-    for (k, c) in m
-        checksum += k * c
-    end
-
-    hits = Int64(0)
-    for _ in 1:n
-        x = x * 48271 % 2147483647
-        hits += get(m, x % n, 0)
-    end
-
-    println("distinct=", length(m))
-    println("checksum=", checksum)
-    println("hits=", hits)
+function decode(data::Vector{UInt8})
+    all = Vector{Int32}(reinterpret(Int32, data))
+    n = length(all) ÷ 2
+    return (all[1:n], all[(n + 1):end])
 end
 
-main()
+function solve(inst)
+    keys, lookups = inst
+    m = Dict{Int32,Int}()
+    for k in keys
+        m[k] = get(m, k, 0) + 1
+    end
+    checksum = 0
+    for (k, c) in m
+        checksum += Int(k) * c
+    end
+    hits = 0
+    for k in lookups
+        hits += get(m, k, 0)
+    end
+    return [length(m), checksum, hits]
+end
+
+emit(r) = r

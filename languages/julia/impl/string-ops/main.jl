@@ -1,35 +1,17 @@
-const VOCAB = [
-    "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-    "über", "résumé", "привет", "мир",
-    "код", "日本語", "世界", "速度", "hello", "world",
-]
+setup(args) = nothing
 
-function main()
-    n = parse(Int, ARGS[1])
-    x = Int64(1)
-    words = Vector{String}(undef, n)
-    for i in 1:n
-        x = x * 48271 % 2147483647
-        words[i] = VOCAB[x % length(VOCAB) + 1]
-    end
-    text = join(words, " ")
+decode(data::Vector{UInt8}) = String(data)
 
-    codepoints = length(text)
-
+function solve(text::String)
+    spaces = count(==(' '), text)
     needle = 0
-    r = findnext("er", text, 1)
+    r = findfirst("er", text)
     while r !== nothing
         needle += 1
         r = findnext("er", text, last(r) + 1)
     end
-
-    checksum = sum(Int, codeunits(replace(text, " " => "_")))
-
-    println("bytes=", ncodeunits(text))
-    println("codepoints=", codepoints)
-    println("words=", length(split(text, " ")))
-    println("needle=", needle)
-    println("checksum=", checksum)
+    checksum = sum(Int, codeunits(replace(text, ' ' => '_')))
+    return [sizeof(text), length(text), spaces + 1, needle, checksum]
 end
 
-main()
+emit(r) = r

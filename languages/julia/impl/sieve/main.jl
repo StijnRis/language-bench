@@ -1,15 +1,15 @@
-function main()
-    n = parse(Int, ARGS[1])
-    s = fill(true, n + 1)
-    s[1] = false
-    s[2] = false
+n_arg = 10_000_000
+setup(args) = (isempty(args) || (global n_arg = parse(Int, args[1])); nothing)
+decode(data) = nothing
+
+function solve(_)
+    n = n_arg
+    composite = zeros(Bool, n)
     p = 2
     while p * p <= n
-        if s[p + 1]
-            m = p * p
-            while m <= n
-                s[m + 1] = false
-                m += p
+        if !composite[p]
+            for m in (p * p):p:n
+                composite[m] = true
             end
         end
         p += 1
@@ -18,15 +18,13 @@ function main()
     last = 0
     total = 0
     for i in 2:n
-        if s[i + 1]
+        if !composite[i]
             count += 1
             last = i
             total += i
         end
     end
-    println("count=", count)
-    println("last=", last)
-    println("sum=", total)
+    return [count, last, total]
 end
 
-main()
+emit(r) = r

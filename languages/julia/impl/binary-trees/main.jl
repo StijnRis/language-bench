@@ -1,4 +1,7 @@
 # Binary trees, after the Computer Language Benchmarks Game.
+depth_arg = 14
+setup(args) = (isempty(args) || (global depth_arg = parse(Int, args[1])); nothing)
+
 struct Node
     left::Union{Node,Nothing}
     right::Union{Node,Nothing}
@@ -11,25 +14,23 @@ function check(t::Node)::Int
     l === nothing ? 1 : 1 + check(l) + check(t.right::Node)
 end
 
-function main()
-    n = parse(Int, ARGS[1])
-    minDepth = 4
-    maxDepth = max(minDepth + 2, n)
-    stretch = maxDepth + 1
+decode(data) = nothing
 
-    println("stretch tree of depth ", stretch, "\t check: ", check(make(stretch)))
-    longLived = make(maxDepth)
-
-    for depth in minDepth:2:maxDepth
-        iterations = 1 << (maxDepth - depth + minDepth)
+function solve(_)
+    min_depth = 4
+    max_depth = max(min_depth + 2, depth_arg)
+    out = Int[check(make(max_depth + 1))]
+    long_lived = make(max_depth)
+    for depth in min_depth:2:max_depth
+        iterations = 1 << (max_depth - depth + min_depth)
         total = 0
         for _ in 1:iterations
             total += check(make(depth))
         end
-        println(iterations, "\t trees of depth ", depth, "\t check: ", total)
+        push!(out, iterations, total)
     end
-
-    println("long lived tree of depth ", maxDepth, "\t check: ", check(longLived))
+    push!(out, check(long_lived))
+    return out
 end
 
-main()
+emit(r) = r

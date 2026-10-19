@@ -1,36 +1,25 @@
-function main()
-    n = parse(Int, ARGS[1])
-    a = Vector{Float64}(undef, n * n)
-    b = Vector{Float64}(undef, n * n)
-    c = zeros(Float64, n * n)
-    for i in 0:(n - 1)
-        for j in 0:(n - 1)
-            a[i * n + j + 1] = Float64((i * 31 + j * 17) % 10 + 1)
-            b[i * n + j + 1] = Float64((i * 13 + j * 7) % 10 - 4)
-        end
-    end
+setup(args) = nothing
 
-    for i in 0:(n - 1)
-        for k in 0:(n - 1)
-            aik = a[i * n + k + 1]
-            for j in 0:(n - 1)
-                c[i * n + j + 1] += aik * b[k * n + j + 1]
+function decode(data::Vector{UInt8})
+    n = Int(reinterpret(Int32, data[1:4])[1])
+    vals = reinterpret(Float64, data[5:end])
+    a = permutedims(reshape(Vector{Float64}(vals[1:(n * n)]), n, n))   # row-major input
+    b = permutedims(reshape(Vector{Float64}(vals[(n * n + 1):end]), n, n))
+    return (n, collect(a), collect(b))
+end
+
+function solve(inst)
+    n, a, b = inst
+    c = zeros(Float64, n, n)
+    @inbounds for i in 1:n
+        for k in 1:n
+            aik = a[i, k]
+            for j in 1:n
+                c[i, j] += aik * b[k, j]
             end
         end
     end
-
-    trace = 0.0
-    total = 0.0
-    for i in 0:(n - 1)
-        trace += c[i * n + i + 1]
-    end
-    for v in c
-        total += v
-    end
-    println("trace=", Int64(trace))
-    println("sum=", Int64(total))
-    println("c00=", Int64(c[1]))
-    println("clast=", Int64(c[n * n]))
+    return c
 end
 
-main()
+emit(c) = [floor(Int, c[i, j] + 0.5) for i in 1:size(c, 1) for j in 1:size(c, 2)]

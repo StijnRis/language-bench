@@ -38,7 +38,7 @@
       "id": "dart-aot",
       "name": "dart compile exe",
       "description": "Ahead-of-time compiled native executable.",
-      "build": "dart compile exe {src}/main.dart -o {bin}",
+      "build": "mkdir -p {bin}.src && cp {harness}/harness.dart {bin}.src/harness.dart && cp {src}/main.dart {bin}.src/problem.dart && dart compile exe {bin}.src/harness.dart -o {bin}",
       "run": "{bin}",
       "default": true
     },
@@ -46,7 +46,8 @@
       "id": "dart-jit",
       "name": "dart (JIT VM)",
       "description": "Run the source directly on the JIT virtual machine.",
-      "run": "dart {src}/main.dart"
+      "run": "dart {bin}.src/harness.dart",
+      "build": "mkdir -p {bin}.src && cp {harness}/harness.dart {bin}.src/harness.dart && cp {src}/main.dart {bin}.src/problem.dart"
     }
   ],
   "versionSource": {

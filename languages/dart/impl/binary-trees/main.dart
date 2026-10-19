@@ -1,31 +1,39 @@
 // Binary trees, after the Computer Language Benchmarks Game.
+import 'dart:typed_data';
+
+var depthArg = 14;
+
+void setup(List<String> args) {
+  if (args.isNotEmpty) depthArg = int.parse(args[0]);
+}
+
 class Node {
-  final Node? left;
-  final Node? right;
+  final Node? left, right;
   Node(this.left, this.right);
 }
 
-Node make(int d) => d == 0 ? Node(null, null) : Node(make(d - 1), make(d - 1));
+Node makeTree(int d) => d == 0 ? Node(null, null) : Node(makeTree(d - 1), makeTree(d - 1));
 
 int check(Node t) => t.left == null ? 1 : 1 + check(t.left!) + check(t.right!);
 
-void main(List<String> args) {
-  final n = int.parse(args[0]);
+Object? decode(Uint8List data) => null;
+
+Object? solve(Object? inst) {
   const minDepth = 4;
-  final maxDepth = n > minDepth + 2 ? n : minDepth + 2;
-  final stretch = maxDepth + 1;
-
-  print('stretch tree of depth $stretch\t check: ${check(make(stretch))}');
-  final longLived = make(maxDepth);
-
+  final maxDepth = depthArg > minDepth + 2 ? depthArg : minDepth + 2;
+  final out = <int>[check(makeTree(maxDepth + 1))];
+  final longLived = makeTree(maxDepth);
   for (var depth = minDepth; depth <= maxDepth; depth += 2) {
     final iterations = 1 << (maxDepth - depth + minDepth);
     var sum = 0;
     for (var i = 0; i < iterations; i++) {
-      sum += check(make(depth));
+      sum += check(makeTree(depth));
     }
-    print('$iterations\t trees of depth $depth\t check: $sum');
+    out.add(iterations);
+    out.add(sum);
   }
-
-  print('long lived tree of depth $maxDepth\t check: ${check(longLived)}');
+  out.add(check(longLived));
+  return out;
 }
+
+List<int> emit(Object? res) => res as List<int>;

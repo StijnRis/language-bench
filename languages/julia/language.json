@@ -42,20 +42,20 @@
       "id": "julia-default",
       "name": "julia -t 4",
       "description": "Default optimisation level (-O2), bounds checks on, four threads for the parallel workload.",
-      "run": "julia --startup-file=no -t 4 {src}/main.jl",
+      "run": "julia --startup-file=no -t 4 {harness}/harness.jl {src}/main.jl",
       "default": true
     },
     {
       "id": "julia-O3",
       "name": "julia -O3 -t 4",
       "description": "Highest optimisation level.",
-      "run": "julia --startup-file=no -O3 -t 4 {src}/main.jl"
+      "run": "julia --startup-file=no -O3 -t 4 {harness}/harness.jl {src}/main.jl"
     },
     {
       "id": "julia-nobounds",
       "name": "julia -O3 --check-bounds=no -t 4",
       "description": "Optimisation level 3 and no array bounds checks (unsafe: out-of-bounds accesses are not detected).",
-      "run": "julia --startup-file=no -O3 --check-bounds=no -t 4 {src}/main.jl"
+      "run": "julia --startup-file=no -O3 --check-bounds=no -t 4 {harness}/harness.jl {src}/main.jl"
     }
   ],
   "versionSource": {

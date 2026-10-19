@@ -1,9 +1,12 @@
 import 'dart:convert';
-import 'dart:io';
+import 'dart:typed_data';
 
-void main(List<String> args) {
-  final doc = jsonDecode(File(args[0]).readAsStringSync());
+void setup(List<String> args) {}
 
+Object? decode(Uint8List data) => data; // the bytes are decoded and parsed inside solve
+
+Object? solve(Object? inst) {
+  final doc = jsonDecode(utf8.decode(inst as Uint8List));
   var objects = 0, intSum = 0, strLen = 0, trues = 0, nulls = 0;
   final stack = <Object?>[doc];
   while (stack.isNotEmpty) {
@@ -23,10 +26,7 @@ void main(List<String> args) {
       stack.addAll(v.values);
     }
   }
-
-  print('objects=$objects');
-  print('int_sum=$intSum');
-  print('string_length=$strLen');
-  print('true=$trues');
-  print('null=$nulls');
+  return <int>[objects, intSum, strLen, trues, nulls];
 }
+
+List<int> emit(Object? res) => res as List<int>;

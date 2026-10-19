@@ -1,27 +1,32 @@
 import 'dart:typed_data';
 
-void main(List<String> args) {
-  final n = int.parse(args[0]);
-  final s = Uint8List(n + 1);
-  for (var i = 2; i <= n; i++) {
-    s[i] = 1;
-  }
+var nArg = 10000000;
+
+void setup(List<String> args) {
+  if (args.isNotEmpty) nArg = int.parse(args[0]);
+}
+
+Object? decode(Uint8List data) => null;
+
+Object? solve(Object? inst) {
+  final n = nArg;
+  final composite = Uint8List(n + 1);
   for (var p = 2; p * p <= n; p++) {
-    if (s[p] == 1) {
+    if (composite[p] == 0) {
       for (var m = p * p; m <= n; m += p) {
-        s[m] = 0;
+        composite[m] = 1;
       }
     }
   }
   var count = 0, last = 0, sum = 0;
   for (var i = 2; i <= n; i++) {
-    if (s[i] == 1) {
+    if (composite[i] == 0) {
       count++;
       last = i;
       sum += i;
     }
   }
-  print('count=$count');
-  print('last=$last');
-  print('sum=$sum');
+  return <int>[count, last, sum];
 }
+
+List<int> emit(Object? res) => res as List<int>;

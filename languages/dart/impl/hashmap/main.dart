@@ -1,26 +1,28 @@
-void main(List<String> args) {
-  final n = int.parse(args[0]);
-  var x = 1;
+import 'dart:typed_data';
+
+void setup(List<String> args) {}
+
+Object? decode(Uint8List data) {
+  final all = data.buffer.asInt32List(data.offsetInBytes, data.length ~/ 4);
+  final n = all.length ~/ 2;
+  return [Int32List.sublistView(all, 0, n), Int32List.sublistView(all, n)];
+}
+
+Object? solve(Object? inst) {
+  final keys = (inst as List)[0] as Int32List;
+  final lookups = inst[1] as Int32List;
   final m = <int, int>{};
-  final half = n ~/ 2;
-  for (var i = 0; i < n; i++) {
-    x = x * 48271 % 2147483647;
-    final k = x % half;
+  for (var i = 0; i < keys.length; i++) {
+    final k = keys[i];
     m[k] = (m[k] ?? 0) + 1;
   }
-
   var checksum = 0;
-  m.forEach((k, c) {
-    checksum += k * c;
-  });
-
+  m.forEach((k, c) => checksum += k * c);
   var hits = 0;
-  for (var i = 0; i < n; i++) {
-    x = x * 48271 % 2147483647;
-    hits += m[x % n] ?? 0;
+  for (var i = 0; i < lookups.length; i++) {
+    hits += m[lookups[i]] ?? 0;
   }
-
-  print('distinct=${m.length}');
-  print('checksum=$checksum');
-  print('hits=$hits');
+  return <int>[m.length, checksum, hits];
 }
+
+List<int> emit(Object? res) => res as List<int>;

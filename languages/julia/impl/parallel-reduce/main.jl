@@ -1,3 +1,7 @@
+n_arg, workers_arg = 2_000_000, 4
+setup(args) = (length(args) > 1 && (global n_arg = parse(Int, args[1]); global workers_arg = parse(Int, args[2])); nothing)
+decode(data) = nothing
+
 function isprime_(n::Int)
     n < 2 && return false
     n < 4 && return true
@@ -10,7 +14,7 @@ function isprime_(n::Int)
     return true
 end
 
-function worker(t::Int, n::Int, workers::Int)
+function share(t::Int, n::Int, workers::Int)
     count = 0
     i = t
     while i < n
@@ -20,15 +24,10 @@ function worker(t::Int, n::Int, workers::Int)
     return count
 end
 
-function main()
-    n = parse(Int, ARGS[1])
-    workers = parse(Int, ARGS[2])
-    tasks = [Threads.@spawn(worker(t, n, workers)) for t in 0:(workers - 1)]
-    total = 0
-    for t in tasks
-        total += fetch(t)
-    end
-    println("primes=", total)
+function solve(_)
+    n, workers = n_arg, workers_arg
+    tasks = [Threads.@spawn(share(t, n, workers)) for t in 0:(workers - 1)]
+    return [sum(fetch(t) for t in tasks)]
 end
 
-main()
+emit(r) = r

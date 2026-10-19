@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
-void main(List<String> args) {
+void setup(List<String> args) {}
+
+Object? decode(Uint8List data) => utf8.decode(data); // path of the file
+
+Object? solve(Object? inst) {
   final freq = <String, int>{};
-  var lines = 0;
-  var total = 0;
-  for (final line in File(args[0]).readAsLinesSync(encoding: latin1)) {
+  var lines = 0, total = 0;
+  for (final line in File(inst as String).readAsLinesSync(encoding: latin1)) {
     final c1 = line.indexOf(',');
     final c2 = line.indexOf(',', c1 + 1);
     final word = line.substring(c1 + 1, c2);
@@ -13,7 +17,6 @@ void main(List<String> args) {
     freq[word] = (freq[word] ?? 0) + 1;
     lines++;
   }
-
   var top = '';
   var topCount = -1;
   freq.forEach((w, c) {
@@ -22,9 +25,7 @@ void main(List<String> args) {
       topCount = c;
     }
   });
-
-  print('lines=$lines');
-  print('sum=$total');
-  print('distinct=${freq.length}');
-  print('top=$top $topCount');
+  return <int>[lines, total, freq.length, topCount, top.length, ...top.codeUnits];
 }
+
+List<int> emit(Object? res) => res as List<int>;
