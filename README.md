@@ -6,7 +6,7 @@
 
 _Screenshot of the live site, refreshed automatically after every deploy by `.github/workflows/screenshot.yml`._
 
-Transparent speed and memory benchmarks of 22 programming languages (C, C++, Rust, Go, Java, C#, F#, Dart, Julia, Node.js, Bun, Deno, Python, PyPy, Ruby, PHP, Perl, Lua, Haskell, OCaml, Nim, Elixir; see `languages/`) on a set of workloads (see `problems/`;
+Transparent speed and memory benchmarks of 25 programming languages (C, C++, Rust, Go, Java, Scala, C#, F#, Dart, Julia, Node.js, Bun, Deno, Python, PyPy, R, Ruby, PHP, Perl, Lua, Haskell, OCaml, Nim, Elixir, Fortran; see `languages/`) on a set of workloads (see `problems/`;
 N-body, binary trees, JSON parsing, hash map, sorting, string operations, parallel reduction, file
 processing, start-up, matrix multiply, fannkuch, prime sieve). Results are measured on GitHub Actions, repeated on different days and hardware,
 combined with documented statistics, and published as a static site.
