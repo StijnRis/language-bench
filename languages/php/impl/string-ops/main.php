@@ -1,26 +1,26 @@
 <?php
-$vocab = [
-    "the", "quick", "brown", "fox", "jumps", "over", "lazy", "dog", "naïve", "café",
-    "über", "résumé", "привет", "мир",
-    "код", "日本語", "世界", "速度", "hello", "world",
-];
+final class Problem
+{
+    public static function setup(array $args): void
+    {
+    }
 
-$n = (int) $argv[1];
-$x = 1;
-$words = [];
-for ($i = 0; $i < $n; $i++) {
-    $x = $x * 48271 % 2147483647;
-    $words[] = $vocab[$x % 20];
+    public static function decode(string $data)
+    {
+        return $data; // PHP strings are byte strings: UTF-8 is handled by the mb_* functions
+    }
+
+    public static function solve($text)
+    {
+        $checksum = 0;
+        foreach (count_chars(strtr($text, " ", "_"), 1) as $byte => $count) {
+            $checksum += $byte * $count;
+        }
+        return [strlen($text), mb_strlen($text, "UTF-8"), substr_count($text, " ") + 1, substr_count($text, "er"), $checksum];
+    }
+
+    public static function emit($r): array
+    {
+        return $r;
+    }
 }
-$text = implode(" ", $words);
-
-$checksum = 0;
-foreach (count_chars(strtr($text, " ", "_"), 1) as $byte => $count) {
-    $checksum += $byte * $count;
-}
-
-echo "bytes=" . strlen($text) . "\n";
-echo "codepoints=" . mb_strlen($text, "UTF-8") . "\n";
-echo "words=" . count(explode(" ", $text)) . "\n";
-echo "needle=" . substr_count($text, "er") . "\n";
-echo "checksum=$checksum\n";

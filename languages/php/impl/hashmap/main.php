@@ -1,25 +1,37 @@
 <?php
-$n = (int) $argv[1];
-$x = 1;
-$m = [];
+final class Problem
+{
+    public static function setup(array $args): void
+    {
+    }
 
-for ($i = 0; $i < $n; $i++) {
-    $x = $x * 48271 % 2147483647;
-    $k = $x % intdiv($n, 2);
-    $m[$k] = ($m[$k] ?? 0) + 1;
+    public static function decode(string $data)
+    {
+        $a = array_values(unpack("l*", $data));
+        $n = intdiv(count($a), 2);
+        return [array_slice($a, 0, $n), array_slice($a, $n)];
+    }
+
+    public static function solve($inst)
+    {
+        [$keys, $lookups] = $inst;
+        $m = [];
+        foreach ($keys as $k) {
+            $m[$k] = ($m[$k] ?? 0) + 1;
+        }
+        $checksum = 0;
+        foreach ($m as $k => $c) {
+            $checksum += $k * $c;
+        }
+        $hits = 0;
+        foreach ($lookups as $k) {
+            $hits += $m[$k] ?? 0;
+        }
+        return [count($m), $checksum, $hits];
+    }
+
+    public static function emit($r): array
+    {
+        return $r;
+    }
 }
-
-$checksum = 0;
-foreach ($m as $k => $c) {
-    $checksum += $k * $c;
-}
-
-$hits = 0;
-for ($i = 0; $i < $n; $i++) {
-    $x = $x * 48271 % 2147483647;
-    $hits += $m[$x % $n] ?? 0;
-}
-
-echo "distinct=" . count($m) . "\n";
-echo "checksum=$checksum\n";
-echo "hits=$hits\n";

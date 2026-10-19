@@ -1,21 +1,24 @@
-n = ARGV[0].to_i
-x = 1
-m = Hash.new(0)
+module Problem
+  def self.setup(args); end
 
-n.times do
-  x = x * 48271 % 2147483647
-  m[x % (n / 2)] += 1
+  def self.decode(data)
+    a = data.unpack("l<*")
+    n = a.length / 2
+    [a[0, n], a[n, n]]
+  end
+
+  def self.solve(inst)
+    keys, lookups = inst
+    m = Hash.new(0)
+    keys.each { |k| m[k] += 1 }
+    checksum = 0
+    m.each { |k, c| checksum += k * c }
+    hits = 0
+    lookups.each { |k| hits += m.fetch(k, 0) }
+    [m.size, checksum, hits]
+  end
+
+  def self.emit(r)
+    r
+  end
 end
-
-checksum = 0
-m.each { |k, c| checksum += k * c }
-
-hits = 0
-n.times do
-  x = x * 48271 % 2147483647
-  hits += m.fetch(x % n, 0)
-end
-
-puts "distinct=#{m.size}"
-puts "checksum=#{checksum}"
-puts "hits=#{hits}"
