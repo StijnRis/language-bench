@@ -1,5 +1,12 @@
-let () =
-  let n = int_of_string Sys.argv.(1) in
+type instance = unit
+type result = int list
+
+let n = ref 10000000
+let setup args = if Array.length args > 0 then n := int_of_string args.(0)
+let decode _ = ()
+
+let solve () : result =
+  let n = !n in
   let composite = Bytes.make (n + 1) '\000' in
   let p = ref 2 in
   while !p * !p <= n do
@@ -20,4 +27,6 @@ let () =
       sum := !sum + i
     end
   done;
-  Printf.printf "count=%d\nlast=%d\nsum=%d\n" !count !last !sum
+  [ !count; !last; !sum ]
+
+let emit (r : result) sink = List.iter sink r

@@ -1,5 +1,11 @@
-let () =
-  let ic = open_in_bin Sys.argv.(1) in
+type instance = string (* path of the CSV file *)
+type result = int list
+
+let setup _ = ()
+let decode path = path
+
+let solve (path : instance) : result =
+  let ic = open_in_bin path in
   let freq : (string, int ref) Hashtbl.t = Hashtbl.create 8192 in
   let lines = ref 0 and total = ref 0 in
   (try
@@ -24,4 +30,6 @@ let () =
         top_count := !c
       end)
     freq;
-  Printf.printf "lines=%d\nsum=%d\ndistinct=%d\ntop=%s %d\n" !lines !total (Hashtbl.length freq) !top !top_count
+  [ !lines; !total; Hashtbl.length freq; !top_count; String.length !top ] @ List.init (String.length !top) (fun i -> Char.code !top.[i])
+
+let emit (r : result) sink = List.iter sink r

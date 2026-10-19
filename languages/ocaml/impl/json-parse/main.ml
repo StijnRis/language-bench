@@ -8,14 +8,13 @@ type value =
   | Bool of bool
   | Null
 
-let read_file path =
-  let ic = open_in_bin path in
-  let s = really_input_string ic (in_channel_length ic) in
-  close_in ic;
-  s
+type instance = string
+type result = int list
 
-let () =
-  let s = read_file Sys.argv.(1) in
+let setup _ = ()
+let decode s = s
+
+let solve (s : instance) : result =
   let len = String.length s in
   let pos = ref 0 in
   let skip () =
@@ -104,4 +103,6 @@ let () =
         loop ()
   in
   loop ();
-  Printf.printf "objects=%d\nint_sum=%d\nstring_length=%d\ntrue=%d\nnull=%d\n" !objects !int_sum !str_len !trues !nulls
+  [ !objects; !int_sum; !str_len; !trues; !nulls ]
+
+let emit (r : result) sink = List.iter sink r
