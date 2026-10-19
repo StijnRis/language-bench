@@ -1,0 +1,2423 @@
+{
+  "schemaVersion": 3,
+  "session": {
+    "id": "2026-10-19T14-20-20-585Z-s6",
+    "startedAt": "2026-10-19T14:20:40.375Z",
+    "finishedAt": "2026-10-19T14:33:58.894Z",
+    "durationSeconds": 798.519,
+    "repoCommit": "f0eaac23fb09b7c7a3f24e7ad4c026f76ee7aa72",
+    "trigger": {
+      "event": "workflow_dispatch",
+      "workflow": "bench",
+      "job": "session",
+      "runId": "39267973995",
+      "runAttempt": "1",
+      "runNumber": "61",
+      "runUrl": "https://github.com/StijnRis/language-bench/actions/runs/39267973995",
+      "repository": "StijnRis/language-bench",
+      "ref": "refs/heads/main",
+      "actor": "github-actions[bot]",
+      "plannedAt": "2026-10-19T14:20:20.586Z",
+      "remainingAtPlanTime": 1145,
+      "sessionIndexInRound": 6,
+      "sessionsInRound": 20
+    },
+    "runner": {
+      "githubActions": true,
+      "RUNNER_NAME": "GitHub Actions 1000001320",
+      "RUNNER_OS": "Linux",
+      "RUNNER_ARCH": "X64",
+      "RUNNER_ENVIRONMENT": "github-hosted",
+      "ImageOS": "ubuntu24",
+      "ImageVersion": "20261012.334.1",
+      "RUNNER_TRACKING_ID": "github_53b1354a-7f92-4e86-a266-079024bc2425",
+      "hostOs": "linux x64",
+      "hostNode": "v24.21.0"
+    },
+    "host": {
+      "uname": "",
+      "kernel": "",
+      "arch": "",
+      "cpu": {
+        "model": "",
+        "cores": 0,
+        "logicalProcessors": 0,
+        "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           48 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  4\nOn-line CPU(s) list:                     0-3\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) 6973P-C\nCPU family:                              6\nModel:                                   173\nThread(s) per core:                      2\nCore(s) per socket:                      2\nSocket(s):                               1\nStepping:                                1\nCPU(s) scaling MHz:                      158%\nCPU max MHz:                             2600.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                5199.99\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ss ht syscall nx pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq vmx ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand hypervisor lahf_lm abm 3dnowprefetch tpr_shadow ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx_vnni avx512_bf16 vnmi avx512vbmi umip waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid cldemote movdiri movdir64b fsrm serialize tsxldtrk ibt amx_bf16 avx512_fp16 amx_tile amx_int8 arch_capabilities\nVirtualization:                          VT-x\nHypervisor vendor:                       Microsoft\nVirtualization type:                     full\nL1d cache:                               96 KiB (2 instances)\nL1i cache:                               128 KiB (2 instances)\nL2 cache:                                4 MiB (2 instances)\nL3 cache:                                480 MiB (1 instance)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-3\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Mitigation; Aligned branch/return thunks\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Vulnerable\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Vulnerable\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Retpoline\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n"
+      },
+      "memory": { "totalBytes": 0, "availableBytes": 0, "swapTotalBytes": 0 },
+      "cgroup": { "cpuMax": "", "memoryMax": "" },
+      "scalingGovernor": "",
+      "smt": "",
+      "loadAvgStart": "",
+      "diskFree": "",
+      "timezone": "UTC",
+      "loadAvgEnd": ""
+    },
+    "tooling": {
+      "hyperfineVersion": "2.0.0",
+      "hyperfineBuild": "hyperfine-v2.0.0-x86_64-unknown-linux-musl",
+      "hyperfineSource": "https://github.com/sharkdp/hyperfine/releases/tag/v2.0.0",
+      "docker": "{\"Client\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"DefaultAPIVersion\":\"1.48\",\"GitCommit\":\"b8034c0\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Context\":\"default\"},\"Server\":{\"Platform\":{\"Name\":\"Docker Engine - Community\"},\"Components\":[{\"Name\":\"Engine\",\"Version\":\"28.0.4\",\"Details\":{\"ApiVersion\":\"1.48\",\"Arch\":\"amd64\",\"BuildTime\":\"Tue Mar 25 15:07:16 2025\",\"Experimental\":\"false\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"KernelVersion\":\"6.17.0-1022-azure\",\"MinAPIVersion\":\"1.24\",\"Os\":\"linux\"}},{\"Name\":\"containerd\",\"Version\":\"v2.4.1\",\"Details\":{\"GitCommit\":\"f2551031d7276a770f65f98c9b52e57e7dad07e8\"}},{\"Name\":\"runc\",\"Version\":\"1.5.2\",\"Details\":{\"GitCommit\":\"v1.5.2-0-g29dd3dc2\"}},{\"Name\":\"docker-init\",\"Version\":\"0.19.0\",\"Details\":{\"GitCommit\":\"de40ad0\"}}],\"Version\":\"28.0.4\",\"ApiVersion\":\"1.48\",\"MinAPIVersion\":\"1.24\",\"GitCommit\":\"6430e49\",\"GoVersion\":\"go1.23.7\",\"Os\":\"linux\",\"Arch\":\"amd64\",\"KernelVersion\":\"6.17.0-1022-azure\",\"BuildTime\":\"2025-03-25T15:07:16.000000000+00:00\"}}",
+      "node": "v24.21.0"
+    },
+    "containers": {
+      "virtuslab/scala-cli:1.18.0": {
+        "image": "virtuslab/scala-cli:1.18.0",
+        "digest": "virtuslab/scala-cli@sha256:d3e440379d539032dc6a5dd5956a5baa7a63165542a7d789e70963c9759d8edf",
+        "osRelease": "",
+        "kernel": "",
+        "glibc": "",
+        "toolVersion": "",
+        "hyperfine": ""
+      },
+      "ocaml/opam:debian-ocaml-5.4": {
+        "image": "ocaml/opam:debian-ocaml-5.4",
+        "digest": "ocaml/opam@sha256:f44a0401719551c26b8bdd990c5353aeb304f2896c1a4cc8d9159e95ab4446a2",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:7.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:7.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:d32bd65cf5843f413e81f5d917057c82da99737cb1637e905a1a4bc2e7ec6c8d",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u10) 2.31",
+        "toolVersion": "Microsoft (R) F# Interactive version 12.7.403.0 for F# 7.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "nickblah/lua:5.5-noble": {
+        "image": "nickblah/lua:5.5-noble",
+        "digest": "nickblah/lua@sha256:c590e900802863fbfe9cad4accecafbd6fb1c6a45bf509f6ac7d957259bb3b84",
+        "osRelease": "Ubuntu 24.04.4 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.39-0ubuntu8.8) 2.39",
+        "toolVersion": "Lua 5.5.1  Copyright (C) 1994-2026 Lua.org, PUC-Rio",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "ocaml/opam:debian-ocaml-5.2": {
+        "image": "ocaml/opam:debian-ocaml-5.2",
+        "digest": "ocaml/opam@sha256:8723a0b442adbb5b9d75abe9e46f2c7e06bada67abd5a267a43876e653b332b4",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "ocaml/opam:debian-ocaml-5.0": {
+        "image": "ocaml/opam:debian-ocaml-5.0",
+        "digest": "ocaml/opam@sha256:2bf176e21e5ce21cf53ffb0609e9033461386fd73a5087ae66a565006f614e69",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u2) 2.41",
+        "toolVersion": "",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:6.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:6.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:c8fdd06e430de9f4ddd066b475ea350d771f341b77dd5ff4c2fafa748e3f2ef2",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u11) 2.31",
+        "toolVersion": "Microsoft (R) F# Interactive version 12.0.5.0 for F# 6.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "haskell:9.6": {
+        "image": "haskell:9.6",
+        "digest": "haskell@sha256:adba20678db75a4ef90b943bc05520cb20d30837e81f7446e20817f9dcca09a7",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u14) 2.31",
+        "toolVersion": "The Glorious Glasgow Haskell Compilation System, version 9.6.7",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "r-base:4.3.3": {
+        "image": "r-base:4.3.3",
+        "digest": "r-base@sha256:205aca88535e1a066c72c84d7a149747665da41cafabb951ccae8dd4e6f0c308",
+        "osRelease": "Debian GNU/Linux trixie/sid",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.37-18) 2.37",
+        "toolVersion": "R version 4.3.3 (2024-02-29) -- \"Angel Food Cake\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "virtuslab/scala-cli:1.9.0": {
+        "image": "virtuslab/scala-cli:1.9.0",
+        "digest": "virtuslab/scala-cli@sha256:c5776c2e045e52e58a43335f2f997498af9b894ffbc8b764ad19d2d4553f8337",
+        "osRelease": "",
+        "kernel": "",
+        "glibc": "",
+        "toolVersion": "",
+        "hyperfine": ""
+      },
+      "elixir:1.20": {
+        "image": "elixir:1.20",
+        "digest": "elixir@sha256:8241e27b8915d197eb8df4783f14490de9c9c335d03bd8a5d5613005cb2d7fc2",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "1.20.4",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "gcc:14": {
+        "image": "gcc:14",
+        "digest": "gcc@sha256:6f37e44a9b41181de5dd97366ec732652f5d895a72b5549c64694efed50a97e8",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "GNU Fortran (GCC) 14.4.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:10.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:10.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:0d99ebf1ccad15037b5c98c9fe8979d6b8dbac23812feae2277a0b277b5c5ffa",
+        "osRelease": "Ubuntu 24.04.5 LTS",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Ubuntu GLIBC 2.39-0ubuntu8.9) 2.39",
+        "toolVersion": "Microsoft (R) F# Interactive version 15.2.402.0 for F# 10.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "elixir:1.18": {
+        "image": "elixir:1.18",
+        "digest": "elixir@sha256:a68defc35f664d1d02de0dc36b12e750bd558b594eed3d0909534317796df749",
+        "osRelease": "Debian GNU/Linux 13 (trixie)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-12+deb13u4) 2.41",
+        "toolVersion": "1.18.4",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "r-base:4.4.3": {
+        "image": "r-base:4.4.3",
+        "digest": "r-base@sha256:de02cd988461e576056c4d79f7a5cc1c605c689d37ff8b1e6956f42bd0009009",
+        "osRelease": "Debian GNU/Linux trixie/sid",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.41-6) 2.41",
+        "toolVersion": "R version 4.4.3 (2025-02-28) -- \"Trophy Case\"",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:8.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:8.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:f7e28a0a3f6f9235929ec19274fd0ddf8534e9159f99fac602ac73304f1ce99f",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "Microsoft (R) F# Interactive version 12.8.403.0 for F# 8.0",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "virtuslab/scala-cli:1.6.0": {
+        "image": "virtuslab/scala-cli:1.6.0",
+        "digest": "virtuslab/scala-cli@sha256:78c364889202cc6cc999a696652f7d9b56f27e953be5733a2de873464f270882",
+        "osRelease": "",
+        "kernel": "",
+        "glibc": "",
+        "toolVersion": "",
+        "hyperfine": ""
+      },
+      "nimlang/nim:2.2": {
+        "image": "nimlang/nim:2.2",
+        "digest": "nimlang/nim@sha256:c991cef4ca0adbcfbed9c46645cece11cb4f914f91fff7b86f10f303d7b36a31",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "Nim Compiler Version 2.2.12 [Linux: amd64]",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "elixir:1.17": {
+        "image": "elixir:1.17",
+        "digest": "elixir@sha256:c65f0bdd8827df171963e3558a1461b04efc086d0d52ee7c6900fcddb4467e08",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "1.17.3",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "virtuslab/scala-cli:1.12.0": {
+        "image": "virtuslab/scala-cli:1.12.0",
+        "digest": "virtuslab/scala-cli@sha256:65a9a144b519a5174c24bebc536f8b29e502c5cef29afa4d22e998df7124dd6f",
+        "osRelease": "",
+        "kernel": "",
+        "glibc": "",
+        "toolVersion": "",
+        "hyperfine": ""
+      },
+      "haskell:9.8": {
+        "image": "haskell:9.8",
+        "digest": "haskell@sha256:ed21f5c111bcdaff2350b5d9efe66345868e8e0dfd9bd5e570ba43a2f6b755ff",
+        "osRelease": "Debian GNU/Linux 11 (bullseye)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.31-13+deb11u14) 2.31",
+        "toolVersion": "The Glorious Glasgow Haskell Compilation System, version 9.8.4",
+        "hyperfine": "hyperfine 2.0.0"
+      },
+      "mcr.microsoft.com/dotnet/sdk:9.0": {
+        "image": "mcr.microsoft.com/dotnet/sdk:9.0",
+        "digest": "mcr.microsoft.com/dotnet/sdk@sha256:2f5eb32870b4c0074a3d5b5191a03553bcab7b74463a76a7c0a5f3ef65c90fe5",
+        "osRelease": "Debian GNU/Linux 12 (bookworm)",
+        "kernel": "6.17.0-1022-azure",
+        "glibc": "ldd (Debian GLIBC 2.36-9+deb12u14) 2.36",
+        "toolVersion": "Microsoft (R) F# Interactive version 13.9.303.0 for F# 9.0",
+        "hyperfine": "hyperfine 2.0.0"
+      }
+    },
+    "config": {
+      "targetSessionsPerBenchmark": 3,
+      "maxBenchmarksPerSession": 40,
+      "maxSessionsPerRound": 20,
+      "minSessionsPerRound": 2,
+      "overlapFraction": 0.25,
+      "minOverlap": 4,
+      "maxAttempts": 3,
+      "sessionTimeBudgetMinutes": 240,
+      "repetitions": { "min": 15, "max": 30 },
+      "budgetSecondsScale": 0.5,
+      "warmupRuns": 1,
+      "maxChainedRounds": 30
+    },
+    "plan": [
+      {
+        "key": "haskell|9.8|ghc-O2|string-ops",
+        "language": "haskell",
+        "version": "9.8",
+        "variant": "ghc-O2",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.2|ocamlopt-safe|string-ops",
+        "language": "ocaml",
+        "version": "5.2",
+        "variant": "ocamlopt-safe",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.9.0|scala-parallel-gc|nbody",
+        "language": "scala",
+        "version": "1.9.0",
+        "variant": "scala-parallel-gc",
+        "problem": "nbody",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.9.0|scala-parallel-gc|sort",
+        "language": "scala",
+        "version": "1.9.0",
+        "variant": "scala-parallel-gc",
+        "problem": "sort",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.18.0|scala-parallel-gc|sort",
+        "language": "scala",
+        "version": "1.18.0",
+        "variant": "scala-parallel-gc",
+        "problem": "sort",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.2|ocamlopt-safe|json-parse",
+        "language": "ocaml",
+        "version": "5.2",
+        "variant": "ocamlopt-safe",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "haskell|9.6|ghc-O2-A64m|sort",
+        "language": "haskell",
+        "version": "9.6",
+        "variant": "ghc-O2-A64m",
+        "problem": "sort",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.12.0|scala-parallel-gc|sieve",
+        "language": "scala",
+        "version": "1.12.0",
+        "variant": "scala-parallel-gc",
+        "problem": "sieve",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|6.0|fsharp-no-tiering|fannkuch",
+        "language": "fsharp",
+        "version": "6.0",
+        "variant": "fsharp-no-tiering",
+        "problem": "fannkuch",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|9.0|fsharp-no-tiering|parallel-reduce",
+        "language": "fsharp",
+        "version": "9.0",
+        "variant": "fsharp-no-tiering",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "haskell|9.6|ghc-O2|string-ops",
+        "language": "haskell",
+        "version": "9.6",
+        "variant": "ghc-O2",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.0|ocamlopt-O3|matmul",
+        "language": "ocaml",
+        "version": "5.0",
+        "variant": "ocamlopt-O3",
+        "problem": "matmul",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "elixir|1.18|elixir-default|fannkuch",
+        "language": "elixir",
+        "version": "1.18",
+        "variant": "elixir-default",
+        "problem": "fannkuch",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "nim|2.2|nim-danger|binary-trees",
+        "language": "nim",
+        "version": "2.2",
+        "variant": "nim-danger",
+        "problem": "binary-trees",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.2|ocamlopt-O3|string-ops",
+        "language": "ocaml",
+        "version": "5.2",
+        "variant": "ocamlopt-O3",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|6.0|fsharp-no-tiering|json-parse",
+        "language": "fsharp",
+        "version": "6.0",
+        "variant": "fsharp-no-tiering",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.18.0|scala-default|sieve",
+        "language": "scala",
+        "version": "1.18.0",
+        "variant": "scala-default",
+        "problem": "sieve",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "r|4.4.3|rscript-default|sieve",
+        "language": "r",
+        "version": "4.4.3",
+        "variant": "rscript-default",
+        "problem": "sieve",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|10.0|fsharp-no-tiering|hashmap",
+        "language": "fsharp",
+        "version": "10.0",
+        "variant": "fsharp-no-tiering",
+        "problem": "hashmap",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.9.0|scala-default|string-ops",
+        "language": "scala",
+        "version": "1.9.0",
+        "variant": "scala-default",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.9.0|scala-default|startup",
+        "language": "scala",
+        "version": "1.9.0",
+        "variant": "scala-default",
+        "problem": "startup",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.4|ocamlopt-safe|sieve",
+        "language": "ocaml",
+        "version": "5.4",
+        "variant": "ocamlopt-safe",
+        "problem": "sieve",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.2|ocamlopt-O3|nbody",
+        "language": "ocaml",
+        "version": "5.2",
+        "variant": "ocamlopt-O3",
+        "problem": "nbody",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.6.0|scala-default|matmul",
+        "language": "scala",
+        "version": "1.6.0",
+        "variant": "scala-default",
+        "problem": "matmul",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|10.0|fsharp-default|matmul",
+        "language": "fsharp",
+        "version": "10.0",
+        "variant": "fsharp-default",
+        "problem": "matmul",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.0|ocamlopt-safe|string-ops",
+        "language": "ocaml",
+        "version": "5.0",
+        "variant": "ocamlopt-safe",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "lua|5.5|lua-default|json-parse",
+        "language": "lua",
+        "version": "5.5",
+        "variant": "lua-default",
+        "problem": "json-parse",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "ocaml|5.4|ocamlopt-O3|parallel-reduce",
+        "language": "ocaml",
+        "version": "5.4",
+        "variant": "ocamlopt-O3",
+        "problem": "parallel-reduce",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fsharp|6.0|fsharp-no-tiering|sieve",
+        "language": "fsharp",
+        "version": "6.0",
+        "variant": "fsharp-no-tiering",
+        "problem": "sieve",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "scala|1.18.0|scala-default|string-ops",
+        "language": "scala",
+        "version": "1.18.0",
+        "variant": "scala-default",
+        "problem": "string-ops",
+        "reason": "new",
+        "priorSessions": 0
+      },
+      {
+        "key": "fortran|14|gfortran-O3-native|file-processing",
+        "language": "fortran",
+        "version": "14",
+        "variant": "gfortran-O3-native",
+        "problem": "file-processing",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "elixir|1.17|elixir-sbt-db|fannkuch",
+        "language": "elixir",
+        "version": "1.17",
+        "variant": "elixir-sbt-db",
+        "problem": "fannkuch",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "fsharp|7.0|fsharp-default|fannkuch",
+        "language": "fsharp",
+        "version": "7.0",
+        "variant": "fsharp-default",
+        "problem": "fannkuch",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "fsharp|8.0|fsharp-default|startup",
+        "language": "fsharp",
+        "version": "8.0",
+        "variant": "fsharp-default",
+        "problem": "startup",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "elixir|1.20|elixir-default|sort",
+        "language": "elixir",
+        "version": "1.20",
+        "variant": "elixir-default",
+        "problem": "sort",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "scala|1.12.0|scala-parallel-gc|hashmap",
+        "language": "scala",
+        "version": "1.12.0",
+        "variant": "scala-parallel-gc",
+        "problem": "hashmap",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "r|4.3.3|rscript-default|startup",
+        "language": "r",
+        "version": "4.3.3",
+        "variant": "rscript-default",
+        "problem": "startup",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "fsharp|7.0|fsharp-default|startup",
+        "language": "fsharp",
+        "version": "7.0",
+        "variant": "fsharp-default",
+        "problem": "startup",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "fortran|14|gfortran-O3|sort",
+        "language": "fortran",
+        "version": "14",
+        "variant": "gfortran-O3",
+        "problem": "sort",
+        "reason": "overlap",
+        "priorSessions": 1
+      },
+      {
+        "key": "fortran|14|gfortran-O3-native|nbody",
+        "language": "fortran",
+        "version": "14",
+        "variant": "gfortran-O3-native",
+        "problem": "nbody",
+        "reason": "overlap",
+        "priorSessions": 1
+      }
+    ],
+    "order": [
+      "scala|1.18.0|scala-default|string-ops",
+      "ocaml|5.4|ocamlopt-O3|parallel-reduce",
+      "fsharp|7.0|fsharp-default|startup",
+      "lua|5.5|lua-default|json-parse",
+      "ocaml|5.2|ocamlopt-O3|string-ops",
+      "ocaml|5.0|ocamlopt-safe|string-ops",
+      "fsharp|6.0|fsharp-no-tiering|fannkuch",
+      "haskell|9.6|ghc-O2|string-ops",
+      "r|4.3.3|rscript-default|startup",
+      "scala|1.9.0|scala-default|startup",
+      "scala|1.18.0|scala-parallel-gc|sort",
+      "haskell|9.6|ghc-O2-A64m|sort",
+      "elixir|1.20|elixir-default|sort",
+      "fsharp|6.0|fsharp-no-tiering|json-parse",
+      "scala|1.18.0|scala-default|sieve",
+      "fortran|14|gfortran-O3-native|file-processing",
+      "fsharp|10.0|fsharp-default|matmul",
+      "elixir|1.18|elixir-default|fannkuch",
+      "scala|1.9.0|scala-parallel-gc|nbody",
+      "scala|1.9.0|scala-default|string-ops",
+      "r|4.4.3|rscript-default|sieve",
+      "fsharp|7.0|fsharp-default|fannkuch",
+      "fsharp|8.0|fsharp-default|startup",
+      "fortran|14|gfortran-O3-native|nbody",
+      "fsharp|10.0|fsharp-no-tiering|hashmap",
+      "scala|1.6.0|scala-default|matmul",
+      "scala|1.9.0|scala-parallel-gc|sort",
+      "nim|2.2|nim-danger|binary-trees",
+      "ocaml|5.0|ocamlopt-O3|matmul",
+      "ocaml|5.4|ocamlopt-safe|sieve",
+      "elixir|1.17|elixir-sbt-db|fannkuch",
+      "ocaml|5.2|ocamlopt-safe|string-ops",
+      "scala|1.12.0|scala-parallel-gc|hashmap",
+      "ocaml|5.2|ocamlopt-O3|nbody",
+      "haskell|9.8|ghc-O2|string-ops",
+      "scala|1.12.0|scala-parallel-gc|sieve",
+      "ocaml|5.2|ocamlopt-safe|json-parse",
+      "fortran|14|gfortran-O3|sort",
+      "fsharp|6.0|fsharp-no-tiering|sieve",
+      "fsharp|9.0|fsharp-no-tiering|parallel-reduce"
+    ],
+    "skipped": []
+  },
+  "variants": {
+    "ca13fd54266f": {
+      "id": "scala-default",
+      "name": "scala-cli package --assembly, java -jar",
+      "description": "Assembly jar run with the default JVM settings (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
+      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "run": "java -jar {bin}.jar",
+      "default": true
+    },
+    "f37cfef3ec12": {
+      "id": "ocamlopt-O3",
+      "name": "ocamlopt -O3 -unsafe",
+      "description": "Native code without bounds checks (-unsafe); -O3 only matters on flambda compilers.",
+      "build": "mkdir -p {bin}.o && cp {src}/main.ml {bin}.o/main.ml && cd {bin}.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o {bin}",
+      "run": "{bin}",
+      "default": true
+    },
+    "35a932a63686": {
+      "id": "fsharp-default",
+      "name": "dotnet build -c Release",
+      "description": "Release build, default runtime settings (tiered compilation, dynamic PGO, concurrent workstation GC).",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "dotnet {bin}/app.dll",
+      "default": true
+    },
+    "7cf4b4664a54": {
+      "id": "lua-default",
+      "name": "lua",
+      "description": "Default interpreter.",
+      "run": "lua {src}/main.lua",
+      "default": true
+    },
+    "0997198e31bf": {
+      "id": "ocamlopt-safe",
+      "name": "ocamlopt",
+      "description": "Native code with bounds checking (the default).",
+      "build": "mkdir -p {bin}.o && cp {src}/main.ml {bin}.o/main.ml && cd {bin}.o && ocamlopt -I +unix unix.cmxa main.ml -o {bin}",
+      "run": "{bin}",
+      "default": false
+    },
+    "84e27460c708": {
+      "id": "fsharp-no-tiering",
+      "name": "DOTNET_TieredCompilation=0",
+      "description": "Every method is fully optimised on its first call: slower start-up, no tier-0 phase.",
+      "build": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P={bin}.proj; mkdir -p $P && cp {src}/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o {bin} -v q -nologo",
+      "run": "DOTNET_TieredCompilation=0 dotnet {bin}/app.dll",
+      "default": false
+    },
+    "a3931e2b9f61": {
+      "id": "ghc-O2",
+      "name": "ghc -O2 -threaded",
+      "description": "Optimising build with the threaded runtime (needed for the parallel workload; default heap settings).",
+      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "run": "{bin}",
+      "default": true
+    },
+    "f62bea3efc88": {
+      "id": "rscript-default",
+      "name": "Rscript",
+      "description": "Default interpreter with the bytecode compiler (JIT level 3).",
+      "run": "Rscript {src}/main.R",
+      "default": true
+    },
+    "f3ef848296ac": {
+      "id": "scala-parallel-gc",
+      "name": "java -XX:+UseParallelGC -jar",
+      "description": "Throughput-oriented collector with less barrier overhead than G1.",
+      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "run": "java -XX:+UseParallelGC -jar {bin}.jar",
+      "default": false
+    },
+    "68f5c5d68fa8": {
+      "id": "ghc-O2-A64m",
+      "name": "ghc -O2 -threaded +RTS -A64m",
+      "description": "Same binary, 64 MB allocation area: fewer minor collections for allocation-heavy code.",
+      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "run": "{bin} +RTS -A64m -RTS",
+      "default": false
+    },
+    "571b54fb6c86": {
+      "id": "elixir-default",
+      "name": "elixir script.exs",
+      "description": "Default BEAM flags: one scheduler per core.",
+      "run": "elixir {src}/main.exs",
+      "default": true
+    },
+    "5b47669ef6a5": {
+      "id": "gfortran-O3-native",
+      "name": "gfortran -O3 -march=native -fopenmp",
+      "description": "Optimised for the benchmark CPU.",
+      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -march=native -fopenmp -o {bin} {src}/main.f90",
+      "run": "{bin}",
+      "default": false
+    },
+    "6d2e646321b3": {
+      "id": "nim-danger",
+      "name": "nim c -d:danger",
+      "description": "Also removes bounds, overflow and nil checks (unsafe: errors are no longer detected).",
+      "build": "nim c -d:danger --threads:on --hints:off --warnings:off --nimcache:{bin}.cache -o:{bin} {src}/main.nim",
+      "run": "{bin}",
+      "default": false
+    },
+    "a1ba11111b14": {
+      "id": "elixir-sbt-db",
+      "name": "elixir --erl \"+sbt db\"",
+      "description": "Schedulers bound to cores (default binding), which can reduce migration noise for the parallel workload.",
+      "run": "elixir --erl \"+sbt db\" {src}/main.exs",
+      "default": false
+    },
+    "50f501557355": {
+      "id": "gfortran-O3",
+      "name": "gfortran -O3 -fopenmp",
+      "description": "Optimised build with OpenMP (needed for the parallel workload).",
+      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -fopenmp -o {bin} {src}/main.f90",
+      "run": "{bin}",
+      "default": true
+    }
+  },
+  "measurements": [
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.18.0",
+      "toolVersion": "",
+      "variant": "scala-default",
+      "variantSpec": "ca13fd54266f",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "virtuslab/scala-cli:1.18.0",
+      "sourceFile": "languages/scala/impl/string-ops/Main.scala",
+      "sourceHash": "28e49e612d340be1",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.18.0-scala-default-string-ops.jar /repo/languages/scala/impl/string-ops/Main.scala",
+      "runCommand": "java -jar /work/bin/scala-1.18.0-scala-default-string-ops.jar 1000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:21:19.100Z",
+      "finishedAt": "2026-10-19T14:21:19.123Z",
+      "buildSeconds": 0.011025570000005246,
+      "buildOutput": "Error response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.4",
+      "toolVersion": "",
+      "variant": "ocamlopt-O3",
+      "variantSpec": "f37cfef3ec12",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.4",
+      "sourceFile": "languages/ocaml/impl/parallel-reduce/main.ml",
+      "sourceHash": "5a7f653d0aaf3a5b",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.4-ocamlopt-O3-parallel-reduce.o && cp /repo/languages/ocaml/impl/parallel-reduce/main.ml /work/bin/ocaml-5.4-ocamlopt-O3-parallel-reduce.o/main.ml && cd /work/bin/ocaml-5.4-ocamlopt-O3-parallel-reduce.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.4-ocamlopt-O3-parallel-reduce",
+      "runCommand": "/work/bin/ocaml-5.4-ocamlopt-O3-parallel-reduce 2000000 4",
+      "loadAvgBefore": "2.14 0.86 0.32 2/329 68",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:22:11.212Z",
+      "finishedAt": "2026-10-19T14:22:11.290Z",
+      "buildSeconds": 0.03765230400000291,
+      "buildOutput": "mkdir: cannot create directory '/work/bin': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "7.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.7.403.0 for F# 7.0",
+      "variant": "fsharp-default",
+      "variantSpec": "35a932a63686",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:7.0",
+      "sourceFile": "languages/fsharp/impl/startup/Program.fs",
+      "sourceHash": "0709f0fd367c3496",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-7.0-fsharp-default-startup.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/startup/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-7.0-fsharp-default-startup -v q -nologo",
+      "runCommand": "dotnet /work/bin/fsharp-7.0-fsharp-default-startup/app.dll",
+      "loadAvgBefore": "2.27 0.93 0.35 1/341 86",
+      "buildSeconds": 2.2132901060000005,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:01.89\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-19T14:22:22.925Z",
+      "finishedAt": "2026-10-19T14:22:26.420Z",
+      "loadAvgAfter": "2.17 0.93 0.35 1/336 437",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.044872486, 0.035483559000000005, 0.032575332000000005, 0.035581827, 0.036326148,
+          0.030210986000000002, 0.032495924, 0.040581389, 0.041318663000000005, 0.033468904,
+          0.039636286, 0.034491535000000004, 0.032169446000000004, 0.032964898,
+          0.031232185000000003, 0.036156822000000005, 0.035055913, 0.039632723, 0.034494928,
+          0.036765179, 0.036193877, 0.034909643000000004, 0.035351282000000005,
+          0.030364415000000002, 0.032603459, 0.030675345000000003, 0.031150033,
+          0.035284736000000004, 0.033690435000000005, 0.034514641
+        ],
+        "cpu": [
+          0.039500999999999994, 0.029953999999999998, 0.027013999999999996, 0.032437999999999995,
+          0.032062999999999994, 0.027157999999999998, 0.029681, 0.037476, 0.037866,
+          0.030317999999999998, 0.034888, 0.032182, 0.026979999999999997, 0.027292999999999998,
+          0.026427, 0.033946, 0.03205, 0.035838, 0.030337999999999997, 0.034208999999999996,
+          0.029907, 0.030917, 0.031587, 0.026715, 0.027458999999999997, 0.027184,
+          0.027331999999999995, 0.029122999999999996, 0.030684999999999997, 0.029561
+        ],
+        "user": [
+          0.033423999999999995, 0.02319, 0.020010999999999998, 0.026355999999999997,
+          0.023788999999999998, 0.014983999999999999, 0.020777, 0.030386, 0.024912,
+          0.020572999999999998, 0.023601, 0.02803, 0.015988, 0.021445, 0.018296, 0.021602, 0.02564,
+          0.025883, 0.018012999999999998, 0.023142, 0.023926, 0.023936, 0.025665, 0.01781,
+          0.017651999999999998, 0.018484999999999998, 0.018546999999999998, 0.019762, 0.020457,
+          0.025338
+        ],
+        "system": [
+          0.006077, 0.006764, 0.007003, 0.006082, 0.008274, 0.012173999999999999, 0.008904, 0.00709,
+          0.012954, 0.009745, 0.011287, 0.0041519999999999994, 0.010992, 0.005848, 0.008131,
+          0.012343999999999999, 0.00641, 0.009955, 0.012325, 0.011066999999999999,
+          0.005980999999999999, 0.006980999999999999, 0.005921999999999999, 0.008905, 0.009807,
+          0.008699, 0.008785, 0.009361, 0.010228, 0.004223
+        ],
+        "memory": [
+          28549120, 28549120, 28639232, 28459008, 28454912, 28549120, 28561408, 28725248, 28426240,
+          28475392, 28348416, 28508160, 28557312, 28557312, 28704768, 28401664, 28483584, 28536832,
+          28483584, 28471296, 28254208, 28016640, 28438528, 28577792, 28483584, 28524544, 28385280,
+          28573696, 28499968, 28315648
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "lua",
+      "version": "5.5",
+      "toolVersion": "Lua 5.5.1  Copyright (C) 1994-2026 Lua.org, PUC-Rio",
+      "variant": "lua-default",
+      "variantSpec": "7cf4b4664a54",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "nickblah/lua:5.5-noble",
+      "sourceFile": "languages/lua/impl/json-parse/main.lua",
+      "sourceHash": "a547416971a7b114",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "runCommand": "lua /repo/languages/lua/impl/json-parse/main.lua /work/inputs/input.json",
+      "loadAvgBefore": "2.17 0.93 0.35 2/352 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2effe2184ea41a016d6e0ad773840ed02fc1a3b2826c312857cbf43d58c7a9c5",
+      "startedAt": "2026-10-19T14:22:29.169Z",
+      "finishedAt": "2026-10-19T14:23:15.450Z",
+      "loadAvgAfter": "1.50 0.95 0.39 1/341 113",
+      "hyperfineArgs": "--runs 27 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          1.605907682, 1.580182626, 1.574263834, 1.5389665190000001, 1.54561326, 1.565649276,
+          1.6099158560000002, 1.614488729, 1.624656396, 1.586200198, 1.638857136, 1.639529931,
+          1.557868422, 1.629655002, 1.6325859660000002, 1.592156132, 1.597748706, 1.609151146,
+          1.578823244, 1.604828924, 1.637585681, 1.575340929, 1.575203765, 1.562678344, 1.558850816,
+          1.604412934, 1.557449308
+        ],
+        "cpu": [
+          1.6055819999999998, 1.579706, 1.573963, 1.538701, 1.5452389999999998, 1.565361, 1.609599,
+          1.6141439999999998, 1.624384, 1.5857700000000001, 1.638581, 1.639178, 1.5576079999999999,
+          1.6293309999999999, 1.6322569999999998, 1.5916899999999998, 1.596121, 1.608854, 1.578549,
+          1.604509, 1.63715, 1.575025, 1.57474, 1.5624, 1.558564, 1.6040279999999998, 1.557103
+        ],
+        "user": [
+          1.57157, 1.534686, 1.537964, 1.503708, 1.5022609999999998, 1.528353, 1.562582, 1.575141,
+          1.574403, 1.554775, 1.588594, 1.598174, 1.5155919999999998, 1.5893229999999998, 1.58228,
+          1.5626959999999999, 1.5460859999999998, 1.567858, 1.534562, 1.559523, 1.601147, 1.534025,
+          1.51975, 1.52339, 1.510578, 1.5650279999999999, 1.524101
+        ],
+        "system": [
+          0.034012, 0.04502, 0.035998999999999996, 0.034992999999999996, 0.042977999999999995,
+          0.037008, 0.047016999999999996, 0.039002999999999996, 0.049981, 0.030994999999999998,
+          0.049987, 0.041004, 0.042016, 0.040007999999999995, 0.049977, 0.028994,
+          0.050034999999999996, 0.040996, 0.043987, 0.044986, 0.036003, 0.040999999999999995,
+          0.05499, 0.039009999999999996, 0.047986, 0.039, 0.033002
+        ],
+        "memory": [
+          119095296, 119152640, 119099392, 119128064, 119033856, 119160832, 119230464, 119259136,
+          119160832, 119025664, 119066624, 118992896, 119259136, 118988800, 119156736, 119128064,
+          119029760, 119132160, 119054336, 119148544, 119152640, 119123968, 119259136, 119119872,
+          119255040, 119058432, 119058432
+        ],
+        "exit": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.2",
+      "toolVersion": "",
+      "variant": "ocamlopt-O3",
+      "variantSpec": "f37cfef3ec12",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.2",
+      "sourceFile": "languages/ocaml/impl/string-ops/main.ml",
+      "sourceHash": "9c63aba5650d9850",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.2-ocamlopt-O3-string-ops.o && cp /repo/languages/ocaml/impl/string-ops/main.ml /work/bin/ocaml-5.2-ocamlopt-O3-string-ops.o/main.ml && cd /work/bin/ocaml-5.2-ocamlopt-O3-string-ops.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.2-ocamlopt-O3-string-ops",
+      "runCommand": "/work/bin/ocaml-5.2-ocamlopt-O3-string-ops 1000000",
+      "loadAvgBefore": "1.54 0.96 0.40 2/362 68",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-O3-string-ops.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:23:21.636Z",
+      "finishedAt": "2026-10-19T14:23:21.713Z",
+      "buildSeconds": 0.03847084100000211,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-O3-string-ops.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.0",
+      "toolVersion": "",
+      "variant": "ocamlopt-safe",
+      "variantSpec": "0997198e31bf",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.0",
+      "sourceFile": "languages/ocaml/impl/string-ops/main.ml",
+      "sourceHash": "9c63aba5650d9850",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.0-ocamlopt-safe-string-ops.o && cp /repo/languages/ocaml/impl/string-ops/main.ml /work/bin/ocaml-5.0-ocamlopt-safe-string-ops.o/main.ml && cd /work/bin/ocaml-5.0-ocamlopt-safe-string-ops.o && ocamlopt -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.0-ocamlopt-safe-string-ops",
+      "runCommand": "/work/bin/ocaml-5.0-ocamlopt-safe-string-ops 1000000",
+      "loadAvgBefore": "1.47 1.06 0.47 1/364 57",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.0-ocamlopt-safe-string-ops.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:24:21.160Z",
+      "finishedAt": "2026-10-19T14:24:21.239Z",
+      "buildSeconds": 0.039637843000004065,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.0-ocamlopt-safe-string-ops.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "6.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.0.5.0 for F# 6.0",
+      "variant": "fsharp-no-tiering",
+      "variantSpec": "84e27460c708",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:6.0",
+      "sourceFile": "languages/fsharp/impl/fannkuch/Program.fs",
+      "sourceHash": "e843c9ef9ede15ec",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-6.0-fsharp-no-tiering-fannkuch.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/fannkuch/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-6.0-fsharp-no-tiering-fannkuch -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-fannkuch/app.dll 9",
+      "loadAvgBefore": "1.55 1.09 0.48 1/378 83",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-fannkuch/app.dll 9' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:24:31.863Z",
+      "finishedAt": "2026-10-19T14:24:34.875Z"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "haskell",
+      "version": "9.6",
+      "toolVersion": "The Glorious Glasgow Haskell Compilation System, version 9.6.7",
+      "variant": "ghc-O2",
+      "variantSpec": "a3931e2b9f61",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "haskell:9.6",
+      "sourceFile": "languages/haskell/impl/string-ops/main.hs",
+      "sourceHash": "797013919c68f9a0",
+      "buildCommand": "mkdir -p /work/bin/haskell-9.6-ghc-O2-string-ops.o && ghc -O2 -threaded -rtsopts -outputdir /work/bin/haskell-9.6-ghc-O2-string-ops.o -o /work/bin/haskell-9.6-ghc-O2-string-ops /repo/languages/haskell/impl/string-ops/main.hs",
+      "runCommand": "/work/bin/haskell-9.6-ghc-O2-string-ops 1000000",
+      "loadAvgBefore": "2.01 1.24 0.55 7/393 59",
+      "buildSeconds": 0.8802524259999627,
+      "buildOutput": "[1 of 2] Compiling Main             ( /repo/languages/haskell/impl/string-ops/main.hs, /work/bin/haskell-9.6-ghc-O2-string-ops.o/Main.o )\n[2 of 2] Linking /work/bin/haskell-9.6-ghc-O2-string-ops\n",
+      "binarySize": 2650576,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-19T14:25:04.304Z",
+      "finishedAt": "2026-10-19T14:25:15.238Z",
+      "loadAvgAfter": "1.85 1.25 0.57 11/387 283",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.314618785, 0.31428656600000004, 0.30401910000000004, 0.314457726, 0.304612906,
+          0.304331283, 0.304340109, 0.30401804000000004, 0.304224143, 0.324710064, 0.314404442,
+          0.314235278, 0.314253543, 0.31451912000000004, 0.32440398400000003, 0.30316238900000003,
+          0.30324807000000004, 0.302891599, 0.304035649, 0.313540368, 0.302889383, 0.303291609,
+          0.302721518, 0.31453087, 0.302674528, 0.31405324700000004, 0.303503371, 0.303067533,
+          0.302647716, 0.303807154
+        ],
+        "cpu": [
+          0.30859499999999995, 0.310996, 0.303002, 0.31376699999999996, 0.30426899999999996,
+          0.304619, 0.30318900000000004, 0.302551, 0.303246, 0.31736499999999995,
+          0.31095199999999995, 0.30946399999999996, 0.310566, 0.307474, 0.318163,
+          0.30238899999999996, 0.298048, 0.30100499999999997, 0.298073, 0.305525, 0.300242,
+          0.29776899999999995, 0.2955, 0.307566, 0.295054, 0.307121, 0.30207599999999996, 0.300127,
+          0.30130199999999996, 0.299622
+        ],
+        "user": [
+          0.25449099999999997, 0.258997, 0.251002, 0.25681, 0.26223199999999997, 0.258526, 0.256315,
+          0.25478, 0.25821, 0.2603, 0.26295999999999997, 0.25538299999999997, 0.259473, 0.259243,
+          0.27299799999999996, 0.257331, 0.24787199999999998, 0.260005, 0.25376499999999996,
+          0.260448, 0.26021, 0.25265299999999996, 0.257692, 0.256638, 0.253189, 0.260103,
+          0.26106599999999996, 0.262111, 0.25825899999999996, 0.253527
+        ],
+        "system": [
+          0.054104, 0.051999, 0.052, 0.056957, 0.042037, 0.046092999999999995, 0.046874, 0.047771,
+          0.045036, 0.057065, 0.047992, 0.054081, 0.051093, 0.048230999999999996, 0.045165,
+          0.045058, 0.050176, 0.040999999999999995, 0.044308, 0.045077, 0.040032,
+          0.045115999999999996, 0.037808, 0.050928, 0.041865, 0.047018, 0.04101, 0.038016, 0.043043,
+          0.046095
+        ],
+        "memory": [
+          87089152, 88039424, 87908352, 87085056, 88055808, 87293952, 87236608, 87273472, 87875584,
+          86933504, 87842816, 87871488, 87924736, 87871488, 88776704, 88698880, 88592384, 88813568,
+          88653824, 88567808, 88723456, 88608768, 88862720, 88862720, 88883200, 88645632, 88776704,
+          88817664, 88776704, 88735744
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "r",
+      "version": "4.3.3",
+      "toolVersion": "R version 4.3.3 (2024-02-29) -- \"Angel Food Cake\"",
+      "variant": "rscript-default",
+      "variantSpec": "f62bea3efc88",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "r-base:4.3.3",
+      "sourceFile": "languages/r/impl/startup/main.R",
+      "sourceHash": "39c734aa7f192cf6",
+      "runCommand": "Rscript /repo/languages/r/impl/startup/main.R",
+      "loadAvgBefore": "2.04 1.31 0.59 2/409 60",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-19T14:25:29.480Z",
+      "finishedAt": "2026-10-19T14:25:33.811Z",
+      "loadAvgAfter": "2.11 1.33 0.61 1/400 569",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.140988562, 0.1380614, 0.12899081, 0.13073217, 0.13208859, 0.126270361, 0.133466136,
+          0.132813131, 0.12851800200000002, 0.127442624, 0.129585072, 0.12933661000000002,
+          0.12885058800000002, 0.130231074, 0.128562747, 0.12851101, 0.130733717, 0.135146643,
+          0.13181852900000002, 0.131915414, 0.129360486, 0.137815815, 0.132944445,
+          0.13284948300000002, 0.129654592, 0.129895292, 0.133820652, 0.132002263, 0.128306511,
+          0.12952654900000002
+        ],
+        "cpu": [
+          0.442291, 0.44200199999999995, 0.43882799999999994, 0.438876, 0.44010499999999997,
+          0.435712, 0.44307599999999997, 0.442378, 0.43623799999999996, 0.436982, 0.43937, 0.435988,
+          0.438391, 0.43970399999999993, 0.43807199999999996, 0.437016, 0.43993699999999997,
+          0.44488099999999997, 0.440873, 0.441258, 0.438969, 0.44124399999999997, 0.441486,
+          0.438449, 0.43899999999999995, 0.440063, 0.441843, 0.440868, 0.437868, 0.439874
+        ],
+        "user": [
+          0.411025, 0.41088199999999997, 0.40937999999999997, 0.413779, 0.41475599999999996,
+          0.408514, 0.415095, 0.418908, 0.41251299999999996, 0.40679099999999996,
+          0.40776799999999996, 0.410144, 0.41139699999999996, 0.40956299999999995, 0.416616,
+          0.407547, 0.413224, 0.41422499999999995, 0.406889, 0.407095, 0.406221, 0.417857,
+          0.41337599999999997, 0.40688199999999997, 0.41589899999999996, 0.413282, 0.413819,
+          0.415361, 0.414004, 0.41328699999999996
+        ],
+        "system": [
+          0.031265999999999995, 0.03112, 0.029448, 0.025096999999999998, 0.025349, 0.027198,
+          0.027981, 0.023469999999999998, 0.023725, 0.030191, 0.031602, 0.025844,
+          0.026993999999999997, 0.030140999999999998, 0.021456, 0.029469, 0.026712999999999997,
+          0.030656, 0.033984, 0.034163, 0.032748, 0.023386999999999998, 0.02811, 0.031567, 0.023101,
+          0.026781, 0.028024, 0.025507, 0.023864, 0.026587
+        ],
+        "memory": [
+          56586240, 56246272, 56520704, 56672256, 56623104, 56528896, 56532992, 56401920, 56614912,
+          56512512, 56324096, 56377344, 56582144, 56401920, 56225792, 56426496, 56475648, 56426496,
+          56516608, 56594432, 56516608, 56205312, 56745984, 56401920, 56434688, 56619008, 56385536,
+          56557568, 56610816, 56553472
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.9.0",
+      "toolVersion": "",
+      "variant": "scala-default",
+      "variantSpec": "ca13fd54266f",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "virtuslab/scala-cli:1.9.0",
+      "sourceFile": "languages/scala/impl/startup/Main.scala",
+      "sourceHash": "f84efd290da8c30b",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.9.0-scala-default-startup.jar /repo/languages/scala/impl/startup/Main.scala",
+      "runCommand": "java -jar /work/bin/scala-1.9.0-scala-default-startup.jar",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:26:07.389Z",
+      "finishedAt": "2026-10-19T14:26:07.413Z",
+      "buildSeconds": 0.012117748000018764,
+      "buildOutput": "Error response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.18.0",
+      "toolVersion": "",
+      "variant": "scala-parallel-gc",
+      "variantSpec": "f3ef848296ac",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "virtuslab/scala-cli:1.18.0",
+      "sourceFile": "languages/scala/impl/sort/Main.scala",
+      "sourceHash": "28db2f825bc5da3e",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.18.0-scala-parallel-gc-sort.jar /repo/languages/scala/impl/sort/Main.scala",
+      "runCommand": "java -XX:+UseParallelGC -jar /work/bin/scala-1.18.0-scala-parallel-gc-sort.jar 2000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:26:07.426Z",
+      "finishedAt": "2026-10-19T14:26:07.452Z",
+      "buildSeconds": 0.012971317999996245,
+      "buildOutput": "Error response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "haskell",
+      "version": "9.6",
+      "toolVersion": "The Glorious Glasgow Haskell Compilation System, version 9.6.7",
+      "variant": "ghc-O2-A64m",
+      "variantSpec": "68f5c5d68fa8",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "haskell:9.6",
+      "sourceFile": "languages/haskell/impl/sort/main.hs",
+      "sourceHash": "7b75ed77ec6ff8ba",
+      "buildCommand": "mkdir -p /work/bin/haskell-9.6-ghc-O2-A64m-sort.o && ghc -O2 -threaded -rtsopts -outputdir /work/bin/haskell-9.6-ghc-O2-A64m-sort.o -o /work/bin/haskell-9.6-ghc-O2-A64m-sort /repo/languages/haskell/impl/sort/main.hs",
+      "runCommand": "/work/bin/haskell-9.6-ghc-O2-A64m-sort +RTS -A64m -RTS 2000000",
+      "loadAvgBefore": "2.29 1.46 0.68 1/405 290",
+      "buildSeconds": 0.497392949000001,
+      "buildOutput": "[1 of 2] Compiling Main             ( /repo/languages/haskell/impl/sort/main.hs, /work/bin/haskell-9.6-ghc-O2-A64m-sort.o/Main.o )\n[2 of 2] Linking /work/bin/haskell-9.6-ghc-O2-A64m-sort\n",
+      "binarySize": 2615368,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "0e4cdffacd5a55db45412bb3916f41b8e345b118b0224da12967fc1578fe496b",
+      "startedAt": "2026-10-19T14:26:07.493Z",
+      "finishedAt": "2026-10-19T14:27:45.915Z",
+      "loadAvgAfter": "1.24 1.32 0.71 3/397 439",
+      "hyperfineArgs": "--runs 15 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          5.6352903350000005, 5.454721892, 5.754552654, 5.663847306, 5.834720717, 5.764489984,
+          5.615506058, 5.706614849, 5.736438979, 5.765179305, 5.975695572, 5.884375193, 6.215955937,
+          5.915595292, 5.724020704
+        ],
+        "cpu": [
+          5.634225, 5.451242000000001, 5.7575, 5.66551, 5.833878, 5.766393, 5.610631, 5.700018,
+          5.734044, 5.759315999999999, 5.970997, 5.8813320000000004, 6.214145, 5.921818999999999,
+          5.727905
+        ],
+        "user": [
+          5.486167, 5.295092, 5.612337, 5.514417, 5.674718, 5.612276, 5.473494, 5.546937,
+          5.5909189999999995, 5.6142579999999995, 5.820847, 5.747257, 6.066976, 5.764638,
+          5.6007739999999995
+        ],
+        "system": [
+          0.148058, 0.15614999999999998, 0.145163, 0.151093, 0.15916, 0.154117, 0.13713699999999998,
+          0.153081, 0.143125, 0.145058, 0.15015, 0.134075, 0.147169, 0.157181, 0.127131
+        ],
+        "memory": [
+          372846592, 372834304, 372801536, 372998144, 372703232, 372805632, 372879360, 372895744,
+          372842496, 372989952, 372649984, 372736000, 372850688, 372547584, 372695040
+        ],
+        "exit": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "elixir",
+      "version": "1.20",
+      "toolVersion": "1.20.4",
+      "variant": "elixir-default",
+      "variantSpec": "571b54fb6c86",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "elixir:1.20",
+      "sourceFile": "languages/elixir/impl/sort/main.exs",
+      "sourceHash": "8f93631246cec837",
+      "runCommand": "elixir /repo/languages/elixir/impl/sort/main.exs 2000000",
+      "loadAvgBefore": "1.57 1.39 0.76 1/415 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "0e4cdffacd5a55db45412bb3916f41b8e345b118b0224da12967fc1578fe496b",
+      "startedAt": "2026-10-19T14:28:10.591Z",
+      "finishedAt": "2026-10-19T14:28:39.346Z",
+      "loadAvgAfter": "1.59 1.41 0.78 3/431 1188",
+      "hyperfineArgs": "--runs 21 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          1.283263995, 1.262970752, 1.231439972, 1.226571229, 1.215881423, 1.235657504, 1.224395638,
+          1.236498913, 1.235148851, 1.234332387, 1.238746885, 1.229018226, 1.2976203769999999,
+          1.237711922, 1.245960351, 1.212038353, 1.222600917, 1.263180396, 1.216808964, 1.212223252,
+          1.2099466300000001
+        ],
+        "cpu": [
+          1.4761719999999998, 1.462596, 1.432564, 1.4245780000000001, 1.3972149999999999,
+          1.4095490000000002, 1.423315, 1.4076629999999999, 1.408232, 1.428908, 1.431287, 1.422034,
+          1.486252, 1.4364240000000001, 1.4360849999999998, 1.394012, 1.414445, 1.441544,
+          1.4096199999999999, 1.386588, 1.409742
+        ],
+        "user": [
+          1.2608869999999999, 1.252747, 1.225885, 1.210306, 1.18905, 1.203734, 1.223362, 1.186715,
+          1.180952, 1.199888, 1.214256, 1.221141, 1.267398, 1.209213, 1.228813, 1.203157, 1.19468,
+          1.21747, 1.202068, 1.185092, 1.205025
+        ],
+        "system": [
+          0.21528499999999998, 0.20984899999999998, 0.206679, 0.214272, 0.208165, 0.205815,
+          0.199953, 0.22094799999999998, 0.22727999999999998, 0.22902, 0.217031, 0.200893, 0.218854,
+          0.227211, 0.20727199999999998, 0.190855, 0.219765, 0.224074, 0.207552,
+          0.20149599999999998, 0.20471699999999998
+        ],
+        "memory": [
+          571535360, 542232576, 546136064, 541577216, 570761216, 570163200, 574959616, 569950208,
+          571424768, 575262720, 574210048, 571023360, 575127552, 574062592, 570785792, 539672576,
+          573075456, 577396736, 571863040, 571191296, 571637760
+        ],
+        "exit": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "6.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.0.5.0 for F# 6.0",
+      "variant": "fsharp-no-tiering",
+      "variantSpec": "84e27460c708",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:6.0",
+      "sourceFile": "languages/fsharp/impl/json-parse/Program.fs",
+      "sourceHash": "3417999fad225f7b",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-6.0-fsharp-no-tiering-json-parse.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/json-parse/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-6.0-fsharp-no-tiering-json-parse -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-json-parse/app.dll /work/inputs/input.json",
+      "loadAvgBefore": "1.59 1.41 0.78 1/432 179",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-json-parse/app.dll /work/inputs/input.json' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:28:39.431Z",
+      "finishedAt": "2026-10-19T14:28:42.664Z"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.18.0",
+      "toolVersion": "",
+      "variant": "scala-default",
+      "variantSpec": "ca13fd54266f",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "virtuslab/scala-cli:1.18.0",
+      "sourceFile": "languages/scala/impl/sieve/Main.scala",
+      "sourceHash": "25016efc9effafe2",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.18.0-scala-default-sieve.jar /repo/languages/scala/impl/sieve/Main.scala",
+      "runCommand": "java -jar /work/bin/scala-1.18.0-scala-default-sieve.jar 10000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:28:42.678Z",
+      "finishedAt": "2026-10-19T14:28:42.705Z",
+      "buildSeconds": 0.013446617000037804,
+      "buildOutput": "Error response from daemon: container e2f59c2d99888a733a684a8468f6dd61680b09b6203e16fd0e7b2bbd593acad2 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fortran",
+      "version": "14",
+      "toolVersion": "GNU Fortran (GCC) 14.4.0",
+      "variant": "gfortran-O3-native",
+      "variantSpec": "5b47669ef6a5",
+      "problem": "file-processing",
+      "args": ["/work/inputs/input.csv"],
+      "containerImage": "gcc:14",
+      "sourceFile": "languages/fortran/impl/file-processing/main.f90",
+      "sourceHash": "7d450e59181b72fe",
+      "inputSha256": "d1b924394e1fa1a33bb70c2e0692155cfc7c4ba83493f31e977fa43d0fadee38",
+      "inputBytes": 48723320,
+      "buildCommand": "mkdir -p /work/bin/fortran-14-gfortran-O3-native-file-processing.mod && cd /work/bin/fortran-14-gfortran-O3-native-file-processing.mod && gfortran -O3 -march=native -fopenmp -o /work/bin/fortran-14-gfortran-O3-native-file-processing /repo/languages/fortran/impl/file-processing/main.f90",
+      "runCommand": "/work/bin/fortran-14-gfortran-O3-native-file-processing /work/inputs/input.csv",
+      "loadAvgBefore": "1.66 1.43 0.79 3/453 56",
+      "buildSeconds": 0.13149668000004022,
+      "buildOutput": "f951: Warning: '-mavx10.1' is aliased to 512 bit since GCC14.3\n",
+      "binarySize": 16936,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "3b9f7f57c371f75e33b414d733edf881b77c249c79d202d398c9a51eec7a3a1c",
+      "startedAt": "2026-10-19T14:28:49.183Z",
+      "finishedAt": "2026-10-19T14:28:52.455Z",
+      "loadAvgAfter": "1.60 1.42 0.79 1/448 136",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.092353526, 0.09299322800000001, 0.095057284, 0.09469271100000001, 0.093071319,
+          0.093730616, 0.091194246, 0.09323507900000001, 0.094494348, 0.09295700200000001,
+          0.095185268, 0.09534753800000001, 0.09224929300000001, 0.08900820100000001, 0.092817114,
+          0.09305833000000001, 0.08860417100000001, 0.091640332, 0.091528865, 0.091935126,
+          0.091197386, 0.08976006, 0.09290961, 0.093555307, 0.09049169400000001, 0.091381711,
+          0.09331516000000001, 0.091024512, 0.09039889000000001, 0.09355756600000001
+        ],
+        "cpu": [
+          0.09222, 0.092855, 0.094672, 0.094577, 0.092802, 0.093449, 0.09101799999999999, 0.092678,
+          0.094341, 0.092556, 0.094992, 0.095153, 0.09191099999999999, 0.08873899999999998,
+          0.09264700000000001, 0.092864, 0.088407, 0.091458, 0.09133, 0.091767, 0.090848,
+          0.08959500000000001, 0.092583, 0.09339399999999999, 0.09020500000000001,
+          0.09107599999999999, 0.093156, 0.090622, 0.090226, 0.09335099999999999
+        ],
+        "user": [
+          0.07518, 0.07687999999999999, 0.075738, 0.074666, 0.07384299999999999, 0.075555, 0.073015,
+          0.074741, 0.07527199999999999, 0.072652, 0.07499399999999999, 0.076321, 0.07293, 0.070792,
+          0.075712, 0.075889, 0.071521, 0.074373, 0.07527199999999999, 0.07481, 0.074875, 0.072672,
+          0.074664, 0.07551, 0.071162, 0.074247, 0.076128, 0.072697, 0.072181, 0.076287
+        ],
+        "system": [
+          0.01704, 0.015975, 0.018934, 0.019910999999999998, 0.018959, 0.017894,
+          0.018002999999999998, 0.017936999999999998, 0.019069, 0.019903999999999998, 0.019998,
+          0.018831999999999998, 0.018980999999999998, 0.017946999999999998, 0.016935, 0.016975,
+          0.016885999999999998, 0.017085, 0.016058, 0.016957, 0.015972999999999998, 0.016923,
+          0.017919, 0.017884, 0.019042999999999997, 0.016829, 0.017027999999999998, 0.017925,
+          0.018045, 0.017064
+        ],
+        "memory": [
+          52965376, 52834304, 52965376, 53121024, 52953088, 53080064, 52826112, 52801536, 52895744,
+          52842496, 53121024, 52822016, 52854784, 52727808, 52903936, 53121024, 52989952, 52920320,
+          52822016, 52801536, 52797440, 52850688, 52916224, 52887552, 52903936, 52891648, 52797440,
+          53043200, 52903936, 52854784
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "10.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 15.2.402.0 for F# 10.0",
+      "variant": "fsharp-default",
+      "variantSpec": "35a932a63686",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:10.0",
+      "sourceFile": "languages/fsharp/impl/matmul/Program.fs",
+      "sourceHash": "ade185277b289810",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-10.0-fsharp-default-matmul.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/matmul/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-10.0-fsharp-default-matmul -v q -nologo",
+      "runCommand": "dotnet /work/bin/fsharp-10.0-fsharp-default-matmul/app.dll 256",
+      "loadAvgBefore": "1.54 1.42 0.80 2/464 84",
+      "buildSeconds": 2.7810302670000238,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:02.50\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2aac42cd103ce770979099a18a0f0d550f37a74dd1ee434aceeefed92e7933e7",
+      "startedAt": "2026-10-19T14:29:04.857Z",
+      "finishedAt": "2026-10-19T14:29:09.584Z",
+      "loadAvgAfter": "1.57 1.43 0.81 1/459 441",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.06297213900000001, 0.055759844, 0.053679878, 0.055314344, 0.055631334000000005,
+          0.05669782, 0.058459659000000004, 0.05677397000000001, 0.052126099, 0.05717781,
+          0.052705164000000006, 0.052471412, 0.052109533000000006, 0.052026348,
+          0.051434099000000004, 0.051199134, 0.052351532000000006, 0.053290941,
+          0.051837427000000005, 0.052643319, 0.060153804000000005, 0.064664946,
+          0.053658489000000004, 0.065164603, 0.064748083, 0.058787968, 0.051281759,
+          0.053734325000000006, 0.052052930000000004, 0.053612248
+        ],
+        "cpu": [
+          0.062905, 0.055798999999999994, 0.053603, 0.055293999999999996, 0.055651, 0.055796,
+          0.05843399999999999, 0.056808, 0.052175, 0.057137999999999994, 0.052506, 0.052148,
+          0.052176, 0.052034, 0.051473, 0.051156999999999994, 0.052334, 0.053196999999999994,
+          0.051683999999999994, 0.052205999999999995, 0.059435, 0.06465099999999999, 0.052986,
+          0.065186, 0.064799, 0.05855099999999999, 0.050402999999999996, 0.053707,
+          0.051269999999999996, 0.053319
+        ],
+        "user": [
+          0.051745, 0.047682999999999996, 0.040699, 0.040214, 0.044521, 0.04384,
+          0.045336999999999995, 0.041592, 0.042142, 0.047113999999999996, 0.0453, 0.044277,
+          0.045285, 0.042027999999999996, 0.040584999999999996, 0.03888, 0.042073,
+          0.043345999999999996, 0.04155, 0.042166999999999996, 0.047347, 0.054549999999999994,
+          0.041989, 0.052149, 0.05483, 0.045649999999999996, 0.041509, 0.044756, 0.044369, 0.042253
+        ],
+        "system": [
+          0.01116, 0.008116, 0.012903999999999999, 0.01508, 0.01113, 0.011956, 0.013097,
+          0.015215999999999999, 0.010033, 0.010024, 0.007206, 0.007871, 0.0068909999999999996,
+          0.010006, 0.010888, 0.012277, 0.010261, 0.009851, 0.010133999999999999, 0.010039,
+          0.012088, 0.010100999999999999, 0.010997, 0.013037, 0.009968999999999999, 0.012901,
+          0.008893999999999999, 0.008950999999999999, 0.006901, 0.011066
+        ],
+        "memory": [
+          34197504, 34377728, 34050048, 34086912, 34185216, 34185216, 34025472, 34365440, 34164736,
+          34115584, 34197504, 34025472, 34095104, 34185216, 34263040, 34185216, 34250752, 34177024,
+          34185216, 34185216, 34078720, 34111488, 34066432, 33939456, 34181120, 34000896, 34283520,
+          34234368, 34185216, 34185216
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "elixir",
+      "version": "1.18",
+      "toolVersion": "1.18.4",
+      "variant": "elixir-default",
+      "variantSpec": "571b54fb6c86",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "elixir:1.18",
+      "sourceFile": "languages/elixir/impl/fannkuch/main.exs",
+      "sourceHash": "e07c4929f628dba3",
+      "runCommand": "elixir /repo/languages/elixir/impl/fannkuch/main.exs 9",
+      "loadAvgBefore": "1.71 1.46 0.83 8/476 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-19T14:29:21.187Z",
+      "finishedAt": "2026-10-19T14:29:51.501Z",
+      "loadAvgAfter": "1.43 1.42 0.83 1/501 1268",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.939496419, 0.9099558040000001, 0.950403435, 0.9454002690000001, 0.939054912,
+          0.9407817380000001, 0.949258213, 0.9432244040000001, 0.9516460320000001,
+          0.9269906250000001, 0.945321523, 0.9464150280000001, 0.9446656880000001,
+          0.9318240980000001, 0.9338572300000001, 0.9440330370000001, 0.9336035540000001,
+          0.9375665040000001, 0.9459133580000001, 0.951580622, 0.9665820620000001, 0.949870081,
+          0.944044804, 0.9326878120000001, 0.9424000530000001, 0.933113846, 0.9582993660000001,
+          0.9443368790000001, 0.9543716710000001, 0.9689301600000001
+        ],
+        "cpu": [
+          1.1142, 1.06867, 1.138964, 1.132667, 1.123462, 1.134237, 1.13517, 1.1163349999999999,
+          1.134863, 1.082071, 1.13224, 1.108765, 1.139194, 1.10364, 1.121314, 1.1297730000000001,
+          1.1136190000000001, 1.0954449999999998, 1.1052, 1.12082, 1.162369, 1.13856, 1.137108,
+          1.098037, 1.132006, 1.120009, 1.1417300000000001, 1.113753, 1.12564, 1.13437
+        ],
+        "user": [
+          1.04462, 1.002669, 1.036119, 1.045681, 1.030382, 1.04209, 1.051061, 1.016357, 1.046951,
+          1.021151, 1.050749, 1.01917, 1.035897, 1.007034, 1.039051, 1.045873, 1.026245, 1.019683,
+          1.027629, 1.03216, 1.067837, 1.054303, 1.052565, 1.002872, 1.052437, 1.035776, 1.051473,
+          1.027405, 1.031003, 1.043643
+        ],
+        "system": [
+          0.06958, 0.06600099999999999, 0.10284499999999999, 0.086986, 0.09308, 0.09214699999999999,
+          0.08410899999999999, 0.099978, 0.08791199999999999, 0.060919999999999995, 0.081491,
+          0.089595, 0.103297, 0.096606, 0.082263, 0.0839, 0.087374, 0.075762, 0.077571, 0.08866,
+          0.09453199999999999, 0.084257, 0.084543, 0.095165, 0.079569, 0.084233,
+          0.09025699999999999, 0.086348, 0.094637, 0.090727
+        ],
+        "memory": [
+          78303232, 78422016, 82657280, 80584704, 80715776, 80297984, 84733952, 80416768, 78364672,
+          79151104, 82771968, 80322560, 82927616, 80003072, 79818752, 81526784, 85016576, 78958592,
+          80150528, 80277504, 83865600, 79728640, 80285696, 79863808, 82931712, 80449536, 83345408,
+          79405056, 83255296, 79929344
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.9.0",
+      "toolVersion": "",
+      "variant": "scala-parallel-gc",
+      "variantSpec": "f3ef848296ac",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "virtuslab/scala-cli:1.9.0",
+      "sourceFile": "languages/scala/impl/nbody/Main.scala",
+      "sourceHash": "96d6b9e9121a5ea3",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.9.0-scala-parallel-gc-nbody.jar /repo/languages/scala/impl/nbody/Main.scala",
+      "runCommand": "java -XX:+UseParallelGC -jar /work/bin/scala-1.9.0-scala-parallel-gc-nbody.jar 1000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:29:51.558Z",
+      "finishedAt": "2026-10-19T14:29:51.586Z",
+      "buildSeconds": 0.013906354999984615,
+      "buildOutput": "Error response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.9.0",
+      "toolVersion": "",
+      "variant": "scala-default",
+      "variantSpec": "ca13fd54266f",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "virtuslab/scala-cli:1.9.0",
+      "sourceFile": "languages/scala/impl/string-ops/Main.scala",
+      "sourceHash": "28e49e612d340be1",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.9.0-scala-default-string-ops.jar /repo/languages/scala/impl/string-ops/Main.scala",
+      "runCommand": "java -jar /work/bin/scala-1.9.0-scala-default-string-ops.jar 1000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:29:51.601Z",
+      "finishedAt": "2026-10-19T14:29:51.627Z",
+      "buildSeconds": 0.013243597000022419,
+      "buildOutput": "Error response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "r",
+      "version": "4.4.3",
+      "toolVersion": "R version 4.4.3 (2025-02-28) -- \"Trophy Case\"",
+      "variant": "rscript-default",
+      "variantSpec": "f62bea3efc88",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "r-base:4.4.3",
+      "sourceFile": "languages/r/impl/sieve/main.R",
+      "sourceHash": "f93b1b63af85f8bf",
+      "runCommand": "Rscript /repo/languages/r/impl/sieve/main.R 10000000",
+      "loadAvgBefore": "2.00 1.55 0.89 8/522 60",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "f2cce6a5b3f85caf42abc3542cfed6c82e22751ae0e0f60ef57d7a4497a20346",
+      "startedAt": "2026-10-19T14:30:05.315Z",
+      "finishedAt": "2026-10-19T14:30:18.476Z",
+      "loadAvgAfter": "2.07 1.58 0.90 4/512 569",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.39335231400000004, 0.402488212, 0.39037613400000004, 0.41535536900000003,
+          0.40611629800000004, 0.40525258900000005, 0.39756820600000004, 0.39878787200000004,
+          0.406795038, 0.40916947200000003, 0.38938449, 0.413264707, 0.399812828, 0.403066099,
+          0.413715198, 0.422049946, 0.41531722200000004, 0.409503516, 0.410103973,
+          0.41269326300000003, 0.420836403, 0.415143111, 0.409878954, 0.41007867600000003,
+          0.408281006, 0.409813529, 0.40764334700000004, 0.40964112100000005, 0.406823388,
+          0.419001287
+        ],
+        "cpu": [
+          0.7028559999999999, 0.712249, 0.700526, 0.722974, 0.715597, 0.715117, 0.70666, 0.707841,
+          0.715824, 0.7142329999999999, 0.699178, 0.722855, 0.7077229999999999, 0.708035, 0.722167,
+          0.732354, 0.724849, 0.718674, 0.7195469999999999, 0.721884, 0.730644, 0.725092, 0.720016,
+          0.718723, 0.7180319999999999, 0.7199260000000001, 0.716931, 0.7200619999999999, 0.716457,
+          0.7281529999999999
+        ],
+        "user": [
+          0.636319, 0.655494, 0.633525, 0.661758, 0.655794, 0.64518, 0.641968, 0.628367, 0.648753,
+          0.638558, 0.641879, 0.649146, 0.6416149999999999, 0.6439849999999999, 0.665064, 0.665493,
+          0.657318, 0.640803, 0.650956, 0.651119, 0.6564139999999999, 0.653504, 0.637817, 0.657041,
+          0.6506489999999999, 0.649807, 0.645007, 0.6430119999999999, 0.649223, 0.661669
+        ],
+        "system": [
+          0.066537, 0.056755, 0.06700099999999999, 0.061216, 0.059802999999999995, 0.069937,
+          0.064692, 0.079474, 0.06707099999999999, 0.07567499999999999, 0.057298999999999996,
+          0.073709, 0.066108, 0.06405, 0.057102999999999994, 0.066861, 0.067531, 0.077871, 0.068591,
+          0.070765, 0.07422999999999999, 0.071588, 0.082199, 0.061681999999999994, 0.067383,
+          0.070119, 0.071924, 0.07705, 0.067234, 0.066484
+        ],
+        "memory": [
+          144379904, 144338944, 144449536, 144474112, 144371712, 144523264, 144375808, 143994880,
+          144580608, 144048128, 144281600, 144535552, 144580608, 144543744, 144535552, 144437248,
+          144650240, 144560128, 144187392, 144318464, 144130048, 144076800, 144560128, 144445440,
+          144494592, 144437248, 144609280, 144478208, 144134144, 144437248
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "7.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.7.403.0 for F# 7.0",
+      "variant": "fsharp-default",
+      "variantSpec": "35a932a63686",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:7.0",
+      "sourceFile": "languages/fsharp/impl/fannkuch/Program.fs",
+      "sourceHash": "e843c9ef9ede15ec",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-7.0-fsharp-default-fannkuch.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/fannkuch/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-7.0-fsharp-default-fannkuch -v q -nologo",
+      "runCommand": "dotnet /work/bin/fsharp-7.0-fsharp-default-fannkuch/app.dll 9",
+      "loadAvgBefore": "2.07 1.58 0.90 1/513 444",
+      "buildSeconds": 2.703360408999957,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:02.27\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-19T14:30:18.566Z",
+      "finishedAt": "2026-10-19T14:30:23.749Z",
+      "loadAvgAfter": "1.98 1.57 0.91 4/513 794",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.071466599, 0.072047603, 0.070444464, 0.070537942, 0.074006819, 0.072118845,
+          0.07005921700000001, 0.0686197, 0.072756581, 0.076435444, 0.070285917, 0.069265275,
+          0.07645953400000001, 0.07607252, 0.069583356, 0.06903661800000001, 0.08004357000000001,
+          0.074781606, 0.064981859, 0.06812137800000001, 0.07879463, 0.07459386500000001,
+          0.068820531, 0.07450916, 0.068882578, 0.069400745, 0.067442263, 0.069208645, 0.070501705,
+          0.069582585
+        ],
+        "cpu": [
+          0.066926, 0.06733, 0.066715, 0.066282, 0.067314, 0.065693, 0.065488, 0.065913,
+          0.06901399999999999, 0.071735, 0.065914, 0.065174, 0.07255299999999999,
+          0.07385399999999999, 0.065166, 0.065304, 0.069729, 0.070577, 0.061378999999999996,
+          0.064106, 0.071363, 0.069904, 0.06415799999999999, 0.067481, 0.065646, 0.065013, 0.063553,
+          0.065413, 0.066381, 0.065007
+        ],
+        "user": [
+          0.059828, 0.053260999999999996, 0.054325, 0.055064999999999996, 0.055075, 0.051544,
+          0.051163, 0.053744999999999994, 0.060013, 0.058782999999999995, 0.054759999999999996,
+          0.058046, 0.063484, 0.058678999999999995, 0.058149, 0.057267, 0.062655,
+          0.057041999999999995, 0.053329999999999995, 0.055090999999999994, 0.059302, 0.055721,
+          0.056011, 0.05855, 0.055547, 0.054855, 0.053623, 0.053148, 0.058335, 0.055866
+        ],
+        "system": [
+          0.007097999999999999, 0.014069, 0.01239, 0.011217, 0.012239, 0.014149, 0.014325, 0.012168,
+          0.009001, 0.012952, 0.011153999999999999, 0.007128, 0.009068999999999999, 0.015175,
+          0.007017, 0.008036999999999999, 0.0070739999999999996, 0.013535, 0.008048999999999999,
+          0.009015, 0.012060999999999999, 0.014183, 0.008147, 0.008931, 0.010099, 0.010158, 0.00993,
+          0.012265, 0.008046, 0.009141
+        ],
+        "memory": [
+          29810688, 29745152, 29622272, 29810688, 29675520, 29642752, 29884416, 29487104, 29732864,
+          29601792, 29650944, 29622272, 29716480, 29757440, 29446144, 29650944, 29655040, 29847552,
+          29450240, 29814784, 29851648, 29544448, 29900800, 29753344, 29839360, 29822976, 29773824,
+          29933568, 29507584, 29732864
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "8.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.8.403.0 for F# 8.0",
+      "variant": "fsharp-default",
+      "variantSpec": "35a932a63686",
+      "problem": "startup",
+      "args": [],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:8.0",
+      "sourceFile": "languages/fsharp/impl/startup/Program.fs",
+      "sourceHash": "0709f0fd367c3496",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-8.0-fsharp-default-startup.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/startup/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-8.0-fsharp-default-startup -v q -nologo",
+      "runCommand": "dotnet /work/bin/fsharp-8.0-fsharp-default-startup/app.dll",
+      "loadAvgBefore": "2.26 1.65 0.94 1/530 87",
+      "buildSeconds": 2.523457890999969,
+      "buildOutput": "\nBuild succeeded.\n    0 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:02.25\n",
+      "binarySize": 4096,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "2689367b205c16ce32ed4200942b8b8b1e262dfc70d9bc9fbc77c49699a4f1df",
+      "startedAt": "2026-10-19T14:30:36.310Z",
+      "finishedAt": "2026-10-19T14:30:40.114Z",
+      "loadAvgAfter": "2.24 1.66 0.95 1/524 438",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.033129255, 0.038278741000000005, 0.034469780000000005, 0.043001472000000006,
+          0.033193560000000004, 0.039094908000000005, 0.031338304000000004, 0.034910074,
+          0.035728356, 0.035751707, 0.040666816, 0.034107956, 0.03741971, 0.031562216000000004,
+          0.030442086000000004, 0.030495733, 0.030310832000000003, 0.031893752000000004,
+          0.031271492000000005, 0.040108767000000003, 0.031835, 0.031295210000000004, 0.030029802,
+          0.0334427, 0.030910473, 0.032029741, 0.037742321, 0.031349427, 0.041439029, 0.043317254
+        ],
+        "cpu": [
+          0.029435, 0.033774, 0.03066, 0.037348, 0.029533999999999998, 0.033375999999999996,
+          0.02802, 0.029674, 0.032732, 0.032595, 0.035462999999999995, 0.02796, 0.033706,
+          0.028351999999999995, 0.027863, 0.027555, 0.026807, 0.028204, 0.028052999999999998,
+          0.035144999999999996, 0.028232999999999998, 0.028104999999999998, 0.027614, 0.030993,
+          0.02704, 0.027051, 0.034450999999999996, 0.028145, 0.03683499999999999, 0.037417
+        ],
+        "user": [
+          0.02523, 0.024562999999999998, 0.02077, 0.026536999999999998, 0.016736,
+          0.023261999999999998, 0.021015, 0.02275, 0.027618, 0.022081, 0.028754, 0.02097,
+          0.027757999999999998, 0.019951999999999998, 0.021893, 0.018698, 0.02085, 0.02482,
+          0.019740999999999998, 0.030125, 0.019157999999999998, 0.022083, 0.017387,
+          0.022994999999999998, 0.022033, 0.019767999999999997, 0.030397999999999998, 0.021891,
+          0.028870999999999997, 0.029327
+        ],
+        "system": [
+          0.0042049999999999995, 0.009211, 0.00989, 0.010811, 0.012797999999999999, 0.010114,
+          0.007005, 0.006924, 0.005114, 0.010513999999999999, 0.006709, 0.00699, 0.005948, 0.0084,
+          0.00597, 0.008857, 0.005957, 0.003384, 0.008312, 0.00502, 0.009075, 0.006022, 0.010227,
+          0.007998, 0.005007, 0.0072829999999999995, 0.004053, 0.006254, 0.007963999999999999,
+          0.00809
+        ],
+        "memory": [
+          28176384, 28160000, 27942912, 28282880, 28151808, 28131328, 28200960, 28147712, 28110848,
+          28168192, 28020736, 28225536, 27791360, 27967488, 28049408, 28151808, 28360704, 28086272,
+          27881472, 28139520, 28098560, 28172288, 28262400, 28229632, 28348416, 28053504, 28078080,
+          28225536, 28160000, 28270592
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fortran",
+      "version": "14",
+      "toolVersion": "GNU Fortran (GCC) 14.4.0",
+      "variant": "gfortran-O3-native",
+      "variantSpec": "5b47669ef6a5",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "gcc:14",
+      "sourceFile": "languages/fortran/impl/nbody/main.f90",
+      "sourceHash": "f6128bd1b979f1d1",
+      "buildCommand": "mkdir -p /work/bin/fortran-14-gfortran-O3-native-nbody.mod && cd /work/bin/fortran-14-gfortran-O3-native-nbody.mod && gfortran -O3 -march=native -fopenmp -o /work/bin/fortran-14-gfortran-O3-native-nbody /repo/languages/fortran/impl/nbody/main.f90",
+      "runCommand": "/work/bin/fortran-14-gfortran-O3-native-nbody 1000000",
+      "loadAvgBefore": "2.24 1.66 0.95 8/526 143",
+      "buildSeconds": 0.13110686599998736,
+      "buildOutput": "f951: Warning: '-mavx10.1' is aliased to 512 bit since GCC14.3\n",
+      "binarySize": 16840,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "8ee189056f3f4c4db4e0d4c25778c8e2140ba48aa1ff0321d56c576ffbceee17",
+      "startedAt": "2026-10-19T14:30:40.195Z",
+      "finishedAt": "2026-10-19T14:30:42.246Z",
+      "loadAvgAfter": "2.24 1.66 0.95 3/526 223",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.054698633, 0.054441744, 0.054776713000000005, 0.055099754, 0.055265562000000004,
+          0.05506786, 0.054800033000000005, 0.054751304, 0.054591958, 0.055022638000000006,
+          0.054997075000000006, 0.052992528000000004, 0.053115412, 0.055288696000000005,
+          0.055839908, 0.054811740000000005, 0.056164713000000005, 0.055133103,
+          0.054806413000000005, 0.054526896000000005, 0.054630322, 0.054195508, 0.054699662,
+          0.05505184900000001, 0.055193169, 0.054702873000000006, 0.054958408, 0.054731010000000004,
+          0.054559451, 0.054638731
+        ],
+        "cpu": [
+          0.054569, 0.054336, 0.054645, 0.054825, 0.055132, 0.054870999999999996, 0.054688,
+          0.054662999999999996, 0.054508, 0.054881, 0.054904999999999995, 0.052901, 0.052967,
+          0.055167, 0.055732, 0.05469, 0.056007, 0.055027, 0.054667, 0.054408, 0.054535,
+          0.054093999999999996, 0.054459999999999995, 0.054914, 0.055073, 0.054584,
+          0.054842999999999996, 0.054619, 0.054426999999999996, 0.05448
+        ],
+        "user": [
+          0.054569, 0.053349, 0.054645, 0.054825, 0.055132, 0.053874, 0.053694,
+          0.053669999999999995, 0.054508, 0.054881, 0.053907, 0.051903, 0.052967, 0.055167,
+          0.055732, 0.053696, 0.055007, 0.055027, 0.053674, 0.05243, 0.054535, 0.053092999999999994,
+          0.054459999999999995, 0.053916, 0.053106999999999994, 0.054584, 0.053846, 0.053626,
+          0.053438, 0.05448
+        ],
+        "system": [
+          0, 0.000987, 0, 0, 0, 0.000997, 0.0009939999999999999, 0.000993, 0, 0, 0.000998, 0.000998,
+          0, 0, 0, 0.0009939999999999999, 0.001, 0, 0.000993, 0.0019779999999999997, 0, 0.001001, 0,
+          0.000998, 0.001966, 0, 0.000997, 0.000993, 0.0009889999999999999, 0
+        ],
+        "memory": [
+          3096576, 3162112, 3117056, 3166208, 3067904, 3031040, 3158016, 3055616, 3158016, 3084288,
+          3166208, 3014656, 3014656, 3145728, 3145728, 3104768, 3104768, 2977792, 3031040, 3035136,
+          3235840, 3158016, 3170304, 3084288, 3010560, 3104768, 2969600, 3031040, 3104768, 3153920
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "10.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 15.2.402.0 for F# 10.0",
+      "variant": "fsharp-no-tiering",
+      "variantSpec": "84e27460c708",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:10.0",
+      "sourceFile": "languages/fsharp/impl/hashmap/Program.fs",
+      "sourceHash": "32f7aa4704587e32",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-10.0-fsharp-no-tiering-hashmap.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/hashmap/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-10.0-fsharp-no-tiering-hashmap -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-10.0-fsharp-no-tiering-hashmap/app.dll 1000000",
+      "loadAvgBefore": "2.24 1.66 0.95 1/526 448",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-10.0-fsharp-no-tiering-hashmap/app.dll 1000000' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:30:42.329Z",
+      "finishedAt": "2026-10-19T14:30:45.039Z"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.6.0",
+      "toolVersion": "",
+      "variant": "scala-default",
+      "variantSpec": "ca13fd54266f",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "virtuslab/scala-cli:1.6.0",
+      "sourceFile": "languages/scala/impl/matmul/Main.scala",
+      "sourceHash": "2704241d3b39cad7",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.6.0-scala-default-matmul.jar /repo/languages/scala/impl/matmul/Main.scala",
+      "runCommand": "java -jar /work/bin/scala-1.6.0-scala-default-matmul.jar 256",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 16b35adf3f7cfa0c8a9c8225a2531a854fa9b1dc320ad49c1edaa69747b8bf08 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:31:17.447Z",
+      "finishedAt": "2026-10-19T14:31:17.476Z",
+      "buildSeconds": 0.01430085300002247,
+      "buildOutput": "Error response from daemon: container 16b35adf3f7cfa0c8a9c8225a2531a854fa9b1dc320ad49c1edaa69747b8bf08 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.9.0",
+      "toolVersion": "",
+      "variant": "scala-parallel-gc",
+      "variantSpec": "f3ef848296ac",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "virtuslab/scala-cli:1.9.0",
+      "sourceFile": "languages/scala/impl/sort/Main.scala",
+      "sourceHash": "28db2f825bc5da3e",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.9.0-scala-parallel-gc-sort.jar /repo/languages/scala/impl/sort/Main.scala",
+      "runCommand": "java -XX:+UseParallelGC -jar /work/bin/scala-1.9.0-scala-parallel-gc-sort.jar 2000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:31:17.490Z",
+      "finishedAt": "2026-10-19T14:31:17.518Z",
+      "buildSeconds": 0.013739445999963209,
+      "buildOutput": "Error response from daemon: container 61e17631775ab803339a671f72078c845a858b539181b7281f26bc1745291a94 is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "nim",
+      "version": "2.2",
+      "toolVersion": "Nim Compiler Version 2.2.12 [Linux: amd64]",
+      "variant": "nim-danger",
+      "variantSpec": "6d2e646321b3",
+      "problem": "binary-trees",
+      "args": ["14"],
+      "containerImage": "nimlang/nim:2.2",
+      "sourceFile": "languages/nim/impl/binary-trees/main.nim",
+      "sourceHash": "0d25f80345eb5763",
+      "buildCommand": "nim c -d:danger --threads:on --hints:off --warnings:off --nimcache:/work/bin/nim-2.2-nim-danger-binary-trees.cache -o:/work/bin/nim-2.2-nim-danger-binary-trees /repo/languages/nim/impl/binary-trees/main.nim",
+      "runCommand": "/work/bin/nim-2.2-nim-danger-binary-trees 14",
+      "loadAvgBefore": "2.58 1.82 1.04 1/548 56",
+      "buildSeconds": 1.3129732559999683,
+      "buildOutput": "",
+      "binarySize": 75016,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "e7bf7ea2327c0a36a16c49f02ca059657977f8e3dc116886a771515333765977",
+      "startedAt": "2026-10-19T14:31:26.377Z",
+      "finishedAt": "2026-10-19T14:31:29.064Z",
+      "loadAvgAfter": "2.58 1.82 1.04 4/549 177",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.038233024000000004, 0.037604428, 0.037349843, 0.03808317, 0.038574137, 0.037729783,
+          0.038513046, 0.037516175000000006, 0.037671504, 0.037684567, 0.037983336,
+          0.037291936000000005, 0.037380901, 0.037105389, 0.037988358, 0.038085082,
+          0.037898678000000005, 0.038329174, 0.037164354000000004, 0.03690249, 0.037323445000000004,
+          0.037075993, 0.037033509, 0.036808492000000005, 0.037295136, 0.036183095000000005,
+          0.036798349, 0.03744256, 0.037811842000000005, 0.037134354
+        ],
+        "cpu": [
+          0.038161, 0.037515999999999994, 0.037216, 0.038006, 0.038465, 0.037589, 0.038392,
+          0.037423, 0.037589, 0.037577, 0.037867, 0.037210999999999994, 0.037254999999999996,
+          0.037022, 0.03790399999999999, 0.037988, 0.037793999999999994, 0.038216,
+          0.037036999999999994, 0.036812, 0.037233999999999996, 0.036975, 0.036958, 0.036731,
+          0.037197999999999995, 0.036113, 0.036715, 0.037361, 0.03774, 0.037041
+        ],
+        "user": [
+          0.036153, 0.035542, 0.035205, 0.034006, 0.036493, 0.034622, 0.036372, 0.035454, 0.035558,
+          0.036562, 0.037867, 0.035199999999999995, 0.037254999999999996, 0.035021,
+          0.036906999999999995, 0.036989, 0.035805, 0.036205, 0.035035, 0.031838,
+          0.037233999999999996, 0.035976, 0.03596, 0.035739, 0.036192999999999996, 0.034107,
+          0.035696, 0.037361, 0.035754, 0.036039999999999996
+        ],
+        "system": [
+          0.002008, 0.001974, 0.0020109999999999998, 0.004, 0.001972, 0.002967, 0.00202, 0.001969,
+          0.002031, 0.001015, 0, 0.0020109999999999998, 0, 0.0020009999999999997, 0.000997,
+          0.0009989999999999999, 0.001989, 0.0020109999999999998, 0.002002, 0.004974, 0,
+          0.0009989999999999999, 0.000998, 0.000992, 0.001005, 0.002006, 0.001019, 0, 0.001986,
+          0.001001
+        ],
+        "memory": [
+          5517312, 5750784, 5754880, 5746688, 5603328, 5509120, 5521408, 5742592, 5742592, 5603328,
+          5648384, 5750784, 5636096, 5599232, 5754880, 5509120, 5754880, 5521408, 5754880, 5525504,
+          5738496, 5599232, 5746688, 5603328, 5603328, 5754880, 5738496, 5644288, 5525504, 5738496
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.0",
+      "toolVersion": "",
+      "variant": "ocamlopt-O3",
+      "variantSpec": "f37cfef3ec12",
+      "problem": "matmul",
+      "args": ["256"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.0",
+      "sourceFile": "languages/ocaml/impl/matmul/main.ml",
+      "sourceHash": "e31cfc65c1d55df2",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.0-ocamlopt-O3-matmul.o && cp /repo/languages/ocaml/impl/matmul/main.ml /work/bin/ocaml-5.0-ocamlopt-O3-matmul.o/main.ml && cd /work/bin/ocaml-5.0-ocamlopt-O3-matmul.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.0-ocamlopt-O3-matmul",
+      "runCommand": "/work/bin/ocaml-5.0-ocamlopt-O3-matmul 256",
+      "loadAvgBefore": "2.58 1.82 1.04 1/549 78",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.0-ocamlopt-O3-matmul.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:31:29.153Z",
+      "finishedAt": "2026-10-19T14:31:29.239Z",
+      "buildSeconds": 0.041734795999946075,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.0-ocamlopt-O3-matmul.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.4",
+      "toolVersion": "",
+      "variant": "ocamlopt-safe",
+      "variantSpec": "0997198e31bf",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.4",
+      "sourceFile": "languages/ocaml/impl/sieve/main.ml",
+      "sourceHash": "e087ca93516866f7",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.4-ocamlopt-safe-sieve.o && cp /repo/languages/ocaml/impl/sieve/main.ml /work/bin/ocaml-5.4-ocamlopt-safe-sieve.o/main.ml && cd /work/bin/ocaml-5.4-ocamlopt-safe-sieve.o && ocamlopt -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.4-ocamlopt-safe-sieve",
+      "runCommand": "/work/bin/ocaml-5.4-ocamlopt-safe-sieve 10000000",
+      "loadAvgBefore": "2.58 1.82 1.04 1/549 89",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.4-ocamlopt-safe-sieve.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:31:29.281Z",
+      "finishedAt": "2026-10-19T14:31:29.366Z",
+      "buildSeconds": 0.04229959800001234,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.4-ocamlopt-safe-sieve.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "elixir",
+      "version": "1.17",
+      "toolVersion": "1.17.3",
+      "variant": "elixir-sbt-db",
+      "variantSpec": "a1ba11111b14",
+      "problem": "fannkuch",
+      "args": ["9"],
+      "containerImage": "elixir:1.17",
+      "sourceFile": "languages/elixir/impl/fannkuch/main.exs",
+      "sourceHash": "e07c4929f628dba3",
+      "runCommand": "elixir --erl \"+sbt db\" /repo/languages/elixir/impl/fannkuch/main.exs 9",
+      "loadAvgBefore": "2.11 1.77 1.05 2/560 55",
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "1126b09c01d22b425b1e4ae4ea23662b28fc9d9b37b01c434908a0b6d2779714",
+      "startedAt": "2026-10-19T14:31:55.504Z",
+      "finishedAt": "2026-10-19T14:32:25.115Z",
+      "loadAvgAfter": "1.95 1.78 1.07 1/584 1268",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.920350819, 0.909689798, 0.9381013800000001, 0.925853276, 0.9295977000000001,
+          0.9188237250000001, 0.9289511090000001, 0.923445183, 0.914031837, 0.941288533,
+          0.923400667, 0.9160338360000001, 0.921837291, 0.9255400690000001, 0.922057129,
+          0.925831107, 0.9253130300000001, 0.911465579, 0.924668389, 0.9150407330000001,
+          0.8978052480000001, 0.9201400810000001, 0.920322147, 0.9249911380000001,
+          0.9230962130000001, 0.909215838, 0.92238564, 0.9187755820000001, 0.918546182, 0.907362
+        ],
+        "cpu": [
+          1.1086880000000001, 1.0724909999999999, 1.108993, 1.12422, 1.129254, 1.110757, 1.126513,
+          1.1163939999999999, 1.097982, 1.129181, 1.119758, 1.095308, 1.111325, 1.091781,
+          1.0988689999999999, 1.114241, 1.11469, 1.069741, 1.105284, 1.1094249999999999,
+          1.0516969999999999, 1.111216, 1.099211, 1.0918359999999998, 1.110449, 1.070296, 1.122746,
+          1.092476, 1.0962109999999998, 1.072588
+        ],
+        "user": [
+          1.028286, 0.9911089999999999, 1.019223, 1.046838, 1.028794, 1.01655, 1.041809,
+          1.0249489999999999, 1.012998, 1.029873, 1.023172, 1.010036, 1.025547, 1.016085, 1.009493,
+          1.010232, 1.027501, 0.970505, 1.035898, 1.016344, 0.981103, 1.027793, 1.00502,
+          0.9955919999999999, 1.020969, 0.9715349999999999, 1.021768, 0.9971859999999999, 1.006271,
+          0.988884
+        ],
+        "system": [
+          0.080402, 0.081382, 0.08977, 0.07738199999999999, 0.10046, 0.094207, 0.084704, 0.091445,
+          0.08498399999999999, 0.099308, 0.09658599999999999, 0.085272, 0.085778, 0.075696,
+          0.089376, 0.10400899999999999, 0.087189, 0.09923599999999999, 0.069386, 0.093081,
+          0.07059399999999999, 0.083423, 0.094191, 0.096244, 0.08947999999999999, 0.098761,
+          0.100978, 0.09529, 0.08993999999999999, 0.083704
+        ],
+        "memory": [
+          81117184, 80457728, 79773696, 81031168, 80932864, 80744448, 82083840, 80785408, 81121280,
+          81879040, 80261120, 81199104, 80756736, 79548416, 81141760, 81612800, 82100224, 80228352,
+          80916480, 82558976, 80330752, 80367616, 85782528, 80203776, 81399808, 80011264, 83382272,
+          80572416, 84619264, 83546112
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.2",
+      "toolVersion": "",
+      "variant": "ocamlopt-safe",
+      "variantSpec": "0997198e31bf",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.2",
+      "sourceFile": "languages/ocaml/impl/string-ops/main.ml",
+      "sourceHash": "9c63aba5650d9850",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.2-ocamlopt-safe-string-ops.o && cp /repo/languages/ocaml/impl/string-ops/main.ml /work/bin/ocaml-5.2-ocamlopt-safe-string-ops.o/main.ml && cd /work/bin/ocaml-5.2-ocamlopt-safe-string-ops.o && ocamlopt -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.2-ocamlopt-safe-string-ops",
+      "runCommand": "/work/bin/ocaml-5.2-ocamlopt-safe-string-ops 1000000",
+      "loadAvgBefore": "1.95 1.78 1.07 3/584 89",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-safe-string-ops.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:32:25.194Z",
+      "finishedAt": "2026-10-19T14:32:25.274Z",
+      "buildSeconds": 0.04052682700008154,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-safe-string-ops.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.12.0",
+      "toolVersion": "",
+      "variant": "scala-parallel-gc",
+      "variantSpec": "f3ef848296ac",
+      "problem": "hashmap",
+      "args": ["1000000"],
+      "containerImage": "virtuslab/scala-cli:1.12.0",
+      "sourceFile": "languages/scala/impl/hashmap/Main.scala",
+      "sourceHash": "33fad04af73550d1",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.12.0-scala-parallel-gc-hashmap.jar /repo/languages/scala/impl/hashmap/Main.scala",
+      "runCommand": "java -XX:+UseParallelGC -jar /work/bin/scala-1.12.0-scala-parallel-gc-hashmap.jar 1000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 0946a972c8a1900c65787a2b65e4bb33861ced88311bca42b80fa8a72e62c3dc is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:32:59.214Z",
+      "finishedAt": "2026-10-19T14:32:59.240Z",
+      "buildSeconds": 0.012661466000019573,
+      "buildOutput": "Error response from daemon: container 0946a972c8a1900c65787a2b65e4bb33861ced88311bca42b80fa8a72e62c3dc is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.2",
+      "toolVersion": "",
+      "variant": "ocamlopt-O3",
+      "variantSpec": "f37cfef3ec12",
+      "problem": "nbody",
+      "args": ["1000000"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.2",
+      "sourceFile": "languages/ocaml/impl/nbody/main.ml",
+      "sourceHash": "558c30ae216ab8ec",
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.2-ocamlopt-O3-nbody.o && cp /repo/languages/ocaml/impl/nbody/main.ml /work/bin/ocaml-5.2-ocamlopt-O3-nbody.o/main.ml && cd /work/bin/ocaml-5.2-ocamlopt-O3-nbody.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.2-ocamlopt-O3-nbody",
+      "runCommand": "/work/bin/ocaml-5.2-ocamlopt-O3-nbody 1000000",
+      "loadAvgBefore": "2.28 1.88 1.13 1/595 110",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-O3-nbody.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:32:59.277Z",
+      "finishedAt": "2026-10-19T14:32:59.356Z",
+      "buildSeconds": 0.03949180800002068,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-O3-nbody.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "haskell",
+      "version": "9.8",
+      "toolVersion": "The Glorious Glasgow Haskell Compilation System, version 9.8.4",
+      "variant": "ghc-O2",
+      "variantSpec": "a3931e2b9f61",
+      "problem": "string-ops",
+      "args": ["1000000"],
+      "containerImage": "haskell:9.8",
+      "sourceFile": "languages/haskell/impl/string-ops/main.hs",
+      "sourceHash": "797013919c68f9a0",
+      "buildCommand": "mkdir -p /work/bin/haskell-9.8-ghc-O2-string-ops.o && ghc -O2 -threaded -rtsopts -outputdir /work/bin/haskell-9.8-ghc-O2-string-ops.o -o /work/bin/haskell-9.8-ghc-O2-string-ops /repo/languages/haskell/impl/string-ops/main.hs",
+      "runCommand": "/work/bin/haskell-9.8-ghc-O2-string-ops 1000000",
+      "loadAvgBefore": "2.25 1.91 1.17 1/604 59",
+      "buildSeconds": 0.8922018000000389,
+      "buildOutput": "[1 of 2] Compiling Main             ( /repo/languages/haskell/impl/string-ops/main.hs, /work/bin/haskell-9.8-ghc-O2-string-ops.o/Main.o )\n[2 of 2] Linking /work/bin/haskell-9.8-ghc-O2-string-ops\n",
+      "binarySize": 2623216,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "701071c706fc27810b9edb19a7979ad10183806c836563856866ef9393307d9e",
+      "startedAt": "2026-10-19T14:33:26.635Z",
+      "finishedAt": "2026-10-19T14:33:35.872Z",
+      "loadAvgAfter": "2.14 1.90 1.17 1/596 282",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.25173227000000004, 0.25063074900000004, 0.252368221, 0.24850148600000002,
+          0.25689438200000003, 0.26190192, 0.259609032, 0.262101613, 0.265419399, 0.251448171,
+          0.254765638, 0.256712861, 0.261170693, 0.24139544100000002, 0.265321595, 0.254409936,
+          0.26032472, 0.25002356800000003, 0.254078952, 0.24321824, 0.264563577,
+          0.24915408600000002, 0.2510234, 0.25645807600000003, 0.25669266900000004, 0.258422257,
+          0.266109168, 0.254172293, 0.259717933, 0.255654192
+        ],
+        "cpu": [
+          0.25201799999999996, 0.25096999999999997, 0.25284, 0.248591, 0.256967, 0.262409, 0.25956,
+          0.262533, 0.265739, 0.251905, 0.255055, 0.257241, 0.26153, 0.241805, 0.265646,
+          0.25475899999999996, 0.260654, 0.249387, 0.25453699999999996, 0.243552, 0.265152,
+          0.249589, 0.251311, 0.256795, 0.256421, 0.258741, 0.266055, 0.254552, 0.260268,
+          0.25615499999999997
+        ],
+        "user": [
+          0.20701499999999998, 0.196761, 0.208694, 0.203484, 0.21681599999999998, 0.21133, 0.219628,
+          0.220608, 0.211589, 0.204923, 0.20804499999999998, 0.217359, 0.217441,
+          0.20066799999999999, 0.22286399999999998, 0.20360699999999998, 0.214891, 0.201313,
+          0.20643599999999998, 0.202459, 0.22613, 0.212943, 0.207257, 0.214665, 0.203126, 0.217782,
+          0.222046, 0.214465, 0.217224, 0.216131
+        ],
+        "system": [
+          0.045003, 0.054209, 0.044146, 0.045107, 0.040151, 0.051079, 0.039931999999999995,
+          0.041925, 0.05415, 0.046981999999999996, 0.047009999999999996, 0.039882,
+          0.044088999999999996, 0.041137, 0.042782, 0.051151999999999996, 0.045763, 0.048074,
+          0.048101, 0.041093, 0.039022, 0.036646, 0.044053999999999996, 0.04213,
+          0.053294999999999995, 0.040958999999999995, 0.044009, 0.040087, 0.043044, 0.040024
+        ],
+        "memory": [
+          89227264, 89354240, 89227264, 89272320, 88997888, 89108480, 89026560, 89313280, 89358336,
+          89157632, 89305088, 89169920, 89104384, 89391104, 89133056, 89321472, 89231360, 89378816,
+          89284608, 89378816, 88997888, 89219072, 89296896, 89120768, 89198592, 89292800, 89378816,
+          89321472, 89399296, 89321472
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "scala",
+      "version": "1.12.0",
+      "toolVersion": "",
+      "variant": "scala-parallel-gc",
+      "variantSpec": "f3ef848296ac",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "virtuslab/scala-cli:1.12.0",
+      "sourceFile": "languages/scala/impl/sieve/Main.scala",
+      "sourceHash": "25016efc9effafe2",
+      "buildCommand": "scala-cli --power package --server=false --assembly -f -o /work/bin/scala-1.12.0-scala-parallel-gc-sieve.jar /repo/languages/scala/impl/sieve/Main.scala",
+      "runCommand": "java -XX:+UseParallelGC -jar /work/bin/scala-1.12.0-scala-parallel-gc-sieve.jar 10000000",
+      "loadAvgBefore": "",
+      "status": "failed",
+      "error": "build failed:\nError response from daemon: container 0946a972c8a1900c65787a2b65e4bb33861ced88311bca42b80fa8a72e62c3dc is not running\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:33:35.931Z",
+      "finishedAt": "2026-10-19T14:33:35.958Z",
+      "buildSeconds": 0.013673623999929987,
+      "buildOutput": "Error response from daemon: container 0946a972c8a1900c65787a2b65e4bb33861ced88311bca42b80fa8a72e62c3dc is not running\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "ocaml",
+      "version": "5.2",
+      "toolVersion": "",
+      "variant": "ocamlopt-safe",
+      "variantSpec": "0997198e31bf",
+      "problem": "json-parse",
+      "args": ["/work/inputs/input.json"],
+      "containerImage": "ocaml/opam:debian-ocaml-5.2",
+      "sourceFile": "languages/ocaml/impl/json-parse/main.ml",
+      "sourceHash": "8b53351b9de9f773",
+      "inputSha256": "9c25c51271d5f024b46a414f9e825260a6299cef8ba5d1a4550d2e07407bc6f1",
+      "inputBytes": 19402223,
+      "buildCommand": "mkdir -p /work/bin/ocaml-5.2-ocamlopt-safe-json-parse.o && cp /repo/languages/ocaml/impl/json-parse/main.ml /work/bin/ocaml-5.2-ocamlopt-safe-json-parse.o/main.ml && cd /work/bin/ocaml-5.2-ocamlopt-safe-json-parse.o && ocamlopt -I +unix unix.cmxa main.ml -o /work/bin/ocaml-5.2-ocamlopt-safe-json-parse",
+      "runCommand": "/work/bin/ocaml-5.2-ocamlopt-safe-json-parse /work/inputs/input.json",
+      "loadAvgBefore": "2.14 1.90 1.17 3/597 131",
+      "status": "failed",
+      "error": "build failed:\nmkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-safe-json-parse.o': Permission denied\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:33:36.000Z",
+      "finishedAt": "2026-10-19T14:33:36.082Z",
+      "buildSeconds": 0.04087053800001741,
+      "buildOutput": "mkdir: cannot create directory '/work/bin/ocaml-5.2-ocamlopt-safe-json-parse.o': Permission denied\n"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fortran",
+      "version": "14",
+      "toolVersion": "GNU Fortran (GCC) 14.4.0",
+      "variant": "gfortran-O3",
+      "variantSpec": "50f501557355",
+      "problem": "sort",
+      "args": ["2000000"],
+      "containerImage": "gcc:14",
+      "sourceFile": "languages/fortran/impl/sort/main.f90",
+      "sourceHash": "46e0b029d40148b8",
+      "buildCommand": "mkdir -p /work/bin/fortran-14-gfortran-O3-sort.mod && cd /work/bin/fortran-14-gfortran-O3-sort.mod && gfortran -O3 -fopenmp -o /work/bin/fortran-14-gfortran-O3-sort /repo/languages/fortran/impl/sort/main.f90",
+      "runCommand": "/work/bin/fortran-14-gfortran-O3-sort 2000000",
+      "loadAvgBefore": "2.14 1.90 1.17 8/597 230",
+      "buildSeconds": 0.2709390110000968,
+      "buildOutput": "",
+      "binarySize": 16592,
+      "status": "ok",
+      "correct": true,
+      "outputSha256": "0e4cdffacd5a55db45412bb3916f41b8e345b118b0224da12967fc1578fe496b",
+      "startedAt": "2026-10-19T14:33:36.122Z",
+      "finishedAt": "2026-10-19T14:33:41.949Z",
+      "loadAvgAfter": "2.05 1.88 1.17 1/597 310",
+      "hyperfineArgs": "--runs 30 --warmup 1 --style basic",
+      "warmupRuns": 1,
+      "runs": {
+        "wall": [
+          0.168001011, 0.16636751200000002, 0.16976291300000002, 0.168437719, 0.168768797,
+          0.16665022100000002, 0.16917404300000002, 0.16839224600000002, 0.167616082, 0.16826621,
+          0.16667262000000002, 0.16949683200000001, 0.16825204100000002, 0.168100629,
+          0.16380027900000002, 0.16577454700000002, 0.166900761, 0.167088288, 0.16747251400000002,
+          0.16902709900000001, 0.17117137100000002, 0.16857859900000002, 0.16731816700000002,
+          0.168496323, 0.165947947, 0.165838692, 0.16843633000000002, 0.170975608, 0.16815669,
+          0.169125816
+        ],
+        "cpu": [
+          0.167815, 0.166186, 0.169569, 0.168282, 0.16860099999999997, 0.166483, 0.168923,
+          0.16819599999999998, 0.167427, 0.168115, 0.166562, 0.169328, 0.168048, 0.167742,
+          0.16363799999999998, 0.165598, 0.166708, 0.16688699999999998, 0.167244, 0.168847,
+          0.170947, 0.168432, 0.167162, 0.16821999999999998, 0.165815, 0.16569699999999998,
+          0.168258, 0.17074999999999999, 0.167981, 0.168932
+        ],
+        "user": [
+          0.162821, 0.164184, 0.16655899999999998, 0.16627899999999998, 0.16361299999999998,
+          0.162472, 0.164925, 0.16519299999999998, 0.162445, 0.16611399999999998, 0.162573,
+          0.165321, 0.164047, 0.165746, 0.16064499999999998, 0.164601, 0.161717,
+          0.16488899999999998, 0.16424, 0.16585, 0.167948, 0.162417, 0.162187, 0.16721899999999998,
+          0.162819, 0.161705, 0.165272, 0.166756, 0.165982, 0.167933
+        ],
+        "system": [
+          0.004994, 0.002002, 0.0030099999999999997, 0.002003, 0.004987999999999999, 0.004011,
+          0.003998, 0.003003, 0.0049819999999999994, 0.0020009999999999997, 0.0039889999999999995,
+          0.004007, 0.004001, 0.001996, 0.002993, 0.000997, 0.004991, 0.0019979999999999998,
+          0.0030039999999999997, 0.0029969999999999997, 0.002999, 0.0060149999999999995,
+          0.004974999999999999, 0.001001, 0.002996, 0.003992, 0.002986, 0.003994, 0.001999,
+          0.0009989999999999999
+        ],
+        "memory": [
+          10833920, 10891264, 10964992, 11026432, 11014144, 11010048, 10964992, 11165696, 11165696,
+          11026432, 10969088, 10960896, 11087872, 10969088, 11165696, 11022336, 10956800, 11165696,
+          11014144, 10878976, 11087872, 11018240, 10997760, 11010048, 11022336, 10838016, 11010048,
+          11165696, 11010048, 11051008
+        ],
+        "exit": [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+        ]
+      }
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "6.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 12.0.5.0 for F# 6.0",
+      "variant": "fsharp-no-tiering",
+      "variantSpec": "84e27460c708",
+      "problem": "sieve",
+      "args": ["10000000"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:6.0",
+      "sourceFile": "languages/fsharp/impl/sieve/Program.fs",
+      "sourceHash": "47f6f312e03aee87",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-6.0-fsharp-no-tiering-sieve.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/sieve/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-6.0-fsharp-no-tiering-sieve -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-sieve/app.dll 10000000",
+      "loadAvgBefore": "2.05 1.88 1.17 1/597 274",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-6.0-fsharp-no-tiering-sieve/app.dll 10000000' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:33:42.037Z",
+      "finishedAt": "2026-10-19T14:33:44.985Z"
+    },
+    {
+      "sessionId": "2026-10-19T14-20-20-585Z-s6",
+      "language": "fsharp",
+      "version": "9.0",
+      "toolVersion": "Microsoft (R) F# Interactive version 13.9.303.0 for F# 9.0",
+      "variant": "fsharp-no-tiering",
+      "variantSpec": "84e27460c708",
+      "problem": "parallel-reduce",
+      "args": ["2000000", "4"],
+      "containerImage": "mcr.microsoft.com/dotnet/sdk:9.0",
+      "sourceFile": "languages/fsharp/impl/parallel-reduce/Program.fs",
+      "sourceHash": "7186156c8012c801",
+      "buildCommand": "export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_NOLOGO=1; P=/work/bin/fsharp-9.0-fsharp-no-tiering-parallel-reduce.proj; mkdir -p $P && cp /repo/languages/fsharp/impl/parallel-reduce/Program.fs $P/ && sed \"s/@TFM@/net$(dotnet --version | cut -d. -f1,2)/\" /repo/languages/fsharp/app.fsproj > $P/app.fsproj && cd $P && dotnet build -c Release -o /work/bin/fsharp-9.0-fsharp-no-tiering-parallel-reduce -v q -nologo",
+      "runCommand": "DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-9.0-fsharp-no-tiering-parallel-reduce/app.dll 2000000 4",
+      "loadAvgBefore": "1.97 1.87 1.18 1/615 85",
+      "status": "failed",
+      "error": "Error: hyperfine failed (1): Error: Cannot run 'DOTNET_TieredCompilation=0 dotnet /work/bin/fsharp-9.0-fsharp-no-tiering-parallel-reduce/app.dll 2000000 4' directly because it starts with a variable assignment.\nUse the --env option to set environment variables, for example:\n\n  hyperfine --env 'OMP_NUM_THREADS=8 CFLAGS=\"-O3 -march=native\"' 'my_command'\n\nAlternatively, use -S / --shell=default to run the command in a shell.\n\n",
+      "correct": false,
+      "startedAt": "2026-10-19T14:33:55.824Z",
+      "finishedAt": "2026-10-19T14:33:58.894Z"
+    }
+  ]
+}
