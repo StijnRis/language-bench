@@ -2,8 +2,8 @@
   "id": "nbody",
   "title": "N-Body simulation",
   "summary": "Advance the Jovian planets 1,000,000 steps with a symplectic integrator.",
-  "description": "Classic five-body gravitational simulation (Sun, Jupiter, Saturn, Uranus, Neptune) from the Computer Language Benchmarks Game. Each step computes pairwise forces and advances positions with a fixed time step of 0.01. The program prints the system energy before and after with 9 decimals.",
-  "pseudocode": "bodies = [Sun, Jupiter, Saturn, Uranus, Neptune]   # position, velocity, mass\noffset sun velocity so total momentum = 0\nprint energy(bodies)                      # 9 decimals\nrepeat 1,000,000 times:\n    for each pair (i, j) with i < j:\n        d    = pos[i] - pos[j]\n        dist = |d|\n        mag  = 0.01 / dist^3\n        vel[i] -= d * mass[j] * mag\n        vel[j] += d * mass[i] * mag\n    for each body b:\n        pos[b] += 0.01 * vel[b]\nprint energy(bodies)",
+  "description": "Classic five-body gravitational simulation (Sun, Jupiter, Saturn, Uranus, Neptune) from the Computer Language Benchmarks Game, advanced 1,000,000 steps of 0.01 with a symplectic integrator. Each iteration starts from slightly different initial conditions (planet positions scaled by 1 + (iteration mod 997) * 1e-5; iteration 0 is the classic setup). The energy before and after, rounded to 9 decimals, is the result.",
+  "pseudocode": "bodies = decode(instance)             # position, velocity, mass; untimed\nstart timer\noffset sun velocity so total momentum = 0\ne0 = energy(bodies)\nrepeat 1,000,000 times:\n    for each pair (i, j) with i < j:\n        d    = pos[i] - pos[j]\n        mag  = 0.01 / |d|^3\n        vel[i] -= d * mass[j] * mag\n        vel[j] += d * mass[i] * mag\n    for each body b: pos[b] += 0.01 * vel[b]\ne1 = energy(bodies)\nstop timer\nhash round(e0 * 1e9), round(e1 * 1e9)",
   "reveals": "Scalar floating-point throughput, loop optimisation and (where the compiler can) auto-vectorisation.",
   "caveat": "Result depends on iteration count, precision and compiler math flags. We forbid fast-math and FMA contraction so every language must produce the identical 9-digit energies.",
   "tags": [
@@ -15,8 +15,10 @@
     "1000000"
   ],
   "runs": {
-    "min": 10,
-    "max": 30
+    "min": 3,
+    "max": 10
   },
-  "budgetSeconds": 90
+  "budgetSeconds": 30,
+  "kind": "kernel",
+  "instance": "stream"
 }

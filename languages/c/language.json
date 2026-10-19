@@ -66,7 +66,7 @@
       "id": "gcc-O3-native",
       "name": "gcc -O3 -march=native",
       "description": "Maximum optimisation for the CPU the benchmark runs on (ties results to that CPU's instruction set).",
-      "build": "gcc -O3 -march=native -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "build": "gcc -O3 -march=native -ffp-contract=off -o {bin} {harness}/harness.c {src}/main.c -lm -lpthread",
       "run": "{bin}",
       "default": true
     },
@@ -74,14 +74,14 @@
       "id": "gcc-O3",
       "name": "gcc -O3",
       "description": "Portable x86-64 baseline, no CPU-specific instructions.",
-      "build": "gcc -O3 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "build": "gcc -O3 -ffp-contract=off -o {bin} {harness}/harness.c {src}/main.c -lm -lpthread",
       "run": "{bin}"
     },
     {
       "id": "gcc-O2",
       "name": "gcc -O2",
       "description": "The most common release optimisation level.",
-      "build": "gcc -O2 -ffp-contract=off -o {bin} {src}/main.c -lm -lpthread",
+      "build": "gcc -O2 -ffp-contract=off -o {bin} {harness}/harness.c {src}/main.c -lm -lpthread",
       "run": "{bin}"
     }
   ],

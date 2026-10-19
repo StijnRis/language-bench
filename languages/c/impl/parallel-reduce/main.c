@@ -1,10 +1,10 @@
 #include <pthread.h>
-#include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 
-struct job {
-  long n, workers, t, count;
-};
+struct job { long n, workers, t, count; };
+static long n_arg = 2000000, workers_arg = 4;
+static int64_t out[1];
 
 static int is_prime(long n) {
   if (n < 2) return 0;
@@ -24,22 +24,22 @@ static void *run(void *arg) {
   return NULL;
 }
 
-int main(int argc, char **argv) {
-  long n = atol(argv[1]);
-  long workers = atol(argv[2]);
+void lb_setup(int argc, char **argv) { if (argc > 1) { n_arg = atol(argv[0]); workers_arg = atol(argv[1]); } }
+void *lb_decode(const unsigned char *data, size_t len) { (void)data; (void)len; return NULL; }
+void *lb_solve(void *inst) {
+  (void)inst;
+  long workers = workers_arg;
   pthread_t *th = malloc(workers * sizeof *th);
   struct job *jobs = malloc(workers * sizeof *jobs);
   for (long t = 0; t < workers; t++) {
-    jobs[t] = (struct job){n, workers, t, 0};
+    jobs[t] = (struct job){n_arg, workers, t, 0};
     pthread_create(&th[t], NULL, run, &jobs[t]);
   }
   long total = 0;
-  for (long t = 0; t < workers; t++) {
-    pthread_join(th[t], NULL);
-    total += jobs[t].count;
-  }
-  printf("primes=%ld\n", total);
-  free(th);
-  free(jobs);
-  return 0;
+  for (long t = 0; t < workers; t++) { pthread_join(th[t], NULL); total += jobs[t].count; }
+  free(th); free(jobs);
+  out[0] = total;
+  return out;
 }
+void lb_emit(void *res, void (*sink)(int64_t)) { sink(((int64_t *)res)[0]); }
+void lb_release(void *inst, void *res) { (void)inst; (void)res; }

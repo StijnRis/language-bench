@@ -26,6 +26,7 @@ import {
   loadData,
   loadLanguages,
   loadProblems,
+  harnessDir,
   implDir,
   readSource,
   type LoadedLanguage,
@@ -33,8 +34,9 @@ import {
 } from "@lb/core/discover";
 import prettier from "prettier";
 import { CACHE, HYPERFINE_VERSION, ROOT, WORK } from "./config";
-import { Container } from "./docker";
-import { runHyperfine } from "./hyperfine";
+import { startContainer, type Container } from "./docker";
+import { ensureTools } from "./tools";
+import { measureTask, validateTask } from "./measure";
 
 const log = (...a: unknown[]) => console.error(...a);
 const sha = (s: string | Buffer) => crypto.createHash("sha256").update(s).digest("hex");
@@ -52,6 +54,20 @@ export interface Task {
   bin: string;
   sourceFile: string;
   sourceHash: string;
+  /** a problem that is not in problems/ (the harness conformance problem) */
+  synthetic?: boolean;
+}
+
+/** Text of every file of the harness folder of this version (the harness is part of what is benchmarked). */
+function harnessSource(lang: Language, version: string): string {
+  const dir = harnessDir(ROOT, lang, version);
+  if (!fs.existsSync(dir)) return "";
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .filter((e) => e.isFile())
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map((e) => fs.readFileSync(path.join(dir, e.name), "utf8"))
+    .join("\n");
 }
 
 export function findLanguage(id: string): LoadedLanguage {
@@ -60,41 +76,13 @@ export function findLanguage(id: string): LoadedLanguage {
   return l;
 }
 
-export interface InputInfo {
-  sha256: string;
-  bytes: number;
-}
-
-/** Generate (deterministically) the input files of the given problems. */
-export function prepareInputs(problems: LoadedProblem[], workDir: string): Map<string, InputInfo> {
-  const infos = new Map<string, InputInfo>();
-  for (const p of problems) {
-    const inp = p.spec.input;
-    if (!inp) continue;
-    const gen = path.join(p.dir, inp.generator);
-    const genHash = sha(fs.readFileSync(gen)).slice(0, 12);
-    const cached = path.join(CACHE, "inputs", `${p.spec.id}-${genHash}`, inp.file);
-    if (!fs.existsSync(cached)) {
-      fs.mkdirSync(path.dirname(cached), { recursive: true });
-      log(`[input] generating ${p.spec.id}/${inp.file}`);
-      execFileSync("node", [gen, cached], { stdio: ["ignore", "inherit", "inherit"] });
-    }
-    const target = path.join(workDir, "inputs", inp.file);
-    fs.mkdirSync(path.dirname(target), { recursive: true });
-    fs.copyFileSync(cached, target);
-    const buf = fs.readFileSync(cached);
-    infos.set(p.spec.id, { sha256: sha(buf), bytes: buf.length });
-  }
-  return infos;
-}
-
 const sub = (tpl: string, vars: Record<string, string>) => tpl.replace(/\{(\w+)\}/g, (m, k) => vars[k] ?? m);
 
 export function planTasks(
   lang: Language,
   version: string,
   problems: LoadedProblem[],
-  filter: { variant?: string; problem?: string } = {},
+  filter: { variant?: string; problem?: string; conformance?: boolean } = {},
 ): Task[] {
   const tasks: Task[] = [];
   for (const variant of lang.variants) {
@@ -103,18 +91,23 @@ export function planTasks(
     if (filter.variant && variant.id !== filter.variant) continue;
     for (const problem of problems) {
       if (filter.problem && problem.spec.id !== filter.problem) continue;
-      const src = readSource(ROOT, lang, problem.spec.id, version);
-      if (src === undefined) continue; // no implementation of that problem in this language (yet)
-      const dir = path.relative(ROOT, implDir(ROOT, lang, problem.spec.id, version)).split(path.sep).join("/");
+      // the conformance problem lives in the harness folder: languages/<id>/harness/conformance/<sourceFile>
+      const dir = filter.conformance
+        ? path.relative(ROOT, path.join(harnessDir(ROOT, lang, version), "conformance")).split(path.sep).join("/")
+        : path.relative(ROOT, implDir(ROOT, lang, problem.spec.id, version)).split(path.sep).join("/");
+      const srcFile = path.join(ROOT, dir, lang.sourceFile);
+      if (!fs.existsSync(srcFile)) continue; // no implementation of that problem in this language (yet)
+      const src = fs.readFileSync(srcFile, "utf8");
       const rule = [...(variant.rules ?? [])].filter((r) => cmpVersion(version, r.minVersion) >= 0).sort((a, b) => cmpVersion(b.minVersion, a.minVersion))[0];
       const buildTpl = rule?.build ?? variant.build;
       const runTpl = rule?.run ?? variant.run;
+      const hdir = path.relative(ROOT, harnessDir(ROOT, lang, version)).split(path.sep).join("/");
       const vars = {
         src: `/repo/${dir}`,
+        harness: `/repo/${hdir}`,
         bin: `/work/bin/${lang.id}-${version}-${variant.id}-${problem.spec.id}`,
       };
-      const input = problem.spec.input ? `/work/inputs/${problem.spec.input.file}` : "";
-      const args = problem.spec.args.map((a) => a.replace("{input}", input));
+      const args = problem.spec.args;
       tasks.push({
         language: lang,
         version,
@@ -125,7 +118,7 @@ export function planTasks(
         args,
         bin: vars.bin,
         sourceFile: `${dir}/${lang.sourceFile}`,
-        sourceHash: sha(src).slice(0, 16),
+        sourceHash: sha(src + harnessSource(lang, version)).slice(0, 16),
       });
     }
   }
@@ -134,77 +127,32 @@ export function planTasks(
 
 export const imageFor = (lang: Language, version: string) => lang.image.replace("{version}", version);
 
-export interface BuildResult {
-  ok: boolean;
-  binarySize?: number;
-  seconds?: number;
-  output?: string;
-  message?: string;
-}
-
-export function build(c: Container, t: Task): BuildResult {
-  c.exec("mkdir -p /work/bin");
-  if (!t.buildCommand) return { ok: true };
-  const t0 = performance.now();
-  const r = c.exec(t.buildCommand, { timeoutMs: 15 * 60_000 });
-  const seconds = (performance.now() - t0) / 1000;
-  const output = (r.stdout + r.stderr).slice(0, 4000);
-  if (r.code !== 0) return { ok: false, seconds, output, message: `build failed:\n${output}` };
-  const size = c.exec(`stat -c %s ${t.bin}`);
-  return { ok: true, seconds, output, binarySize: size.code === 0 ? Number(size.stdout.trim()) : undefined };
-}
-
-export interface CheckResult {
-  correct: boolean;
-  message?: string;
-  ms: number;
-  outputSha256?: string;
-}
-
-/** Run the program once and compare its stdout with problems/<id>/expected.txt */
-export function check(c: Container, t: Task): CheckResult {
-  const r = c.exec(t.runCommand, { timeoutMs: 20 * 60_000 });
-  const norm = (s: string) => s.replace(/\r\n/g, "\n").trimEnd();
-  if (r.code !== 0) return { correct: false, ms: r.ms, message: `exit code ${r.code}\n${r.stderr.slice(0, 2000)}` };
-  const outputSha256 = sha(norm(r.stdout));
-  if (norm(r.stdout) !== norm(t.problem.expected)) {
-    return {
-      correct: false,
-      ms: r.ms,
-      outputSha256,
-      message: `output differs\n--- expected\n${norm(t.problem.expected).slice(0, 600)}\n--- got\n${norm(r.stdout).slice(0, 600)}`,
-    };
-  }
-  return { correct: true, ms: r.ms, outputSha256 };
-}
-
 /* ------------------------------------------------------------------ verify */
 
-export function verify(opts: { language: string; version?: string; variant?: string; problems?: string[] }): boolean {
+/**
+ * Builds every implementation of a language version and compares the results of the first iterations
+ * with the reference hashes of tools/lbgen (the same check every session does before it benchmarks).
+ */
+export async function verify(opts: { language: string; version?: string; variant?: string; problems?: string[]; iterations?: number }): Promise<boolean> {
   const lang = findLanguage(opts.language);
   const version = opts.version ?? lang.spec.versions.find((v) => v.latest)!.version;
   const problems = loadProblems(ROOT).filter((p) => !opts.problems || opts.problems.includes(p.spec.id));
   const workDir = path.join(WORK, `verify-${lang.spec.id}`);
   fs.rmSync(workDir, { recursive: true, force: true });
-  prepareInputs(problems, workDir);
   const tasks = problems.flatMap((p) => planTasks(lang.spec, version, [p], { variant: opts.variant }));
   if (tasks.length === 0) {
     log("nothing to verify");
     return true;
   }
-  const c = Container.start(`lb-verify-${lang.spec.id}`, imageFor(lang.spec, version), workDir, log);
+  ensureTools();
+  const cfg = loadConfig(ROOT);
+  const c = startContainer(`lb-verify-${lang.spec.id}`, imageFor(lang.spec, version), workDir, log);
   let failed = 0;
   try {
     for (const t of tasks) {
       const label = `${lang.spec.id} ${version} ${t.variant.id} ${t.problem.spec.id}`;
-      const b = build(c, t);
-      if (!b.ok) {
-        failed++;
-        console.log(`FAIL ${label}\n${b.message}`);
-        continue;
-      }
-      const r = check(c, t);
-      if (r.correct) console.log(`ok   ${label}  (${(r.ms / 1000).toFixed(2)}s)`);
+      const r = await validateTask(c, t, cfg, opts.iterations ?? 5);
+      if (r.ok) console.log(`ok   ${label}  (${r.iterations} iterations, ${(r.seconds * 1000).toFixed(1)} ms in the kernel on average)`);
       else {
         failed++;
         console.log(`FAIL ${label}\n${r.message}`);
@@ -213,8 +161,40 @@ export function verify(opts: { language: string; version?: string; variant?: str
   } finally {
     c.stop();
   }
-  console.log(failed ? `\n${failed} failure(s)` : `\nall ${tasks.length} implementations produce the expected output`);
+  console.log(failed ? `\n${failed} failure(s)` : `\nall ${tasks.length} implementations produce the reference results`);
   return failed === 0;
+}
+
+/**
+ * Runs the harness of every build setting of a language version on the conformance problem and checks that
+ * the output follows harness/CONTRACT.md (format, timestamps, loop rules, no reused instances).
+ */
+export async function conformance(opts: { language: string; version?: string }): Promise<boolean> {
+  const lang = findLanguage(opts.language);
+  const version = opts.version ?? lang.spec.versions.find((v) => v.latest)!.version;
+  const workDir = path.join(WORK, `conformance-${lang.spec.id}`);
+  fs.rmSync(workDir, { recursive: true, force: true });
+  ensureTools();
+  const cfg = loadConfig(ROOT);
+  const problem = { spec: { id: "conformance", instance: "stream", args: [], kind: "kernel" }, dir: "", expected: "" } as unknown as LoadedProblem;
+  const tasks = planTasks(lang.spec, version, [problem], { conformance: true });
+  const { conformanceTask } = await import("./measure");
+  const c = startContainer(`lb-conformance-${lang.spec.id}`, imageFor(lang.spec, version), workDir, log);
+  let failed = 0;
+  try {
+    for (const t of tasks) {
+      const label = `${lang.spec.id} ${version} ${t.variant.id}`;
+      const r = await conformanceTask(c, t, cfg);
+      if (r.ok) console.log(`ok   ${label}  (${r.iterations} iterations)`);
+      else {
+        failed++;
+        console.log(`FAIL ${label}\n${r.message}`);
+      }
+    }
+  } finally {
+    c.stop();
+  }
+  return failed === 0 && tasks.length > 0;
 }
 
 /* ---------------------------------------------------------------- planning */
@@ -344,10 +324,7 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
   const langs = new Map(loadLanguages(ROOT).map((l) => [l.spec.id, l]));
   const workDir = path.join(WORK, plan.sessionId);
   fs.mkdirSync(workDir, { recursive: true });
-  const inputs = prepareInputs(
-    problems.filter((p) => plan.picks.some((x) => x.problem === p.spec.id)),
-    workDir,
-  );
+  const toolInfo = ensureTools();
 
   // resolve picks into tasks
   const tasks: { pick: PlannedBenchmark; task: Task; image: string }[] = [];
@@ -372,7 +349,7 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
   const containerFor = (image: string, lang: Language) => {
     let c = containers.get(image);
     if (!c) {
-      c = Container.start(`lb-${process.pid}-${containers.size}`, image, workDir, log);
+      c = startContainer(`lb-${process.pid}-${containers.size}`, image, workDir, log);
       containers.set(image, c);
       containerInfo[image] = {
         image,
@@ -381,7 +358,7 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
         kernel: read(c, "uname -r"),
         glibc: read(c, "ldd --version 2>&1 | head -n1"),
         toolVersion: read(c, lang.toolVersionCmd),
-        hyperfine: read(c, "hyperfine --version"),
+        hyperfine: c.hasHyperfine ? read(c, "hyperfine --version") : undefined,
       };
     }
     return c;
@@ -412,8 +389,6 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
         containerImage: image,
         sourceFile: task.sourceFile,
         sourceHash: task.sourceHash,
-        inputSha256: inputs.get(pick.problem)?.sha256,
-        inputBytes: inputs.get(pick.problem)?.bytes,
         buildCommand: task.buildCommand,
         runCommand: task.runCommand,
         loadAvgBefore: read(c, "cat /proc/loadavg"),
@@ -425,38 +400,26 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
         measurements.push({ ...base, status: "failed", error: error.slice(0, 4000), correct: false, startedAt: started, finishedAt: new Date().toISOString(), ...extra });
       };
       try {
-        const b = build(c, task);
-        if (!b.ok) {
-          fail(b.message ?? "build failed", { buildSeconds: b.seconds, buildOutput: b.output });
+        const m = await measureTask(c, task, cfg, workDir, log, label);
+        if (m.status === "failed") {
+          fail(m.error, { buildSeconds: m.buildSeconds, buildOutput: m.buildOutput, binarySize: m.binarySize, correct: m.correct });
           continue;
         }
-        const chk = check(c, task);
-        if (chk.outputSha256 === undefined) {
-          fail(chk.message ?? "run failed", { buildSeconds: b.seconds, buildOutput: b.output, binarySize: b.binarySize });
-          continue;
-        }
-        if (!chk.correct) log(`[WRONG OUTPUT] ${label}: ${chk.message}`);
-        const { min, max } = task.problem.spec.runs;
-        const hi = Math.min(max, cfg.repetitions.max);
-        const lo = Math.max(cfg.repetitions.min, Math.min(min, cfg.repetitions.max));
-        const est = Math.max(chk.ms / 1000, 1e-3);
-        const runs = Math.max(lo, Math.min(hi, Math.floor((task.problem.spec.budgetSeconds * cfg.budgetSecondsScale) / est)));
-        log(`[bench] ${label}: ~${est.toFixed(2)}s/run -> ${runs} runs`);
-        const hf = runHyperfine(c, workDir, task.runCommand, runs, cfg.warmupRuns);
         measurements.push({
           ...base,
-          buildSeconds: b.seconds,
-          buildOutput: b.output,
-          binarySize: b.binarySize,
-          status: "ok",
-          correct: chk.correct,
-          outputSha256: chk.outputSha256,
+          buildSeconds: m.buildSeconds,
+          buildOutput: m.buildOutput,
+          binarySize: m.binarySize,
+          status: m.status,
+          error: m.error,
+          correct: m.correct,
           startedAt: started,
           finishedAt: new Date().toISOString(),
           loadAvgAfter: read(c, "cat /proc/loadavg"),
-          hyperfineArgs: hf.args,
-          warmupRuns: cfg.warmupRuns,
-          runs: hf.runs,
+          hyperfineArgs: m.hyperfineArgs,
+          warmupRuns: m.runs ? cfg.warmupRuns : undefined,
+          runs: m.runs,
+          kernel: m.kernel,
         });
       } catch (e) {
         fail(String(e));
@@ -479,6 +442,9 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
         host: { ...hostFinal, loadAvgEnd } as Session["host"],
         tooling: {
           ...hyperfineInfo(),
+          lbgenSha: toolInfo.lbgenSha,
+          hostGcc: toolInfo.gcc,
+          harnessContract: 1,
           docker: spawnSync("docker", ["version", "--format", "{{json .}}"], { encoding: "utf8" }).stdout.trim(),
           node: process.version,
         },

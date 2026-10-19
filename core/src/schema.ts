@@ -90,14 +90,16 @@ export const ProblemSchema = z.object({
   tags: z.array(z.string()).min(1),
   /** Counted in aggregate scores? (the startup problem is not) */
   scored: z.boolean().default(true),
-  /** Arguments passed to the program. {input} = generated input file path. */
+  /** Arguments passed to the program: the parameters of the problem (not the instance). */
   args: z.array(z.string()).default([]),
-  /** Optional input generator, run once: node <generator> <outFile> */
-  input: z.object({ generator: z.string(), file: z.string() }).optional(),
-  /** Hyperfine repetition policy: as many runs as fit the budget, within [min, max]. */
-  runs: z.object({ min: z.number().default(10), max: z.number().default(30) }).default({}),
-  /** Time budget per measurement in seconds. */
-  budgetSeconds: z.number().default(60),
+  /** kernel: timed in-process by the language's harness; startup: only the end-to-end run (no harness). */
+  kind: z.enum(["kernel", "startup"]).default("kernel"),
+  /** How instances reach the harness: streamed on stdin by tools/lbgen, as a file on tmpfs, or none (fixed workload). */
+  instance: z.enum(["stream", "file", "none"]).default("none"),
+  /** End-to-end (hyperfine) repetition policy: as many runs as fit the budget, within [min, max]. */
+  runs: z.object({ min: z.number().default(3), max: z.number().default(10) }).default({}),
+  /** Time budget of the end-to-end run in seconds. */
+  budgetSeconds: z.number().default(30),
 });
 export type Problem = z.infer<typeof ProblemSchema>;
 
@@ -122,11 +124,28 @@ export const ConfigSchema = z.object({
   maxAttempts: z.number().int().min(1),
   /** A session stops starting new benchmarks after this long. */
   sessionTimeBudgetMinutes: z.number().min(1),
-  /** Clamps problem.json repetition policy. */
+  /** Clamps the end-to-end (hyperfine) repetition policy of problem.json. */
   repetitions: z.object({ min: z.number().int().min(1), max: z.number().int().min(1) }),
-  /** Multiplies every problem's time budget (use < 1 while testing). */
+  /** Multiplies the end-to-end time budget of every problem (use < 1 while testing). */
   budgetSecondsScale: z.number().positive(),
   warmupRuns: z.number().int().min(0),
+  /** The in-process kernel loop (see harness/CONTRACT.md). */
+  kernel: z
+    .object({
+      /** The loop runs until the summed kernel time reaches this many seconds... */
+      budgetSeconds: z.number().positive(),
+      /** ...but at least this many iterations. */
+      minIterations: z.number().int().min(1),
+      /** Hard wall-clock limit of one kernel run; hitting it makes the benchmark incomplete. */
+      timeoutSeconds: z.number().positive(),
+      /** Iterations that start within this much kernel time after the first one are warm-up and not part of the warm statistic. */
+      warmupSeconds: z.number().min(0),
+      /** Iterations whose result is compared with the reference hash of the generator (all of them if fewer ran). */
+      checkedIterations: z.number().int().min(1),
+      /** Memory sampling interval of the host (milliseconds). */
+      sampleMillis: z.number().positive(),
+    })
+    .default({ budgetSeconds: 10, minIterations: 3, timeoutSeconds: 120, warmupSeconds: 2, checkedIterations: 20, sampleMillis: 5 }),
   /** Safety valve: a self-continuing chain of workflow rounds stops after this many rounds. */
   maxChainedRounds: z.number().int().min(1),
 });
@@ -149,6 +168,40 @@ export const RunsSchema = z.object({
   exit: z.array(z.number()),
 });
 export type Runs = z.infer<typeof RunsSchema>;
+
+/**
+ * Result of the in-process kernel loop of one benchmark in one session (harness/CONTRACT.md).
+ * Every iteration is kept: cold = the first one, warm = the median after the warm-up cutoff.
+ */
+export const KernelSchema = z.object({
+  clock: z.string(),
+  budgetSeconds: z.number(),
+  iterations: z.number().int(),
+  /** sum of the per-iteration kernel times, seconds */
+  kernelSeconds: z.number(),
+  reason: z.enum(["budget", "iters"]),
+  /** kernel time of every iteration, seconds, in order */
+  durations: z.array(z.number()),
+  /** start of every iteration relative to the start of the first, seconds */
+  starts: z.array(z.number()),
+  /** iterations compared with the reference hash, and how many matched */
+  checked: z.number().int(),
+  matched: z.number().int(),
+  /** memory of the container's cgroup (anonymous memory), sampled by the host */
+  memory: z
+    .object({
+      /** time-weighted mean over the timed kernel regions */
+      avgBytes: z.number(),
+      peakBytes: z.number(),
+      /** mean over the whole run, including instance generation and decoding */
+      runAvgBytes: z.number(),
+      samples: z.number().int(),
+    })
+    .optional(),
+  /** automatic flags, see core/analysis.ts */
+  flags: z.array(z.string()).default([]),
+});
+export type Kernel = z.infer<typeof KernelSchema>;
 
 /** Everything about one VM run that executed many benchmarks. Extra fields are allowed and kept. */
 export const SessionSchema = z
@@ -192,9 +245,10 @@ export const MeasurementSchema = z
     buildOutput: z.string().optional(),
     runCommand: z.string(),
     binarySize: z.number().optional(),
-    status: z.enum(["ok", "failed"]),
+    /** incomplete: the kernel run hit its hard timeout */
+    status: z.enum(["ok", "failed", "incomplete"]),
     error: z.string().optional(),
-    /** stdout equalled problems/<id>/expected.txt */
+    /** the results matched the reference (kernel runs: hashes of the checked iterations; startup: stdout equalled expected.txt) */
     correct: z.boolean(),
     outputSha256: z.string().optional(),
     startedAt: z.string(),
@@ -203,7 +257,10 @@ export const MeasurementSchema = z
     loadAvgAfter: z.string().optional(),
     hyperfineArgs: z.string().optional(),
     warmupRuns: z.number().optional(),
+    /** end-to-end: hyperfine runs of one iteration, process start to exit */
     runs: RunsSchema.optional(),
+    /** in-process kernel loop */
+    kernel: KernelSchema.optional(),
   })
   .passthrough();
 export type Measurement = z.infer<typeof MeasurementSchema>;

@@ -122,6 +122,21 @@ export function implDir(root: string, lang: Language, problem: string, version?:
   return base;
 }
 
+/**
+ * Folder of the harness of a language version: languages/<id>/harness/, or the highest
+ * harness/@<minVersion>/ that is <= the version (a copy of the harness for toolchains that need different code).
+ */
+export function harnessDir(root: string, lang: Language, version?: string): string {
+  const base = path.join(root, "languages", lang.id, "harness");
+  if (version) {
+    const overrides = subdirs(base)
+      .filter((d) => d.startsWith("@") && cmpVersion(d.slice(1), version) <= 0)
+      .sort((a, b) => cmpVersion(b.slice(1), a.slice(1)));
+    if (overrides[0]) return path.join(base, overrides[0]);
+  }
+  return base;
+}
+
 /** Source code of one implementation (shown on the site, hashed into measurements). */
 export function readSource(root: string, lang: Language, problem: string, version?: string): string | undefined {
   const file = path.join(implDir(root, lang, problem, version), lang.sourceFile);
