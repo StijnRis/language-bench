@@ -1,25 +1,37 @@
-int n = int.Parse(args[0]);
-var a = new double[n * n];
-var b = new double[n * n];
-var c = new double[n * n];
-for (int i = 0; i < n; i++)
-    for (int j = 0; j < n; j++)
+public static class Problem
+{
+    public static void Setup(string[] args) { }
+
+    public static object Decode(byte[] data)
     {
-        a[i * n + j] = (i * 31 + j * 17) % 10 + 1;
-        b[i * n + j] = (i * 13 + j * 7) % 10 - 4;
+        int n = BitConverter.ToInt32(data, 0);
+        var a = new double[n * n];
+        var b = new double[n * n];
+        Buffer.BlockCopy(data, 4, a, 0, n * n * 8);
+        Buffer.BlockCopy(data, 4 + n * n * 8, b, 0, n * n * 8);
+        return new object[] { n, a, b };
     }
 
-for (int i = 0; i < n; i++)
-    for (int k = 0; k < n; k++)
+    public static object Solve(object inst)
     {
-        double aik = a[i * n + k];
-        for (int j = 0; j < n; j++) c[i * n + j] += aik * b[k * n + j];
+        var o = (object[])inst;
+        int n = (int)o[0];
+        var a = (double[])o[1];
+        var b = (double[])o[2];
+        var c = new double[n * n];
+        for (int i = 0; i < n; i++)
+            for (int k = 0; k < n; k++)
+            {
+                double aik = a[i * n + k];
+                for (int j = 0; j < n; j++) c[i * n + j] += aik * b[k * n + j];
+            }
+        return c;
     }
 
-double trace = 0, sum = 0;
-for (int i = 0; i < n; i++) trace += c[i * n + i];
-foreach (double v in c) sum += v;
-Console.WriteLine($"trace={(long)trace}");
-Console.WriteLine($"sum={(long)sum}");
-Console.WriteLine($"c00={(long)c[0]}");
-Console.WriteLine($"clast={(long)c[n * n - 1]}");
+    public static void Emit(object res, Action<long> sink)
+    {
+        foreach (double v in (double[])res) sink((long)Math.Floor(v + 0.5));
+    }
+
+    public static void Release(object inst, object res) { }
+}
