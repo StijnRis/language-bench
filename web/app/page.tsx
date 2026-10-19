@@ -18,6 +18,8 @@ export default function Home() {
   const cells = snapshotCells(m);
   const scored = m.problems.filter((p) => p.spec.scored);
   const order = ranking(m);
+  const withData = new Set(m.analysis.benchmarks.map((b) => b.language));
+  const unmeasured = m.languages.filter((l) => !withData.has(l.spec.id));
   const fastestAnswer = order.length >= 2
     ? `Across the benchmark workloads, ${order[0]!.name} is currently the fastest overall, followed by ${order.slice(1, 4).map((r) => r.name).join(", ")}${order.length > 4 ? ` and ${order.length - 4} more` : ""}. The leaderboard above shows the exact multipliers, per task and overall.`
     : "The leaderboard above shows the exact multipliers per task and overall as soon as measurements are available.";
@@ -42,6 +44,11 @@ export default function Home() {
         </div>
       </section>
       {m.hasData && <Headline />}
+      {unmeasured.length > 0 && (
+        <p className="small muted" style={{ marginTop: -8 }}>
+          Added, waiting for their first benchmark sessions: {unmeasured.map((l, i) => <span key={l.spec.id}>{i > 0 && ", "}<Link href={`/languages/${l.spec.id}/`}>{l.spec.name}</Link></span>)}. They join the leaderboard automatically once CI has measured them.
+        </p>
+      )}
       {!m.hasData ? <NoData /> : (
         <Leaderboard
           cells={cells}

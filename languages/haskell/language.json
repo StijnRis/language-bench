@@ -1,0 +1,64 @@
+{
+  "id": "haskell",
+  "name": "Haskell",
+  "highlight": "haskell",
+  "website": "https://www.haskell.org/ghc/",
+  "description": "Haskell compiled ahead-of-time by GHC: lazy, purely functional, with a generational copying garbage collector and green threads on top of the multi-threaded runtime.",
+  "color": {
+    "light": "#6d28d9",
+    "dark": "#c4b5fd"
+  },
+  "sourceFile": "main.hs",
+  "image": "haskell:{version}",
+  "toolVersionCmd": "ghc --version",
+  "versions": [
+    {
+      "version": "9.14",
+      "latest": true
+    },
+    {
+      "version": "9.12",
+      "latest": false
+    },
+    {
+      "version": "9.10",
+      "latest": false
+    },
+    {
+      "version": "9.8",
+      "latest": false
+    },
+    {
+      "version": "9.6",
+      "latest": false
+    },
+    {
+      "version": "9.4",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "ghc-O2",
+      "name": "ghc -O2 -threaded",
+      "description": "Optimising build with the threaded runtime (needed for the parallel workload; default heap settings).",
+      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "ghc-O2-A64m",
+      "name": "ghc -O2 -threaded +RTS -A64m",
+      "description": "Same binary, 64 MB allocation area: fewer minor collections for allocation-heavy code.",
+      "build": "mkdir -p {bin}.o && ghc -O2 -threaded -rtsopts -outputdir {bin}.o -o {bin} {src}/main.hs",
+      "run": "{bin} +RTS -A64m -RTS"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "ghc/ghc",
+    "pattern": "^ghc-(9\\.\\d+)\\.\\d+-release$",
+    "url": "https://www.haskell.org/ghc/download.html",
+    "minVersion": "9.4"
+  }
+}

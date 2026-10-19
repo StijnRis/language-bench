@@ -1,0 +1,44 @@
+{
+  "id": "pypy",
+  "name": "PyPy",
+  "highlight": "python",
+  "website": "https://pypy.org/",
+  "description": "PyPy: a Python 3 interpreter with a tracing just-in-time compiler (RPython), usually much faster than CPython on loops and numeric code at the price of a higher memory footprint and a slower start-up.",
+  "color": {
+    "light": "#a16207",
+    "dark": "#facc15"
+  },
+  "sourceFile": "main.py",
+  "image": "pypy:{version}",
+  "toolVersionCmd": "pypy3 --version | tail -n1",
+  "versions": [
+    {
+      "version": "3.11",
+      "latest": true
+    },
+    {
+      "version": "3.10",
+      "latest": false
+    },
+    {
+      "version": "3.9",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "pypy-default",
+      "name": "pypy3",
+      "description": "Default interpreter with the tracing JIT.",
+      "run": "pypy3 {src}/main.py",
+      "default": true
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "pypy/pypy",
+    "pattern": "^release-pypy(3\\.\\d+)-v\\d+\\.\\d+\\.\\d+$",
+    "url": "https://pypy.org/download.html",
+    "minVersion": "3.9"
+  }
+}

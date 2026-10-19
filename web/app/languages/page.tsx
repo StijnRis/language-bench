@@ -8,6 +8,7 @@ export const metadata = meta("Languages benchmarked", `${languageList()}: versio
 
 export default function Languages() {
   const m = getModel();
+  const measured = new Set(m.analysis.benchmarks.map((b) => b.language));
   return (
     <>
       <h1>Languages</h1>
@@ -15,7 +16,7 @@ export default function Languages() {
       <div className="grid">
         {m.languages.map((l) => (
           <div className="card" key={l.spec.id}>
-            <h2 className="with-lang" style={{ margin: "0 0 6px", fontSize: "1.2rem" }}><LangIcon id={l.spec.id} size={30} /><Link href={`/languages/${l.spec.id}/`}>{l.spec.name}</Link></h2>
+            <h2 className="with-lang" style={{ margin: "0 0 6px", fontSize: "1.2rem" }}><LangIcon id={l.spec.id} size={30} /><Link href={`/languages/${l.spec.id}/`}>{l.spec.name}</Link>{!measured.has(l.spec.id) && <span className="badge warn" style={{ marginLeft: 4 }}>awaiting first run</span>}</h2>
             <p className="small muted">{l.spec.description}</p>
             <p className="small">Latest: <strong>{latestVersion(l)}</strong> · {l.spec.versions.length} versions · {l.spec.variants.length} build setting{l.spec.variants.length === 1 ? "" : "s"}</p>
             <Link href={`/languages/${l.spec.id}/`}>Results &amp; version timeline →</Link>

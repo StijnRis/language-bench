@@ -245,9 +245,34 @@ export function aggregateSessions(samples: SessionSample[], seed: string, iterat
   const rnd = mulberry32(hashSeed(seed));
   const boots: number[] = [];
   if (samples.length > 0) {
+    // Same draws in the same order as resample() + median(), but into reused typed arrays instead of
+    // a fresh array and a comparator sort per resample: this loop dominates the build time of the site.
+    const n = samples.length;
+    const bufs = samples.map((s) => new Float64Array(s.reps.length));
+    const picked = new Array<number>(n);
     for (let i = 0; i < iterations; i++) {
-      const picked = resample(samples, rnd);
-      boots.push(Math.exp(mean(picked.map((s) => Math.log(median(resample(s.reps, rnd))) - s.logFactor))));
+      for (let k = 0; k < n; k++) picked[k] = Math.floor(rnd() * n);
+      let sum = 0;
+      for (let k = 0; k < n; k++) {
+        const idx = picked[k]!;
+        const reps = samples[idx]!.reps;
+        const buf = bufs[idx]!;
+        const len = buf.length;
+        for (let j = 0; j < len; j++) buf[j] = reps[Math.floor(rnd() * len)]!;
+        if (len > 48) buf.sort();
+        else
+          for (let a = 1; a < len; a++) {
+            const v = buf[a]!;
+            let c = a - 1;
+            while (c >= 0 && buf[c]! > v) ((buf[c + 1] = buf[c]!), c--);
+            buf[c + 1] = v;
+          }
+        const pos = (len - 1) * 0.5;
+        const lo = Math.floor(pos);
+        const hi = Math.ceil(pos);
+        sum += Math.log(buf[lo]! + (buf[hi]! - buf[lo]!) * (pos - lo)) - samples[idx]!.logFactor;
+      }
+      boots.push(Math.exp(sum / n));
     }
   }
   return {

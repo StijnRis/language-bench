@@ -8,12 +8,18 @@ import {
   type Session,
   type BenchmarkResult,
 } from "@lb/core";
+import crypto from "node:crypto";
+import fs from "node:fs";
+import path from "node:path";
+import v8 from "node:v8";
 import {
+  dataDir,
   findRepoRoot,
   loadData,
   loadLanguages,
   loadProblems,
   readSource,
+  type LoadedData,
   type LoadedLanguage,
   type LoadedProblem,
 } from "@lb/core/discover";
@@ -61,13 +67,43 @@ export const sessionPath = (id: string) => `/sessions/${id}/`;
 
 let cached: Model | undefined;
 
+const ITERATIONS = 1000;
+
+/**
+ * The bootstrap statistics take tens of seconds, and `next build` evaluates this module in several
+ * worker processes. The result is a pure function of the session files and the statistics code, so it
+ * is computed once (see scripts/warm-cache.ts, run before `next build`) and shared through a file.
+ */
+function cachedAnalysis(root: string, data: LoadedData): Analysis {
+  const hash = crypto.createHash("sha1").update(String(ITERATIONS));
+  for (const f of ["stats.ts", "analysis.ts", "schema.ts"]) hash.update(fs.readFileSync(path.join(root, "core", "src", f)));
+  const dir = path.join(dataDir(root), "sessions");
+  if (fs.existsSync(dir)) for (const f of fs.readdirSync(dir).sort()) hash.update(f).update(fs.readFileSync(path.join(dir, f)));
+  const file = path.join(root, "web", ".cache", `analysis-${hash.digest("hex").slice(0, 16)}.v8`);
+  try {
+    return v8.deserialize(fs.readFileSync(file)) as Analysis;
+  } catch {
+    const analysis = analyze(data.sessions, data.languages, ITERATIONS);
+    try {
+      fs.mkdirSync(path.dirname(file), { recursive: true });
+      for (const old of fs.readdirSync(path.dirname(file))) if (old.startsWith("analysis-")) fs.rmSync(path.join(path.dirname(file), old), { force: true });
+      const tmp = `${file}.${process.pid}.tmp`;
+      fs.writeFileSync(tmp, v8.serialize(analysis));
+      fs.renameSync(tmp, file);
+    } catch {
+      // the cache is an optimisation only
+    }
+    return analysis;
+  }
+}
+
 export function getModel(): Model {
   if (cached) return cached;
   const root = findRepoRoot();
   const languages = loadLanguages(root);
   const problems = loadProblems(root);
   const data = loadData(root);
-  const analysis = analyze(data.sessions, data.languages, 1000);
+  const analysis = cachedAnalysis(root, data);
   const byId = new Map(analysis.benchmarks.map((b) => [benchId(b), b]));
   cached = { root, languages, problems, analysis, sessions: data.sessions, measurements: data.languages.flatMap((d) => d.measurements), byId, hasData: analysis.benchmarks.length > 0 };
   return cached;
@@ -89,7 +125,26 @@ export function reference(m: Model, problem: string): BenchmarkResult | undefine
   return pool.reduce<BenchmarkResult | undefined>((best, b) => (!best || b.agg.score < best.agg.score ? b : best), undefined);
 }
 
-export function toCell(m: Model, b: BenchmarkResult, ref = reference(m, b.problem)): Cell {
+const cellCache = new WeakMap<BenchmarkResult, Cell>();
+const referenceCache = new Map<string, BenchmarkResult | undefined>();
+let snapshot: Cell[] | undefined;
+
+/** Memoised: every page (and the layout) asks for the same few hundred cells, and each needs a bootstrap interval. */
+export function toCell(m: Model, b: BenchmarkResult, ref?: BenchmarkResult): Cell {
+  const useCache = ref === undefined;
+  const hit = useCache ? cellCache.get(b) : undefined;
+  if (hit) return hit;
+  const cell = computeCell(m, b, ref ?? cachedReference(m, b.problem));
+  if (useCache) cellCache.set(b, cell);
+  return cell;
+}
+
+function cachedReference(m: Model, problem: string) {
+  if (!referenceCache.has(problem)) referenceCache.set(problem, reference(m, problem));
+  return referenceCache.get(problem);
+}
+
+function computeCell(m: Model, b: BenchmarkResult, ref: BenchmarkResult | undefined): Cell {
   const idx = ref ? indexVs(m.analysis, b, ref) : { index: NaN, low: NaN, high: NaN };
   return {
     id: benchId(b),
@@ -113,12 +168,14 @@ export function toCell(m: Model, b: BenchmarkResult, ref = reference(m, b.proble
 
 /** Latest stable version, default variant, one cell per (language, problem). */
 export function snapshotCells(m: Model): Cell[] {
+  if (snapshot) return snapshot;
   const cells: Cell[] = [];
   for (const l of m.languages)
     for (const p of m.problems) {
       const b = m.byId.get(benchId({ language: l.spec.id, version: latestVersion(l), variant: defaultVariant(l), problem: p.spec.id }));
       if (b) cells.push(toCell(m, b));
     }
+  snapshot = cells;
   return cells;
 }
 

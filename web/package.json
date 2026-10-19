@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "tsx scripts/warm-cache.ts && next build",
     "fixtures": "tsx scripts/make-fixtures.ts",
     "typecheck": "tsc --noEmit",
     "e2e": "playwright test",

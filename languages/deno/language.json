@@ -1,0 +1,54 @@
+{
+  "id": "deno",
+  "name": "Deno",
+  "highlight": "typescript",
+  "website": "https://deno.com/",
+  "description": "Deno runs TypeScript directly on V8 (type-stripped, not type-checked at run time): the same JIT-compiled engine as Node.js and Chrome, with a different runtime and standard library.",
+  "color": {
+    "light": "#0f766e",
+    "dark": "#5eead4"
+  },
+  "sourceFile": "main.ts",
+  "image": "denoland/deno:debian-{version}",
+  "toolVersionCmd": "deno --version | head -n1",
+  "versions": [
+    {
+      "version": "2.9.7",
+      "latest": true
+    },
+    {
+      "version": "2.5.7",
+      "latest": false
+    },
+    {
+      "version": "2.0.6",
+      "latest": false
+    },
+    {
+      "version": "1.46.3",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "deno-default",
+      "name": "deno run",
+      "description": "Default V8 flags; all permissions granted.",
+      "run": "deno run -A --no-check {src}/main.ts",
+      "default": true
+    },
+    {
+      "id": "deno-semi-space-64",
+      "name": "deno run --v8-flags=--max-semi-space-size=64",
+      "description": "Larger young generation, fewer scavenges for allocation-heavy code.",
+      "run": "deno run -A --no-check --v8-flags=--max-semi-space-size=64 {src}/main.ts"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "denoland/deno",
+    "pattern": "^v(\\d+\\.\\d+\\.\\d+)$",
+    "url": "https://github.com/denoland/deno/releases",
+    "minVersion": "1.46.3"
+  }
+}

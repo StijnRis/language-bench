@@ -5,7 +5,7 @@
   "description": "Generates 2,000,000 integers with MINSTD, sorts them ascending with the standard library sort and prints first, last, median and a position-weighted checksum.",
   "pseudocode": "x = seed\na = array of 2,000,000 integers, each from x = x * 48271 mod (2^31 - 1)\nsort a ascending                         # standard library sort\nprint a[0], a[last], a[middle]\nprint sum over i of (i + 1) * a[i]       # position-weighted checksum",
   "reveals": "Comparison and memory-access efficiency of the default sort.",
-  "caveat": "Algorithm and stability differ (introsort, pdqsort, timsort, V8 typed-array sort). Node uses Int32Array.sort and Python list.sort on plain ints - the idiomatic fast path of each.",
+  "caveat": "Algorithm and stability differ (introsort, pdqsort, timsort, V8 typed-array sort). Node uses Int32Array.sort and Python list.sort on plain ints - the idiomatic fast path of each. Haskell sorts a linked list with Data.List.sort and OCaml uses Array.stable_sort; Elixir sorts a list with Enum.sort.",
   "tags": [
     "cpu-bound",
     "memory-bound",

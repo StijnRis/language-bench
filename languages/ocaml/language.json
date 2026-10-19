@@ -1,0 +1,60 @@
+{
+  "id": "ocaml",
+  "name": "OCaml",
+  "highlight": "ocaml",
+  "website": "https://ocaml.org/",
+  "description": "OCaml compiled to native code by ocamlopt: strict, statically typed, with a fast generational garbage collector and an optimiser that does little inlining unless flambda is enabled.",
+  "color": {
+    "light": "#c2410c",
+    "dark": "#fdba74"
+  },
+  "sourceFile": "main.ml",
+  "image": "ocaml/opam:debian-ocaml-{version}",
+  "toolVersionCmd": "ocamlopt -version",
+  "versions": [
+    {
+      "version": "5.6",
+      "latest": true
+    },
+    {
+      "version": "5.4",
+      "latest": false
+    },
+    {
+      "version": "5.2",
+      "latest": false
+    },
+    {
+      "version": "5.0",
+      "latest": false
+    },
+    {
+      "version": "4.14",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "ocamlopt-O3",
+      "name": "ocamlopt -O3 -unsafe",
+      "description": "Native code without bounds checks (-unsafe); -O3 only matters on flambda compilers.",
+      "build": "mkdir -p {bin}.o && cp {src}/main.ml {bin}.o/main.ml && cd {bin}.o && ocamlopt -O3 -unsafe -inline 200 -I +unix unix.cmxa main.ml -o {bin}",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "ocamlopt-safe",
+      "name": "ocamlopt",
+      "description": "Native code with bounds checking (the default).",
+      "build": "mkdir -p {bin}.o && cp {src}/main.ml {bin}.o/main.ml && cd {bin}.o && ocamlopt -I +unix unix.cmxa main.ml -o {bin}",
+      "run": "{bin}"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "ocaml/ocaml",
+    "pattern": "^(5\\.\\d+)\\.0$",
+    "url": "https://ocaml.org/releases",
+    "minVersion": "5.0"
+  }
+}
