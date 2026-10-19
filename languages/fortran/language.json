@@ -1,0 +1,60 @@
+{
+  "id": "fortran",
+  "name": "Fortran",
+  "highlight": "fortran-free-form",
+  "website": "https://fortran-lang.org/",
+  "description": "Fortran compiled ahead-of-time by gfortran (GCC): the original array-oriented numerical language, with column-major arrays, no garbage collector and OpenMP for threads. Its standard library has no hash map, sort or JSON parser, so those programs carry small hand-written versions.",
+  "color": {
+    "light": "#7c2d12",
+    "dark": "#fb7185"
+  },
+  "sourceFile": "main.f90",
+  "image": "gcc:{version}",
+  "toolVersionCmd": "gfortran --version | head -n1",
+  "versions": [
+    {
+      "version": "15",
+      "latest": true
+    },
+    {
+      "version": "14",
+      "latest": false
+    },
+    {
+      "version": "13",
+      "latest": false
+    },
+    {
+      "version": "12",
+      "latest": false
+    },
+    {
+      "version": "11",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "gfortran-O3",
+      "name": "gfortran -O3 -fopenmp",
+      "description": "Optimised build with OpenMP (needed for the parallel workload).",
+      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -fopenmp -o {bin} {src}/main.f90",
+      "run": "{bin}",
+      "default": true
+    },
+    {
+      "id": "gfortran-O3-native",
+      "name": "gfortran -O3 -march=native -fopenmp",
+      "description": "Optimised for the benchmark CPU.",
+      "build": "mkdir -p {bin}.mod && cd {bin}.mod && gfortran -O3 -march=native -fopenmp -o {bin} {src}/main.f90",
+      "run": "{bin}"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "gcc-mirror/gcc",
+    "pattern": "^releases/gcc-(\\d+)\\.1\\.0$",
+    "url": "https://gcc.gnu.org/releases.html",
+    "minVersion": "11"
+  }
+}

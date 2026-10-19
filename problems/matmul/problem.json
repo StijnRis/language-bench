@@ -1,11 +1,11 @@
 {
   "id": "matmul",
   "title": "Matrix multiply",
-  "summary": "Multiply two dense 256×256 matrices of doubles.",
-  "description": "Builds A[i][j] = (31i + 17j) mod 10 + 1 and B[i][j] = (13i + 7j) mod 10 - 4 as doubles, computes C = A × B with the cache-friendly i-k-j loop order and prints the trace, the sum of all entries and two corner entries. All values are small integers, so every sum is exact in floating point and the result cannot depend on summation order, fused multiply-add or vectorisation.",
+  "summary": "Multiply two dense 256\u00d7256 matrices of doubles.",
+  "description": "Builds A[i][j] = (31i + 17j) mod 10 + 1 and B[i][j] = (13i + 7j) mod 10 - 4 as doubles, computes C = A \u00d7 B with the cache-friendly i-k-j loop order and prints the trace, the sum of all entries and two corner entries. All values are small integers, so every sum is exact in floating point and the result cannot depend on summation order, fused multiply-add or vectorisation.",
   "pseudocode": "n = 256\nA[i][j] = (31*i + 17*j) mod 10 + 1       # doubles\nB[i][j] = (13*i + 7*j) mod 10 - 4\nC = zero matrix n x n\nfor i in 0..n-1:\n    for k in 0..n-1:\n        for j in 0..n-1:\n            C[i][j] += A[i][k] * B[k][j]\nprint trace(C), sum of all C, C[0][0], C[n-1][n-1]",
   "reveals": "Dense floating-point loops, bounds-check elimination, cache use and auto-vectorisation.",
-  "caveat": "Plain nested loops over the language's native array type, no BLAS or SIMD intrinsics: interpreters pay for every element access, while optimising compilers may vectorise the inner loop. Node uses Float64Array, Python lists of floats.",
+  "caveat": "Plain nested loops over the language's native array type, no BLAS or SIMD intrinsics: interpreters pay for every element access, while optimising compilers may vectorise the inner loop. Node uses Float64Array, Python lists of floats. R uses %*% (the BLAS linked into R), its idiomatic fast path.",
   "tags": [
     "cpu-bound",
     "memory-bound",

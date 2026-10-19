@@ -1,0 +1,49 @@
+{
+  "id": "r",
+  "name": "R",
+  "highlight": "r",
+  "website": "https://www.r-project.org/",
+  "description": "GNU R: a bytecode-compiled interpreter built for vectorised statistics. Whole-vector operations call compiled C, scalar loops are slow, and every value is a heap-allocated vector.",
+  "color": {
+    "light": "#1e40af",
+    "dark": "#93c5fd"
+  },
+  "sourceFile": "main.R",
+  "image": "r-base:{version}",
+  "toolVersionCmd": "R --version | head -n1",
+  "versions": [
+    {
+      "version": "4.6.1",
+      "latest": true
+    },
+    {
+      "version": "4.5.2",
+      "latest": false
+    },
+    {
+      "version": "4.4.3",
+      "latest": false
+    },
+    {
+      "version": "4.3.3",
+      "latest": false
+    },
+    {
+      "version": "4.2.3",
+      "latest": false
+    },
+    {
+      "version": "4.1.3",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "rscript-default",
+      "name": "Rscript",
+      "description": "Default interpreter with the bytecode compiler (JIT level 3).",
+      "run": "Rscript {src}/main.R",
+      "default": true
+    }
+  ]
+}

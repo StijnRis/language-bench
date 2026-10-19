@@ -1,0 +1,56 @@
+{
+  "id": "scala",
+  "name": "Scala",
+  "highlight": "scala",
+  "website": "https://www.scala-lang.org/",
+  "description": "Scala 3 compiled to JVM bytecode by scalac and run on the HotSpot JVM (tiered JIT, generational garbage collector). The programs use while loops and arrays in the hot paths. Versions are Scala CLI releases, each with its default Scala 3 compiler.",
+  "color": {
+    "light": "#be123c",
+    "dark": "#fda4af"
+  },
+  "sourceFile": "Main.scala",
+  "image": "virtuslab/scala-cli:{version}",
+  "toolVersionCmd": "scala-cli version 2>&1 | tr '\\n' ' '",
+  "versions": [
+    {
+      "version": "1.18.0",
+      "latest": true
+    },
+    {
+      "version": "1.12.0",
+      "latest": false
+    },
+    {
+      "version": "1.9.0",
+      "latest": false
+    },
+    {
+      "version": "1.6.0",
+      "latest": false
+    }
+  ],
+  "variants": [
+    {
+      "id": "scala-default",
+      "name": "scala-cli package --assembly, java -jar",
+      "description": "Assembly jar run with the default JVM settings (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
+      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "run": "java -jar {bin}.jar",
+      "default": true
+    },
+    {
+      "id": "scala-parallel-gc",
+      "name": "java -XX:+UseParallelGC -jar",
+      "description": "Throughput-oriented collector with less barrier overhead than G1.",
+      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "run": "java -XX:+UseParallelGC -jar {bin}.jar"
+    }
+  ],
+  "versionSource": {
+    "kind": "github-tags",
+    "repo": "VirtusLab/scala-cli",
+    "pattern": "^v(\\d+\\.\\d+\\.\\d+)$",
+    "url": "https://github.com/VirtusLab/scala-cli/releases",
+    "minVersion": "1.6.0"
+  }
+}
