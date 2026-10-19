@@ -34,7 +34,7 @@
       "id": "scala-default",
       "name": "scala-cli package --assembly, java -jar",
       "description": "Assembly jar run with the default JVM settings (G1 garbage collector). Compile time is not measured; the JIT warm-up is.",
-      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "build": "mkdir -p {bin}.src && cp {harness}/Harness.scala {bin}.src/Harness.scala && cp {src}/Main.scala {bin}.src/Problem.scala && scala-cli --power package --server=false --assembly -f -o {bin}.jar {bin}.src/Harness.scala {bin}.src/Problem.scala",
       "run": "java -jar {bin}.jar",
       "default": true
     },
@@ -42,7 +42,7 @@
       "id": "scala-parallel-gc",
       "name": "java -XX:+UseParallelGC -jar",
       "description": "Throughput-oriented collector with less barrier overhead than G1.",
-      "build": "scala-cli --power package --server=false --assembly -f -o {bin}.jar {src}/Main.scala",
+      "build": "mkdir -p {bin}.src && cp {harness}/Harness.scala {bin}.src/Harness.scala && cp {src}/Main.scala {bin}.src/Problem.scala && scala-cli --power package --server=false --assembly -f -o {bin}.jar {bin}.src/Harness.scala {bin}.src/Problem.scala",
       "run": "java -XX:+UseParallelGC -jar {bin}.jar"
     }
   ],
