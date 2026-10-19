@@ -1,16 +1,18 @@
 name: verify
 
-# Checks that every implementation still prints exactly problems/<id>/expected.txt.
+# Checks that the harness of every language follows harness/CONTRACT.md (conformance test on a dummy problem) and
+# that every implementation still produces the generator's reference results (order-sensitive hashes of the full result;
+# the start-up problem still prints problems/<id>/expected.txt).
 # Runs only when something relevant changed (no schedule): on pull requests / pushes only the touched
 # (language, problem) pairs are built and run, for every tracked version of that language. bench.yml
 # starts it for versions that discovery adds (pushes made with GITHUB_TOKEN do not trigger workflows).
 # Manually: everything, or limited with the inputs.
 on:
   pull_request:
-    paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
+    paths: ["languages/**", "problems/**", "runner/**", "core/**", "tools/**", "harness/**", ".github/workflows/verify.yml"]
   push:
     branches: [main]
-    paths: ["languages/**", "problems/**", "runner/**", "core/**", ".github/workflows/verify.yml"]
+    paths: ["languages/**", "problems/**", "runner/**", "core/**", "tools/**", "harness/**", ".github/workflows/verify.yml"]
   workflow_dispatch:
     inputs:
       language:
@@ -77,7 +79,12 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Build and run implementations, compare with expected output
+      - name: Harness conformance (clock, loop, output, no reused instances)
+        run: |
+          args="--language ${{ matrix.language }}"
+          if [ -n "${{ matrix.version }}" ]; then args="$args --version ${{ matrix.version }}"; fi
+          pnpm -s lb conformance $args
+      - name: Build and run implementations, compare with the reference results
         run: |
           args="--language ${{ matrix.language }}"
           if [ -n "${{ matrix.version }}" ]; then args="$args --version ${{ matrix.version }}"; fi

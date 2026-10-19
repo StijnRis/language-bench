@@ -2,7 +2,7 @@ import { seconds } from "@/lib/fmt";
 
 export interface StripRow { label: string; sub: string; reps: number[]; median: number; outliers: number[] }
 
-/** Every raw repetition of every session as a dot (server-rendered SVG, no JS). */
+/** Every raw repetition (a warm kernel iteration) of every session as a dot (server-rendered SVG, no JS). */
 export default function StripPlot({ rows }: { rows: StripRow[] }) {
   const W = 820, rowH = 30, M = { l: 230, r: 20, t: 8, b: 28 };
   const all = rows.flatMap((r) => r.reps);
@@ -14,7 +14,7 @@ export default function StripPlot({ rows }: { rows: StripRow[] }) {
   const ticks = Array.from({ length: 5 }, (_, i) => a + ((b - a) / 4) * i);
   return (
     <div className="chartwrap">
-      <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ minWidth: 600 }} role="img" aria-label="Every repetition of every session">
+      <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ minWidth: 600 }} role="img" aria-label="Every iteration of every session">
         {ticks.map((t) => (<g key={t}><line x1={X(t)} x2={X(t)} y1={M.t} y2={H - M.b} stroke="var(--line)" /><text x={X(t)} y={H - 10} textAnchor="middle">{seconds(t)}</text></g>))}
         {rows.map((r, i) => {
           const y = M.t + i * rowH + rowH / 2;

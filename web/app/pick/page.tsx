@@ -20,7 +20,7 @@ export default function Pick() {
       <p className="lead">The leaderboard weighs every task equally. Your workload probably does not: set how much each task matters, and how much memory matters next to speed, and the ranking updates live. The link keeps your settings, so you can share it.</p>
       {!m.hasData ? <NoData /> : (
         <Picker
-          cells={cells.map((c) => ({ language: c.language, problem: c.problem, index: c.index, memoryMB: c.memoryMB }))}
+          cells={cells.map((c) => ({ language: c.language, problem: c.problem, index: c.index, indexCold: c.by.cold?.index ?? c.index, indexE2e: c.by.e2e?.index ?? c.index, memoryMB: c.memoryMB }))}
           languages={m.languages.map((l) => ({ id: l.spec.id, name: l.spec.name, version: latestVersion(l) }))}
           problems={m.problems.filter((p) => p.spec.scored).map((p) => ({ id: p.spec.id, title: p.spec.title, tags: p.spec.tags }))}
         />

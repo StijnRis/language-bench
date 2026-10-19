@@ -2,8 +2,10 @@ import {
   analyze,
   geoMean,
   indexVs,
+  METRICS,
   MIN_SESSIONS_FOR_FINAL,
   type Analysis,
+  type Metric,
   type Measurement,
   type Session,
   type BenchmarkResult,
@@ -39,10 +41,17 @@ export interface Cell {
   indexLow: number;
   indexHigh: number;
   memoryMB: number;
+  /** highest memory during the kernel loop of any session, MB (0 = not measured) */
+  peakMB: number;
   binarySize: number | null;
   sessions: number;
   provisional: boolean;
   correct: boolean;
+  /** the metric of seconds/index: warm kernel time when there is kernel data, else end-to-end */
+  metric: Metric;
+  /** seconds and index under every metric that has data (index: 1 = the fastest benchmark under that metric) */
+  by: Partial<Record<Metric, { seconds: number; index: number; indexLow: number; indexHigh: number }>>;
+  flags: string[];
 }
 
 export interface Model {
@@ -118,11 +127,11 @@ export function versionsOf(m: Model, l: LoadedLanguage): string[] {
 export const latestVersion = (l: LoadedLanguage) => l.spec.versions.find((v) => v.latest)!.version;
 export const defaultVariant = (l: LoadedLanguage) => l.spec.variants.find((v) => v.default)!.id;
 
-/** Reference for the index: the fastest (correct) benchmark on this problem, so the best entry is 1.0×. */
-export function reference(m: Model, problem: string): BenchmarkResult | undefined {
-  const all = m.analysis.benchmarks.filter((b) => b.problem === problem);
+/** Reference for the index: the fastest (correct) benchmark on this problem under a metric, so the best entry is 1.0×. */
+export function reference(m: Model, problem: string, metric: Metric = "warm"): BenchmarkResult | undefined {
+  const all = m.analysis.benchmarks.filter((b) => b.problem === problem && b.byMetric[metric]);
   const pool = all.some((b) => b.correct) ? all.filter((b) => b.correct) : all;
-  return pool.reduce<BenchmarkResult | undefined>((best, b) => (!best || b.agg.score < best.agg.score ? b : best), undefined);
+  return pool.reduce<BenchmarkResult | undefined>((best, b) => (!best || b.byMetric[metric]!.score < best.byMetric[metric]!.score ? b : best), undefined);
 }
 
 const cellCache = new WeakMap<BenchmarkResult, Cell>();
@@ -130,22 +139,30 @@ const referenceCache = new Map<string, BenchmarkResult | undefined>();
 let snapshot: Cell[] | undefined;
 
 /** Memoised: every page (and the layout) asks for the same few hundred cells, and each needs a bootstrap interval. */
-export function toCell(m: Model, b: BenchmarkResult, ref?: BenchmarkResult): Cell {
-  const useCache = ref === undefined;
-  const hit = useCache ? cellCache.get(b) : undefined;
+export function toCell(m: Model, b: BenchmarkResult): Cell {
+  const hit = cellCache.get(b);
   if (hit) return hit;
-  const cell = computeCell(m, b, ref ?? cachedReference(m, b.problem));
-  if (useCache) cellCache.set(b, cell);
+  const cell = computeCell(m, b);
+  cellCache.set(b, cell);
   return cell;
 }
 
-function cachedReference(m: Model, problem: string) {
-  if (!referenceCache.has(problem)) referenceCache.set(problem, reference(m, problem));
-  return referenceCache.get(problem);
+function cachedReference(m: Model, problem: string, metric: Metric) {
+  const key = `${metric}|${problem}`;
+  if (!referenceCache.has(key)) referenceCache.set(key, reference(m, problem, metric));
+  return referenceCache.get(key);
 }
 
-function computeCell(m: Model, b: BenchmarkResult, ref: BenchmarkResult | undefined): Cell {
-  const idx = ref ? indexVs(m.analysis, b, ref) : { index: NaN, low: NaN, high: NaN };
+function computeCell(m: Model, b: BenchmarkResult): Cell {
+  const by: Cell["by"] = {};
+  for (const metric of METRICS) {
+    const agg = b.byMetric[metric];
+    if (!agg) continue;
+    const ref = cachedReference(m, b.problem, metric);
+    const idx = ref ? indexVs(m.analysis, b, ref, metric) : { index: NaN, low: NaN, high: NaN };
+    by[metric] = { seconds: agg.score, index: idx.index, indexLow: idx.low, indexHigh: idx.high };
+  }
+  const main = by[b.metric]!;
   return {
     id: benchId(b),
     language: b.language,
@@ -155,14 +172,18 @@ function computeCell(m: Model, b: BenchmarkResult, ref: BenchmarkResult | undefi
     seconds: b.refSeconds,
     secondsLow: b.refLow,
     secondsHigh: b.refHigh,
-    index: idx.index,
-    indexLow: idx.low,
-    indexHigh: idx.high,
+    index: main.index,
+    indexLow: main.indexLow,
+    indexHigh: main.indexHigh,
     memoryMB: b.memoryBytes / 1e6,
+    peakMB: b.peakBytes / 1e6,
     binarySize: b.binarySize ?? null,
     sessions: b.agg.sessions,
     provisional: b.agg.sessions < MIN_SESSIONS_FOR_FINAL,
     correct: b.correct,
+    metric: b.metric,
+    by,
+    flags: b.flags,
   };
 }
 
