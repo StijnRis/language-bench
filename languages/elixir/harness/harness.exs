@@ -23,7 +23,12 @@ defmodule Harness do
     end
   end
 
-  defp mono, do: :erlang.monotonic_time(:nanosecond)
+  # Erlang's monotonic time starts at a large negative number (beyond 2^53), which the runner's doubles cannot sum
+  # exactly; counting from the start of the VM keeps every timestamp small and exact.
+  defp mono do
+    :erlang.monotonic_time(:nanosecond) -
+      :erlang.convert_time_unit(:erlang.system_info(:start_time), :native, :nanosecond)
+  end
 
   defp read_full(0), do: ""
 
@@ -66,7 +71,7 @@ defmodule Harness do
       |> Enum.map(fn {{t0, t1, a, b}, i} -> "ITER #{i} t0=#{t0} t1=#{t1} check=#{a}:#{b}\n" end)
 
     IO.write([
-      "LB 1 clock=:erlang.monotonic_time(:nanosecond)\nSTART mono=#{mono0} wall=#{wall0}\n",
+      "LB 1 clock=:erlang.monotonic_time(:nanosecond)-start_time\nSTART mono=#{mono0} wall=#{wall0}\n",
       iters,
       "DONE iters=#{length(rows)} kernel_ns=#{kernel} reason=#{reason}\n"
     ])

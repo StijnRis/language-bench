@@ -58,6 +58,8 @@ export class DockerContainer implements Container {
 
   static start(name: string, image: string, workDir: string, log = console.error): DockerContainer {
     fs.mkdirSync(workDir, { recursive: true });
+    // some images (ocaml/opam) run as an unprivileged user that must be able to create /work/bin
+    fs.chmodSync(workDir, 0o777);
     log(`[docker] starting ${image} as ${name}`);
     spawnSync("docker", ["rm", "-f", name], { stdio: "ignore" });
     const r = spawnSync(

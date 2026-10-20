@@ -41,9 +41,9 @@ jobs:
       sessions: ${{ steps.plan.outputs.sessions }}
       sha: ${{ steps.sha.outputs.sha }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
@@ -74,7 +74,7 @@ jobs:
       - name: Plan sessions
         id: plan
         run: pnpm -s lb plan --out plans
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: steps.plan.outputs.sessions != '0'
         with:
           name: plans
@@ -91,16 +91,16 @@ jobs:
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     name: session ${{ matrix.session }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.plan.outputs.sha }}
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: plans
           path: plans
@@ -109,7 +109,7 @@ jobs:
           reps=""
           if [ -n "${{ inputs.reps }}" ]; then reps="--reps ${{ inputs.reps }}"; fi
           pnpm -s lb session --plan "$GITHUB_WORKSPACE/plans/session-${{ matrix.session }}.json" --out "$GITHUB_WORKSPACE/fragments/session-${{ matrix.session }}.json" $reps
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: fragment-${{ matrix.session }}
@@ -122,16 +122,16 @@ jobs:
     if: ${{ !cancelled() && needs.plan.outputs.sessions != '0' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: main
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: fragment-*
           path: fragments
