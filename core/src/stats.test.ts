@@ -89,7 +89,7 @@ describe("environment effect", () => {
 });
 
 const cfg: Config = {
-  targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, maxSessionsPerRound: 2, minSessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
+  testing: false, targetSessionsPerBenchmark: 3, maxBenchmarksPerSession: 10, maxSessionsPerRound: 2, minSessionsPerRound: 2, overlapFraction: 0.3, minOverlap: 2,
   maxAttempts: 3, sessionTimeBudgetMinutes: 60, repetitions: { min: 5, max: 10 },
   budgetSecondsScale: 1, warmupRuns: 1, maxChainedRounds: 10,
   kernel: { budgetSeconds: 10, minIterations: 3, timeoutSeconds: 120, warmupSeconds: 2, checkedIterations: 20, sampleMillis: 5 },

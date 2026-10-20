@@ -24,6 +24,11 @@ When a design changes, migrate everything to the new design in the same change. 
 - Never write fallbacks anywhere (code, config, workflows, docs). Fail fast: stop at the first problem with a clear
   error instead of continuing with a substitute value or a degraded result.
 
+## Keep it simple
+
+- Do the simplest thing that works. No extra options, abstractions or machinery that were not asked for.
+- Prefer changing a number in `lb.config.json` over adding code.
+
 ## Errors must be easy to find
 
 - Fail loudly and early with a message that says what went wrong, where (file, benchmark key, session id) and what to do.

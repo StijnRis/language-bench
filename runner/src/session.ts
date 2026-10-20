@@ -199,12 +199,16 @@ export async function conformance(opts: { language: string; version?: string }):
 
 /* ---------------------------------------------------------------- planning */
 
-/** All benchmarks that should be measured right now: newest tracked versions x variants x problems. */
+/** `testing` in lb.config.json limits the benchmarks to these languages and their three newest versions. */
+const TESTING_LANGUAGES = ["c", "python", "go"];
+
+/** All benchmarks that should be measured right now: tracked versions x variants x problems. */
 export function enumerateCandidates(): Candidate[] {
   const problems = loadProblems(ROOT);
+  const testing = loadConfig(ROOT).testing;
   const out: Candidate[] = [];
-  for (const l of loadLanguages(ROOT))
-    for (const v of l.spec.versions)
+  for (const l of loadLanguages(ROOT).filter((l) => !testing || TESTING_LANGUAGES.includes(l.spec.id)))
+    for (const v of testing ? [...l.spec.versions].sort((a, b) => cmpVersion(b.version, a.version)).slice(0, 3) : l.spec.versions)
       for (const t of planTasks(l.spec, v.version, problems))
         out.push({
           key: benchmarkKey({ language: l.spec.id, version: v.version, variant: t.variant.id, problem: t.problem.spec.id }),
@@ -363,6 +367,9 @@ export async function runSession(plan: SessionPlan, opts: { out: string; dryRun?
     }
     return c;
   };
+
+  // start every container before the first benchmark: all of them idle while a benchmark runs, whatever its position
+  for (const { task, image } of tasks) containerFor(image, task.language);
 
   const measurements: Measurement[] = [];
   const executed: string[] = [];

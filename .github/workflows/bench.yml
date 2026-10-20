@@ -109,7 +109,6 @@ jobs:
     timeout-minutes: 350
     strategy:
       fail-fast: false
-      max-parallel: 20 # GitHub's limit for free accounts, and no more load than that on the runners
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     name: session ${{ matrix.session }}
     steps:
