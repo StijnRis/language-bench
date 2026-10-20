@@ -9,8 +9,33 @@ name: bench
 # When every tracked benchmark has enough data the run ends after step 2 (cheap), until a
 # new release / configuration shows up. Everything tunable lives in lb.config.json.
 on:
+  # every 7 hours, counted from Monday 00:17 UTC: 24 runs make a week (7 x 24 = 168 h), so the start time
+  # rotates through every hour of the day instead of repeating the same few times each day
   schedule:
-    - cron: "17 */7 * * *" # periodic check for new versions / configurations
+    - cron: "17 0 * * 1"
+    - cron: "17 7 * * 1"
+    - cron: "17 14 * * 1"
+    - cron: "17 21 * * 1"
+    - cron: "17 4 * * 2"
+    - cron: "17 11 * * 2"
+    - cron: "17 18 * * 2"
+    - cron: "17 1 * * 3"
+    - cron: "17 8 * * 3"
+    - cron: "17 15 * * 3"
+    - cron: "17 22 * * 3"
+    - cron: "17 5 * * 4"
+    - cron: "17 12 * * 4"
+    - cron: "17 19 * * 4"
+    - cron: "17 2 * * 5"
+    - cron: "17 9 * * 5"
+    - cron: "17 16 * * 5"
+    - cron: "17 23 * * 5"
+    - cron: "17 6 * * 6"
+    - cron: "17 13 * * 6"
+    - cron: "17 20 * * 6"
+    - cron: "17 3 * * 0"
+    - cron: "17 10 * * 0"
+    - cron: "17 17 * * 0"
   workflow_dispatch:
     inputs:
       round:
@@ -84,6 +109,7 @@ jobs:
     timeout-minutes: 350
     strategy:
       fail-fast: false
+      max-parallel: 20 # GitHub's limit for free accounts, and no more load than that on the runners
       matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     name: session ${{ matrix.session }}
     steps:
