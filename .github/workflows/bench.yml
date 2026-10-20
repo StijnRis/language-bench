@@ -9,10 +9,6 @@ name: bench
 # When every tracked benchmark has enough data the run ends after step 2 (cheap), until a
 # new release / configuration shows up. Everything tunable lives in lb.config.json.
 on:
-  push:
-    branches: [main]
-    # pushes made with GITHUB_TOKEN (the bench's own data commits) do not trigger workflows, so this cannot loop
-    paths-ignore: ["methodology/**.md", "docs/screenshot.png"]
   schedule:
     - cron: "17 */6 * * *" # periodic check for new versions / configurations
   workflow_dispatch:
