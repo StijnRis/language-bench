@@ -102,6 +102,7 @@ export default async function Benchmark({ params }: { params: Promise<{ problem:
           {kernel ? <><td className="num">{s.iterations}</td><td className="num">{seconds(s.cold ?? NaN)}</td><td className="num">{seconds(s.warm ?? NaN)}</td><td className="num">{seconds(s.e2e ?? NaN)}</td></> : <><td className="num">{s.summary.n}</td><td className="num">{seconds(s.summary.median)}</td><td className="num">{seconds(s.summary.mad)}</td></>}
           <td className="num">{s.machineFactor.toFixed(3)}×</td><td className="num">{seconds(s.adjustedMedian)}</td><td>{mb(s.meanMemory / 1e6)}{s.peakMemory ? ` / ${mb(s.peakMemory / 1e6)}` : ""}</td>
           <td className="small">{s.runUrl ? <a href={s.runUrl}>Actions run</a> : "local"} · <a href={`${repoUrl}/blob/main/data/sessions/${s.sessionId}.json`}>raw data</a> · <a href={`${repoUrl}/tree/${s.repoCommit}`}>commit</a></td></tr>))}</tbody></table></div>
+      <p className="small muted" style={{ marginTop: 8 }}>The table is computed from the raw values: <a href="raw.csv">download every iteration and repetition of this benchmark (CSV)</a>, or the complete session files linked above. Each “Warm median” is the median of the kernel iterations after the first {kernelCfg.warmupSeconds} s; “÷ factor” divides it by the machine factor.</p>
       {b.flags.length > 0 && (
         <div className="callout" role="note" style={{ marginTop: 12 }}>
           <strong>Flags.</strong> This benchmark was flagged automatically; treat it with care:

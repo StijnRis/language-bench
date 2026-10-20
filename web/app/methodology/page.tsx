@@ -14,6 +14,15 @@ export default function Methodology() {
       <h1>Methodology</h1>
       <p className="lead">Everything is meant to be checkable. Every number on this site links to the raw iterations behind it, the exact source code, the build flags and the CI run that produced them.</p>
 
+      <h2>From raw data to a number</h2>
+      <ol>
+        <li><strong>Raw:</strong> every kernel iteration and every end-to-end repetition, stored in <a href={`${repoUrl}/tree/main/data/sessions`}>data/sessions</a> and downloadable per benchmark as <code>raw.csv</code> on its page.</li>
+        <li><strong>Per session:</strong> cold = first iteration, warm = median after the first 2 s, end-to-end = median of the repetitions.</li>
+        <li><strong>Per machine:</strong> a machine factor from benchmarks that ran in several sessions (below).</li>
+        <li><strong>Per benchmark:</strong> geometric mean over sessions of (session median ÷ machine factor), with a bootstrap interval; the index divides it by the fastest benchmark of the same problem.</li>
+      </ol>
+      <p>Every benchmark page walks through these four steps with its own numbers, in a table you can check against the raw CSV.</p>
+
       <h2>What is a benchmark?</h2>
       <p>A benchmark is a unique combination of <strong>language version</strong> (for example {ex.name} {ex.version}), <strong>build setting</strong> (compiler, flags, runtime options; for example <code>{ex.variant}</code>) and <strong>problem</strong> (for example {m.problems[0]?.spec.title}). Each is measured many times:</p>
       <ul>
