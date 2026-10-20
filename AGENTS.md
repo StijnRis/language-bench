@@ -2,7 +2,8 @@
 
 ## Git
 
-- Always commit and push to `main`. Work in small commits and push when a piece of work is done; do not leave
+- Always commit everything and merge it into `main`. Work in small commits; when a piece of work is done it is on
+  `main` and pushed. If a session works on a side branch, merge that branch into `main` and push `main`; never leave
   finished work on a side branch or uncommitted.
 - Commit messages say what changed and why.
 
@@ -13,11 +14,15 @@ When a design changes, migrate everything to the new design in the same change. 
 
 - Do not add fallbacks, compatibility branches, default values that hide missing data, or "if the new thing is
   absent use the old thing" paths. One way of doing each thing.
-- Data in an old format is deleted, not supported. Never keep dead formats, flags, fields or code paths "just in case".
+- Data in an old format is deleted, not supported. This includes measurements taken with an older way of
+  measuring: when the methodology changes significantly, delete the old data in the same change instead of mixing
+  incomparable numbers. Never keep dead formats, flags, fields or code paths "just in case".
   Git history is the archive.
 - Remove the old code, docs, tests and config in the same commit that introduces the replacement. Grep for leftovers
   (names, strings, docs) before finishing.
 - Missing or malformed input is an error, not a case to paper over.
+- Never write fallbacks anywhere (code, config, workflows, docs). Fail fast: stop at the first problem with a clear
+  error instead of continuing with a substitute value or a degraded result.
 
 ## Errors must be easy to find
 
