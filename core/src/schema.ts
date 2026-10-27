@@ -108,6 +108,8 @@ export type Problem = z.infer<typeof ProblemSchema>;
 /* ------------------------------------------------------------------ */
 
 export const ConfigSchema = z.object({
+  /** While true only a few languages and versions are benchmarked (see enumerateCandidates): fast rounds, little load on GitHub. */
+  testing: z.boolean(),
   /** A benchmark is "sufficiently measured" once it has results from this many sessions. */
   targetSessionsPerBenchmark: z.number().int().min(1),
   /** Max benchmarks executed in one session (one session = one VM = many benchmarks). */
