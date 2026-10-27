@@ -2,6 +2,7 @@ import fs from "node:fs";
 import { runsFromHyperfine, type Runs } from "@lb/core";
 import type { Container } from "./docker";
 
+const envPrefix = (env: Record<string, string>) => Object.entries(env).map(([k, v]) => `${k}=${v}`).join(" ");
 const quote = (s: string) => `'${s.replace(/'/g, "'\\''")}'`;
 
 /**
@@ -14,13 +15,15 @@ export function runHyperfine(
   c: Container,
   workDir: string,
   command: string,
+  env: Record<string, string>,
   runs: number,
   warmup: number,
   stdinFile?: string,
 ): { runs: Runs; args: string } {
-  if (!c.hasHyperfine) return runManually(c, command, runs, warmup, stdinFile);
+  if (!c.hasHyperfine) return runManually(c, command, env, runs, warmup, stdinFile);
   const out = `hf-${Date.now()}.json`;
-  const args = `--runs ${runs} --warmup ${warmup} --style basic${stdinFile ? ` --input ${stdinFile}` : ""}`;
+  // hyperfine refuses a command that starts with VAR=value, so the environment goes through --env
+  const args = `--runs ${runs} --warmup ${warmup} --style basic --env ${quote(envPrefix(env))}${stdinFile ? ` --input ${stdinFile}` : ""}`;
   const r = c.exec(`hyperfine ${args} --export-json /work/${out} ${quote(command)}`);
   if (r.code !== 0) throw new Error(`hyperfine failed (${r.code}): ${r.stderr}\n${r.stdout}`);
   const file = `${workDir}/${out}`;
@@ -31,8 +34,8 @@ export function runHyperfine(
 }
 
 /** Development fallback (LB_LOCAL without hyperfine): wall-clock of plain runs, no CPU or memory columns. */
-function runManually(c: Container, command: string, runs: number, warmup: number, stdinFile?: string) {
-  const cmd = stdinFile ? `${command} < ${stdinFile}` : command;
+function runManually(c: Container, command: string, env: Record<string, string>, runs: number, warmup: number, stdinFile?: string) {
+  const cmd = `${envPrefix(env)} ${command}${stdinFile ? ` < ${stdinFile}` : ""}`;
   const wall: number[] = [], exit: number[] = [];
   for (let i = 0; i < warmup + runs; i++) {
     const r = c.exec(cmd);

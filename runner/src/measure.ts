@@ -260,8 +260,7 @@ function endToEnd(c: Container, t: Task, cfg: Config, workDir: string, estimate:
     const est = Math.max(estimate + 0.1, 1e-3);
     const runs = Math.max(lo, Math.min(hi, Math.floor((spec.budgetSeconds * cfg.budgetSecondsScale) / est)));
     log(`[e2e] ${label}: ~${est.toFixed(2)}s/run -> ${runs} runs`);
-    const prefix = Object.entries(env).map(([k, v]) => `${k}='${v}'`).join(" ");
-    return runHyperfine(c, workDir, `${prefix} ${t.runCommand}`, runs, cfg.warmupRuns, stdinFile);
+    return runHyperfine(c, workDir, t.runCommand, env, runs, cfg.warmupRuns, stdinFile);
   } finally {
     cleanup?.();
   }
